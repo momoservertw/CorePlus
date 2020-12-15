@@ -1,0 +1,109 @@
+# --{ =-=-=-=-=-=-=-=-=-= CorePlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
+# Wiki: https://github.com/momoservertw/CorePlus/wiki
+Config-Version: 1
+Check-Updates: true
+Debugging: false
+
+General:
+  Settings:
+    # Translating the placeholder of vanilla Items, Entities, Enchantments name.
+    Vanilla-Translate:
+      Local: "en_us"
+    Features:
+      # Changed these options need to restart the server.
+      Hook:
+        Vault: true
+        PlaceHolderAPI: true
+        Residence: true
+        CMI: true
+        MyPet: true
+        MorphTool: true
+        ItemJoin: true
+        DiscordSRV: true
+        AuthMe: true
+        LocaleLib: true
+  # The settings for custom commands.
+  # More information: https://github.com/momoservertw/LotteryPlus/wiki/Custom-Command
+  Custom-Commands:
+    Settings:
+      Log:
+        Default:
+          # Creating new file if the modified date is difference.
+          New-File: true
+          To-Zip: true
+    # To send frequently used commands with placeholders.
+  Groups:
+    reward: "message: &6&lReward&c✤ &f%cmd_arg1%"
+    awards: "message: &d✧ &f%cmd_arg1% &d✧"
+    cgl: "broadcast: &6Congratulate &e%player% &6use &f%cmd_arg1% &8- &6Get the %cmd_arg2% &7<&f%cmd_arg3%&7>"
+    money: "console: money give %player% %cmd_arg1%"
+  # The settings for custom sounds.
+  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Sounds
+  Sounds:
+    Succeed:
+      Type: ENTITY_PLAYER_LEVELUP
+    Failed:
+      Type: ENTITY_SHULKER_HURT
+    SlimeJump:
+      Type: ENTITY_SLIME_JUMP
+      Loop:
+        Times: 8
+        Interval: 20
+  # The settings for custom particles.
+  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Particles
+  Particles:
+    Slime:
+      Type: SLIME
+      Amount: 3
+      Times: 8
+      Interval: 20
+    Flame:
+      Type: FLAME
+      Amount: 3
+      Times: 8
+      Interval: 20
+  # The menu item for some events like showing blocks or destroying it.
+  # If you don't have a menu in your server, you can set Item Name to "" to use a vanilla item.
+  # Support: ItemJoin
+  Menu:
+    ItemJoin: ""
+    Item:
+      Type: "PLAYER_HEAD"
+      Name: "&e&lMy &6&lMenu"
+  Location:
+    NormalWorlds:
+      Worlds:
+        - world
+    NetherWorlds:
+      Worlds:
+        - world_nether
+    EndWorlds:
+      Worlds:
+        - world_the_end
+    NormalBorder:
+      Worlds:
+        - world
+      Area:
+        S: 10000
+    Bedrock_World:
+      Worlds:
+        - world
+      Area:
+        Y: ">= 5"
+    Bedrock_Nether:
+      Worlds:
+        - world_nether
+      Area:
+        Y: "5 ~ 123"
+
+Message:
+  prefix: "&7[&dCorePlus&7]&r "
+  noPermission: '&cYou do not have permission to use that command!'
+  configReload: '&aConfiguration(s) Reloaded!'
+  unknownCommand: '&cUnknown command, See &e/CorePlus help &cfor a list of commands.'
+  cooldown: '&fPlease try it again later.'
+  Commands:
+    title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
+    help: "&a/coreplus help &8- &7This help menu."
+    reload: "&a/coreplus reload &8- &7Reloads config file."
+    version: "&f/coreplus version &8- &7Checks the plugin version and updates."

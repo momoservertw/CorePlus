@@ -1,0 +1,39 @@
+name: CorePlus
+main: tw.momocraft.coreplus.CorePlus
+author: Momocraft
+api-version: 1.13
+version: 1.0.0
+description: Server utils.
+softdepend: [Vault, PlayerPoints, PlaceHolderAPI, LangUtils, MythicMobs, CMI, Residence, MyPet, ItemJoin, MorphTool, DiscordSRV]
+
+commands:
+  coreplus:
+    description: Displays main command menu.
+    permission: coreplus.use
+    aliases: [crp]
+    usage: |
+      /coreplus
+
+permissions:
+  coreplus.*:
+    description: Allows use of all commands and feature.
+    default: op
+    children:
+      coreplus.use: true
+      CorePlus.command.*: true
+      CorePlus.bypass.*: true
+  CorePlus.use:
+    description: Allows use of basic commands.
+    default: true
+  CorePlus.command.*:
+    description: Allows use all commands.
+    default: op
+    children:
+      CorePlus.command.reload: true
+      CorePlus.command.version: true
+  CorePlus.command.reload:
+    description: Allows use of /CorePlus command reload.
+    default: op
+  CorePlus.command.version:
+    description: Allows use of command /CorePlus version.
+    default: op
