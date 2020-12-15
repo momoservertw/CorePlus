@@ -2,20 +2,72 @@ package tw.momocraft.coreplus.utils.locationutils;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import tw.momocraft.coreplus.api.LocationInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocationUtils {
+public class LocationUtils implements LocationInterface {
 
     private Map<String, LocationMap> locMaps;
 
     public LocationUtils() {
         setUp();
+    }
+
+    /**
+     * @param path the specific path.
+     * @return the specific maps from LocMaps.
+     */
+    @Override
+    public List<LocationMap> getSpeLocMaps(String file, String path) {
+        List<LocationMap> locMapList = new ArrayList<>();
+        LocationMap locMap;
+        LocationMap locWorldMap = new LocationMap();
+        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
+            locMap = locMaps.get(group);
+            if (locMap != null) {
+                locMapList.add(locMap);
+            } else {
+                locWorldMap.addWorld(group);
+            }
+        }
+        if (!locWorldMap.getWorlds().isEmpty()) {
+            locMapList.add(locWorldMap);
+        }
+        return locMapList;
+    }
+
+    /**
+     * @param loc     location.
+     * @param locMaps the checking location maps.
+     * @return if the location is one of locMaps.
+     */
+    @Override
+    public boolean checkLocation(Location loc, List<LocationMap> locMaps) {
+        if (locMaps.isEmpty()) {
+            return true;
+        }
+        String worldName = loc.getWorld().getName();
+        Map<String, String> cord;
+        back:
+        for (LocationMap locMap : locMaps) {
+            if (locMap.getWorlds().contains("global") || locMap.getWorlds().contains(worldName)) {
+                cord = locMap.getCord();
+                if (cord != null) {
+                    for (String key : cord.keySet()) {
+                        if (!isCord(loc, key, cord.get(key))) {
+                            continue back;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -53,56 +105,6 @@ public class LocationUtils {
     }
 
     /**
-     * @param path the specific path.
-     * @return the specific maps from LocMaps.
-     */
-    public List<LocationMap> getSpeLocMaps(String file, String path) {
-        List<LocationMap> locMapList = new ArrayList<>();
-        LocationMap locMap;
-        LocationMap locWorldMap = new LocationMap();
-        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
-            locMap = locMaps.get(group);
-            if (locMap != null) {
-                locMapList.add(locMap);
-            } else {
-                locWorldMap.addWorld(group);
-            }
-        }
-        if (!locWorldMap.getWorlds().isEmpty()) {
-            locMapList.add(locWorldMap);
-        }
-        return locMapList;
-    }
-
-    /**
-     * @param loc     location.
-     * @param locMaps the checking location maps.
-     * @return if the location is one of locMaps.
-     */
-    public boolean checkLocation(Location loc, List<LocationMap> locMaps) {
-        if (locMaps.isEmpty()) {
-            return true;
-        }
-        String worldName = loc.getWorld().getName();
-        Map<String, String> cord;
-        back:
-        for (LocationMap locMap : locMaps) {
-            if (locMap.getWorlds().contains("global") || locMap.getWorlds().contains(worldName)) {
-                cord = locMap.getCord();
-                if (cord != null) {
-                    for (String key : cord.keySet()) {
-                        if (!isCord(loc, key, cord.get(key))) {
-                            continue back;
-                        }
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param loc   location.
      * @param type  the checking name of "x, y, z" in for loop.
      * @param value the value of "x, y, z" in config.yml. It contains operator, range and value..
@@ -117,17 +119,17 @@ public class LocationUtils {
                 // R: 1000
                 switch (type) {
                     case "X":
-                        return Utils.getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
                     case "Y":
-                        return Utils.getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
                     case "Z":
-                        return Utils.getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                     case "!X":
-                        return !Utils.getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
                     case "!Y":
-                        return !Utils.getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
                     case "!Z":
-                        return !Utils.getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]));
                     case "!R":
@@ -141,34 +143,34 @@ public class LocationUtils {
                 // X: ">= 1000"
                 switch (type) {
                     case "X":
-                        return Utils.getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                     case "Y":
-                        return Utils.getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                     case "Z":
-                        return Utils.getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                     case "!X":
-                        return !Utils.getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                     case "!Y":
-                        return !Utils.getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                     case "!Z":
-                        return !Utils.getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                 }
             } else if (length == 3) {
                 // X: "-1000 ~ 1000"
                 // R: "1000 0 0"
                 switch (type) {
                     case "X":
-                        return Utils.getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "Y":
-                        return Utils.getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "Z":
-                        return Utils.getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!X":
-                        return !Utils.getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!Y":
-                        return !Utils.getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!Z":
-                        return !Utils.getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                     case "!R":

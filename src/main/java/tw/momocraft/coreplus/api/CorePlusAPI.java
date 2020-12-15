@@ -21,6 +21,10 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getPermManager();
     }
 
+    public static UtilsInterface getUtilsManager() {
+        return CorePlus.getInstance().getUtilsManager();
+    }
+
     public static UpdateInterface getUpdateManager() {
         return CorePlus.getInstance().getUpdateManager();
     }
@@ -39,5 +43,13 @@ public class CorePlusAPI {
 
     public static ResidenceInterface getResidenceManager() {
         return CorePlus.getInstance().getResidenceManager();
+    }
+
+    public static BlocksInterface getBlocksManager() {
+        return CorePlus.getInstance().getBlocksManager();
+    }
+
+    public static LocationInterface getLocationManager() {
+        return CorePlus.getInstance().getLocationManager();
     }
 }

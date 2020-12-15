@@ -11,7 +11,6 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CommandInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.utils.BungeeCord;
-import tw.momocraft.coreplus.utils.Utils;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class CustomCommands implements CommandInterface {
 
     private void executeCommands(String prefix, Player player, String input, boolean placeholder) {
         if (placeholder) {
-            input = Utils.translateLayout(input, player);
+            input = ConfigHandler.getUtils().translateLayout(input, player);
         }
         if (player == null || player instanceof ConsoleCommandSender) {
             executeCommands(prefix, input, placeholder);
@@ -132,7 +131,7 @@ public class CustomCommands implements CommandInterface {
 
     private void executeCommands(String input, String prefix, boolean placeholder) {
         if (placeholder) {
-            input = Utils.translateLayout(input, null);
+            input = ConfigHandler.getUtils().translateLayout(input, null);
         }
         if (input.startsWith("custom:")) {
             input = input.replace("custom: ", "");

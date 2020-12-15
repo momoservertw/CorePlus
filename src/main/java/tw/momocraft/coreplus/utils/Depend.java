@@ -1,6 +1,8 @@
 package tw.momocraft.coreplus.utils;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import org.bukkit.Bukkit;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 
@@ -82,13 +84,22 @@ public class Depend implements DependInterface {
                 + (MorphToolEnabled() ? "MorphTool, " : "")
                 + (DiscordSRVEnabled() ? "DiscordSRV, " : "")
                 + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
-                + (AuthMeEnabled() ? "AuthMe, " : "")
-                ;
-        ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+                + (AuthMeEnabled() ? "AuthMe, " : "");
+        try {
+            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+        } catch (Exception ignored) {
+        }
+
         /*
         if (ResidenceEnabled()) {
-            if (ConfigHandler.getConfigPath().isSpawnResFlag()) {
-                FlagConfigHandler.getPerm().addFlag("spawnbypass");
+            hookMsg = "&fAdd Residence flags [ &e"
+                    + (FlagPermissions.getPosibleAreaFlags().contains("spawnbypass") ? "spawnbypass, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("spawnerbypass") ? "spawnerbypass, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("damagebypass") ? "damagebypass, " : "")
+            ;
+            try {
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+            } catch (Exception ignored) {
             }
         }
          */

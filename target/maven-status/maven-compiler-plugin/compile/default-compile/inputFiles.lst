@@ -1,7 +1,9 @@
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\ZipInterface.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\Logger.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\DependInterface.java
+C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\LocationInterface.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\UpdateInterface.java
+C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\UtilsInterface.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\locationutils\LocationMap.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\Permissions.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\PlayerUtils.java
@@ -20,6 +22,7 @@ C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\ConfigPath.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\TabComplete.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\CorePlus.java
+C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\BlocksInterface.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\customcommands\SoundMap.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\ResidenceInterface.java
 C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\BungeeCord.java

@@ -17,6 +17,7 @@ public class ConfigHandler {
     private static Language lang;
     private static Permissions perm;
     private static ConfigPath configPaths;
+    private static Utils util;
     private static Logger log;
     private static Zipper zip;
     private static Updater update;
@@ -27,6 +28,7 @@ public class ConfigHandler {
         setDepends(new Depend());
         setPerm(new Permissions());
         setConfigPath(new ConfigPath());
+        setUtil(new Utils());
         setLogger(new Logger());
         setZipper(new Zipper());
         setUpdater(new Updater());
@@ -147,6 +149,14 @@ public class ConfigHandler {
 
     private static void setPerm(Permissions permissions) {
         perm = permissions;
+    }
+
+    public static void setUtil(Utils utils) {
+        util = utils;
+    }
+
+    public static Utils getUtils() {
+        return util;
     }
 
     public static Logger getLogger() {

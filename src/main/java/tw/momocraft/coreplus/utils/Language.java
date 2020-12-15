@@ -173,7 +173,7 @@ public class Language implements LanguageInterface {
             input = langMessage;
         }
         input = translateLangHolders(input, initializeRows(placeHolder));
-        input = Utils.translateLayout(input, player);
+        input = ConfigHandler.getUtils().translateLayout(input, player);
         String[] langLines = input.split(" /n ");
         for (String langLine : langLines) {
             sender.sendMessage(prefix + langLine);

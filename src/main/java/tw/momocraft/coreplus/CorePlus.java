@@ -6,7 +6,9 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.utils.Permissions;
 import tw.momocraft.coreplus.handlers.RegisterHandler;
 import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.utils.blocksutils.BlocksUtils;
 import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
+import tw.momocraft.coreplus.utils.locationutils.LocationUtils;
 
 public class CorePlus extends JavaPlugin {
     private static CorePlus instance;
@@ -60,6 +62,13 @@ public class CorePlus extends JavaPlugin {
         return permissionAPI;
     }
 
+    private UtilsInterface utilsAPI = null;
+    public UtilsInterface getUtilsManager() {
+        if (utilsAPI == null)
+            utilsAPI = new Utils();
+        return utilsAPI;
+    }
+
     private UpdateInterface updateAPI = null;
     public UpdateInterface getUpdateManager() {
         if (updateAPI == null)
@@ -93,5 +102,19 @@ public class CorePlus extends JavaPlugin {
         if (residenceAPI == null)
             residenceAPI = new ResidenceUtils();
         return residenceAPI;
+    }
+
+    private BlocksInterface blocksAPI = null;
+    public BlocksInterface getBlocksManager() {
+        if (blocksAPI == null)
+            blocksAPI = new BlocksUtils();
+        return blocksAPI;
+    }
+
+    private LocationInterface locationAPI = null;
+    public LocationInterface getLocationManager() {
+        if (locationAPI == null)
+            locationAPI = new LocationUtils();
+        return locationAPI;
     }
 }

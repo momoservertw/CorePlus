@@ -7,8 +7,10 @@ tw\momocraft\coreplus\utils\customcommands\CustomCommands.class
 tw\momocraft\coreplus\api\LoggerInterface.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class
 tw\momocraft\coreplus\utils\locationutils\LocationMap.class
+tw\momocraft\coreplus\api\BlocksInterface.class
 tw\momocraft\coreplus\utils\Updater.class
 tw\momocraft\coreplus\utils\VaultAPI.class
+tw\momocraft\coreplus\api\LocationInterface.class
 tw\momocraft\coreplus\utils\customcommands\SoundMap.class
 tw\momocraft\coreplus\utils\ConfigPath.class
 tw\momocraft\coreplus\utils\blocksutils\BlocksUtils.class
@@ -33,6 +35,7 @@ tw\momocraft\coreplus\Commands.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$1.class
 tw\momocraft\coreplus\utils\locationutils\LocationUtils.class
 tw\momocraft\coreplus\api\ZipInterface.class
+tw\momocraft\coreplus\api\UtilsInterface.class
 tw\momocraft\coreplus\api\CorePlusAPI.class
 tw\momocraft\coreplus\utils\PlayerUtils.class
 tw\momocraft\coreplus\utils\LangUtils.class

@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.blocksutils;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import tw.momocraft.coreplus.api.BlocksInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BlocksUtils {
+public class BlocksUtils implements BlocksInterface {
 
     private Map<String, BlocksMap> blocksMaps;
 
@@ -17,6 +18,49 @@ public class BlocksUtils {
         setUp();
     }
 
+    /**
+     * @param path the specific path.
+     * @return the specific maps from BlocksMaps.
+     */
+    @Override
+    public List<BlocksMap> getSpeBlocksMaps(String file, String path) {
+        List<BlocksMap> blocksMapList = new ArrayList<>();
+        BlocksMap blocksMap;
+        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
+            blocksMap = blocksMaps.get(group);
+            if (blocksMap != null) {
+                blocksMapList.add(blocksMap);
+            }
+        }
+        return blocksMapList;
+    }
+
+    /**
+     * @param loc        the checking location.
+     * @param blocksMaps the Blocks settings.
+     * @return if there are certain blocks nearby the location.
+     */
+    @Override
+    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps) {
+        if (blocksMaps.isEmpty()) {
+            return true;
+        }
+        List<BlocksMap> ignoreMaps;
+        for (BlocksMap blocksMap : blocksMaps) {
+            ignoreMaps = blocksMap.getIgnoreMaps();
+            if (ignoreMaps != null) {
+                for (BlocksMap ignoreMap : ignoreMaps) {
+                    if (getSearchBlocks(loc, ignoreMap)) {
+                        return false;
+                    }
+                }
+            }
+            if (getSearchBlocks(loc, blocksMap)) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Setup LocMaps.
      */
@@ -72,48 +116,6 @@ public class BlocksUtils {
         }
         blocksMap.setIgnoreMaps(ignoreList);
         return blocksMap;
-    }
-
-    /**
-     * @param path the specific path.
-     * @return the specific maps from BlocksMaps.
-     */
-    public List<BlocksMap> getSpeBlocksMaps(String file, String path) {
-        List<BlocksMap> blocksMapList = new ArrayList<>();
-        BlocksMap blocksMap;
-        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
-            blocksMap = blocksMaps.get(group);
-            if (blocksMap != null) {
-                blocksMapList.add(blocksMap);
-            }
-        }
-        return blocksMapList;
-    }
-
-    /**
-     * @param loc        the checking location.
-     * @param blocksMaps the Blocks settings.
-     * @return if there are certain blocks nearby the location.
-     */
-    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps) {
-        if (blocksMaps.isEmpty()) {
-            return true;
-        }
-        List<BlocksMap> ignoreMaps;
-        for (BlocksMap blocksMap : blocksMaps) {
-            ignoreMaps = blocksMap.getIgnoreMaps();
-            if (ignoreMaps != null) {
-                for (BlocksMap ignoreMap : ignoreMaps) {
-                    if (getSearchBlocks(loc, ignoreMap)) {
-                        return false;
-                    }
-                }
-            }
-            if (getSearchBlocks(loc, blocksMap)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

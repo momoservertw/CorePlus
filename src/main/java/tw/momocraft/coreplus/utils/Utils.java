@@ -6,18 +6,21 @@ import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.api.UtilsInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Utils {
+public class Utils implements UtilsInterface {
 
-    public static boolean containsIgnoreCase(String string1, String string2) {
+    @Override
+    public boolean containsIgnoreCase(String string1, String string2) {
         return string1 != null && string2 != null && string1.toLowerCase().contains(string2.toLowerCase());
     }
 
-    public static boolean isInt(String s) {
+    @Override
+    public boolean isInt(String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException e) {
@@ -26,59 +29,19 @@ public class Utils {
         return true;
     }
 
-    public static int getRandom(int lower, int upper) {
+    @Override
+    public int getRandom(int lower, int upper) {
         Random random = new Random();
         return random.nextInt((upper - lower) + 1) + lower;
-    }
-
-    public static Integer returnInteger(String text) {
-        if (text == null) {
-            return null;
-        } else {
-            char[] characters = text.toCharArray();
-            Integer value = null;
-            boolean isPrevDigit = false;
-            for (char character : characters) {
-                if (!isPrevDigit) {
-                    if (Character.isDigit(character)) {
-                        isPrevDigit = true;
-                        value = Character.getNumericValue(character);
-                    }
-                } else {
-                    if (Character.isDigit(character)) {
-                        value = (value * 10) + Character.getNumericValue(character);
-                    } else {
-                        break;
-                    }
-                }
-            }
-            return value;
-        }
     }
 
     /**
      * @param value the checking value
      * @return if the chance will succeed or not.
      */
-    public static boolean isRandChance(double value) {
+    @Override
+    public boolean isRandChance(double value) {
         return value < new Random().nextDouble();
-    }
-
-    /**
-     * @param value the spawn reason of this entity.
-     * @return if the feature is enavle
-     */
-    public static boolean isEnable(String value, boolean def) {
-        if (value == null) {
-            return def;
-        }
-        if (value.equals("true")) {
-            return true;
-        } else if (value.equals("false")) {
-            return false;
-        } else {
-            return def;
-        }
     }
 
     /**
@@ -87,7 +50,8 @@ public class Utils {
      * @param ignoreList the spawn Ignore-Reasons in configuration.
      * @return if the entity spawn reason match the config setting.
      */
-    public static boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList) {
+    @Override
+    public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList) {
         if (ignoreList.contains(value)) {
             return false;
         }
@@ -102,7 +66,8 @@ public class Utils {
      * @param value the option "Liquid" in configuration.
      * @return if the entity spawned in water or lava.
      */
-    public static boolean isLiquid(Block block, String value) {
+    @Override
+    public boolean isLiquid(Block block, String value) {
         if (value == null) {
             return true;
         }
@@ -115,7 +80,8 @@ public class Utils {
      * @param value the spawn day/night in configuration.
      * @return if the entity spawn day match the config setting.
      */
-    public static boolean isDay(double time, String value) {
+    @Override
+    public boolean isDay(double time, String value) {
         if (value == null) {
             return true;
         }
@@ -127,7 +93,8 @@ public class Utils {
      * @param number1  first number.
      * @param number2  second number.
      */
-    public static boolean getCompare(String operator, double number1, double number2) {
+    @Override
+    public boolean getCompare(String operator, double number1, double number2) {
         switch (operator) {
             case ">":
                 return number1 > number2;
@@ -153,7 +120,8 @@ public class Utils {
      * @return if the check number is inside the range.
      * It will return false if the two side of range numbers are equal.
      */
-    public static boolean getRange(double number, double r1, double r2) {
+    @Override
+    public boolean getRange(double number, double r1, double r2) {
         return r1 <= number && number <= r2 || r2 <= number && number <= r1;
     }
 
@@ -164,7 +132,8 @@ public class Utils {
      * @return if the check number is inside the range.
      * It will return false if the two side of range numbers are equal.
      */
-    public static boolean getRange(int number, int r1, int r2) {
+    @Override
+    public boolean getRange(int number, int r1, int r2) {
         return r1 <= number && number <= r2 || r2 <= number && number <= r1;
     }
 
@@ -173,7 +142,8 @@ public class Utils {
      * @param r      the side of range.
      * @return if the check number is inside the range.
      */
-    public static boolean getRange(int number, int r) {
+    @Override
+    public boolean getRange(int number, int r) {
         return -r <= number && number <= r || r <= number && number <= -r;
     }
 
@@ -182,7 +152,8 @@ public class Utils {
      * @param r      the side of range.
      * @return if the check number is inside the range.
      */
-    public static boolean getRange(double number, double r) {
+    @Override
+    public boolean getRange(double number, double r) {
         return -r <= number && number <= r || r <= number && number <= -r;
     }
 
@@ -192,14 +163,16 @@ public class Utils {
      * @param distance The checking value.
      * @return if two locations is in the distance.
      */
-    public static boolean inTheRange(Location loc, Location loc2, int distance) {
+    @Override
+    public boolean inTheRange(Location loc, Location loc2, int distance) {
         if (loc.getWorld() == loc2.getWorld()) {
             return loc.distanceSquared(loc2) <= distance;
         }
         return false;
     }
 
-    public static String getNearbyPlayer(Player player, int range) {
+    @Override
+    public String getNearbyPlayer(Player player, int range) {
         try {
             ArrayList<Entity> entities = (ArrayList<Entity>) player.getNearbyEntities(range, range, range);
             ArrayList<Block> sightBlock = (ArrayList<Block>) player.getLineOfSight(null, range);
@@ -224,7 +197,8 @@ public class Utils {
         }
     }
 
-    public static String translateLayout(String input, Player player) {
+    @Override
+    public String translateLayout(String input, Player player) {
         if (input == null) {
             return "";
         }
@@ -384,7 +358,8 @@ public class Utils {
      * @param <V>
      * @return the sorted map.
      */
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    @Override
+    public <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         list.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
 
@@ -404,7 +379,8 @@ public class Utils {
      * @param <V>
      * @return the sorted map.
      */
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueLow(Map<K, V> map) {
+    @Override
+    public <K, V extends Comparable<? super V>> Map<K, V> sortByValueLow(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         list.sort(Map.Entry.comparingByValue());
 
@@ -417,6 +393,5 @@ public class Utils {
 
     public static String translateColorCode(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
-
     }
 }

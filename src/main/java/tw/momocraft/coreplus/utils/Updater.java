@@ -49,35 +49,39 @@ public class Updater implements UpdateInterface {
             ConfigHandler.getLang().sendErrorMsg(prefix, "&cCorePlus is out of date.");
             return;
         }
-        if (searching(sender, prefix, plugin, ver, id)) {
-            ConfigHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + ver);
+        String onlineVer = searching(sender, prefix, plugin, ver, id);
+        if (onlineVer != null) {
+            ConfigHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
             ConfigHandler.getLang().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
         } else {
             ConfigHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
         }
-
     }
 
-    private boolean searching(CommandSender sender, String prefix, String plugin, String ver, String id) {
+    private String searching(CommandSender sender, String prefix, String plugin, String ver, String id) {
         ConfigHandler.getLang().sendMsg(prefix, sender, "Checking updates...");
+        String onlineVer = null;
         try {
             URLConnection connection = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + id + "?_=" + System.currentTimeMillis()).openConnection();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String onlineVer = reader.readLine();
+            onlineVer = reader.readLine();
             reader.close();
-
+            ver = ver.replaceAll("[a-z]", "").replace("-SNAPSHOT", "")
+                    .replace("-BETA", "").replace("-ALPHA", "")
+                    .replace("-RELEASE", "");
             onlineVer = onlineVer.replaceAll("[a-z]", "").replace("-SNAPSHOT", "")
                     .replace("-BETA", "").replace("-ALPHA", "")
                     .replace("-RELEASE", "");
-            String[] onlineVerSplit = onlineVer.split("\\.");
             String[] verSplit = ver.split("\\.");
+            String[] onlineVerSplit = onlineVer.split("\\.");
             if ((Integer.parseInt(onlineVerSplit[0]) > Integer.parseInt(verSplit[0]) ||
-                    Integer.parseInt(onlineVerSplit[1]) > Integer.parseInt(verSplit[1]) || Integer.parseInt(onlineVerSplit[2]) > Integer.parseInt(verSplit[2]))) {
-                return true;
+                    Integer.parseInt(onlineVerSplit[1]) > Integer.parseInt(verSplit[1]) ||
+                    Integer.parseInt(onlineVerSplit[2]) > Integer.parseInt(verSplit[2]))) {
+                return null;
             }
         } catch (Exception e) {
             ConfigHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
         }
-        return false;
+        return onlineVer;
     }
 }

@@ -100,7 +100,7 @@ Message:
   prefix: "&7[&dCorePlus&7]&r "
   noPermission: '&cYou do not have permission to use that command!'
   configReload: '&aConfiguration(s) Reloaded!'
-  unknownCommand: '&cUnknown command, See &e/CorePlus help &cfor a list of commands.'
+  unknownCommand: '&fUnknown command.'
   cooldown: '&fPlease try it again later.'
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
