@@ -391,7 +391,8 @@ public class Utils implements UtilsInterface {
         return result;
     }
 
-    public static String translateColorCode(String input) {
+    @Override
+    public String translateColorCode(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 }

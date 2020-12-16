@@ -41,4 +41,6 @@ public interface UtilsInterface {
     <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map);
 
     <K, V extends Comparable<? super V>> Map<K, V> sortByValueLow(Map<K, V> map);
+
+    String translateColorCode(String input);
 }

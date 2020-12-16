@@ -98,10 +98,14 @@ General:
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "
-  noPermission: '&cYou do not have permission to use that command!'
-  configReload: '&aConfiguration(s) Reloaded!'
-  unknownCommand: '&fUnknown command.'
-  cooldown: '&fPlease try it again later.'
+  unknownCommand: "&fUnknown command."
+  noPermission: "&cYou do not have permission to use that command!"
+  configReload: "&aConfiguration(s) Reloaded!"
+  targetNotFound: "&cThe player &c%targetplayer% &ccould not be found!"
+  cooldown: "&fPlease try it again later."
+  featureDisabled: "&cThe feature is disabled."
+  onlyPlayer: "&cThis command can only executing from player."
+  notEnoughMoney: "&cYou don't have enough %pricetype%! You need %pricetype%: %price%."
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
     help: "&a/coreplus help &8- &7This help menu."

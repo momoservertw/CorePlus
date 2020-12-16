@@ -13,11 +13,9 @@ public class Commands implements CommandExecutor {
         if (args.length == 0) {
             if (ConfigHandler.getPerm().hasPermission(sender, "coreplus.use")) {
                 ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
-                ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgTitle(), sender);
-                if (ConfigHandler.getPerm().hasPermission(sender, "CorePlus.command.version")) {
-                    ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
-                            + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                }
+                ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.title", sender);
+                ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
+                        + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                 ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.help", sender);
                 ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
             } else {
@@ -28,13 +26,13 @@ public class Commands implements CommandExecutor {
             if (ConfigHandler.getPerm().hasPermission(sender, "coreplus.use")) {
                 ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
                 ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.title", sender);
-                if (ConfigHandler.getPerm().hasPermission(sender, "CorePlus.command.version")) {
-                    ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
-                            + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                }
+                ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
+                        + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                 ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.help", sender);
                 if (ConfigHandler.getPerm().hasPermission(sender, "CorePlus.command.reload")) {
                     ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.reload", sender);
+                }
+                if (ConfigHandler.getPerm().hasPermission(sender, "CorePlus.command.version")) {
                 }
                 ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
             } else {
