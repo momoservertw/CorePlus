@@ -1,16 +1,12 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
-import org.bukkit.Bukkit;;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CommandInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.utils.BungeeCord;
 
 import java.util.List;
 
@@ -25,10 +21,10 @@ public class CustomCommands implements CommandInterface {
                 String[] cmds;
                 cmds = value.split(";");
                 for (String cmd : cmds) {
-                    executeCommands(prefix, player, cmd, placeholder);
+                    executeCmds(prefix, player, cmd, placeholder);
                 }
             } else {
-                executeCommands(prefix, player, value, placeholder);
+                executeCmds(prefix, player, value, placeholder);
             }
         }
     }
@@ -38,23 +34,23 @@ public class CustomCommands implements CommandInterface {
         if (input.contains(";")) {
             String[] cmds = input.split(";");
             for (String cmd : cmds) {
-                executeCommands(prefix, player, cmd, placeholder);
+                executeCmds(prefix, player, cmd, placeholder);
             }
         } else {
-            executeCommands(prefix, player, input, placeholder);
+            executeCmds(prefix, player, input, placeholder);
         }
     }
 
-    private void executeCommands(String prefix, Player player, String input, boolean placeholder) {
+    private void executeCmds(String prefix, Player player, String input, boolean placeholder) {
         if (placeholder) {
             input = ConfigHandler.getUtils().translateLayout(input, player);
         }
         if (player == null || player instanceof ConsoleCommandSender) {
-            executeCommands(prefix, input, placeholder);
+            executeCmds(prefix, input, placeholder);
         } else {
             if (input.startsWith("custom:")) {
                 input = input.replace("custom: ", "");
-                dispatchCustomCommand(prefix, player, input, placeholder);
+                dispatchCustomCmd(prefix, player, input, placeholder);
                 return;
             } else if (input.startsWith("print:")) {
                 input = input.replace("print: ", "");
@@ -94,19 +90,19 @@ public class CustomCommands implements CommandInterface {
                 return;
             } else if (input.startsWith("console:")) {
                 input = input.replace("console: ", "");
-                dispatchConsoleCommand(prefix, player, input);
+                dispatchConsoleCmd(prefix, player, input);
                 return;
             } else if (input.startsWith("bungee:")) {
                 input = input.replace("bungee: ", "");
-                dispatchBungeeCordCommand(prefix, player, input);
+                dispatchBungeeCordCmd(prefix, player, input);
                 return;
             } else if (input.startsWith("op:")) {
                 input = input.replace("op: ", "");
-                dispatchOpCommand(prefix, player, input);
+                dispatchOpCmd(prefix, player, input);
                 return;
             } else if (input.startsWith("player:")) {
                 input = input.replace("player: ", "");
-                dispatchPlayerCommand(prefix, player, input);
+                dispatchPlayerCmd(prefix, player, input);
                 return;
             } else if (input.startsWith("chat:")) {
                 input = input.replace("chat: ", "");
@@ -118,24 +114,24 @@ public class CustomCommands implements CommandInterface {
                 return;
             } else if (input.startsWith("sound:")) {
                 input = input.replace("sound: ", "");
-                dispatchSoundCommand(prefix, player, input);
+                dispatchSoundCmd(prefix, player, input);
                 return;
             } else if (input.startsWith("particle:")) {
                 input = input.replace("particle: ", "");
-                dispatchParticleCommand(prefix, player, input);
+                dispatchParticleCmd(prefix, player.getLocation(), input);
                 return;
             }
-            dispatchConsoleCommand(prefix, null, input);
+            dispatchConsoleCmd(prefix, null, input);
         }
     }
 
-    private void executeCommands(String input, String prefix, boolean placeholder) {
+    private void executeCmds(String input, String prefix, boolean placeholder) {
         if (placeholder) {
             input = ConfigHandler.getUtils().translateLayout(input, null);
         }
         if (input.startsWith("custom:")) {
             input = input.replace("custom: ", "");
-            dispatchCustomCommand(prefix, null, input, placeholder);
+            dispatchCustomCmd(prefix, null, input, placeholder);
             return;
         } else if (input.startsWith("print:")) {
             input = input.replace("print: ", "");
@@ -166,10 +162,10 @@ public class CustomCommands implements CommandInterface {
             return;
         } else if (input.startsWith("console:")) {
             input = input.replace("console: ", "");
-            dispatchConsoleCommand(prefix, null, input);
+            dispatchConsoleCmd(prefix, null, input);
             return;
         } else if (input.startsWith("bungee:")) {
-            dispatchBungeeCordCommand(prefix, null, input);
+            dispatchBungeeCordCmd(prefix, null, input);
             return;
             // No target.
         } else if (input.startsWith("op:")) {
@@ -188,7 +184,7 @@ public class CustomCommands implements CommandInterface {
             ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&eparticle:" + input + "&c\" &8- &cCan not find the execute target.");
             return;
         }
-        dispatchConsoleCommand(prefix, null, input);
+        dispatchConsoleCmd(prefix, null, input);
     }
 
     /**
@@ -198,7 +194,7 @@ public class CustomCommands implements CommandInterface {
      * group: "console: say %cmd_arg1%"
      */
     @Override
-    public void dispatchCustomCommand(String prefix, Player player, String command, boolean placeholder) {
+    public void dispatchCustomCmd(String prefix, Player player, String command, boolean placeholder) {
         String[] placeHolderArr = command.split(", ");
         String newCmd = ConfigHandler.getConfigPath().getCustomCmdProp().get(placeHolderArr[0]);
         if (newCmd == null) {
@@ -208,14 +204,14 @@ public class CustomCommands implements CommandInterface {
         for (int i = 1; i < +placeHolderArr.length; i++) {
             newCmd = newCmd.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
         }
-        executeCommands(prefix, player, newCmd, placeholder);
+        executeCmds(prefix, player, newCmd, placeholder);
     }
 
     /**
      * To execute console command.
      */
     @Override
-    public void dispatchConsoleCommand(String prefix, Player player, String command) {
+    public void dispatchConsoleCmd(String prefix, Player player, String command) {
         if (player != null && !(player instanceof ConsoleCommandSender)) {
             try {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
@@ -237,7 +233,7 @@ public class CustomCommands implements CommandInterface {
      * To execute operator command.
      */
     @Override
-    public void dispatchOpCommand(String prefix, Player player, String command) {
+    public void dispatchOpCmd(String prefix, Player player, String command) {
         boolean isOp = player.isOp();
         try {
             player.setOp(true);
@@ -255,7 +251,7 @@ public class CustomCommands implements CommandInterface {
      * To execute player command.
      */
     @Override
-    public void dispatchPlayerCommand(String prefix, Player player, String command) {
+    public void dispatchPlayerCmd(String prefix, Player player, String command) {
         try {
             player.chat("/" + command);
         } catch (Exception e) {
@@ -268,7 +264,7 @@ public class CustomCommands implements CommandInterface {
      * To execute BungeeCord command.
      */
     @Override
-    public void dispatchBungeeCordCommand(String prefix, Player player, String command) {
+    public void dispatchBungeeCordCmd(String prefix, Player player, String command) {
         try {
             BungeeCord.ExecuteCommand(player, command);
         } catch (Exception e) {
@@ -281,7 +277,7 @@ public class CustomCommands implements CommandInterface {
      * To send sound to player.
      */
     @Override
-    public void dispatchSoundCommand(String prefix, Player player, String command) {
+    public void dispatchSoundCmd(String prefix, Player player, String command) {
         try {
             Location loc = player.getLocation();
             SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(command);
@@ -313,11 +309,14 @@ public class CustomCommands implements CommandInterface {
      * To send particle to player.
      */
     @Override
-    public void dispatchParticleCommand(String prefix, Player player, String command) {
+    public void dispatchParticleCmd(String prefix, Location loc, String command) {
         try {
-            Location loc = player.getLocation();
+            World world = loc.getWorld();
+            if (world == null) {
+                return;
+            }
             ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(command);
-            Particle particle = Particle.valueOf(particleMap.getType());
+            Particle particle = particleMap.getType();
             int amount = particleMap.getAmount();
             int times = particleMap.getTimes();
             int interval = particleMap.getInterval();
@@ -330,7 +329,7 @@ public class CustomCommands implements CommandInterface {
                         cancel();
                     } else {
                         ++i;
-                        player.spawnParticle(particle, loc, amount, 0, 0, 0, 0);
+                        world.spawnParticle(particle, loc, amount, 0, 0, 0, 0);
                     }
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);

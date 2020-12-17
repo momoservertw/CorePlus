@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CommandInterface {
      * custom: group, arg1
      * group: "console: say %cmd_arg1%"
      */
-    void dispatchCustomCommand(String prefix, Player player, String input, boolean placeholder);
+    void dispatchCustomCmd(String prefix, Player player, String input, boolean placeholder);
 
     /**
      * To execute console command.
@@ -25,30 +26,30 @@ public interface CommandInterface {
      * @param player  the command sender.
      * @param command the command string.
      */
-    void dispatchConsoleCommand(String prefix, Player player, String command);
+    void dispatchConsoleCmd(String prefix, Player player, String command);
 
     /**
      * To execute operator command.
      */
-    void dispatchOpCommand(String prefix, Player player, String command);
+    void dispatchOpCmd(String prefix, Player player, String command);
 
     /**
      * To execute player command.
      */
-    void dispatchPlayerCommand(String prefix, Player player, String command);
+    void dispatchPlayerCmd(String prefix, Player player, String command);
 
     /**
      * To execute BungeeCord command.
      */
-    void dispatchBungeeCordCommand(String prefix, Player player, String command);
+    void dispatchBungeeCordCmd(String prefix, Player player, String command);
 
     /**
      * To send sound to player.
      */
-    void dispatchSoundCommand(String prefix, Player player, String command);
+    void dispatchSoundCmd(String prefix, Player player, String command);
 
     /**
      * To send particle to player.
      */
-    void dispatchParticleCommand(String prefix, Player player, String command);
+    void dispatchParticleCmd(String prefix, Location loc, String command);
 }

@@ -9,5 +9,5 @@ public interface BlocksInterface {
 
     List<BlocksMap> getSpeBlocksMaps(String file, String path);
 
-    boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps);
+    boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps, boolean def);
 }

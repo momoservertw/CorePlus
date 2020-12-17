@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils;
+package tw.momocraft.coreplus;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

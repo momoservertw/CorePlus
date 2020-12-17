@@ -8,6 +8,7 @@ import tw.momocraft.coreplus.handlers.RegisterHandler;
 import tw.momocraft.coreplus.utils.*;
 import tw.momocraft.coreplus.utils.blocksutils.BlocksUtils;
 import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
+import tw.momocraft.coreplus.utils.eco.PriceAPI;
 import tw.momocraft.coreplus.utils.locationutils.LocationUtils;
 
 public class CorePlus extends JavaPlugin {
@@ -116,5 +117,12 @@ public class CorePlus extends JavaPlugin {
         if (locationAPI == null)
             locationAPI = new LocationUtils();
         return locationAPI;
+    }
+
+    private PriceInterface priceAPI = null;
+    public PriceInterface getPriceManager() {
+        if (priceAPI == null)
+            priceAPI = new PriceAPI();
+        return priceAPI;
     }
 }

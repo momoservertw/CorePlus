@@ -3,8 +3,8 @@ main: tw.momocraft.coreplus.CorePlus
 author: Momocraft
 api-version: 1.13
 version: 1.0.0
-description: Server utils.
-softdepend: [Vault, PlayerPoints, PlaceHolderAPI, LangUtils, MythicMobs, CMI, Residence, MyPet, ItemJoin, MorphTool, DiscordSRV]
+description: The API contains all utils for my plugins.
+softdepend: [Vault, PlayerPoints, GemsEconomy, PlaceHolderAPI, LangUtils, MythicMobs, CMI, Residence, MyPet, ItemJoin, MorphTool, DiscordSRV]
 
 commands:
   coreplus:

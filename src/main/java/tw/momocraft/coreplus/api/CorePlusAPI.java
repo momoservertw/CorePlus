@@ -52,4 +52,8 @@ public class CorePlusAPI {
     public static LocationInterface getLocationManager() {
         return CorePlus.getInstance().getLocationManager();
     }
+
+    public static PriceInterface getPriceManager() {
+        return CorePlus.getInstance().getPriceManager();
+    }
 }

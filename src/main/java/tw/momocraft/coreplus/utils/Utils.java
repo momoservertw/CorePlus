@@ -1,14 +1,20 @@
 package tw.momocraft.coreplus.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import tw.momocraft.coreplus.api.UtilsInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,6 +39,11 @@ public class Utils implements UtilsInterface {
     public int getRandom(int lower, int upper) {
         Random random = new Random();
         return random.nextInt((upper - lower) + 1) + lower;
+    }
+
+    @Override
+    public String getRandomString(List<String> list) {
+        return list.get(new Random().nextInt(list.size()));
     }
 
     /**
@@ -216,9 +227,10 @@ public class Utils implements UtilsInterface {
             } catch (Exception e) {
                 ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
+            UUID playerUUID = player.getUniqueId();
             // %player_uuid%
             try {
-                input = input.replace("%player_uuid%", player.getUniqueId().toString());
+                input = input.replace("%player_uuid%", playerUUID.toString());
             } catch (Exception e) {
                 ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
@@ -283,12 +295,12 @@ public class Utils implements UtilsInterface {
             }
             if (ConfigHandler.getDepends().VaultEnabled()) {
                 if (input.contains("%money%")) {
-                    input = input.replace("%money%", String.valueOf(ConfigHandler.getDepends().getVaultApi().getBalance(Bukkit.getOfflinePlayer(player.getUniqueId()))));
+                    input = input.replace("%money%", String.valueOf(ConfigHandler.getDepends().getVaultApi().getBalance(playerUUID)));
                 }
             }
             if (ConfigHandler.getDepends().PlayerPointsEnabled()) {
                 if (input.contains("%points%")) {
-                    input = input.replace("%points%", String.valueOf(ConfigHandler.getDepends().getPlayerPointsApi().getBalance(Bukkit.getOfflinePlayer(player.getUniqueId()))));
+                    input = input.replace("%points%", String.valueOf(ConfigHandler.getDepends().getPlayerPointsApi().getBalance(playerUUID)));
                 }
             }
         }
@@ -333,6 +345,41 @@ public class Utils implements UtilsInterface {
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {
                 ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            }
+        }
+        // %random_player_except%AllBye,huangge0513%
+        if (input.contains("%random_player_except%")) {
+            List<String> placeholderList = new ArrayList<>();
+            List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+            String[] arr = input.split("%");
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i].equals("random_player_except")) {
+                    placeholderList.add((arr[i + 1]));
+                }
+            }
+            String[] playerArr;
+            Player randomPlayer;
+            String randomPlayerName;
+            for (String exceptPlayer : placeholderList) {
+                playerArr = exceptPlayer.split(",");
+                while (true) {
+                    if (playerList.isEmpty()) {
+                        input = input.replace("%random_player_except%" + exceptPlayer + "%", "");
+                        break;
+                    }
+                    randomPlayer = playerList.get(new Random().nextInt(playerList.size()));
+                    randomPlayerName = randomPlayer.getName();
+                    playerList.remove(randomPlayer);
+                    try {
+                        if (!Arrays.asList(playerArr).contains(randomPlayerName)) {
+                            String newList = placeholderList.toString().replaceAll("[\\[\\]\\s]", "");
+                            input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
+                            break;
+                        }
+                    } catch (Exception e) {
+                        ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                    }
+                }
             }
         }
         // Translate color codes.
@@ -394,5 +441,50 @@ public class Utils implements UtilsInterface {
     @Override
     public String translateColorCode(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    @Override
+    public String getSkullValue(ItemStack itemStack) {
+        SkullMeta headMeta = (SkullMeta) itemStack.getItemMeta();
+        String url = null;
+        try {
+            Field profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            GameProfile profile = (GameProfile) profileField.get(headMeta);
+            Collection<Property> properties = profile.getProperties().get("textures");
+            for (Property property : properties) {
+                url = property.getValue();
+            }
+        } catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
+            error.printStackTrace();
+        }
+        return url;
+    }
+
+    @Override
+    public boolean isHoldingMenu(ItemStack itemStack, Player player) {
+        // Holding ItemJoin menu.
+        if (ConfigHandler.getDepends().ItemJoinEnabled()) {
+            ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+            String menuIJ = ConfigHandler.getConfigPath().getMenuIJ();
+            if (!menuIJ.equals("")) {
+                if (itemJoinAPI.getNode(itemStack) != null) {
+                    return itemJoinAPI.getNode(itemStack).equals(menuIJ);
+                }
+                return false;
+            }
+        }
+        // Holding a menu item.
+        if (itemStack.getType().name().equals(ConfigHandler.getConfigPath().getMenuType())) {
+            String itemName;
+            try {
+                itemName = itemStack.getItemMeta().getDisplayName();
+            } catch (Exception ex) {
+                itemName = "";
+            }
+            String menuName = ConfigHandler.getConfigPath().getMenuName();
+            return menuName.equals("") || itemName.equals(translateColorCode(menuName));
+        }
+        return false;
     }
 }

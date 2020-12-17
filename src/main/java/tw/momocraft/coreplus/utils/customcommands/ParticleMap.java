@@ -1,13 +1,15 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
+import org.bukkit.Particle;
+
 public class ParticleMap {
 
-    private String type;
+    private Particle type;
     private int amount;
     private int times;
     private int interval;
 
-    public String getType() {
+    public Particle getType() {
         return type;
     }
 
@@ -23,7 +25,7 @@ public class ParticleMap {
         return interval;
     }
 
-    public void setType(String type) {
+    public void setType(Particle type) {
         this.type = type;
     }
 

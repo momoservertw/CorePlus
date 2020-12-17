@@ -33,6 +33,7 @@ public class Commands implements CommandExecutor {
                     ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.reload", sender);
                 }
                 if (ConfigHandler.getPerm().hasPermission(sender, "CorePlus.command.version")) {
+                    ConfigHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.version", sender);
                 }
                 ConfigHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
             } else {

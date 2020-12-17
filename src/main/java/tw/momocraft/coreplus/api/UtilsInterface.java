@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.api;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -13,6 +14,8 @@ public interface UtilsInterface {
     boolean isInt(String s);
 
     int getRandom(int lower, int upper);
+
+    String getRandomString(List<String> list);
 
     boolean isRandChance(double value);
 
@@ -43,4 +46,8 @@ public interface UtilsInterface {
     <K, V extends Comparable<? super V>> Map<K, V> sortByValueLow(Map<K, V> map);
 
     String translateColorCode(String input);
+
+    String getSkullValue(ItemStack itemStack);
+
+    boolean isHoldingMenu(ItemStack itemStack, Player player);
 }

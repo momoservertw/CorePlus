@@ -79,9 +79,10 @@ public class Updater implements UpdateInterface {
                     Integer.parseInt(onlineVerSplit[2]) > Integer.parseInt(verSplit[2]))) {
                 return null;
             }
+            return onlineVer;
         } catch (Exception e) {
             ConfigHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
         }
-        return onlineVer;
+        return null;
     }
 }

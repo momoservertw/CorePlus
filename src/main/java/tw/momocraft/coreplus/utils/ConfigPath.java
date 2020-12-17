@@ -1,6 +1,7 @@
 package tw.momocraft.coreplus.utils;
 
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
@@ -23,21 +24,19 @@ public class ConfigPath {
     private String msgHelp;
     private String msgReload;
     private String msgVersion;
-    private String msgCheckslime;
 
     //  ============================================== //
     //         General Variables                       //
     //  ============================================== //
-    private Map<String, String> customCmdProp;
-    private final Map<String, SoundMap> soundProp = new HashMap<>();
-    private final Map<String, ParticleMap> particleProp = new HashMap<>();
     private LocationUtils locationUtils;
     private BlocksUtils blocksUtils;
-
     private String menuIJ;
     private String menuType;
     private String menuName;
     private String vanillaTrans;
+    private Map<String, String> customCmdProp;
+    private final Map<String, SoundMap> soundProp = new HashMap<>();
+    private final Map<String, ParticleMap> particleProp = new HashMap<>();
 
     //  ============================================== //
     //         Setup all configuration                 //
@@ -61,6 +60,12 @@ public class ConfigPath {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
+        locationUtils = new LocationUtils();
+        blocksUtils = new BlocksUtils();
+        menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
+        menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
+        menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
+        vanillaTrans = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
         ConfigurationSection cmdConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Custom-Commands");
         if (cmdConfig != null) {
             customCmdProp = new HashMap<>();
@@ -73,7 +78,13 @@ public class ConfigPath {
             ParticleMap particleMap;
             for (String group : particleConfig.getKeys(false)) {
                 particleMap = new ParticleMap();
-                particleMap.setType(ConfigHandler.getConfig("config.yml").getString("General.Particles." + group + ".Type"));
+                String particleType = ConfigHandler.getConfig("config.yml").getString("General.Particles." + group + ".Type", "FLAME");
+                try {
+                    particleMap.setType(Particle.valueOf(particleType));
+                } catch (Exception ex) {
+                    ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cUnknown particle type: " + particleType);
+                    continue;
+                }
                 particleMap.setAmount(ConfigHandler.getConfig("config.yml").getInt("General.Particles." + group + ".Amount", 1));
                 particleMap.setTimes(ConfigHandler.getConfig("config.yml").getInt("General.Particles." + group + ".Times", 1));
                 particleMap.setInterval(ConfigHandler.getConfig("config.yml").getInt("General.Particles." + group + ".Interval", 20));
@@ -93,14 +104,6 @@ public class ConfigPath {
                 soundProp.put(group, soundMap);
             }
         }
-        locationUtils = new LocationUtils();
-        blocksUtils = new BlocksUtils();
-
-        menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
-        menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
-        menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
-
-        vanillaTrans = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
     }
 
     //  ============================================== //
@@ -109,9 +112,11 @@ public class ConfigPath {
     public Map<String, String> getCustomCmdProp() {
         return customCmdProp;
     }
+
     public Map<String, ParticleMap> getParticleProp() {
         return particleProp;
     }
+
     public Map<String, SoundMap> getSoundProp() {
         return soundProp;
     }

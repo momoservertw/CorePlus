@@ -1,14 +1,21 @@
 package tw.momocraft.coreplus.api;
 
-import tw.momocraft.coreplus.utils.Updater;
-import tw.momocraft.coreplus.utils.PlayerPointsAPI;
-import tw.momocraft.coreplus.utils.VaultAPI;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
+import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
+import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
+import tw.momocraft.coreplus.utils.eco.VaultAPI;
+
+import java.util.UUID;
+
 
 public interface DependInterface {
 
     boolean VaultEnabled();
 
     boolean PlayerPointsEnabled();
+
+    boolean GemsEconomyEnabled();
 
     boolean PlaceHolderAPIEnabled();
 
@@ -34,4 +41,6 @@ public interface DependInterface {
     VaultAPI getVaultApi();
 
     PlayerPointsAPI getPlayerPointsApi();
+
+    GemsEcoAPI getGemsEcoApi();
 }

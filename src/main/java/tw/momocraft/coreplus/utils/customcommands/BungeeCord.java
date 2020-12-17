@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils;
+package tw.momocraft.coreplus.utils.customcommands;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;

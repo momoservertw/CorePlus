@@ -47,9 +47,9 @@ public class LocationUtils implements LocationInterface {
      * @return if the location is one of locMaps.
      */
     @Override
-    public boolean checkLocation(Location loc, List<LocationMap> locMaps) {
-        if (locMaps.isEmpty()) {
-            return true;
+    public boolean checkLocation(Location loc, List<LocationMap> locMaps, boolean def) {
+        if (locMaps == null || locMaps.isEmpty()) {
+            return def;
         }
         String worldName = loc.getWorld().getName();
         Map<String, String> cord;
@@ -64,7 +64,7 @@ public class LocationUtils implements LocationInterface {
                         }
                     }
                 }
-                return true;
+                return !locMap.isPrevent();
             }
         }
         return false;

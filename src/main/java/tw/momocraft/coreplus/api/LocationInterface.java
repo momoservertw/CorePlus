@@ -9,5 +9,5 @@ public interface LocationInterface {
 
     List<LocationMap> getSpeLocMaps(String file, String path);
 
-    boolean checkLocation(Location loc, List<LocationMap> locMaps);
+    boolean checkLocation(Location loc, List<LocationMap> locMaps, boolean def);
 }

@@ -10,12 +10,17 @@ import java.util.Map;
 
 public class LocationMap {
 
+    private boolean prevent;
     private List<String> worlds;
     private final Map<String, String> cord;
 
     public LocationMap() {
         worlds = new ArrayList<>();
         cord = new HashMap<>();
+    }
+
+    public void setPrevent(boolean prevent) {
+        this.prevent = prevent;
     }
 
     public void setWorlds(List<String> worlds) {
@@ -33,6 +38,10 @@ public class LocationMap {
             ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&cThere is an error occurred. Please check the \"Location\" format.");
             ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&c" + type + ": " + value);
         }
+    }
+
+    public boolean isPrevent() {
+        return prevent;
     }
 
     public List<String> getWorlds() {

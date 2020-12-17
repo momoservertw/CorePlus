@@ -2,7 +2,7 @@ package tw.momocraft.coreplus.handlers;
 
 import tw.momocraft.coreplus.Commands;
 import tw.momocraft.coreplus.CorePlus;
-import tw.momocraft.coreplus.utils.TabComplete;
+import tw.momocraft.coreplus.TabComplete;
 
 
 public class RegisterHandler {

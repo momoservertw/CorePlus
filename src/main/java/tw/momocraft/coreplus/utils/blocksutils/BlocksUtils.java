@@ -41,9 +41,9 @@ public class BlocksUtils implements BlocksInterface {
      * @return if there are certain blocks nearby the location.
      */
     @Override
-    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps) {
-        if (blocksMaps.isEmpty()) {
-            return true;
+    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps, boolean def) {
+        if (blocksMaps == null || blocksMaps.isEmpty()) {
+            return def;
         }
         List<BlocksMap> ignoreMaps;
         for (BlocksMap blocksMap : blocksMaps) {

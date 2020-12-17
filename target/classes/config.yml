@@ -23,16 +23,9 @@ General:
         AuthMe: true
         LocaleLib: true
   # The settings for custom commands.
+  # To send frequently used commands with placeholders.
   # More information: https://github.com/momoservertw/LotteryPlus/wiki/Custom-Command
   Custom-Commands:
-    Settings:
-      Log:
-        Default:
-          # Creating new file if the modified date is difference.
-          New-File: true
-          To-Zip: true
-    # To send frequently used commands with placeholders.
-  Groups:
     reward: "message: &6&lReward&c✤ &f%cmd_arg1%"
     awards: "message: &d✧ &f%cmd_arg1% &d✧"
     cgl: "broadcast: &6Congratulate &e%player% &6use &f%cmd_arg1% &8- &6Get the %cmd_arg2% &7<&f%cmd_arg3%&7>"
@@ -52,6 +45,16 @@ General:
   # The settings for custom particles.
   # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Particles
   Particles:
+    Barrier:
+      Type: BARRIER
+      Amount: 1
+      Times: 1
+      Interval: 10
+    Crit_Magic:
+      Type: CRIT_MAGIC
+      Amount: 1
+      Times: 6
+      Interval: 10
     Slime:
       Type: SLIME
       Amount: 3
@@ -105,7 +108,14 @@ Message:
   cooldown: "&fPlease try it again later."
   featureDisabled: "&cThe feature is disabled."
   onlyPlayer: "&cThis command can only executing from player."
+  noFlagPerm: "&cYou dont have &6%flag% &cpermission<s> here."
   notEnoughMoney: "&cYou don't have enough %pricetype%! You need %pricetype%: %price%."
+  notEnoughMoneyTarget: "&c%targetplayer% don't have enough %pricetype%! You need %pricetype%: %price%."
+  inventoryFull: "&cYou don't have enough inventory space."
+  inventoryFullTarget: '&c%targetplayer% dont have enough inventory space.'
+  noShopItem: "&cYou can not buy this block."
+  buySuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% &8- &a%pricetype%: %balance%"
+  buyTargetSuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% for %targetplayer% &8- &a%pricetype%: %balance%"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
     help: "&a/coreplus help &8- &7This help menu."

@@ -31,6 +31,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <!-- mojang API-->
+        <repository>
+            <id>minecraft-repo</id>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
         <!--PlaceholderAPI Repo-->
         <repository>
             <id>placeholderapi</id>
@@ -78,6 +83,13 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
+        <!-- mojang API -->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.21</version>
+            <scope>provided</scope>
+        </dependency>
         <!--Vault API-->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -92,6 +104,14 @@
             <artifactId>PlayerPoints</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/PlayerPoints.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--GemsEconomy API-->
+        <dependency>
+            <groupId>me.GemsEconomy</groupId>
+            <artifactId>GemsEconomy</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--PlaceholderAPI API-->

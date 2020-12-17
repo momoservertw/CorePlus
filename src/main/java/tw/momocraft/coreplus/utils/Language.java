@@ -13,11 +13,6 @@ import java.util.Arrays;
 public class Language implements LanguageInterface {
 
     @Override
-    public String[] newString() {
-        return new String[20];
-    }
-
-    @Override
     public void sendChatMsg(String prefix, Player player, String message) {
         if (prefix == null)
             prefix = "";
@@ -195,6 +190,11 @@ public class Language implements LanguageInterface {
         }
     }
 
+    @Override
+    public String[] newString() {
+        return new String[25];
+    }
+
     private String translateLangHolders(String langMessage, String... langHolder) {
         return langMessage
                 .replace("%command%", langHolder[0])
@@ -206,12 +206,13 @@ public class Language implements LanguageInterface {
                 .replace("%price%", langHolder[6])
                 .replace("%balance%", langHolder[7])
                 .replace("%amount%", langHolder[8])
-                .replace("%item%", langHolder[9])
-
+                .replace("%material%", langHolder[9])
+                .replace("%entity%", langHolder[10])
                 .replace("%distance%", langHolder[11])
-                .replace("%nick%", langHolder[12])
-                .replace("%nick_color%", langHolder[13])
-                .replace("%nick_length%", langHolder[14])
+                .replace("%flag%", langHolder[12])
+                .replace("%nick%", langHolder[20])
+                .replace("%nick_color%", langHolder[21])
+                .replace("%nick_length%", langHolder[22])
                 ;
     }
 }

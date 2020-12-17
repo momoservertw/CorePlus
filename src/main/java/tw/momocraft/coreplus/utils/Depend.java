@@ -1,18 +1,26 @@
 package tw.momocraft.coreplus.utils;
 
-import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
+import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
+import tw.momocraft.coreplus.utils.eco.VaultAPI;
+
+import java.util.UUID;
 
 public class Depend implements DependInterface {
 
     private VaultAPI vaultApi;
     private PlayerPointsAPI playerPointsApi;
+    private GemsEcoAPI gemsEcoApi;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
+    private boolean GemsEconomy = false;
     private boolean PlaceHolderAPI = false;
     private boolean LangUtils = false;
     private boolean Residence = false;
@@ -35,6 +43,12 @@ public class Depend implements DependInterface {
             PlayerPoints = Bukkit.getServer().getPluginManager().getPlugin("PlayerPoints") != null;
             if (PlayerPoints) {
                 setPlayerPointsApi();
+            }
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.GemsEconomy")) {
+            GemsEconomy = Bukkit.getServer().getPluginManager().getPlugin("GemsEconomy") != null;
+            if (GemsEconomy) {
+                setGemsEconomyApi();
             }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
@@ -75,6 +89,7 @@ public class Depend implements DependInterface {
         String hookMsg = "&fHooked [ &e"
                 + (VaultEnabled() ? "Vault, " : "")
                 + (PlayerPointsEnabled() ? "PlayerPoints, " : "")
+                + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
                 + (PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
                 + (LangUtilsEnabled() ? "LangUtils, " : "")
                 + (CMIEnabled() ? "CMI, " : "")
@@ -86,7 +101,7 @@ public class Depend implements DependInterface {
                 + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "");
         try {
-            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
         } catch (Exception ignored) {
         }
 
@@ -113,6 +128,11 @@ public class Depend implements DependInterface {
     @Override
     public boolean PlayerPointsEnabled() {
         return this.PlayerPoints;
+    }
+
+    @Override
+    public boolean GemsEconomyEnabled() {
+        return this.GemsEconomy;
     }
 
     @Override
@@ -165,7 +185,6 @@ public class Depend implements DependInterface {
         return this.AuthMe;
     }
 
-
     @Override
     public VaultAPI getVaultApi() {
         return this.vaultApi;
@@ -176,6 +195,11 @@ public class Depend implements DependInterface {
         return this.playerPointsApi;
     }
 
+    @Override
+    public GemsEcoAPI getGemsEcoApi() {
+        return this.gemsEcoApi;
+    }
+
 
     private void setVaultApi() {
         vaultApi = new VaultAPI();
@@ -183,5 +207,9 @@ public class Depend implements DependInterface {
 
     private void setPlayerPointsApi() {
         playerPointsApi = new PlayerPointsAPI();
+    }
+
+    private void setGemsEconomyApi() {
+        gemsEcoApi = new GemsEcoAPI();
     }
 }
