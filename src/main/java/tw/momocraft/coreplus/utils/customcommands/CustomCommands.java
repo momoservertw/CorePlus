@@ -13,7 +13,7 @@ import java.util.List;
 public class CustomCommands implements CommandInterface {
 
     @Override
-    public void executeMultiCmdsList(String prefix, Player player, List<String> input, boolean placeholder) {
+    public void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder) {
         if (prefix == null)
             prefix = "";
         for (String value : input) {
@@ -21,60 +21,206 @@ public class CustomCommands implements CommandInterface {
                 String[] cmds;
                 cmds = value.split(";");
                 for (String cmd : cmds) {
-                    executeCmds(prefix, player, cmd, placeholder);
+                    if (cmd.startsWith("all-")) {
+                        cmd = cmd.replace("all-", "");
+                        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+                            selectCmdType(prefix, onlinePlayer, cmd, placeholder);
+                        }
+                        continue;
+                    }
+                    selectCmdType(prefix, player, cmd, placeholder);
                 }
             } else {
-                executeCmds(prefix, player, value, placeholder);
+                selectCmdType(prefix, player, value, placeholder);
             }
         }
     }
 
     @Override
-    public void executeMultipleCmds(String prefix, Player player, String input, boolean placeholder) {
+    public void executeCmd(String prefix, Player player, String input, boolean placeholder) {
         if (input.contains(";")) {
             String[] cmds = input.split(";");
             for (String cmd : cmds) {
-                executeCmds(prefix, player, cmd, placeholder);
+                if (cmd.startsWith("all-")) {
+                    cmd = cmd.replace("all-", "");
+                    for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+                        selectCmdType(prefix, onlinePlayer, cmd, placeholder);
+                    }
+                    continue;
+                }
+                selectCmdType(prefix, player, cmd, placeholder);
             }
         } else {
-            executeCmds(prefix, player, input, placeholder);
+            selectCmdType(prefix, player, input, placeholder);
         }
     }
 
-    private void executeCmds(String prefix, Player player, String input, boolean placeholder) {
+    private void selectCmdType(String prefix, Player player, String input, boolean placeholder) {
         if (placeholder) {
             input = ConfigHandler.getUtils().translateLayout(input, player);
         }
         if (player == null || player instanceof ConsoleCommandSender) {
-            executeCmds(prefix, input, placeholder);
+            selectCmdType(prefix, input, placeholder);
         } else {
-            if (input.startsWith("custom:")) {
+            String cmdType = input.split(":")[0];
+            switch (cmdType) {
+                case "custom":
+                    input = input.replace("custom: ", "");
+                    dispatchCustomCmd(prefix, player, input, placeholder);
+                    return;
+                case "print":
+                    input = input.replace("print: ", "");
+                    ConfigHandler.getLang().sendConsoleMsg(null, input);
+                    return;
+                case "log":
+                    input = input.replace("log: ", "");
+                    ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
+                            "latest.log", input, true, false, false);
+                    return;
+                case "log-custom":
+                    String path = CorePlus.getInstance().getDataFolder().getPath() + "//Logs";
+                    String name = "latest.log";
+                    boolean time = true;
+                    String type = "default";
+                    String[] arr = input.split(":");
+                    for (int i = 0; i < arr.length; i++) {
+                        switch (i) {
+                            case 1:
+                                path = arr[1];
+                                break;
+                            case 2:
+                                name = arr[2];
+                                break;
+                            case 3:
+                                try {
+                                    time = Boolean.parseBoolean(arr[3]);
+                                } catch (Exception ex) {
+                                    type = arr[4];
+                                }
+                                break;
+                            case 4:
+                                type = arr[4];
+                                break;
+                        }
+                    }
+                    input = arr[arr.length - 1];
+                    if (path.startsWith("plugins//")) {
+                        path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                    } else if (path.startsWith("server//")) {
+                        path = path.replace("server//", "");
+                        path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                    }
+                    boolean newFile;
+                    boolean zip;
+                    switch (type) {
+                        case "zip":
+                            newFile = true;
+                            zip = true;
+                            break;
+                        case "new":
+                            newFile = true;
+                            zip = false;
+                            break;
+                        case "default":
+                        default:
+                            newFile = false;
+                            zip = false;
+                    }
+                    ConfigHandler.getLogger().addLog(path, name, input, time, newFile, zip);
+                    return;
+                case "broadcast":
+                    input = input.replace("broadcast: ", "");
+                    ConfigHandler.getLang().sendBroadcastMsg(null, input);
+                    return;
+                case "bungee":
+                    input = input.replace("bungee: ", "");
+                    dispatchBungeeCordCmd(prefix, player, input);
+                    return;
+                case "console":
+                    input = input.replace("console: ", "");
+                    dispatchConsoleCmd(prefix, player, input);
+                    return;
+                case "op":
+                    input = input.replace("op: ", "");
+                    dispatchOpCmd(prefix, player, input);
+                    return;
+                case "player":
+                    input = input.replace("player: ", "");
+                    dispatchPlayerCmd(prefix, player, input);
+                    return;
+                case "chat":
+                    input = input.replace("chat: ", "");
+                    ConfigHandler.getLang().sendChatMsg(null, player, input);
+                    return;
+                case "message":
+                    input = input.replace("message: ", "");
+                    ConfigHandler.getLang().sendPlayerMsg(null, player, input);
+                    return;
+                case "sound":
+                    input = input.replace("sound: ", "");
+                    dispatchSoundCmd(prefix, player, input);
+                    return;
+                case "particle":
+                    input = input.replace("particle: ", "");
+                    dispatchParticleCmd(prefix, player.getLocation(), input);
+                    return;
+                case "particle-custom":
+                    input = input.replace("particle-custom: ", "");
+                    dispatchCustomParticle(prefix, player, input);
+                    return;
+                default:
+                    ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute command type (" + input + ")");
+                    ConfigHandler.getLang().sendErrorMsg(prefix, "&cPlease check whether CorePlus is the latest version.");
+            }
+        }
+    }
+
+    private void selectCmdType(String input, String prefix, boolean placeholder) {
+        if (placeholder) {
+            input = ConfigHandler.getUtils().translateLayout(input, null);
+        }
+        String cmdType = input.split(":")[0];
+        switch (cmdType) {
+            case "custom":
                 input = input.replace("custom: ", "");
-                dispatchCustomCmd(prefix, player, input, placeholder);
+                dispatchCustomCmd(prefix, null, input, placeholder);
                 return;
-            } else if (input.startsWith("print:")) {
+            case "print":
                 input = input.replace("print: ", "");
                 ConfigHandler.getLang().sendConsoleMsg(null, input);
                 return;
-            } else if (input.startsWith("log:")) {
+            case "log":
                 input = input.replace("log: ", "");
-                ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs", "latest.log", input, true, false, false);
+                ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
+                        "latest.log", input, true, false, false);
                 return;
-            } else if (input.startsWith("log-custom:")) {
-                String path;
-                String name;
-                String newFile;
-                String zip;
-                try {
-                    String[] arr = input.split(":");
-                    path = arr[1];
-                    name = arr[2];
-                    newFile = arr[3];
-                    zip = arr[4];
-                    input = input.replace("log-custom:" + path + ":" + name + ":" + newFile + ":" + zip + ": ", "");
-                } catch (Exception ex) {
+            case "log-custom":
+                String path = CorePlus.getInstance().getDataFolder().getPath() + "//Logs";
+                String name = "latest.log";
+                boolean time = true;
+                String type = "default";
 
-                    return;
+                String[] arr = input.split(":");
+                input = arr[arr.length - 1];
+                for (int i = 0; i < arr.length; i++) {
+                    switch (i) {
+                        case 1:
+                            path = arr[1];
+                            break;
+                        case 2:
+                            name = arr[2];
+                            break;
+                        case 3:
+                            try {
+                                time = Boolean.parseBoolean(arr[3]);
+                            } catch (Exception ex) {
+                                type = arr[4];
+                            }
+                            break;
+                        case 4:
+                            type = arr[4];
+                            break;
+                    }
                 }
                 if (path.startsWith("plugins//")) {
                     path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
@@ -82,109 +228,49 @@ public class CustomCommands implements CommandInterface {
                     path = path.replace("server//", "");
                     path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
                 }
-                ConfigHandler.getLogger().addLog(path, name, input, true, Boolean.parseBoolean(newFile), Boolean.parseBoolean(zip));
+                boolean newFile;
+                boolean zip;
+                switch (type) {
+                    case "zip":
+                        newFile = true;
+                        zip = true;
+                        break;
+                    case "new":
+                        newFile = true;
+                        zip = false;
+                        break;
+                    case "default":
+                    default:
+                        newFile = false;
+                        zip = false;
+                }
+                ConfigHandler.getLogger().addLog(path, name, input, time, newFile, zip);
                 return;
-            } else if (input.startsWith("broadcast:")) {
+            case "broadcast":
                 input = input.replace("broadcast: ", "");
                 ConfigHandler.getLang().sendBroadcastMsg(null, input);
                 return;
-            } else if (input.startsWith("console:")) {
-                input = input.replace("console: ", "");
-                dispatchConsoleCmd(prefix, player, input);
-                return;
-            } else if (input.startsWith("bungee:")) {
+            case "bungee":
                 input = input.replace("bungee: ", "");
-                dispatchBungeeCordCmd(prefix, player, input);
+                dispatchBungeeCordCmd(prefix, null, input);
                 return;
-            } else if (input.startsWith("op:")) {
-                input = input.replace("op: ", "");
-                dispatchOpCmd(prefix, player, input);
+            case "console":
+                input = input.replace("console: ", "");
+                dispatchConsoleCmd(prefix, null, input);
                 return;
-            } else if (input.startsWith("player:")) {
-                input = input.replace("player: ", "");
-                dispatchPlayerCmd(prefix, player, input);
+            case "op":
+            case "player":
+            case "chat":
+            case "message":
+            case "sound":
+            case "particle":
+            case "particle-custom":
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute target (" + input + ")");
                 return;
-            } else if (input.startsWith("chat:")) {
-                input = input.replace("chat: ", "");
-                ConfigHandler.getLang().sendChatMsg(null, player, input);
-                return;
-            } else if (input.startsWith("message:")) {
-                input = input.replace("message: ", "");
-                ConfigHandler.getLang().sendPlayerMsg(null, player, input);
-                return;
-            } else if (input.startsWith("sound:")) {
-                input = input.replace("sound: ", "");
-                dispatchSoundCmd(prefix, player, input);
-                return;
-            } else if (input.startsWith("particle:")) {
-                input = input.replace("particle: ", "");
-                dispatchParticleCmd(prefix, player.getLocation(), input);
-                return;
-            }
-            dispatchConsoleCmd(prefix, null, input);
+            default:
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute command type (" + input + ")");
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cPlease check whether CorePlus is the latest version.");
         }
-    }
-
-    private void executeCmds(String input, String prefix, boolean placeholder) {
-        if (placeholder) {
-            input = ConfigHandler.getUtils().translateLayout(input, null);
-        }
-        if (input.startsWith("custom:")) {
-            input = input.replace("custom: ", "");
-            dispatchCustomCmd(prefix, null, input, placeholder);
-            return;
-        } else if (input.startsWith("print:")) {
-            input = input.replace("print: ", "");
-            ConfigHandler.getLang().sendConsoleMsg(null, input);
-            return;
-        } else if (input.startsWith("log:")) {
-            input = input.replace("log: ", "");
-            ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs", "latest.log", input, true, false, false);
-            return;
-        } else if (input.startsWith("log-custom:")) {
-            String[] arr = input.split(":");
-            String path = arr[1];
-            String name = arr[2];
-            String newFile = arr[3];
-            String zip = arr[4];
-            input = input.replace("log-custom:" + path + ":" + name + ":" + newFile + ":" + zip + ": ", "");
-            if (path.startsWith("plugins//")) {
-                path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
-            } else if (path.startsWith("server//")) {
-                path = path.replace("server//", "");
-                path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
-            }
-            ConfigHandler.getLogger().addLog(path, name, input, true, Boolean.parseBoolean(newFile), Boolean.parseBoolean(zip));
-            return;
-        } else if (input.startsWith("broadcast:")) {
-            input = input.replace("broadcast: ", "");
-            ConfigHandler.getLang().sendBroadcastMsg(null, input);
-            return;
-        } else if (input.startsWith("console:")) {
-            input = input.replace("console: ", "");
-            dispatchConsoleCmd(prefix, null, input);
-            return;
-        } else if (input.startsWith("bungee:")) {
-            dispatchBungeeCordCmd(prefix, null, input);
-            return;
-            // No target.
-        } else if (input.startsWith("op:")) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&eop: " + input + "&c\" &8- &cCan not find the execute target.");
-            return;
-        } else if (input.startsWith("player:")) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&eplayer:" + input + "&c\" &8- &cCan not find the execute target.");
-            return;
-        } else if (input.startsWith("chat:")) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&echat:" + input + "&c\" &8- &cCan not find the execute target.");
-            return;
-        } else if (input.startsWith("sound:")) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&esound:" + input + "&c\" &8- &cCan not find the execute target.");
-            return;
-        } else if (input.startsWith("particle:")) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere is an error while execute command \"&eparticle:" + input + "&c\" &8- &cCan not find the execute target.");
-            return;
-        }
-        dispatchConsoleCmd(prefix, null, input);
     }
 
     /**
@@ -204,7 +290,7 @@ public class CustomCommands implements CommandInterface {
         for (int i = 1; i < +placeHolderArr.length; i++) {
             newCmd = newCmd.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
         }
-        executeCmds(prefix, player, newCmd, placeholder);
+        selectCmdType(prefix, player, newCmd, placeholder);
     }
 
     /**
@@ -300,26 +386,18 @@ public class CustomCommands implements CommandInterface {
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing a command to send sound, if this continues please report it to the developer!");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (sound: " + command + ")");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
     /**
-     * To send particle to player.
+     * To send sound to player.
      */
     @Override
-    public void dispatchParticleCmd(String prefix, Location loc, String command) {
+    public void dispatchSoundCmd(String prefix, Player player, String sound, long volume, long pitch, int times, int interval) {
         try {
-            World world = loc.getWorld();
-            if (world == null) {
-                return;
-            }
-            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(command);
-            Particle particle = particleMap.getType();
-            int amount = particleMap.getAmount();
-            int times = particleMap.getTimes();
-            int interval = particleMap.getInterval();
+            Location loc = player.getLocation();
             new BukkitRunnable() {
                 int i = 1;
 
@@ -329,12 +407,101 @@ public class CustomCommands implements CommandInterface {
                         cancel();
                     } else {
                         ++i;
-                        world.spawnParticle(particle, loc, amount, 0, 0, 0, 0);
+                        player.playSound(loc, sound, volume, pitch);
                     }
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing a command to send particle, if this continues please report it to the developer!");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute sound command (sound: " + sound + ")");
+            ConfigHandler.getLang().sendDebugTrace(prefix, e);
+        }
+    }
+
+
+    public void dispatchCustomParticle(String prefix, Player player, String input) {
+        try {
+            String[] arr = input.split(", ");
+            String particle = arr[1];
+            int amount = Integer.parseInt(arr[2]);
+            int times = Integer.parseInt(arr[3]);
+            int interval = Integer.parseInt(arr[4]);
+            double offsetX = Double.parseDouble(arr[5]);
+            double offsetY = Double.parseDouble(arr[6]);
+            double offsetZ = Double.parseDouble(arr[7]);
+            double extra = Double.parseDouble(arr[8]);
+            dispatchParticleCmd(prefix, player.getLocation(), particle, amount, times, interval, offsetX, offsetY, offsetZ, extra);
+        } catch (Exception ex) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Can not show particle (" + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle-custom: Particle, Amount, Times, Interval, OffsetX");
+        }
+    }
+    /**
+     * To send particle to player.
+     */
+    @Override
+    public void dispatchParticleCmd(String prefix, Location loc, String command) {
+        try {
+            World world = loc.getWorld();
+            if (world == null) {
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute particle command (particle: " + command + ")");
+                return;
+            }
+            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(command);
+            Particle particle = particleMap.getType();
+            int amount = particleMap.getAmount();
+            int times = particleMap.getTimes();
+            int interval = particleMap.getInterval();
+            double offsetX = particleMap.getOffsetX();
+            double offsetY = particleMap.getOffsetY();
+            double offsetZ = particleMap.getOffsetZ();
+            double extra = particleMap.getExtra();
+            new BukkitRunnable() {
+                int i = 1;
+
+                @Override
+                public void run() {
+                    if (i > times) {
+                        cancel();
+                    } else {
+                        ++i;
+                        world.spawnParticle(particle, loc, amount, offsetX, offsetY, offsetZ, extra);
+                    }
+                }
+            }.runTaskTimer(CorePlus.getInstance(), 0, interval);
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (particle: " + command + ")");
+            ConfigHandler.getLang().sendDebugTrace(prefix, e);
+        }
+    }
+
+    /**
+     * To send particle to player.
+     */
+    @Override
+    public void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
+                                    double offsetX, double offsetY, double offsetZ, double extra) {
+        try {
+            World world = loc.getWorld();
+            if (world == null) {
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute particle command (particle: " + particle + ")");
+                return;
+            }
+            Particle particleType = Particle.valueOf(particle);
+            new BukkitRunnable() {
+                int i = 1;
+
+                @Override
+                public void run() {
+                    if (i > times) {
+                        cancel();
+                    } else {
+                        ++i;
+                        world.spawnParticle(particleType, loc, amount, offsetX, offsetY, offsetZ, extra);
+                    }
+                }
+            }.runTaskTimer(CorePlus.getInstance(), 0, interval);
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (particle: " + particle + ")");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }

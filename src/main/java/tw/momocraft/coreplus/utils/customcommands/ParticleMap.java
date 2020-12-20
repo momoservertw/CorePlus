@@ -8,6 +8,10 @@ public class ParticleMap {
     private int amount;
     private int times;
     private int interval;
+    private double offsetX;
+    private double offsetY;
+    private double offsetZ;
+    private double extra;
 
     public Particle getType() {
         return type;
@@ -25,6 +29,22 @@ public class ParticleMap {
         return interval;
     }
 
+    public double getOffsetX() {
+        return offsetX;
+    }
+
+    public double getOffsetY() {
+        return offsetY;
+    }
+
+    public double getOffsetZ() {
+        return offsetZ;
+    }
+
+    public double getExtra() {
+        return extra;
+    }
+
     public void setType(Particle type) {
         this.type = type;
     }
@@ -39,5 +59,21 @@ public class ParticleMap {
 
     public void setInterval(int interval) {
         this.interval = interval;
+    }
+
+    public void setOffsetX(double offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public void setOffsetY(double offsetY) {
+        this.offsetY = offsetY;
+    }
+
+    public void setOffsetZ(double offsetZ) {
+        this.offsetZ = offsetZ;
+    }
+
+    public void setExtra(double extra) {
+        this.extra = extra;
     }
 }

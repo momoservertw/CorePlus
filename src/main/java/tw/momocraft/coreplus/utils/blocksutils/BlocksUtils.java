@@ -61,6 +61,7 @@ public class BlocksUtils implements BlocksInterface {
         }
         return false;
     }
+
     /**
      * Setup LocMaps.
      */
@@ -84,7 +85,8 @@ public class BlocksUtils implements BlocksInterface {
     private BlocksMap getBlocksMap(String group) {
         BlocksMap blocksMap = new BlocksMap();
         List<BlocksMap> ignoreList = new ArrayList<>();
-        blocksMap.setBlockTypes(ConfigHandler.getConfigPath().getTypeList("config.yml", "General.Blocks." + group + ".Types", "Materials"));
+        blocksMap.setBlockTypes(ConfigHandler.getConfigPath().getTypeList(ConfigHandler.getPrefix(),
+                ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Types"), "Materials"));
         // Setting the value of X and Z, and defining the type of horizontal.
         String r = ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.R");
         String s = ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.S");

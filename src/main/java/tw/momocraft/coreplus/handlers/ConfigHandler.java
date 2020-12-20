@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -13,10 +14,11 @@ import java.time.format.DateTimeFormatter;
 public class ConfigHandler {
     private static YamlConfiguration configYAML;
     private static YamlConfiguration spigotYAML;
+    private static YamlConfiguration groupsYAML;
     private static Depend depends;
+    private static ConfigPath configPaths;
     private static Language lang;
     private static Permissions perm;
-    private static ConfigPath configPaths;
     private static Utils util;
     private static Logger log;
     private static Zipper zip;
@@ -24,6 +26,7 @@ public class ConfigHandler {
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
+        genConfigFile("groups.yml");
         setLang(new Language());
         setDepends(new Depend());
         setPerm(new Permissions());
@@ -85,6 +88,11 @@ public class ConfigHandler {
                     spigotYAML = YamlConfiguration.loadConfiguration(file);
                 }
                 return spigotYAML;
+            case "groups.yml":
+                if (saveData) {
+                    groupsYAML = YamlConfiguration.loadConfiguration(file);
+                }
+                return groupsYAML;
         }
         return null;
     }
@@ -97,16 +105,18 @@ public class ConfigHandler {
             case "config.yml":
                 ver = 1;
                 break;
+            case "groups.yml":
+                ver = 1;
+                break;
         }
         getConfigData(filePath, fileName);
         File file = new File(filePath, fileName);
         if (file.exists() && getConfig(fileName).getInt("Config-Version") != ver) {
             if (CorePlus.getInstance().getResource(fileName) != null) {
-                LocalDateTime currentDate = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
-                String currentTime = currentDate.format(formatter);
-                String newGen = fileNameSlit[0] + " " + currentTime + "." + fileNameSlit[0];
-                File newFile = new File(filePath, newGen);
+                // Creating a new file name "2020-11-20 00-00-00.yml"
+                File newFile = new File(filePath, fileNameSlit[0] + " " + LocalDateTime.now().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"))
+                        + "." + fileNameSlit[0]);
                 if (!newFile.exists()) {
                     file.renameTo(newFile);
                     File configFile = new File(filePath, fileName);

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CommandInterface {
 
-    void executeMultiCmdsList(String prefix, Player player, List<String> input, boolean placeholder);
+    void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder);
 
-    void executeMultipleCmds(String prefix, Player player, String input, boolean placeholder);
+    void executeCmd(String prefix, Player player, String input, boolean placeholder);
 
 
     /**
@@ -48,8 +48,13 @@ public interface CommandInterface {
      */
     void dispatchSoundCmd(String prefix, Player player, String command);
 
+    void dispatchSoundCmd(String prefix, Player player, String sound, long volume, long pitch, int times, int interval);
+
     /**
      * To send particle to player.
      */
     void dispatchParticleCmd(String prefix, Location loc, String command);
+
+    void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
+                             double offsetX, double offsetY, double offsetZ, double extra);
 }

@@ -1,5 +1,7 @@
-# --{ =-=-=-=-=-=-=-=-=-= CorePlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
-# Wiki: https://github.com/momoservertw/CorePlus/wiki
+# ░░░░░░░░░░░░░░░   SlimeChunkPlus, By Momocraft♥   ░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 1
 Check-Updates: true
 Debugging: false
@@ -13,15 +15,19 @@ General:
       # Changed these options need to restart the server.
       Hook:
         Vault: true
+        PlayerPoints: true
+        GemsEconomy: true
         PlaceHolderAPI: true
-        Residence: true
-        CMI: true
-        MyPet: true
-        MorphTool: true
-        ItemJoin: true
+        LangUtils: true
         DiscordSRV: true
+        LuckPerms: true
+        MysqlPlayerDataBridge: true
+        CMI: true
+        Residence: true
+        MythicMobs: true
+        ItemJoin: true
         AuthMe: true
-        LocaleLib: true
+
   # The settings for custom commands.
   # To send frequently used commands with placeholders.
   # More information: https://github.com/momoservertw/LotteryPlus/wiki/Custom-Command
@@ -39,32 +45,43 @@ General:
       Type: ENTITY_SHULKER_HURT
     SlimeJump:
       Type: ENTITY_SLIME_JUMP
-      Loop:
+      Run:
         Times: 8
         Interval: 20
   # The settings for custom particles.
   # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Particles
   Particles:
+    Example:
+      Type: FLAME
+      Offset:
+        X: 1
+        Y: 1
+        Z: 1
+      Speed: 1
+      Run:
+        Times: 5
+        Interval: 20
     Barrier:
       Type: BARRIER
       Amount: 1
-      Times: 1
-      Interval: 10
     Crit_Magic:
       Type: CRIT_MAGIC
       Amount: 1
-      Times: 6
-      Interval: 10
+      Run:
+        Times: 6
+        Interval: 10
     Slime:
       Type: SLIME
       Amount: 3
-      Times: 8
-      Interval: 20
+      Run:
+        Times: 8
+        Interval: 20
     Flame:
       Type: FLAME
       Amount: 3
-      Times: 8
-      Interval: 20
+      Run:
+        Times: 8
+        Interval: 20
   # The menu item for some events like showing blocks or destroying it.
   # If you don't have a menu in your server, you can set Item Name to "" to use a vanilla item.
   # Support: ItemJoin
@@ -106,7 +123,8 @@ Message:
   configReload: "&aConfiguration(s) Reloaded!"
   targetNotFound: "&cThe player &c%targetplayer% &ccould not be found!"
   cooldown: "&fPlease try it again later."
-  featureDisabled: "&cThe feature is disabled."
+  featureDisabled: "&cThis feature is disabled."
+  dependNotFound: "&cThis feature needs plugin %plugin%."
   onlyPlayer: "&cThis command can only executing from player."
   noFlagPerm: "&cYou dont have &6%flag% &cpermission<s> here."
   notEnoughMoney: "&cYou don't have enough %pricetype%! You need %pricetype%: %price%."

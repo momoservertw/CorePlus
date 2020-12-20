@@ -31,10 +31,15 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- mojang API-->
+        <!-- mojang Repo-->
         <repository>
             <id>minecraft-repo</id>
             <url>https://libraries.minecraft.net/</url>
+        </repository>
+        <!--Vault Repo-->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
         <!--PlaceholderAPI Repo-->
         <repository>
@@ -45,6 +50,12 @@
         <repository>
             <id>lang-utils-repo</id>
             <url>https://raw.github.com/MascusJeoraly/LanguageUtils/mvn-repo/</url>
+        </repository>
+        <!--MythicMobs Repo-->
+        <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
         <!--CraftationGaming Repository-->
         <repository>
@@ -92,11 +103,10 @@
         </dependency>
         <!--Vault API-->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/VaultAPI.jar</systemPath>
-            <version>LATEST</version>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
         <!--PlayerPoints API-->
         <dependency>
@@ -128,52 +138,18 @@
             <!--Please check the latest version -->
             <version>1.9</version>
         </dependency>
-        <!--CMI API-->
-        <dependency>
-            <groupId>me.CMI</groupId>
-            <artifactId>CMI</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMIAPI7.6.2.0.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
-        <!--Residence API-->
-        <dependency>
-            <groupId>me.Residence</groupId>
-            <artifactId>Residence</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Residence4.9.2.1.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
-        <!--MyPet API-->
-        <dependency>
-            <groupId>me.MyPet</groupId>
-            <artifactId>MyPet</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.11-SNAPSHOT-B1586.jar
-            </systemPath>
-            <version>LEGACY</version>
-        </dependency>
-        <!--ItemJoin API-->
-        <dependency>
-            <groupId>me.RockinChaos.itemjoin</groupId>
-            <artifactId>ItemJoin</artifactId>
-            <version>5.1.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--MobFarmManager API-->
-        <dependency>
-            <groupId>me.MobFarmManager</groupId>
-            <artifactId>MobFarmManager</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/CorePlus/extra/MobFarmManager1.5.9.0.jar
-            </systemPath>
-            <version>LEGACY</version>
-        </dependency>
         <!--DiscordSRV API-->
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
             <version>1.20.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--LuckPerms API-->
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.0</version>
             <scope>provided</scope>
         </dependency>
         <!--MysqlPlayerDataBridge API-->
@@ -184,6 +160,36 @@
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v3.35.0.jar
             </systemPath>
             <version>LEGACY</version>
+        </dependency>
+        <!--CMI API-->
+        <dependency>
+            <groupId>me.CMI</groupId>
+            <artifactId>CMI</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMIAPI7.6.2.0.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--MythicMobs API-->
+        <dependency>
+            <groupId>io.lumine.xikage</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <version>LATEST</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--Residence API-->
+        <dependency>
+            <groupId>me.Residence</groupId>
+            <artifactId>Residence</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Residence4.9.2.1.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--ItemJoin API-->
+        <dependency>
+            <groupId>me.RockinChaos.itemjoin</groupId>
+            <artifactId>ItemJoin</artifactId>
+            <version>5.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <!--AuthMe API-->
         <dependency>

@@ -210,6 +210,7 @@ public class Language implements LanguageInterface {
                 .replace("%entity%", langHolder[10])
                 .replace("%distance%", langHolder[11])
                 .replace("%flag%", langHolder[12])
+                .replace("%plugin%", langHolder[13])
                 .replace("%nick%", langHolder[20])
                 .replace("%nick_color%", langHolder[21])
                 .replace("%nick_length%", langHolder[22])

@@ -1,35 +1,32 @@
 package tw.momocraft.coreplus.utils;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
 import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
 import tw.momocraft.coreplus.utils.eco.VaultAPI;
-
-import java.util.UUID;
+import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 public class Depend implements DependInterface {
 
     private VaultAPI vaultApi;
     private PlayerPointsAPI playerPointsApi;
     private GemsEcoAPI gemsEcoApi;
+    private LuckPermsAPI luckPermsApi;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
     private boolean GemsEconomy = false;
     private boolean PlaceHolderAPI = false;
     private boolean LangUtils = false;
-    private boolean Residence = false;
-    private boolean CMI = false;
-    private boolean MyPet = false;
-    private boolean ItemJoin = false;
-    private boolean MorphTool = false;
     private boolean DiscordSRV = false;
+    private boolean LuckPerms = false;
     private boolean MysqlPlayerDataBridge = false;
+    private boolean MythicMobs = false;
+    private boolean CMI = false;
+    private boolean Residence = false;
+    private boolean ItemJoin = false;
     private boolean AuthMe = false;
 
     public Depend() {
@@ -51,11 +48,23 @@ public class Depend implements DependInterface {
                 setGemsEconomyApi();
             }
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LuckPerms")) {
+            LuckPerms = Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null;
+            if (LuckPerms) {
+                setLuckPermsApi();
+            }
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LangUtils")) {
             LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.DiscordSRV")) {
+            DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MysqlPlayerDataBridge")) {
+            MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
@@ -63,20 +72,11 @@ public class Depend implements DependInterface {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.CMI")) {
             CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MyPet")) {
-            MyPet = Bukkit.getServer().getPluginManager().getPlugin("MyPet") != null;
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MythicMobs")) {
+            MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.ItemJoin")) {
             ItemJoin = Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MorphTool")) {
-            MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.DiscordSRV")) {
-            DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MysqlPlayerDataBridge")) {
-            MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.AuthMe")) {
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
@@ -90,15 +90,15 @@ public class Depend implements DependInterface {
                 + (VaultEnabled() ? "Vault, " : "")
                 + (PlayerPointsEnabled() ? "PlayerPoints, " : "")
                 + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
+                + (LuckPermsEnabled() ? "LuckPerms, " : "")
                 + (PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
                 + (LangUtilsEnabled() ? "LangUtils, " : "")
-                + (CMIEnabled() ? "CMI, " : "")
-                + (ResidenceEnabled() ? "Residence, " : "")
-                + (MyPetEnabled() ? "MyPet, " : "")
-                + (ItemJoinEnabled() ? "ItemJoin, " : "")
-                + (MorphToolEnabled() ? "MorphTool, " : "")
                 + (DiscordSRVEnabled() ? "DiscordSRV, " : "")
                 + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
+                + (CMIEnabled() ? "CMI, " : "")
+                + (MythicMobsEnabled() ? "MythicMobs, " : "")
+                + (ResidenceEnabled() ? "Residence, " : "")
+                + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "");
         try {
             ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
@@ -146,6 +146,21 @@ public class Depend implements DependInterface {
     }
 
     @Override
+    public boolean DiscordSRVEnabled() {
+        return this.DiscordSRV;
+    }
+
+    @Override
+    public boolean MpdbEnabled() {
+        return this.MysqlPlayerDataBridge;
+    }
+
+    @Override
+    public boolean LuckPermsEnabled() {
+        return this.LuckPerms;
+    }
+
+    @Override
     public boolean ResidenceEnabled() {
         return this.Residence;
     }
@@ -156,28 +171,13 @@ public class Depend implements DependInterface {
     }
 
     @Override
-    public boolean MyPetEnabled() {
-        return this.MyPet;
+    public boolean MythicMobsEnabled() {
+        return this.MythicMobs;
     }
 
     @Override
     public boolean ItemJoinEnabled() {
         return this.ItemJoin;
-    }
-
-    @Override
-    public boolean MorphToolEnabled() {
-        return this.MorphTool;
-    }
-
-    @Override
-    public boolean DiscordSRVEnabled() {
-        return this.DiscordSRV;
-    }
-
-    @Override
-    public boolean MpdbEnabled() {
-        return this.MysqlPlayerDataBridge;
     }
 
     @Override
@@ -200,6 +200,11 @@ public class Depend implements DependInterface {
         return this.gemsEcoApi;
     }
 
+    @Override
+    public LuckPermsAPI getLuckPermsApi() {
+        return this.luckPermsApi;
+    }
+
 
     private void setVaultApi() {
         vaultApi = new VaultAPI();
@@ -211,5 +216,9 @@ public class Depend implements DependInterface {
 
     private void setGemsEconomyApi() {
         gemsEcoApi = new GemsEcoAPI();
+    }
+
+    private void setLuckPermsApi() {
+        luckPermsApi = new LuckPermsAPI();
     }
 }

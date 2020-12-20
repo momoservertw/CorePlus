@@ -4,7 +4,7 @@ author: Momocraft
 api-version: 1.13
 version: 1.0.0
 description: The API contains all utils for my plugins.
-softdepend: [Vault, PlayerPoints, GemsEconomy, PlaceHolderAPI, LangUtils, MythicMobs, CMI, Residence, MyPet, ItemJoin, MorphTool, DiscordSRV]
+softdepend: [Vault, PlayerPoints, GemsEconomy, PlaceHolderAPI, LangUtils, DiscordSRV, LuckPerms, MysqlPlayerDataBridge, CMI, Residence, MythicMobs, MyPet, ItemJoin, MorphTool, AuthMe]
 
 commands:
   coreplus:

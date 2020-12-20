@@ -1,12 +1,9 @@
 package tw.momocraft.coreplus.api;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
 import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
 import tw.momocraft.coreplus.utils.eco.VaultAPI;
-
-import java.util.UUID;
+import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 
 public interface DependInterface {
@@ -21,19 +18,19 @@ public interface DependInterface {
 
     boolean LangUtilsEnabled();
 
+    boolean DiscordSRVEnabled();
+
+    boolean LuckPermsEnabled();
+
+    boolean MpdbEnabled();
+
     boolean ResidenceEnabled();
 
     boolean CMIEnabled();
 
-    boolean MyPetEnabled();
+    boolean MythicMobsEnabled();
 
     boolean ItemJoinEnabled();
-
-    boolean MorphToolEnabled();
-
-    boolean DiscordSRVEnabled();
-
-    boolean MpdbEnabled();
 
     boolean AuthMeEnabled();
 
@@ -43,4 +40,6 @@ public interface DependInterface {
     PlayerPointsAPI getPlayerPointsApi();
 
     GemsEcoAPI getGemsEcoApi();
+
+    LuckPermsAPI getLuckPermsApi();
 }
