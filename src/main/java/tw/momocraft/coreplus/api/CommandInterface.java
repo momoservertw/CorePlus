@@ -46,16 +46,19 @@ public interface CommandInterface {
     /**
      * To send sound to player.
      */
-    void dispatchSoundCmd(String prefix, Player player, String command);
+    void dispatchSoundCustomCmd(String prefix, Player player, String command);
+
+    void dispatchSoundGroupCmd(String prefix, Player player, String command);
 
     void dispatchSoundCmd(String prefix, Player player, String sound, long volume, long pitch, int times, int interval);
 
     /**
      * To send particle to player.
      */
-    void dispatchParticleCustomCmd(String prefix, Player player, String input);
+    void dispatchParticleCustomCmd(String prefix, Location loc, String input);
+
     void dispatchParticleGroupCmd(String prefix, Location loc, String command);
 
     void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
-                                  double offsetX, double offsetY, double offsetZ, double extra);
+                             double offsetX, double offsetY, double offsetZ, double extra);
 }

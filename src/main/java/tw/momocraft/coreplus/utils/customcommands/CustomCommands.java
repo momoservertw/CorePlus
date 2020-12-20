@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
+import me.RockinChaos.itemjoin.ItemJoin;
 import org.bukkit.*;;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -16,11 +17,20 @@ public class CustomCommands implements CommandInterface {
     public void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder) {
         if (prefix == null)
             prefix = "";
+
         for (String value : input) {
             if (value.contains(";")) {
                 String[] cmds;
                 cmds = value.split(";");
                 for (String cmd : cmds) {
+
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlus.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    }, 20);
+
                     if (cmd.startsWith("all-")) {
                         cmd = cmd.replace("all-", "");
                         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
@@ -158,7 +168,11 @@ public class CustomCommands implements CommandInterface {
                     return;
                 case "sound":
                     input = input.replace("sound: ", "");
-                    dispatchSoundCmd(prefix, player, input);
+                    dispatchSoundGroupCmd(prefix, player, input);
+                    return;
+                case "sound-custom":
+                    input = input.replace("sound-custom: ", "");
+                    dispatchSoundCustomCmd(prefix, player, input);
                     return;
                 case "particle":
                     input = input.replace("particle: ", "");
@@ -166,7 +180,7 @@ public class CustomCommands implements CommandInterface {
                     return;
                 case "particle-custom":
                     input = input.replace("particle-custom: ", "");
-                    dispatchParticleCustomCmd(prefix, player, input);
+                    dispatchParticleCustomCmd(prefix, player.getLocation(), input);
                     return;
                 default:
                     ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute command type (" + input + ")");
@@ -263,6 +277,7 @@ public class CustomCommands implements CommandInterface {
             case "chat":
             case "message":
             case "sound":
+            case "sound-custom":
             case "particle":
             case "particle-custom":
                 ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute target (" + input + ")");
@@ -359,14 +374,31 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
+    // "sound-custom: Sound, 1, 20, 1, 1"
+    @Override
+    public void dispatchSoundCustomCmd(String prefix, Player player, String input) {
+        try {
+            String[] arr = input.split(", ");
+            String sound = arr[1];
+            int times = Integer.parseInt(arr[2]);
+            int interval = Integer.parseInt(arr[3]);
+            int volume = Integer.parseInt(arr[4]);
+            int pitch = Integer.parseInt(arr[5]);
+            dispatchSoundCmd(prefix, player, sound, times, interval, volume, pitch);
+        } catch (Exception ex) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Can not show particle (" + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle-custom: Particle, Amount, Times, Interval, OffsetX");
+        }
+    }
+
     /**
      * To send sound to player.
      */
     @Override
-    public void dispatchSoundCmd(String prefix, Player player, String command) {
+    public void dispatchSoundGroupCmd(String prefix, Player player, String group) {
         try {
             Location loc = player.getLocation();
-            SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(command);
+            SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(group);
             Sound sound = Sound.valueOf(soundMap.getType());
             int times = soundMap.getTimes();
             int interval = soundMap.getInterval();
@@ -386,7 +418,7 @@ public class CustomCommands implements CommandInterface {
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (sound: " + command + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (sound: " + group + ")");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
@@ -417,8 +449,9 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
+    // particle-custom: Particle, 1, 20, 0, 0, 0, 0
     @Override
-    public void dispatchParticleCustomCmd(String prefix, Player player, String input) {
+    public void dispatchParticleCustomCmd(String prefix, Location loc, String input) {
         try {
             String[] arr = input.split(", ");
             String particle = arr[1];
@@ -429,24 +462,25 @@ public class CustomCommands implements CommandInterface {
             double offsetY = Double.parseDouble(arr[6]);
             double offsetZ = Double.parseDouble(arr[7]);
             double extra = Double.parseDouble(arr[8]);
-            dispatchParticleGroupCmd(prefix, player.getLocation(), particle, amount, times, interval, offsetX, offsetY, offsetZ, extra);
+            dispatchParticleCmd(prefix, loc, particle, amount, times, interval, offsetX, offsetY, offsetZ, extra);
         } catch (Exception ex) {
             ConfigHandler.getLang().sendErrorMsg(prefix, "Can not show particle (" + input + ")");
             ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle-custom: Particle, Amount, Times, Interval, OffsetX");
         }
     }
+
     /**
      * To send particle to player.
      */
     @Override
-    public void dispatchParticleGroupCmd(String prefix, Location loc, String command) {
+    public void dispatchParticleGroupCmd(String prefix, Location loc, String group) {
         try {
             World world = loc.getWorld();
             if (world == null) {
-                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute particle command (particle: " + command + ")");
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute particle command (particle: " + group + ")");
                 return;
             }
-            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(command);
+            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(group);
             Particle particle = particleMap.getType();
             int amount = particleMap.getAmount();
             int times = particleMap.getTimes();
@@ -469,7 +503,7 @@ public class CustomCommands implements CommandInterface {
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (particle: " + command + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (particle: " + group + ")");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }

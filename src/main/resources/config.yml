@@ -39,6 +39,11 @@ General:
   # The settings for custom sounds.
   # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Sounds
   Sounds:
+    Announcement:
+      Type: ENTITY_PLAYER_LEVELUP
+    Celebrate:
+      Levelup:
+        Type: ENTITY_PLAYER_LEVELUP
     Succeed:
       Type: ENTITY_PLAYER_LEVELUP
     Failed:
