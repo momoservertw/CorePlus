@@ -53,8 +53,9 @@ public interface CommandInterface {
     /**
      * To send particle to player.
      */
-    void dispatchParticleCmd(String prefix, Location loc, String command);
+    void dispatchParticleCustomCmd(String prefix, Player player, String input);
+    void dispatchParticleGroupCmd(String prefix, Location loc, String command);
 
     void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
-                             double offsetX, double offsetY, double offsetZ, double extra);
+                                  double offsetX, double offsetY, double offsetZ, double extra);
 }

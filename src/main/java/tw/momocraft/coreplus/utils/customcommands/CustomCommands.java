@@ -162,11 +162,11 @@ public class CustomCommands implements CommandInterface {
                     return;
                 case "particle":
                     input = input.replace("particle: ", "");
-                    dispatchParticleCmd(prefix, player.getLocation(), input);
+                    dispatchParticleGroupCmd(prefix, player.getLocation(), input);
                     return;
                 case "particle-custom":
                     input = input.replace("particle-custom: ", "");
-                    dispatchCustomParticle(prefix, player, input);
+                    dispatchParticleCustomCmd(prefix, player, input);
                     return;
                 default:
                     ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute command type (" + input + ")");
@@ -417,8 +417,8 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-
-    public void dispatchCustomParticle(String prefix, Player player, String input) {
+    @Override
+    public void dispatchParticleCustomCmd(String prefix, Player player, String input) {
         try {
             String[] arr = input.split(", ");
             String particle = arr[1];
@@ -429,7 +429,7 @@ public class CustomCommands implements CommandInterface {
             double offsetY = Double.parseDouble(arr[6]);
             double offsetZ = Double.parseDouble(arr[7]);
             double extra = Double.parseDouble(arr[8]);
-            dispatchParticleCmd(prefix, player.getLocation(), particle, amount, times, interval, offsetX, offsetY, offsetZ, extra);
+            dispatchParticleGroupCmd(prefix, player.getLocation(), particle, amount, times, interval, offsetX, offsetY, offsetZ, extra);
         } catch (Exception ex) {
             ConfigHandler.getLang().sendErrorMsg(prefix, "Can not show particle (" + input + ")");
             ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle-custom: Particle, Amount, Times, Interval, OffsetX");
@@ -439,7 +439,7 @@ public class CustomCommands implements CommandInterface {
      * To send particle to player.
      */
     @Override
-    public void dispatchParticleCmd(String prefix, Location loc, String command) {
+    public void dispatchParticleGroupCmd(String prefix, Location loc, String command) {
         try {
             World world = loc.getWorld();
             if (world == null) {
@@ -479,7 +479,7 @@ public class CustomCommands implements CommandInterface {
      */
     @Override
     public void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
-                                    double offsetX, double offsetY, double offsetZ, double extra) {
+                                         double offsetX, double offsetY, double offsetZ, double extra) {
         try {
             World world = loc.getWorld();
             if (world == null) {
