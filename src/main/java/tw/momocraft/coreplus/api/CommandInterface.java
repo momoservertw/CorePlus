@@ -2,6 +2,8 @@ package tw.momocraft.coreplus.api;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.CorePlus;
+import tw.momocraft.coreplus.handlers.ConfigHandler;
 
 import java.util.List;
 
@@ -20,45 +22,47 @@ public interface CommandInterface {
      */
     void dispatchCustomCmd(String prefix, Player player, String input, boolean placeholder);
 
+
+    void dispatchLogCmd(String input);
+
+    void dispatchLogCustomCmd(String prefix, String input);
+
     /**
      * To execute console command.
      *
      * @param player  the command sender.
-     * @param command the command string.
+     * @param input the command string.
      */
-    void dispatchConsoleCmd(String prefix, Player player, String command);
+    void dispatchConsoleCmd(String prefix, Player player, String input);
 
     /**
      * To execute operator command.
      */
-    void dispatchOpCmd(String prefix, Player player, String command);
+    void dispatchOpCmd(String prefix, Player player, String input);
 
     /**
      * To execute player command.
      */
-    void dispatchPlayerCmd(String prefix, Player player, String command);
+    void dispatchPlayerCmd(String prefix, Player player, String input);
 
     /**
      * To execute BungeeCord command.
      */
-    void dispatchBungeeCordCmd(String prefix, Player player, String command);
+    void dispatchBungeeCordCmd(String prefix, Player player, String input);
 
     /**
      * To send sound to player.
      */
-    void dispatchSoundCustomCmd(String prefix, Player player, String command);
 
-    void dispatchSoundGroupCmd(String prefix, Player player, String command);
+    void dispatchSoundCustomCmd(String prefix, Player player, String input);
 
-    void dispatchSoundCmd(String prefix, Player player, String sound, long volume, long pitch, int times, int interval);
+    void dispatchSoundCmd(String prefix, Player player, String input);
 
     /**
      * To send particle to player.
      */
+
     void dispatchParticleCustomCmd(String prefix, Location loc, String input);
 
-    void dispatchParticleGroupCmd(String prefix, Location loc, String command);
-
-    void dispatchParticleCmd(String prefix, Location loc, String particle, int amount, int times, int interval,
-                             double offsetX, double offsetY, double offsetZ, double extra);
+    void dispatchParticleCmd(String prefix, Location loc, String input);
 }

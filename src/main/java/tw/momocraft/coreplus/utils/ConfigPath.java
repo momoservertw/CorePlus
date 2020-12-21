@@ -5,8 +5,10 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.ConfigInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.utils.customcommands.LogMap;
 import tw.momocraft.coreplus.utils.customcommands.ParticleMap;
 import tw.momocraft.coreplus.utils.customcommands.SoundMap;
 
@@ -24,7 +26,8 @@ public class ConfigPath implements ConfigInterface {
     private String menuType;
     private String menuName;
     private String vanillaTrans;
-    private Map<String, String> customCmdProp;
+    private Map<String, String> cmdProp = new HashMap<>();
+    private Map<String, LogMap> logProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
     private final Map<String, ParticleMap> particleProp = new HashMap<>();
 
@@ -45,9 +48,21 @@ public class ConfigPath implements ConfigInterface {
         vanillaTrans = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
         ConfigurationSection cmdConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Custom-Commands");
         if (cmdConfig != null) {
-            customCmdProp = new HashMap<>();
             for (String group : cmdConfig.getKeys(false)) {
-                customCmdProp.put(group, ConfigHandler.getConfig("config.yml").getString("General.Custom-Commands." + group));
+                cmdProp.put(group, ConfigHandler.getConfig("config.yml").getString("General.Custom-Commands." + group));
+            }
+        }
+        ConfigurationSection logConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Logs");
+        if (logConfig != null) {
+            LogMap logMap;
+            for (String group : logConfig.getKeys(false)) {
+                logMap = new LogMap();
+                logMap.setPath(ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Path", CorePlus.getInstance().getDataFolder().getPath() + "//Logs"));
+                logMap.setName(ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Name", "latest.log"));
+                logMap.setTime(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".Time", true));
+                logMap.setNewFile(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".New-File", false));
+                logMap.setZip(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".Zip", false));
+                logProp.put(group, logMap);
             }
         }
         ConfigurationSection particleConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Particles");
@@ -92,8 +107,12 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Getter                          //
     //  ============================================== //
-    public Map<String, String> getCustomCmdProp() {
-        return customCmdProp;
+    public Map<String, String> getCmdProp() {
+        return cmdProp;
+    }
+
+    public Map<String, LogMap> getLogProp() {
+        return logProp;
     }
 
     public Map<String, ParticleMap> getParticleProp() {
