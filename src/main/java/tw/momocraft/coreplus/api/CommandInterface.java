@@ -23,7 +23,7 @@ public interface CommandInterface {
     void dispatchCustomCmd(String prefix, Player player, String input, boolean placeholder);
 
 
-    void dispatchLogCmd(String input);
+    void dispatchLogCmd(String prefix, String input);
 
     void dispatchLogCustomCmd(String prefix, String input);
 

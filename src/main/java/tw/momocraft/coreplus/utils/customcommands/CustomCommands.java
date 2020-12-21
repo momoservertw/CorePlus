@@ -55,16 +55,13 @@ public class CustomCommands implements CommandInterface {
                 try {
                     delay = Integer.parseInt(cmd.split(": ")[1]);
                 } catch (Exception ex) {
+                    ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find the execute command type (" + cmd + ")");
+                    ConfigHandler.getLang().sendErrorMsg(prefix, "&cPlease check whether CorePlus is the latest version.");
                     continue;
                 }
                 cmds.remove(cmd);
                 String finalPrefix = prefix;
-                Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlus.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        executeCmdList(finalPrefix, player, cmds, placeholder);
-                    }
-                }, delay);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlus.getInstance(), () -> executeCmdList(finalPrefix, player, cmds, placeholder), delay);
                 return;
             }
             // Executing a command for online players.
@@ -107,7 +104,7 @@ public class CustomCommands implements CommandInterface {
                     return;
                 case "log":
                     input = input.replace("log: ", "");
-                    dispatchLogCmd(input);
+                    dispatchLogCmd(prefix, input);
                     return;
                 case "log-custom":
                     input = input.replace("log-custom: ", "");
@@ -187,7 +184,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "log":
                 input = input.replace("log: ", "");
-                dispatchLogCmd(input);
+                dispatchLogCmd(prefix, input);
                 return;
             case "log-custom":
                 input = input.replace("log-custom: ", "");
@@ -247,9 +244,14 @@ public class CustomCommands implements CommandInterface {
      * @param input the message of log.
      */
     @Override
-    public void dispatchLogCmd(String input) {
-        ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
-                "latest.log", input, true, false, false);
+    public void dispatchLogCmd(String prefix, String input) {
+        try {
+            ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
+                    "latest.log", input, true, false, false);
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+        }
     }
 
 
@@ -264,7 +266,8 @@ public class CustomCommands implements CommandInterface {
     public void dispatchLogCustomCmd(String prefix, String input) {
         LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(input);
         if (logMap == null) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (log-custom: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Can not execute command (log-custom: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Can not find the group of \"Log\" in CorePlus/config.yml.");
             return;
         }
         String path = logMap.getPath();
@@ -274,7 +277,13 @@ public class CustomCommands implements CommandInterface {
             path = path.replace("server//", "");
             path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
         }
-        ConfigHandler.getLogger().addLog(path, logMap.getName(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+        try {
+            ConfigHandler.getLogger().addLog(path, logMap.getName(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Please check out the format of \"Log\" in CorePlus/config.yml.");
+            ConfigHandler.getLang().sendDebugTrace(prefix, e);
+        }
     }
 
     /**
@@ -287,20 +296,12 @@ public class CustomCommands implements CommandInterface {
      */
     @Override
     public void dispatchConsoleCmd(String prefix, Player player, String input) {
-        if (player != null && !(player instanceof ConsoleCommandSender)) {
-            try {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input);
-            } catch (Exception e) {
-                ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing a console command, if this continues please report it to the developer!");
-                ConfigHandler.getLang().sendDebugTrace(prefix, e);
-            }
-        } else {
-            try {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input);
-            } catch (Exception e) {
-                ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing a console command, if this continues please report it to the developer!");
-                ConfigHandler.getLang().sendDebugTrace(prefix, e);
-            }
+        try {
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input);
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cAn error occurred when executing command (console: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+            ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
@@ -321,10 +322,25 @@ public class CustomCommands implements CommandInterface {
         } catch (Exception e) {
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
             player.setOp(isOp);
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cAn error has occurred while setting " + player.getName() + " status on the OP list, to ensure server security they have been removed as an OP.");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cAn error occurred when executing command (op: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+            removeOp(prefix, player);
         } finally {
             player.setOp(isOp);
         }
+    }
+
+    private void removeOp(String prefix, Player player) {
+        String playerName = player.getName();
+        ConfigHandler.getLang().sendErrorMsg(prefix, "&cTrying to remove \"&e" + playerName + "&c\" Op status...");
+        Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlus.getInstance(), () -> {
+            try {
+                player.setOp(false);
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&fSucceed to remove \"" + playerName + "\" Op status!");
+            } catch (Exception e) {
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&eCan not remove \"&e" + playerName + "&c\" Op status.");
+            }
+        }, 20);
     }
 
     /**
@@ -340,7 +356,8 @@ public class CustomCommands implements CommandInterface {
         try {
             player.chat("/" + input);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing a player command, if this continues please report it to the developer!");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cAn error occurred when executing command (player: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
@@ -358,14 +375,36 @@ public class CustomCommands implements CommandInterface {
         try {
             BungeeCord.ExecuteCommand(player, input);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cThere was an issue executing an item's command to BungeeCord, if this continues please report it to the developer!");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cAn error occurred when executing command (bungee: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+            ConfigHandler.getLang().sendDebugTrace(prefix, e);
+        }
+    }
+
+    /**
+     * Sending a sound to player.
+     * Format: "Format: particle: Sound, Volume, Pitch"
+     *
+     * @param prefix the prefix of sending plugin.
+     * @param player target.
+     * @param input  the input sound value.
+     */
+    @Override
+    public void dispatchSoundCmd(String prefix, Player player, String input) {
+        try {
+            String[] arr = input.split(", ");
+            Location loc = player.getLocation();
+            player.playSound(loc, arr[1], Long.parseLong(arr[2]), Long.parseLong(arr[3]));
+        } catch (Exception e) {
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (sound: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle: Sound, Volume, Pitch");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
     /**
      * Sending the sound from CorePlus config.yml to player.
-     * Format: "sound-custom: COMMAND"
+     * Format: "sound-custom: GROUP"
      *
      * @param prefix the prefix of sending plugin.
      * @param player target.
@@ -396,68 +435,54 @@ public class CustomCommands implements CommandInterface {
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
             ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (sound-custom: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Please check the configuration settings.");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
     /**
-     * Sending a sound to player.
-     * Format: "sound-custom: COMMAND"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the input sound value.
-     */
-    @Override
-    public void dispatchSoundCmd(String prefix, Player player, String input) {
-        try {
-            String[] arr = input.split(", ");
-            Location loc = player.getLocation();
-            player.playSound(loc, arr[1], Long.parseLong(arr[2]), Long.parseLong(arr[3]));
-        } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (sound: " + input + ")");
-            ConfigHandler.getLang().sendDebugTrace(prefix, e);
-        }
-    }
-
-
-    /**
-     * Sending the sound from CorePlus config.yml to player.
-     * Format: "particle-custom: Particle, Amount, offsetX, offsetY, offsetZ, extra, 0"
+     * Sending a particle to player.
+     * Format: "Format: particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed"
      *
      * @param prefix the prefix of sending plugin.
      * @param loc    the location.
-     * @param input  the sound group from CorePlus config.yml.
+     * @param input  the input particle value.
      */
     @Override
     public void dispatchParticleCmd(String prefix, Location loc, String input) {
         try {
             String[] arr = input.split(", ");
-            Particle particle = Particle.valueOf(arr[1]);
-            int amount = Integer.parseInt(arr[2]);
-            double offsetX = Double.parseDouble(arr[5]);
-            double offsetY = Double.parseDouble(arr[6]);
-            double offsetZ = Double.parseDouble(arr[7]);
-            double extra = Double.parseDouble(arr[8]);
+            Particle particle = Particle.valueOf(arr[0]);
+            int amount = Integer.parseInt(arr[1]);
+            double offsetX = Double.parseDouble(arr[2]);
+            double offsetY = Double.parseDouble(arr[3]);
+            double offsetZ = Double.parseDouble(arr[4]);
+            double extra = Double.parseDouble(arr[5]);
             loc.getWorld().spawnParticle(particle, loc, amount, offsetX, offsetY, offsetZ, extra);
         } catch (Exception ex) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "Can not show particle (" + input + ")");
-            ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle-custom: Particle, Amount, Times, Interval, OffsetX");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (particle: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Format: particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed");
         }
     }
 
     /**
-     * To send particle to player.
+     * Sending the particle from CorePlus config.yml to player.
+     * Format: "particle: GROUP"
+     *
+     * @param prefix the prefix of sending plugin.
+     * @param loc    the location.
+     * @param input  the particle group from CorePlus config.yml.
      */
     @Override
-    public void dispatchParticleCustomCmd(String prefix, Location loc, String group) {
+    public void dispatchParticleCustomCmd(String prefix, Location loc, String input) {
         try {
             World world = loc.getWorld();
             if (world == null) {
-                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute particle command (particle: " + group + ")");
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not find world to execute command (particle-custom: " + input + ")");
+                ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
                 return;
             }
-            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(group);
+            ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(input);
             Particle particle = particleMap.getType();
             int amount = particleMap.getAmount();
             int times = particleMap.getTimes();
@@ -480,7 +505,8 @@ public class CustomCommands implements CommandInterface {
                 }
             }.runTaskTimer(CorePlus.getInstance(), 0, interval);
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute particle command (particle: " + group + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCan not execute command (particle-custom: " + input + ")");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "Please check the configuration settings.");
             ConfigHandler.getLang().sendDebugTrace(prefix, e);
         }
     }

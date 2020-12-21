@@ -37,7 +37,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -54,7 +54,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LotteryPlus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -85,7 +85,7 @@
       <recent name="C:\Users\Sayuri\IdeaProjects\EntityPlus\src\main\resources" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -161,10 +161,11 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="326" y="169" key="com.intellij.ide.util.TipDialog/0.0.1280.689@0.0.1280.689" timestamp="1603852864974" />
-    <state x="297" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1608395563481">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state x="396" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1608542555054">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="297" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1280.689@0.0.1280.689" timestamp="1608395563481" />
+    <state x="396" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608542555054" />
     <state x="370" y="4" width="770" height="668" key="find.popup" timestamp="1608361767474">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
