@@ -46,7 +46,7 @@ public class Updater implements UpdateInterface {
                 break;
         }
         if (ver == null) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "&cCorePlus is out of date.");
+            ConfigHandler.getLang().sendErrorMsg(prefix, "CorePlus is out of date.");
             return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);

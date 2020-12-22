@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/LogMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Language.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +85,7 @@
       <recent name="C:\Users\Sayuri\IdeaProjects\EntityPlus\src\main\resources" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -104,10 +104,10 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="480" y="139" key="#Inspections/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1604472271612" />
-    <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser" timestamp="1608524170637">
+    <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser" timestamp="1608564287172">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser/0.0.1280.689@0.0.1280.689" timestamp="1608524170637" />
+    <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser/0.0.1280.689@0.0.1280.689" timestamp="1608564287172" />
     <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608159514624" />
     <state x="3219" y="176" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608152837116" />
     <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1608443038171">
@@ -129,28 +129,28 @@
     </state>
     <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1608362748025" />
     <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608154406493" />
-    <state width="1237" height="211" key="GridCell.Tab.0.bottom" timestamp="1608535252540">
+    <state width="1237" height="211" key="GridCell.Tab.0.bottom" timestamp="1608566245059">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1608535252540" />
+    <state width="1237" height="211" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
     <state width="1663" height="209" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981848" />
     <state width="1663" height="209" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.center" timestamp="1608535252539">
+    <state width="1237" height="211" key="GridCell.Tab.0.center" timestamp="1608566245059">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1608535252539" />
+    <state width="1237" height="211" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
     <state width="1663" height="209" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981847" />
     <state width="1663" height="209" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.left" timestamp="1608535252539">
+    <state width="1237" height="211" key="GridCell.Tab.0.left" timestamp="1608566245059">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1608535252539" />
+    <state width="1237" height="211" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
     <state width="1663" height="209" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981847" />
     <state width="1663" height="209" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.right" timestamp="1608535252540">
+    <state width="1237" height="211" key="GridCell.Tab.0.right" timestamp="1608566245059">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1608535252540" />
+    <state width="1237" height="211" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
     <state width="1663" height="209" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981848" />
     <state width="1663" height="209" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1608106777953">
@@ -166,10 +166,10 @@
     </state>
     <state x="297" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1280.689@0.0.1280.689" timestamp="1608395563481" />
     <state x="396" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608542555054" />
-    <state x="370" y="4" width="770" height="668" key="find.popup" timestamp="1608361767474">
+    <state x="370" y="4" width="770" height="668" key="find.popup" timestamp="1608565510327">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="370" y="4" width="770" height="668" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1608361767474" />
+    <state x="370" y="4" width="770" height="668" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1608565510327" />
     <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193980822" />
     <state x="2901" y="39" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608193944347" />
     <state x="551" y="206" key="refactoring.ChangeSignatureDialog" timestamp="1604062531792">
@@ -180,10 +180,10 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="510" y="211" key="run.anything.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1603732834433" />
-    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup" timestamp="1608394220780">
+    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup" timestamp="1608558105982">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1608394220780" />
+    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1608558105982" />
     <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608034817624" />
   </component>
   <component name="masterDetails">

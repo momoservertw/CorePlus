@@ -83,7 +83,7 @@ public class Language implements LanguageInterface {
             if (prefix == null)
                 prefix = "";
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(prefix + "showing debug trace.");
+            sendErrorMsg(prefix,"showing debug trace.");
             e.printStackTrace();
         }
     }

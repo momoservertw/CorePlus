@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.utils.blocksutils.BlocksUtils;
+import tw.momocraft.coreplus.utils.locationutils.LocationUtils;
 import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 import java.io.File;
@@ -22,6 +24,8 @@ public class ConfigHandler {
     private static Utils util;
     private static Logger log;
     private static Zipper zip;
+    private static LocationUtils locUtils;
+    private static BlocksUtils blockUtils;
     private static Updater update;
 
     public static void generateData(boolean reload) {
@@ -35,6 +39,8 @@ public class ConfigHandler {
         setLogger(new Logger());
         setZipper(new Zipper());
         setUpdater(new Updater());
+        setLocUtils(new LocationUtils());
+        setBlockUtils(new BlocksUtils());
         if (!reload) {
             getUpdater().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion());
         }
@@ -183,6 +189,22 @@ public class ConfigHandler {
 
     private static void setZipper(Zipper ziper) {
         zip = ziper;
+    }
+
+    public static void setLocUtils(LocationUtils locationUtils) {
+        locUtils = locationUtils;
+    }
+
+    public static void setBlockUtils(BlocksUtils blocksUtils) {
+        blockUtils = blocksUtils;
+    }
+
+    public static LocationUtils getLocUtils() {
+        return locUtils;
+    }
+
+    public static BlocksUtils getBlockUtils() {
+        return blockUtils;
     }
 
     public static Updater getUpdater() {

@@ -36,20 +36,23 @@ public class CorePlus extends JavaPlugin {
     //         API                                     //
     //  ============================================== //
     private DependInterface dependAPI = null;
+
     public DependInterface getDependManager() {
         if (dependAPI == null)
-            dependAPI = new Depend();
+            dependAPI = ConfigHandler.getDepends();
         return dependAPI;
     }
 
     private LanguageInterface languageAPI = null;
+
     public LanguageInterface getLangManager() {
         if (languageAPI == null)
-            languageAPI = new Language();
+            languageAPI = ConfigHandler.getLang();
         return languageAPI;
     }
 
     private PlayerInterface playerAPI = null;
+
     public PlayerInterface getPlayerManager() {
         if (playerAPI == null)
             playerAPI = new PlayerUtils();
@@ -57,6 +60,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private PermissionInterface permissionAPI = null;
+
     public PermissionInterface getPermManager() {
         if (permissionAPI == null)
             permissionAPI = new Permissions();
@@ -64,6 +68,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private UtilsInterface utilsAPI = null;
+
     public UtilsInterface getUtilsManager() {
         if (utilsAPI == null)
             utilsAPI = new Utils();
@@ -71,6 +76,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private UpdateInterface updateAPI = null;
+
     public UpdateInterface getUpdateManager() {
         if (updateAPI == null)
             updateAPI = new Updater();
@@ -78,6 +84,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private LoggerInterface loggerAPI = null;
+
     public LoggerInterface getLogManager() {
         if (loggerAPI == null)
             loggerAPI = new Logger();
@@ -85,6 +92,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private ZipInterface zipAPI = null;
+
     public ZipInterface getZipManager() {
         if (zipAPI == null)
             zipAPI = new Zipper();
@@ -92,6 +100,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private CommandInterface commandAPI = null;
+
     public CommandInterface getCommandManager() {
         if (commandAPI == null)
             commandAPI = new CustomCommands();
@@ -99,6 +108,7 @@ public class CorePlus extends JavaPlugin {
     }
 
     private ResidenceInterface residenceAPI = null;
+
     public ResidenceInterface getResidenceManager() {
         if (residenceAPI == null)
             residenceAPI = new ResidenceUtils();
@@ -106,20 +116,23 @@ public class CorePlus extends JavaPlugin {
     }
 
     private BlocksInterface blocksAPI = null;
+
     public BlocksInterface getBlocksManager() {
         if (blocksAPI == null)
-            blocksAPI = new BlocksUtils();
+            blocksAPI = ConfigHandler.getBlockUtils();
         return blocksAPI;
     }
 
     private LocationInterface locationAPI = null;
+
     public LocationInterface getLocationManager() {
         if (locationAPI == null)
-            locationAPI = new LocationUtils();
+            locationAPI = ConfigHandler.getLocUtils();
         return locationAPI;
     }
 
     private PriceInterface priceAPI = null;
+
     public PriceInterface getPriceManager() {
         if (priceAPI == null)
             priceAPI = new PriceAPI();
