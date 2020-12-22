@@ -1,0 +1,161 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+Check-Updates: true
+Debugging: false
+
+General:
+  Settings:
+    # Translating the placeholder of vanilla Items, Entities, Enchantments name.
+    Vanilla-Translate:
+      Local: "en_us"
+    Features:
+      # Changed these options need to restart the server.
+      Hook:
+        Vault: true
+        PlayerPoints: true
+        GemsEconomy: true
+        PlaceHolderAPI: true
+        LangUtils: true
+        DiscordSRV: true
+        LuckPerms: true
+        MysqlPlayerDataBridge: true
+        CMI: true
+        Residence: true
+        MythicMobs: true
+        ItemJoin: true
+        AuthMe: true
+  # The settings for custom commands.
+  # To send frequently used commands with placeholders.
+  # More information: https://github.com/momoservertw/LotteryPlus/wiki/Custom-Command
+  Custom-Commands:
+    reward: "message: &f &6&l得到了&c✤ &f%cmd_arg1%"
+    awards: "message: &d✧ &f%cmd_arg1% &d✧"
+    cgl: "broadcast: &6恭喜 &e%player% &6使用 &f%cmd_arg1% &8- &6兌換到%cmd_arg2% &7<&f%cmd_arg3%&7>"
+    money: "console: cmi money give %player% %cmd_arg1%"
+
+    pet: "console: petadmin create -f %player% %cmd_arg1%"
+    petmsg: "message: &f &6&l得到了&c✤ &f寵物 %cmd_arg1%"
+    petskill: "console: petadmin skilltree %player% %cmd_arg1%"
+    petskillmsg: "message: &6你的寵物技能已更改為： &f%cmd_arg1%"
+    vehicle: "console: give%cmd_arg1% %player% %cmd_arg2%"
+    vehiclemsg: "message: &f &6&l得到了&c✤ &f坐騎 %cmd_arg1%"
+    ij: "console: ij get %cmd_arg1% %player%"
+    ij2: "console: ij get %cmd_arg1% %player% %cmd_arg2%"
+  Logs:
+    LotteryPlus:
+      Path: "plugins//LotteryPlus//Logs"
+      Name: "latest.log"
+      Time: true
+      New-File: false
+      Zip: false
+  # The settings for custom sounds.
+  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Sounds
+  Sounds:
+    Announcement:
+      Type: ENTITY_PLAYER_LEVELUP
+    Celebrate:
+      Levelup:
+        Type: ENTITY_PLAYER_LEVELUP
+    Succeed:
+      Type: ENTITY_PLAYER_LEVELUP
+    Failed:
+      Type: ENTITY_SHULKER_HURT
+    SlimeJump:
+      Type: ENTITY_SLIME_JUMP
+      Run:
+        Times: 8
+        Interval: 20
+  # The settings for custom particles.
+  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Particles
+  Particles:
+    Example:
+      Type: FLAME
+      Offset:
+        X: 1
+        Y: 1
+        Z: 1
+      Speed: 1
+      Run:
+        Times: 5
+        Interval: 20
+    Barrier:
+      Type: BARRIER
+      Amount: 1
+    Crit_Magic:
+      Type: CRIT_MAGIC
+      Amount: 1
+      Run:
+        Times: 6
+        Interval: 10
+    Slime:
+      Type: SLIME
+      Amount: 3
+      Run:
+        Times: 8
+        Interval: 20
+    Flame:
+      Type: FLAME
+      Amount: 3
+      Run:
+        Times: 8
+        Interval: 20
+  # The menu item for some events like showing blocks or destroying it.
+  # If you don't have a menu in your server, you can set Item Name to "" to use a vanilla item.
+  # Support: ItemJoin
+  Menu:
+    ItemJoin: "menu5"
+    Item:
+      Type: "PLAYER_HEAD"
+      Name: "&e&lMy &6&lMenu"
+  Location:
+    NormalWorlds:
+      Worlds:
+        - world
+    NetherWorlds:
+      Worlds:
+        - world_nether
+    EndWorlds:
+      Worlds:
+        - world_the_end
+    NormalBorder:
+      Worlds:
+        - world
+      Area:
+        S: 10000
+    Bedrock_World:
+      Worlds:
+        - world
+      Area:
+        Y: ">= 5"
+    Bedrock_Nether:
+      Worlds:
+        - world_nether
+      Area:
+        Y: "5 ~ 123"
+
+Message:
+  prefix: "&7[&dCorePlus&7]&r "
+  unknownCommand: "&f無效的指令"
+  noPermission: "&f無效的指令"
+  configReload: "&a重新讀取插件資料！"
+  targetNotFound: "&c找不到玩家 %targetplayer%"
+  cooldown: "&f請稍後再次使用..."
+  featureDisabled: "&c沒有啟用此功能"
+  dependNotFound: "&c需要插件 %plugin%."
+  onlyPlayer: "&c只有玩家才可以執行這個指令"
+  noFlagPerm: "&c沒有 &6%flag% &c權限"
+  notEnoughMoney: "&c沒有足夠的 %pricetype%， 需要 %pricetype%: %price%"
+  notEnoughMoneyTarget: "&c%targetplayer% 沒有足夠的 %pricetype%， 需要 %pricetype%: %price%."
+  inventoryFull: "&c背包空間不足"
+  inventoryFullTarget: '&c%targetplayer% 背包空間不足'
+  noShopItem: "&c你無法購買此方塊"
+  buySuccess: "&a成功購買 &e%item% &7x%amount% &a價格： %price% %pricetype% &8- &a%pricetype%: %balance%"
+  buyTargetSuccess: "&a已讓 %targetplayer% 成功購買 &e%item% x%amount% &a價格 %price% %pricetype% &8- &a%pricetype%: %balance%"
+  Commands:
+    title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
+    help: "&a/coreplus help &8- &7This help menu."
+    reload: "&a/coreplus reload &8- &7Reloads config file."
+    version: "&f/coreplus version &8- &7Checks the plugin version and updates."

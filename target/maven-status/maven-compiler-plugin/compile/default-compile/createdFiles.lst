@@ -10,6 +10,7 @@ tw\momocraft\coreplus\api\LocationInterface.class
 tw\momocraft\coreplus\utils\blocksutils\BlocksUtils.class
 tw\momocraft\coreplus\api\PlayerInterface.class
 tw\momocraft\coreplus\utils\Utils.class
+tw\momocraft\coreplus\utils\customcommands\CustomCommands$5.class
 tw\momocraft\coreplus\api\DependInterface.class
 tw\momocraft\coreplus\utils\eco\PlayerPointsAPI.class
 tw\momocraft\coreplus\CorePlus.class
@@ -25,6 +26,7 @@ tw\momocraft\coreplus\api\UtilsInterface.class
 tw\momocraft\coreplus\utils\PlayerUtils.class
 tw\momocraft\coreplus\utils\LangUtils.class
 tw\momocraft\coreplus\api\UpdateInterface.class
+tw\momocraft\coreplus\utils\customcommands\CustomCommands$6.class
 tw\momocraft\coreplus\api\LoggerInterface.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class
 tw\momocraft\coreplus\api\BlocksInterface.class

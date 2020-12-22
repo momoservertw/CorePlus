@@ -54,7 +54,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EntityPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -65,18 +65,6 @@
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="tw.momocraft.coreplus.utils.eco" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources" />
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources\Entities" />
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="tw.momocraft.coreplus.utils" />
-      <recent name="tw.momocraft.serverplus.listeners.event" />
-      <recent name="tw.momocraft.serverplus.utils" />
-      <recent name="tw.momocraft.serverplus.listeners" />
-      <recent name="tw.momocraft.entityplus" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\resources" />
       <recent name="C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils" />
@@ -84,8 +72,54 @@
       <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\java\tw\momocraft\entityplus\utils\locationapi" />
       <recent name="C:\Users\Sayuri\IdeaProjects\EntityPlus\src\main\resources" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="tw.momocraft.coreplus.api" />
+      <recent name="tw.momocraft.coreplus.utils" />
+      <recent name="tw.momocraft.serverplus.listeners.event" />
+      <recent name="tw.momocraft.serverplus.utils" />
+      <recent name="tw.momocraft.serverplus.listeners" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources" />
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources\Entities" />
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
+    </key>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="RunManager" selected="Application.TempCopy">
+    <configuration name="TempCopy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.TempCopy" />
+      <module name="CorePlus" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tw.momocraft.coreplus.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TempCopyAPI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.TempCopyAPI" />
+      <module name="CorePlus" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tw.momocraft.coreplus.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TempCopy" />
+        <item itemvalue="Application.TempCopyAPI" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -124,34 +158,34 @@
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state x="3144" y="217" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608196499895" />
-    <state x="475" y="162" key="FileChooserDialogImpl" timestamp="1608362748025">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state x="634" y="216" key="FileChooserDialogImpl" timestamp="1608607245880">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1608362748025" />
-    <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608154406493" />
-    <state width="1237" height="211" key="GridCell.Tab.0.bottom" timestamp="1608566245059">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608607245880" />
+    <state width="1663" height="307" key="GridCell.Tab.0.bottom" timestamp="1608658516658">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="211" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
-    <state width="1663" height="209" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981848" />
+    <state width="1663" height="307" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608658516658" />
     <state width="1663" height="209" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.center" timestamp="1608566245059">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state width="1663" height="307" key="GridCell.Tab.0.center" timestamp="1608658516658">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="211" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
-    <state width="1663" height="209" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981847" />
+    <state width="1663" height="307" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608658516658" />
     <state width="1663" height="209" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.left" timestamp="1608566245059">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state width="1663" height="307" key="GridCell.Tab.0.left" timestamp="1608658516658">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="211" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
-    <state width="1663" height="209" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981847" />
+    <state width="1663" height="307" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608658516658" />
     <state width="1663" height="209" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1237" height="211" key="GridCell.Tab.0.right" timestamp="1608566245059">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state width="1663" height="307" key="GridCell.Tab.0.right" timestamp="1608658516658">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="211" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
-    <state width="1663" height="209" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193981848" />
+    <state width="1663" height="307" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608658516658" />
     <state width="1663" height="209" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1608106777953">
       <screen x="0" y="0" width="1280" height="689" />
@@ -166,11 +200,11 @@
     </state>
     <state x="297" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1280.689@0.0.1280.689" timestamp="1608395563481" />
     <state x="396" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608542555054" />
-    <state x="370" y="4" width="770" height="668" key="find.popup" timestamp="1608565510327">
-      <screen x="0" y="0" width="1280" height="689" />
+    <state x="493" y="5" width="1026" height="891" key="find.popup" timestamp="1608654434634">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="370" y="4" width="770" height="668" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1608565510327" />
-    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608193980822" />
+    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608654434634" />
     <state x="2901" y="39" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608193944347" />
     <state x="551" y="206" key="refactoring.ChangeSignatureDialog" timestamp="1604062531792">
       <screen x="0" y="0" width="1707" height="920" />

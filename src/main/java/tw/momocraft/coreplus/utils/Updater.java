@@ -14,6 +14,7 @@ public class Updater implements UpdateInterface {
     @Override
     public void check(String prefix, CommandSender sender, String plugin, String ver) {
         if (!ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
+            ConfigHandler.getLang().sendMsg(prefix,sender, "&cYou need to enable the option \"Check-Updates\" in CorePlus config.yml");
             return;
         }
         if (prefix == null)

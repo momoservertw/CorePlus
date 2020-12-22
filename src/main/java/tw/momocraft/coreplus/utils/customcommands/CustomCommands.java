@@ -37,6 +37,20 @@ public class CustomCommands implements CommandInterface {
                 try {
                     it.remove();
                     String finalPrefix = prefix;
+                    if (cmd.contains(";")) {
+                        String delay = cmd.split(": ")[1];
+                        delay = delay.substring(0, delay.lastIndexOf(";"));
+                        List<String> newCommandList = new ArrayList<>(input);
+                        cmd = cmd.substring(cmd.indexOf(";") + 1);
+                        newCommandList.add(0, cmd);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                executeCmdList(finalPrefix, player, newCommandList, placeholder);
+                            }
+                        }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
+                        return;
+                    }
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -47,6 +61,7 @@ public class CustomCommands implements CommandInterface {
                 } catch (Exception ex) {
                     ConfigHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command type (" + cmd + ")");
                     ConfigHandler.getLang().sendErrorMsg(prefix, "Correct format: \"delay: Number\"");
+                    ConfigHandler.getLang().sendDebugTrace(prefix, ex);
                     continue;
                 }
             }
@@ -77,6 +92,20 @@ public class CustomCommands implements CommandInterface {
                 try {
                     it.remove();
                     String finalPrefix = prefix;
+                    if (cmd.contains(";")) {
+                        String delay = cmd.split(": ")[1];
+                        delay = delay.substring(0, delay.lastIndexOf(";"));
+                        List<String> newCommandList = new ArrayList<>(commandList);
+                        cmd = cmd.substring(cmd.indexOf(";") + 1);
+                        newCommandList.add(0, cmd);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                executeCmdList(finalPrefix, player, newCommandList, placeholder);
+                            }
+                        }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
+                        return;
+                    }
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -87,6 +116,7 @@ public class CustomCommands implements CommandInterface {
                 } catch (Exception ex) {
                     ConfigHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command type (" + cmd + ")");
                     ConfigHandler.getLang().sendErrorMsg(prefix, "Correct format: \"delay: Number\"");
+                    ConfigHandler.getLang().sendDebugTrace(prefix, ex);
                     continue;
                 }
             }
@@ -273,9 +303,10 @@ public class CustomCommands implements CommandInterface {
         try {
             ConfigHandler.getLogger().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
                     "latest.log", input, true, false, false);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             ConfigHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log: " + input + ")");
             ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+            ConfigHandler.getLang().sendDebugTrace(prefix, ex);
         }
     }
 
@@ -344,11 +375,11 @@ public class CustomCommands implements CommandInterface {
         try {
             player.setOp(true);
             player.chat("/" + input);
-        } catch (Exception e) {
-            ConfigHandler.getLang().sendDebugTrace(prefix, e);
+        } catch (Exception ex) {
             player.setOp(isOp);
             ConfigHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (op: " + input + ")");
             ConfigHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
+            ConfigHandler.getLang().sendDebugTrace(prefix, ex);
             removeOp(prefix, player);
         } finally {
             player.setOp(isOp);
@@ -483,6 +514,7 @@ public class CustomCommands implements CommandInterface {
         } catch (Exception ex) {
             ConfigHandler.getLang().sendErrorMsg(prefix, "Can not execute command (particle: " + input + ")");
             ConfigHandler.getLang().sendErrorMsg(prefix, "Correct format: particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed");
+            ConfigHandler.getLang().sendDebugTrace(prefix, ex);
         }
     }
 
