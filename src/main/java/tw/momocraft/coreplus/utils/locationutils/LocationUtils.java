@@ -1,8 +1,7 @@
-package tw.momocraft.coreplus.utils.locationutils;
+package tw.momocraft.coreplus.utils.conditions;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import tw.momocraft.coreplus.api.LocationInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocationUtils implements LocationInterface {
+public class LocationUtils {
 
     private Map<String, LocationMap> locMaps;
 
@@ -23,7 +22,6 @@ public class LocationUtils implements LocationInterface {
      * @param path the specific path.
      * @return the specific maps from LocMaps.
      */
-    @Override
     public List<LocationMap> getSpeLocMaps(String file, String path) {
         List<LocationMap> locMapList = new ArrayList<>();
         LocationMap locMap;
@@ -47,7 +45,6 @@ public class LocationUtils implements LocationInterface {
      * @param locMaps the checking location maps.
      * @return if the location is one of locMaps.
      */
-    @Override
     public boolean checkLocation(Location loc, List<LocationMap> locMaps, boolean def) {
         if (locMaps == null || locMaps.isEmpty()) {
             return def;
@@ -65,7 +62,7 @@ public class LocationUtils implements LocationInterface {
                         }
                     }
                 }
-                return !locMap.isPrevent();
+                return true;
             }
         }
         return false;

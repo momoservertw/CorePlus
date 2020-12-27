@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.blocksutils;
+package tw.momocraft.coreplus.utils.conditions;
 
 import java.util.List;
 

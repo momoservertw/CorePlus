@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.eco;
+package tw.momocraft.coreplus.utils.economy;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
@@ -6,11 +6,11 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
-public class PlayerPointsAPI {
+public class PlayerPointsUtils {
 
     private PlayerPoints pp;
 
-    public PlayerPointsAPI() {
+    public PlayerPointsUtils() {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("PlayerPoints");
         if (plugin != null) {
             pp = ((PlayerPoints) plugin);

@@ -1,4 +1,8 @@
+<<<<<<< e5811d5844a80d4babc72785c65de69bd5a57b60:src/main/java/tw/momocraft/coreplus/utils/Logger.java
 package tw.momocraft.coreplus.utils;
+=======
+package tw.momocraft.coreplus.utils.customcommands;
+>>>>>>> Rewriting...:src/main/java/tw/momocraft/coreplus/utils/customcommands/Logger.java
 
 import tw.momocraft.coreplus.api.LoggerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;

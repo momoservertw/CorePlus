@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils;
+package tw.momocraft.coreplus.utils.language;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -84,7 +84,7 @@ public class LanguageUtils implements LanguageInterface {
             if (prefix == null)
                 prefix = "";
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-            sendErrorMsg(prefix,"showing debug trace.");
+            sendErrorMsg(prefix, "showing debug trace.");
             e.printStackTrace();
         }
     }
@@ -198,20 +198,22 @@ public class LanguageUtils implements LanguageInterface {
 
     private String translateLangHolders(String langMessage, String... langHolder) {
         return langMessage
-                .replace("%command%", langHolder[0])
-                .replace("%player%", langHolder[1])
-                .replace("%targetplayer%", langHolder[2])
+                .replace("%player%", langHolder[0])
+                .replace("%targetplayer%", langHolder[1])
+                .replace("%plugin%", langHolder[2])
                 .replace("%prefix%", langHolder[3])
-                .replace("%group%", langHolder[4])
-                .replace("%pricetype%", langHolder[5])
-                .replace("%price%", langHolder[6])
-                .replace("%balance%", langHolder[7])
-                .replace("%amount%", langHolder[8])
-                .replace("%material%", langHolder[9])
-                .replace("%entity%", langHolder[10])
-                .replace("%distance%", langHolder[11])
-                .replace("%flag%", langHolder[12])
-                .replace("%plugin%", langHolder[13])
+                .replace("%command%", langHolder[4])
+                .replace("%group%", langHolder[5])
+                .replace("%amount%", langHolder[6])
+                .replace("%material%", langHolder[7])
+                .replace("%entity%", langHolder[8])
+                .replace("%pricetype%", langHolder[9])
+                .replace("%price%", langHolder[10])
+                .replace("%balance%", langHolder[11])
+                .replace("%distance%", langHolder[12])
+                .replace("%flag%", langHolder[13])
+                .replace("%material_display_name%", langHolder[17])
+                .replace("%entity_display_name%", langHolder[18])
                 .replace("%nick%", langHolder[20])
                 .replace("%nick_color%", langHolder[21])
                 .replace("%nick_length%", langHolder[22])

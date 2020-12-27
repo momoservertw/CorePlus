@@ -1,8 +1,7 @@
-package tw.momocraft.coreplus.utils.blocksutils;
+package tw.momocraft.coreplus.utils.conditions;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import tw.momocraft.coreplus.api.BlocksInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BlocksUtils implements BlocksInterface {
+public class BlocksUtils {
 
     private Map<String, BlocksMap> blocksMaps;
 
@@ -23,7 +22,6 @@ public class BlocksUtils implements BlocksInterface {
      * @param path the specific path.
      * @return the specific maps from BlocksMaps.
      */
-    @Override
     public List<BlocksMap> getSpeBlocksMaps(String file, String path) {
         List<BlocksMap> blocksMapList = new ArrayList<>();
         BlocksMap blocksMap;
@@ -41,7 +39,6 @@ public class BlocksUtils implements BlocksInterface {
      * @param blocksMaps the Blocks settings.
      * @return if there are certain blocks nearby the location.
      */
-    @Override
     public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps, boolean def) {
         if (blocksMaps == null || blocksMaps.isEmpty()) {
             return def;

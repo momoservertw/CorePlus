@@ -10,7 +10,7 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-public class BungeeCord implements PluginMessageListener {
+public class BungeeCordUtils implements PluginMessageListener {
 
 	public static void SwitchServers(Player player, String server) {
 		Messenger messenger = CorePlus.getInstance().getServer().getMessenger();

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.locationutils;
+package tw.momocraft.coreplus.utils.conditions;
 
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.eco;
+package tw.momocraft.coreplus.utils.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -10,11 +10,11 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.UUID;
 
-public class VaultAPI {
+public class VaultUtils {
     private Economy econ = null;
     private Permission perms = null;
 
-    public VaultAPI() {
+    public VaultUtils() {
         if (!this.setupEconomy()) {
             UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCan not find the Economy plugin.");
         }
