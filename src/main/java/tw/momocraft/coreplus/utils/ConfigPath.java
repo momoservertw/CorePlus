@@ -175,7 +175,7 @@ public class ConfigPath implements ConfigInterface {
                                     list.add(EntityType.valueOf(customType).name());
                                 } catch (Exception ex) {
                                     if (UtilsHandler.getDepend().MythicMobsEnabled()) {
-                                        if (MythicMobsAPI.isMythicMobName(type)) {
+                                        if (UtilsHandler.getEntity().isMythicMobName(type)) {
                                             list.add(type);
                                             continue;
                                         }

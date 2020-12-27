@@ -23,4 +23,5 @@ public interface PlayerInterface {
     boolean setPlayerPrimaryGroup(UUID uuid, String group);
 
     boolean isPlayerInGroup(Player player, String group);
+
 }

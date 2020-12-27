@@ -4,18 +4,21 @@ import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
-import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
-import tw.momocraft.coreplus.utils.eco.VaultAPI;
+import tw.momocraft.coreplus.utils.conditions.ItemJoinUtils;
+import tw.momocraft.coreplus.utils.conditions.ResidenceUtils;
+import tw.momocraft.coreplus.utils.economy.GemsEcoUtils;
+import tw.momocraft.coreplus.utils.economy.PlayerPointsUtils;
+import tw.momocraft.coreplus.utils.economy.VaultUtils;
 import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 public class Dependence implements DependInterface {
 
-    private VaultAPI vaultApi;
-    private PlayerPointsAPI playerPointsApi;
-    private GemsEcoAPI gemsEcoApi;
+    private VaultUtils vaultApi;
+    private PlayerPointsUtils playerPointsApi;
+    private GemsEcoUtils gemsEcoApi;
     private LuckPermsAPI luckPermsApi;
     private ItemJoinUtils itemJoinUtils;
+    private ResidenceUtils residenceUtils;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
@@ -62,11 +65,17 @@ public class Dependence implements DependInterface {
                 setItemJoinUtils();
             }
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
+            Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
+            if (Residence) {
+                setResidenceUtils();
+            }
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LangUtils")) {
-            LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.tw.momocraft.coreplus.utils.language.LangUtils")) {
+            LangUtils = Bukkit.getServer().getPluginManager().getPlugin("tw.momocraft.coreplus.utils.language.LangUtils") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.DiscordSRV")) {
             DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
@@ -97,7 +106,7 @@ public class Dependence implements DependInterface {
                 + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
                 + (LuckPermsEnabled() ? "LuckPerms, " : "")
                 + (PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
-                + (LangUtilsEnabled() ? "LangUtils, " : "")
+                + (LangUtilsEnabled() ? "tw.momocraft.coreplus.utils.language.LangUtils, " : "")
                 + (DiscordSRVEnabled() ? "DiscordSRV, " : "")
                 + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
                 + (CMIEnabled() ? "CMI, " : "")
@@ -190,41 +199,40 @@ public class Dependence implements DependInterface {
         return this.AuthMe;
     }
 
-    @Override
-    public VaultAPI getVaultApi() {
+    public VaultUtils getVaultApi() {
         return this.vaultApi;
     }
 
-    @Override
-    public PlayerPointsAPI getPlayerPointsApi() {
+    public PlayerPointsUtils getPlayerPointsApi() {
         return this.playerPointsApi;
     }
 
-    @Override
-    public GemsEcoAPI getGemsEcoApi() {
+    public GemsEcoUtils getGemsEcoApi() {
         return this.gemsEcoApi;
     }
 
-    @Override
     public LuckPermsAPI getLuckPermsApi() {
         return this.luckPermsApi;
     }
 
-    @Override
     public ItemJoinUtils getItemJoinUtils() {
         return this.itemJoinUtils;
     }
 
+    public ResidenceUtils getResidenceUtils() {
+        return this.residenceUtils;
+    }
+
     private void setVaultApi() {
-        vaultApi = new VaultAPI();
+        vaultApi = new VaultUtils();
     }
 
     private void setPlayerPointsApi() {
-        playerPointsApi = new PlayerPointsAPI();
+        playerPointsApi = new PlayerPointsUtils();
     }
 
     private void setGemsEconomyApi() {
-        gemsEcoApi = new GemsEcoAPI();
+        gemsEcoApi = new GemsEcoUtils();
     }
 
     private void setLuckPermsApi() {
@@ -233,6 +241,10 @@ public class Dependence implements DependInterface {
 
     private void setItemJoinUtils() {
         itemJoinUtils = new ItemJoinUtils();
+    }
+
+    private void setResidenceUtils() {
+        residenceUtils = new ResidenceUtils();
     }
 
 }

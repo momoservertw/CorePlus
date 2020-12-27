@@ -46,7 +46,7 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <!--LangUtils Repo-->
+        <!--tw.momocraft.coreplus.utils.language.LangUtils Repo-->
         <repository>
             <id>lang-utils-repo</id>
             <url>https://raw.github.com/MascusJeoraly/LanguageUtils/mvn-repo/</url>
@@ -131,7 +131,7 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
-        <!--LangUtils API-->
+        <!--tw.momocraft.coreplus.utils.language.LangUtils API-->
         <dependency>
             <groupId>com.meowj</groupId>
             <artifactId>LangUtils</artifactId>

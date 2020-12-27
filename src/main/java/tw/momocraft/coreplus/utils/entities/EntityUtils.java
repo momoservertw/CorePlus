@@ -3,7 +3,6 @@ package tw.momocraft.coreplus.utils.entities;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.bukkit.entity.Entity;
 import tw.momocraft.coreplus.api.EntityInterface;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class EntityUtils implements EntityInterface {
 

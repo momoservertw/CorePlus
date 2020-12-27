@@ -3,21 +3,21 @@ package tw.momocraft.coreplus.handlers;
 import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
-import tw.momocraft.coreplus.utils.blocksutils.BlocksUtils;
-import tw.momocraft.coreplus.utils.locationutils.LocationUtils;
+import tw.momocraft.coreplus.utils.conditions.ConditionUtils;
+import tw.momocraft.coreplus.utils.entities.EntityUtils;
+import tw.momocraft.coreplus.utils.files.FileUtils;
+import tw.momocraft.coreplus.utils.language.LanguageUtils;
 
 public class UtilsHandler {
 
     public static void setUp(boolean reload) {
         setLanguageUtils(new LanguageUtils());
         setDependence(new Dependence());
+        setConditionUtils(new ConditionUtils());
         setPlayerUtils(new PlayerUtils());
+        setEntityUtils(new EntityUtils());
         setUtils(new Utils());
-        setLogger(new Logger());
-        setZipper(new Zipper());
         setUpdater(new Updater());
-        setLocationUtils(new LocationUtils());
-        setBlockUtils(new BlocksUtils());
         if (!reload) {
             getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion());
         }
@@ -25,21 +25,12 @@ public class UtilsHandler {
 
     private static Dependence dependence;
     private static LanguageUtils languageUtils;
-    private static PlayerUtils playerUtils;
-    private static Utils utils;
-    private static Logger logger;
-    private static Zipper zipper;
-    private static LocationUtils locationUtils;
-    private static BlocksUtils blocksUtils;
     private static Updater updater;
-
-    public static LanguageUtils getLang() {
-        return languageUtils;
-    }
-
-    private static void setLanguageUtils(LanguageUtils language) {
-        languageUtils = language;
-    }
+    private static Utils utils;
+    private static FileUtils fileUtils;
+    private static ConditionUtils conditionUtils;
+    private static PlayerUtils playerUtils;
+    private static EntityUtils entityUtils;
 
     public static Dependence getDepend() {
         return dependence;
@@ -47,14 +38,6 @@ public class UtilsHandler {
 
     private static void setDependence(Dependence depend) {
         dependence = depend;
-    }
-
-    public static PlayerUtils getPlayer() {
-        return playerUtils;
-    }
-
-    private static void setPlayerUtils(PlayerUtils player) {
-        playerUtils = player;
     }
 
     public static void setUtils(Utils util) {
@@ -65,36 +48,12 @@ public class UtilsHandler {
         return utils;
     }
 
-    public static Logger getLog() {
-        return logger;
+    public static LanguageUtils getLang() {
+        return languageUtils;
     }
 
-    private static void setLogger(Logger log) {
-        logger = log;
-    }
-
-    public static Zipper getZip() {
-        return zipper;
-    }
-
-    private static void setZipper(Zipper zip) {
-        zipper = zip;
-    }
-
-    public static void setLocationUtils(LocationUtils loc) {
-        locationUtils = loc;
-    }
-
-    public static LocationUtils getLoc() {
-        return locationUtils;
-    }
-
-    public static void setBlockUtils(BlocksUtils blocks) {
-        blocksUtils = blocks;
-    }
-
-    public static BlocksUtils getBlock() {
-        return blocksUtils;
+    private static void setLanguageUtils(LanguageUtils language) {
+        languageUtils = language;
     }
 
     public static Updater getUpdate() {
@@ -104,4 +63,37 @@ public class UtilsHandler {
     private static void setUpdater(Updater update) {
         updater = update;
     }
+
+    public static ConditionUtils getCondition() {
+        return conditionUtils;
+    }
+
+    private static void setConditionUtils(ConditionUtils condition) {
+        conditionUtils = condition;
+    }
+
+    public static EntityUtils getEntity() {
+        return entityUtils;
+    }
+
+    private static void setEntityUtils(EntityUtils entity) {
+        entityUtils = entity;
+    }
+
+    public static PlayerUtils getPlayer() {
+        return playerUtils;
+    }
+
+    private static void setPlayerUtils(PlayerUtils player) {
+        playerUtils = player;
+    }
+
+    public static FileUtils getFile() {
+        return fileUtils;
+    }
+
+    private static void setFileUtils(FileUtils file) {
+        fileUtils = file;
+    }
+
 }

@@ -2,8 +2,6 @@ package tw.momocraft.coreplus.api;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.CorePlus;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
 
 import java.util.List;
 

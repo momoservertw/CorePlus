@@ -1,12 +1,5 @@
 package tw.momocraft.coreplus.api;
 
-import tw.momocraft.coreplus.utils.ItemJoinUtils;
-import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
-import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
-import tw.momocraft.coreplus.utils.eco.VaultAPI;
-import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
-
-
 public interface DependInterface {
 
     boolean VaultEnabled();
@@ -34,15 +27,4 @@ public interface DependInterface {
     boolean ItemJoinEnabled();
 
     boolean AuthMeEnabled();
-
-
-    VaultAPI getVaultApi();
-
-    PlayerPointsAPI getPlayerPointsApi();
-
-    GemsEcoAPI getGemsEcoApi();
-
-    LuckPermsAPI getLuckPermsApi();
-
-    ItemJoinUtils getItemJoinUtils();
 }

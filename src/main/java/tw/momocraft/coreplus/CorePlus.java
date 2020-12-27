@@ -32,13 +32,8 @@ public class CorePlus extends JavaPlugin {
     //  ============================================== //
     //         API                                     //
     //  ============================================== //
-    private BlocksInterface blocksAPI = null;
-    public BlocksInterface getBlocksManager() {
-        if (blocksAPI == null)
-            blocksAPI = UtilsHandler.getBlock();
-        return blocksAPI;
-    }
     private CommandInterface commandAPI = null;
+
     public CommandInterface getCommandManager() {
         if (commandAPI == null)
             commandAPI = new CustomCommands();
@@ -46,72 +41,75 @@ public class CorePlus extends JavaPlugin {
     }
 
     private ConfigInterface configAPI = null;
+
     public ConfigInterface getConfigManager() {
         if (configAPI == null)
             configAPI = ConfigHandler.getConfigPath();
         return configAPI;
     }
 
+    private ConditionInterface conditionAPI = null;
+
+    public ConditionInterface getConditionManager() {
+        if (conditionAPI == null)
+            conditionAPI = UtilsHandler.getCondition();
+        return conditionAPI;
+    }
+
     private DependInterface dependAPI = null;
+
     public DependInterface getDependManager() {
         if (dependAPI == null)
             dependAPI = UtilsHandler.getDepend();
         return dependAPI;
     }
 
+    private EntityInterface entityAPI = null;
+
+    public EntityInterface getEntityManager() {
+        if (entityAPI == null)
+            entityAPI = UtilsHandler.getEntity();
+        return entityAPI;
+    }
+
+    private FileInterface fileAPI = null;
+
+    public FileInterface getFileManager() {
+        if (fileAPI == null)
+            fileAPI = UtilsHandler.getFile();
+        return fileAPI;
+    }
+
     private LanguageInterface languageAPI = null;
+
     public LanguageInterface getLangManager() {
         if (languageAPI == null)
             languageAPI = UtilsHandler.getLang();
         return languageAPI;
     }
 
-    private LocationInterface locationAPI = null;
-    public LocationInterface getLocationManager() {
-        if (locationAPI == null)
-            locationAPI = UtilsHandler.getLoc();
-        return locationAPI;
-    }
-
-    private LoggerInterface loggerAPI = null;
-    public LoggerInterface getLogManager() {
-        if (loggerAPI == null)
-            loggerAPI = new Logger();
-        return loggerAPI;
-    }
-
     private PlayerInterface playerAPI = null;
+
     public PlayerInterface getPlayerManager() {
         if (playerAPI == null)
             playerAPI = new PlayerUtils();
         return playerAPI;
     }
 
-    private UtilsInterface utilsAPI = null;
-    public UtilsInterface getUtilsManager() {
-        if (utilsAPI == null)
-            utilsAPI = new Utils();
-        return utilsAPI;
-    }
-
     private UpdateInterface updateAPI = null;
+
     public UpdateInterface getUpdateManager() {
         if (updateAPI == null)
             updateAPI = new Updater();
         return updateAPI;
     }
 
-    private ZipInterface zipAPI = null;
-    public ZipInterface getZipManager() {
-        if (zipAPI == null)
-            zipAPI = new Zipper();
-        return zipAPI;
+    private UtilsInterface utilsAPI = null;
+
+    public UtilsInterface getUtilsManager() {
+        if (utilsAPI == null)
+            utilsAPI = new Utils();
+        return utilsAPI;
     }
 
-    private ResidenceInterface residenceAPI = null;
-    public ResidenceInterface getResidenceManager() {
-        if (residenceAPI == null)
-            residenceAPI = new ResidenceUtils();
-        return residenceAPI;
-    }
 }

@@ -311,7 +311,7 @@ public class CustomCommands implements CommandInterface {
     @Override
     public void dispatchLogCmd(String prefix, String input) {
         try {
-            UtilsHandler.getLog().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
+            UtilsHandler.getLang().addLog(CorePlus.getInstance().getDataFolder().getPath() + "//Logs",
                     "latest.log", input, true, false, false);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log: " + input + ")");
@@ -344,7 +344,7 @@ public class CustomCommands implements CommandInterface {
             path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
         }
         try {
-            UtilsHandler.getLog().addLog(path, logMap.getName(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+            UtilsHandler.getLang().addLog(path, logMap.getName(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception e) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + input + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "Please check out the format of \"Log\" in CorePlus/config.yml.");
@@ -440,7 +440,7 @@ public class CustomCommands implements CommandInterface {
     @Override
     public void dispatchBungeeCordCmd(String prefix, Player player, String input) {
         try {
-            BungeeCord.ExecuteCommand(player, input);
+            BungeeCordUtils.ExecuteCommand(player, input);
         } catch (Exception e) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (bungee: " + input + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");

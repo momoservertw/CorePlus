@@ -28,4 +28,6 @@ public interface LanguageInterface {
     String[] newString();
 
     void sendLangMsg(String prefix, String nodeLocation, CommandSender sender, String... placeHolder);
+
+    void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip);
 }
