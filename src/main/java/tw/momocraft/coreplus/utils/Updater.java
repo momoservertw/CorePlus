@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.utils;
 import org.bukkit.command.CommandSender;
 import tw.momocraft.coreplus.api.UpdateInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,7 +15,7 @@ public class Updater implements UpdateInterface {
     @Override
     public void check(String prefix, CommandSender sender, String plugin, String ver) {
         if (!ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
-            ConfigHandler.getLang().sendMsg(prefix,sender, "&cYou need to enable the option \"Check-Updates\" in CorePlus config.yml");
+            UtilsHandler.getLang().sendMsg(prefix,sender, "&cYou need to enable the option \"Check-Updates\" in CorePlus config.yml");
             return;
         }
         if (prefix == null)
@@ -47,20 +48,20 @@ public class Updater implements UpdateInterface {
                 break;
         }
         if (ver == null) {
-            ConfigHandler.getLang().sendErrorMsg(prefix, "CorePlus is out of date.");
+            UtilsHandler.getLang().sendErrorMsg(prefix, "CorePlus is out of date.");
             return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);
         if (onlineVer != null) {
-            ConfigHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
-            ConfigHandler.getLang().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
+            UtilsHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
+            UtilsHandler.getLang().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
         } else {
-            ConfigHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
+            UtilsHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
         }
     }
 
     private String searching(CommandSender sender, String prefix, String plugin, String ver, String id) {
-        ConfigHandler.getLang().sendMsg(prefix, sender, "Checking updates...");
+        UtilsHandler.getLang().sendMsg(prefix, sender, "Checking updates...");
         String onlineVer = null;
         try {
             URLConnection connection = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + id + "?_=" + System.currentTimeMillis()).openConnection();
@@ -82,7 +83,7 @@ public class Updater implements UpdateInterface {
             }
             return onlineVer;
         } catch (Exception e) {
-            ConfigHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
+            UtilsHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
         }
         return null;
     }

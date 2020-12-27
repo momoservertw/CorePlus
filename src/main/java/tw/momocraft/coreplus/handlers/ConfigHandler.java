@@ -5,9 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
-import tw.momocraft.coreplus.utils.blocksutils.BlocksUtils;
-import tw.momocraft.coreplus.utils.locationutils.LocationUtils;
-import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -17,33 +14,13 @@ public class ConfigHandler {
     private static YamlConfiguration configYAML;
     private static YamlConfiguration spigotYAML;
     private static YamlConfiguration groupsYAML;
-    private static Depend depends;
     private static ConfigPath configPaths;
-    private static Language lang;
-    private static Permissions perm;
-    private static Utils util;
-    private static Logger log;
-    private static Zipper zip;
-    private static LocationUtils locUtils;
-    private static BlocksUtils blockUtils;
-    private static Updater update;
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
         genConfigFile("groups.yml");
-        setLang(new Language());
-        setDepends(new Depend());
-        setPerm(new Permissions());
+        UtilsHandler.setUp(reload);
         setConfigPath(new ConfigPath());
-        setUtil(new Utils());
-        setLogger(new Logger());
-        setZipper(new Zipper());
-        setUpdater(new Updater());
-        setLocUtils(new LocationUtils());
-        setBlockUtils(new BlocksUtils());
-        if (!reload) {
-            getUpdater().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion());
-        }
     }
 
     public static FileConfiguration getConfig(String fileName) {
@@ -75,7 +52,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCannot save " + fileName + " to disk!");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -128,7 +105,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     getConfigData(filePath, fileName);
-                    ConfigHandler.getLang().sendConsoleMsg(getPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
+                    UtilsHandler.getLang().sendConsoleMsg(getPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }
@@ -142,79 +119,6 @@ public class ConfigHandler {
     public static ConfigPath getConfigPath() {
         return configPaths;
     }
-
-    public static Language getLang() {
-        return lang;
-    }
-
-    private static void setLang(Language language) {
-        lang = language;
-    }
-
-    public static Depend getDepends() {
-        return depends;
-    }
-
-    private static void setDepends(Depend depend) {
-        depends = depend;
-    }
-
-    public static Permissions getPerm() {
-        return perm;
-    }
-
-    private static void setPerm(Permissions permissions) {
-        perm = permissions;
-    }
-
-    public static void setUtil(Utils utils) {
-        util = utils;
-    }
-
-    public static Utils getUtils() {
-        return util;
-    }
-
-    public static Logger getLogger() {
-        return log;
-    }
-
-    private static void setLogger(Logger logger) {
-        log = logger;
-    }
-
-    public static Zipper getZip() {
-        return zip;
-    }
-
-    private static void setZipper(Zipper ziper) {
-        zip = ziper;
-    }
-
-    public static void setLocUtils(LocationUtils locationUtils) {
-        locUtils = locationUtils;
-    }
-
-    public static void setBlockUtils(BlocksUtils blocksUtils) {
-        blockUtils = blocksUtils;
-    }
-
-    public static LocationUtils getLocUtils() {
-        return locUtils;
-    }
-
-    public static BlocksUtils getBlockUtils() {
-        return blockUtils;
-    }
-
-    public static Updater getUpdater() {
-        return update;
-    }
-
-    private static void setUpdater(Updater updater) {
-        update = updater;
-    }
-
 
     public static String getPrefix() {
         return getConfig("config.yml").getString("Message.prefix");

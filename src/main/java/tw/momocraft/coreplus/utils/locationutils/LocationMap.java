@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.locationutils;
 
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,17 +11,12 @@ import java.util.Map;
 
 public class LocationMap {
 
-    private boolean prevent;
     private List<String> worlds;
     private final Map<String, String> cord;
 
     public LocationMap() {
         worlds = new ArrayList<>();
         cord = new HashMap<>();
-    }
-
-    public void setPrevent(boolean prevent) {
-        this.prevent = prevent;
     }
 
     public void setWorlds(List<String> worlds) {
@@ -35,13 +31,9 @@ public class LocationMap {
         if (isCordFormat(type, value)) {
             cord.put(type, value);
         } else {
-            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&cThere is an error occurred. Please check the \"Location\" format.");
-            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&c" + type + ": " + value);
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&cThere is an error occurred. Please check the \"Location\" format.");
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&c" + type + ": " + value);
         }
-    }
-
-    public boolean isPrevent() {
-        return prevent;
     }
 
     public List<String> getWorlds() {

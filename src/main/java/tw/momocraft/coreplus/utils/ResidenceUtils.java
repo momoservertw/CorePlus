@@ -7,13 +7,13 @@ import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.api.ResidenceInterface;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class ResidenceUtils implements ResidenceInterface {
 
     @Override
     public boolean checkFlag(Player player, Location loc, boolean check, String flag) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return false;
         }
         if (!check) {
@@ -26,12 +26,12 @@ public class ResidenceUtils implements ResidenceInterface {
                 if (player != null) {
                     switch (flag) {
                         case "build":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.build")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.build")) {
                                 return true;
                             }
                             break;
                         case "destroy":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.destroy")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.destroy")) {
                                 return true;
                             }
                             if (perms.playerHas(player, Flags.build, false)) {
@@ -44,32 +44,32 @@ public class ResidenceUtils implements ResidenceInterface {
                             }
                             break;
                         case "use":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.use")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.use")) {
                                 return true;
                             }
                             break;
                         case "fly":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.fly")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.fly")) {
                                 return true;
                             }
                             break;
                         case "nofly":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.nofly")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.nofly")) {
                                 return true;
                             }
                             break;
                         case "tp":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.tp")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.tp")) {
                                 return true;
                             }
                             break;
                         case "command":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.command")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.command")) {
                                 return true;
                             }
                             break;
                         case "itempickup":
-                            if (ConfigHandler.getPerm().hasPermission(player, "residence.bypass.itempickup")) {
+                            if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.itempickup")) {
                                 return true;
                             }
                             break;

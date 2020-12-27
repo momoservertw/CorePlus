@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.api;
 
+import tw.momocraft.coreplus.utils.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
 import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
 import tw.momocraft.coreplus.utils.eco.VaultAPI;
@@ -42,4 +43,6 @@ public interface DependInterface {
     GemsEcoAPI getGemsEcoApi();
 
     LuckPermsAPI getLuckPermsApi();
+
+    ItemJoinUtils getItemJoinUtils();
 }

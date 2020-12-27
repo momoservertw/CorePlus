@@ -7,10 +7,11 @@ import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.Arrays;
 
-public class Language implements LanguageInterface {
+public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendChatMsg(String prefix, Player player, String message) {
@@ -168,7 +169,7 @@ public class Language implements LanguageInterface {
             input = langMessage;
         }
         input = translateLangHolders(input, initializeRows(placeHolder));
-        input = ConfigHandler.getUtils().translateLayout(input, player);
+        input = UtilsHandler.getUtil().translateLayout(input, player);
         String[] langLines = input.split(" /n ");
         for (String langLine : langLines) {
             sender.sendMessage(prefix + langLine);

@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.ConfigInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.customcommands.LogMap;
 import tw.momocraft.coreplus.utils.customcommands.ParticleMap;
 import tw.momocraft.coreplus.utils.customcommands.SoundMap;
@@ -26,8 +27,8 @@ public class ConfigPath implements ConfigInterface {
     private String menuType;
     private String menuName;
     private String vanillaTrans;
-    private Map<String, String> cmdProp = new HashMap<>();
-    private Map<String, LogMap> logProp = new HashMap<>();
+    private final Map<String, String> cmdProp = new HashMap<>();
+    private final Map<String, LogMap> logProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
     private final Map<String, ParticleMap> particleProp = new HashMap<>();
 
@@ -74,7 +75,7 @@ public class ConfigPath implements ConfigInterface {
                 try {
                     particleMap.setType(Particle.valueOf(particleType));
                 } catch (Exception ex) {
-                    ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cUnknown particle type: " + particleType);
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cUnknown particle type: " + particleType);
                     continue;
                 }
                 particleMap.setAmount(ConfigHandler.getConfig("config.yml").getInt("General.Particles." + group + ".Amount", 1));
@@ -173,12 +174,12 @@ public class ConfigPath implements ConfigInterface {
                                 try {
                                     list.add(EntityType.valueOf(customType).name());
                                 } catch (Exception ex) {
-                                    if (ConfigHandler.getDepends().MythicMobsEnabled()) {
+                                    if (UtilsHandler.getDepend().MythicMobsEnabled()) {
                                         if (MythicMobsAPI.isMythicMobName(type)) {
                                             list.add(type);
                                             continue;
                                         }
-                                        ConfigHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
+                                        UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
                                     }
                                 }
                                 break;
@@ -192,7 +193,7 @@ public class ConfigPath implements ConfigInterface {
                                 list.add(Particle.valueOf(customType).name());
                         }
                     } catch (Exception ignored) {
-                        ConfigHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
+                        UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
                     }
                 }
             }

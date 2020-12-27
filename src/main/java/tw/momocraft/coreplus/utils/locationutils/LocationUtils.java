@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.api.LocationInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,17 +120,17 @@ public class LocationUtils implements LocationInterface {
                 // R: 1000
                 switch (type) {
                     case "X":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
                     case "Y":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
                     case "Z":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                     case "!X":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
                     case "!Y":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
                     case "!Z":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]));
                     case "!R":
@@ -143,34 +144,34 @@ public class LocationUtils implements LocationInterface {
                 // X: ">= 1000"
                 switch (type) {
                     case "X":
-                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                        return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                     case "Y":
-                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                        return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                     case "Z":
-                        return ConfigHandler.getUtils().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                        return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                     case "!X":
-                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                        return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                     case "!Y":
-                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                        return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                     case "!Z":
-                        return !ConfigHandler.getUtils().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                        return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                 }
             } else if (length == 3) {
                 // X: "-1000 ~ 1000"
                 // R: "1000 0 0"
                 switch (type) {
                     case "X":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "Y":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "Z":
-                        return ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!X":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!Y":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "!Z":
-                        return !ConfigHandler.getUtils().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                     case "!R":
@@ -195,8 +196,8 @@ public class LocationUtils implements LocationInterface {
                 }
             }
         } catch (Exception e) {
-            ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "There is an error occurred. Please check the \"Location\" format.");
-            ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), type + ": " + value);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "There is an error occurred. Please check the \"Location\" format.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), type + ": " + value);
         }
         return false;
     }

@@ -3,17 +3,19 @@ package tw.momocraft.coreplus.utils;
 import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.eco.GemsEcoAPI;
 import tw.momocraft.coreplus.utils.eco.PlayerPointsAPI;
 import tw.momocraft.coreplus.utils.eco.VaultAPI;
 import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
 
-public class Depend implements DependInterface {
+public class Dependence implements DependInterface {
 
     private VaultAPI vaultApi;
     private PlayerPointsAPI playerPointsApi;
     private GemsEcoAPI gemsEcoApi;
     private LuckPermsAPI luckPermsApi;
+    private ItemJoinUtils itemJoinUtils;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
@@ -29,7 +31,7 @@ public class Depend implements DependInterface {
     private boolean ItemJoin = false;
     private boolean AuthMe = false;
 
-    public Depend() {
+    public Dependence() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vault")) {
             Vault = Bukkit.getServer().getPluginManager().getPlugin("Vault") != null;
             if (Vault) {
@@ -54,6 +56,12 @@ public class Depend implements DependInterface {
                 setLuckPermsApi();
             }
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.ItemJoin")) {
+            ItemJoin = Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null;
+            if (ItemJoin) {
+                setItemJoinUtils();
+            }
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
@@ -74,9 +82,6 @@ public class Depend implements DependInterface {
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MythicMobs")) {
             MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.ItemJoin")) {
-            ItemJoin = Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.AuthMe")) {
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
@@ -101,7 +106,7 @@ public class Depend implements DependInterface {
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "");
         try {
-            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
         } catch (Exception ignored) {
         }
 
@@ -205,6 +210,10 @@ public class Depend implements DependInterface {
         return this.luckPermsApi;
     }
 
+    @Override
+    public ItemJoinUtils getItemJoinUtils() {
+        return this.itemJoinUtils;
+    }
 
     private void setVaultApi() {
         vaultApi = new VaultAPI();
@@ -221,4 +230,9 @@ public class Depend implements DependInterface {
     private void setLuckPermsApi() {
         luckPermsApi = new LuckPermsAPI();
     }
+
+    private void setItemJoinUtils() {
+        itemJoinUtils = new ItemJoinUtils();
+    }
+
 }

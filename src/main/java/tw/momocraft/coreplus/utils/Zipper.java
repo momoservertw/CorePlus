@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils;
 
 import tw.momocraft.coreplus.api.ZipInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +39,7 @@ public class Zipper implements ZipInterface {
                     .map(Path::toFile)
                     .forEach(File::delete);
         } catch (IOException e) {
-            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             return false;
         }
         return true;

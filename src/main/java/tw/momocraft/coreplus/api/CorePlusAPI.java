@@ -17,10 +17,6 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getPlayerManager();
     }
 
-    public static PermissionInterface getPermManager() {
-        return CorePlus.getInstance().getPermManager();
-    }
-
     public static UtilsInterface getUtilsManager() {
         return CorePlus.getInstance().getUtilsManager();
     }
@@ -51,9 +47,5 @@ public class CorePlusAPI {
 
     public static LocationInterface getLocationManager() {
         return CorePlus.getInstance().getLocationManager();
-    }
-
-    public static PriceInterface getPriceManager() {
-        return CorePlus.getInstance().getPriceManager();
     }
 }

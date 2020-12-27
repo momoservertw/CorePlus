@@ -2,7 +2,6 @@ package tw.momocraft.coreplus.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import tw.momocraft.coreplus.api.UtilsInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -219,38 +219,38 @@ public class Utils implements UtilsInterface {
             try {
                 input = input.replace("%player%", playerName);
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             // %player_display_name%
             try {
                 input = input.replace("%player_display_name%", player.getDisplayName());
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             UUID playerUUID = player.getUniqueId();
             // %player_uuid%
             try {
                 input = input.replace("%player_uuid%", playerUUID.toString());
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             // %player_interact%
             try {
                 input = input.replace("%player_interact%", getNearbyPlayer(player, 3));
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             // %player_sneaking%
             try {
                 input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             // %player_flying%
             try {
                 input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
             Location loc = player.getLocation();
             // %player_world%
@@ -290,17 +290,17 @@ public class Utils implements UtilsInterface {
                     input = input.replace("%player_loc_y%", loc_y);
                     input = input.replace("%player_loc_z%", loc_z);
                 } catch (Exception e) {
-                    ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                 }
             }
-            if (ConfigHandler.getDepends().VaultEnabled()) {
+            if (UtilsHandler.getDepend().VaultEnabled()) {
                 if (input.contains("%money%")) {
-                    input = input.replace("%money%", String.valueOf(ConfigHandler.getDepends().getVaultApi().getBalance(playerUUID)));
+                    input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(playerUUID)));
                 }
             }
-            if (ConfigHandler.getDepends().PlayerPointsEnabled()) {
+            if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
                 if (input.contains("%points%")) {
-                    input = input.replace("%points%", String.valueOf(ConfigHandler.getDepends().getPlayerPointsApi().getBalance(playerUUID)));
+                    input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(playerUUID)));
                 }
             }
         }
@@ -309,20 +309,20 @@ public class Utils implements UtilsInterface {
             try {
                 input = input.replace("%player%", "CONSOLE");
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
         }
         // %server_name%
         try {
             input = input.replace("%server_name%", Bukkit.getServer().getName());
         } catch (Exception e) {
-            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         try {
             input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
         } catch (Exception e) {
-            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
         }
         // %random_number%500%
         if (input.contains("%random_number%")) {
@@ -334,7 +334,7 @@ public class Utils implements UtilsInterface {
                     }
                 }
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
         }
         // %random_player%
@@ -344,7 +344,7 @@ public class Utils implements UtilsInterface {
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
         }
         // %random_player_except%AllBye,huangge0513%
@@ -377,7 +377,7 @@ public class Utils implements UtilsInterface {
                             break;
                         }
                     } catch (Exception e) {
-                        ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                     }
                 }
             }
@@ -385,11 +385,11 @@ public class Utils implements UtilsInterface {
         // Translate color codes.
         input = ChatColor.translateAlternateColorCodes('&', input);
         // Translate PlaceHolderAPI's placeholders.
-        if (ConfigHandler.getDepends().PlaceHolderAPIEnabled()) {
+        if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
             try {
                 return PlaceholderAPI.setPlaceholders(player, input);
             } catch (NoSuchFieldError e) {
-                ConfigHandler.getLang().sendDebugMsg(ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
+                UtilsHandler.getLang().sendDebugMsg(ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
                 return input;
             }
         }
@@ -462,16 +462,17 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public boolean isHoldingMenu(ItemStack itemStack, Player player) {
+    public boolean isMenuNode(String node) {
+        return ConfigHandler.getConfigPath().getMenuIJ().equals(node);
+    }
+
+    @Override
+    public boolean isMenu(ItemStack itemStack) {
         // Holding ItemJoin menu.
-        if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-            ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+        if (UtilsHandler.getDepend().ItemJoinEnabled()) {
             String menuIJ = ConfigHandler.getConfigPath().getMenuIJ();
             if (!menuIJ.equals("")) {
-                if (itemJoinAPI.getNode(itemStack) != null) {
-                    return itemJoinAPI.getNode(itemStack).equals(menuIJ);
-                }
-                return false;
+                return UtilsHandler.getDepend().getItemJoinUtils().isMenu(itemStack);
             }
         }
         // Holding a menu item.
@@ -484,6 +485,15 @@ public class Utils implements UtilsInterface {
             }
             String menuName = ConfigHandler.getConfigPath().getMenuName();
             return menuName.equals("") || itemName.equals(translateColorCode(menuName));
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isCustomItem(ItemStack itemStack) {
+        // Holding ItemJoin menu.
+        if (UtilsHandler.getDepend().ItemJoinEnabled()) {
+            return UtilsHandler.getDepend().getItemJoinUtils().isCustom(itemStack);
         }
         return false;
     }

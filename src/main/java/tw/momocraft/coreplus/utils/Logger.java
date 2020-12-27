@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils;
 
 import tw.momocraft.coreplus.api.LoggerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,7 +31,7 @@ public class Logger implements LoggerInterface {
             bw.append(message);
             bw.close();
         } catch (IOException e) {
-            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
         }
     }
 
@@ -42,19 +43,19 @@ public class Logger implements LoggerInterface {
             if (!parentFile.exists()) {
                 try {
                     if (!parentFile.mkdir()) {
-                        ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
+                        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
                     }
                 } catch (Exception e) {
-                    ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                 }
             }
             // Creating file.
             try {
                 if (!file.createNewFile()) {
-                    ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                    UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                 }
             } catch (Exception e) {
-                ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
             }
         } else {
             // Creating new file on new date.
@@ -77,28 +78,28 @@ public class Logger implements LoggerInterface {
                     // Renaming the old file.
                     try {
                         if (!file.renameTo(renameFile)) {
-                            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
+                            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
                         }
                     } catch (Exception e) {
-                        ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                     }
                     // Compressing the file.
                     if (zip) {
                         try {
-                            if (ConfigHandler.getZip().zipFiles(file, null, null)) {
-                                ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
+                            if (UtilsHandler.getZip().zipFiles(file, null, null)) {
+                                UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
                             }
                         } catch (Exception e) {
-                            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                         }
                     }
                     // Create a new the file.
                     try {
                         if (!file.createNewFile()) {
-                            ConfigHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                         }
                     } catch (Exception e) {
-                        ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
                     }
                 }
             }

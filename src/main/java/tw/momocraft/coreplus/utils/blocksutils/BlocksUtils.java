@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.api.BlocksInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,8 +76,8 @@ public class BlocksUtils implements BlocksInterface {
                 if (groupConfig != null) {
                     blocksMaps.put(group, getBlocksMap(group));
                 } else {
-                    ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cThere is an error occurred. Please check your configuration.");
-                    ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cBlocks: " + group + " not found.");
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cThere is an error occurred. Please check your configuration.");
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cBlocks: " + group + " not found.");
                 }
             }
         }

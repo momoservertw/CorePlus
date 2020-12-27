@@ -8,6 +8,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class BungeeCord implements PluginMessageListener {
 
@@ -20,7 +21,7 @@ public class BungeeCord implements PluginMessageListener {
 		try {
 			out.writeUTF("Connect");
 			out.writeUTF(server);
-		} catch (Exception e) { ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e); }
+		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e); }
 		player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
 	}
 	
@@ -34,7 +35,7 @@ public class BungeeCord implements PluginMessageListener {
 			out.writeUTF("Subchannel");
 			out.writeUTF("Argument");
 			out.writeUTF(cmd);
-		} catch (Exception e) { ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e); }
+		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e); }
 		player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
 	}
 	

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.UUID;
 
@@ -15,10 +16,10 @@ public class VaultAPI {
 
     public VaultAPI() {
         if (!this.setupEconomy()) {
-            ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCan not find the Economy plugin.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCan not find the Economy plugin.");
         }
         if (!this.setupPermissions()) {
-            ConfigHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCan not find the Permission plugin.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cCan not find the Permission plugin.");
         }
     }
 

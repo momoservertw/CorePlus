@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.*;
 
 public interface UtilsInterface {
@@ -49,5 +50,9 @@ public interface UtilsInterface {
 
     String getSkullValue(ItemStack itemStack);
 
-    boolean isHoldingMenu(ItemStack itemStack, Player player);
+    boolean isMenuNode(String node);
+
+    boolean isMenu(ItemStack itemStack);
+
+    boolean isCustomItem(ItemStack itemStack);
 }

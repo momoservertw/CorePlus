@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,27 +35,27 @@ public class TabComplete implements TabCompleter {
                 }
             }
         } catch (Exception e) {
-            ConfigHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
         }
          */
         switch (args.length) {
             case 1:
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.use")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.use")) {
                     commands.add("help");
                 }
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.command.reload")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.reload")) {
                     commands.add("reload");
                 }
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.command.version")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.version")) {
                     commands.add("version");
                 }
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.command.buy")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.buy")) {
                     commands.add("buy");
                 }
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.command.give")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.give")) {
                     commands.add("give");
                 }
-                if (ConfigHandler.getPerm().hasPermission(sender, "barrierplus.command.itemjoinfix")) {
+                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.itemjoinfix")) {
                     commands.add("itemjoinfix");
                 }
                 break;
