@@ -5,44 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/ConditionInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/EntityInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/BlocksInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CorePlusAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CorePlusAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/DependInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/DependInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/LanguageInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/LanguageInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/LocationInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/LoggerInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/ResidenceInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/ZipInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/FileInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Dependence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Dependence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ItemJoinUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/ItemJoinUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/LangUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LangUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/LanguageUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LanguageUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/Logger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/MythicMobsAPI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ResidenceUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/ResidenceUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Zipper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/files/Zipper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/blocksutils/BlocksMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/BlocksMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/blocksutils/BlocksUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/BlocksUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/BungeeCord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/BungeeCordUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/eco/GemsEcoAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/economy/GemsEcoUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/eco/PlayerPointsAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/economy/PlayerPointsUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/eco/PriceMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/economy/PriceMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/eco/VaultAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/economy/VaultUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/entities/EntityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/entities/EntityUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/files/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/files/FileUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/locationutils/LocationMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/LocationMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/locationutils/LocationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/LocationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,10 +139,10 @@
     <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser/0.0.1280.689@0.0.1280.689" timestamp="1608564287172" />
     <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608963492820" />
     <state x="3219" y="176" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608152837116" />
-    <state x="95" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1608963855265">
-      <screen x="0" y="0" width="1707" height="920" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1609078766803">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.689@0.0.1280.689" timestamp="1608443038171" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.689@0.0.1280.689" timestamp="1609078766803" />
     <state x="95" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608963855265" />
     <state x="2560" y="10" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608196400381" />
     <state x="438" y="155" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609076801200">
@@ -193,28 +159,28 @@
     </state>
     <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1608362748025" />
     <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608607245880" />
-    <state width="1663" height="251" key="GridCell.Tab.0.bottom" timestamp="1608992836769">
-      <screen x="0" y="0" width="1707" height="920" />
+    <state width="1237" height="208" key="GridCell.Tab.0.bottom" timestamp="1609079316267">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
+    <state width="1237" height="208" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1609079316267" />
     <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608992836769" />
     <state width="1663" height="209" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1663" height="251" key="GridCell.Tab.0.center" timestamp="1608992836769">
-      <screen x="0" y="0" width="1707" height="920" />
+    <state width="1237" height="208" key="GridCell.Tab.0.center" timestamp="1609079316267">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
+    <state width="1237" height="208" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1609079316267" />
     <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608992836769" />
     <state width="1663" height="209" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1663" height="251" key="GridCell.Tab.0.left" timestamp="1608992836769">
-      <screen x="0" y="0" width="1707" height="920" />
+    <state width="1237" height="208" key="GridCell.Tab.0.left" timestamp="1609079316266">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
+    <state width="1237" height="208" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1609079316266" />
     <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608992836769" />
     <state width="1663" height="209" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
-    <state width="1663" height="251" key="GridCell.Tab.0.right" timestamp="1608992836769">
-      <screen x="0" y="0" width="1707" height="920" />
+    <state width="1237" height="208" key="GridCell.Tab.0.right" timestamp="1609079316267">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="211" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1608566245059" />
+    <state width="1237" height="208" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1609079316267" />
     <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608992836769" />
     <state width="1663" height="209" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608203385865" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1609078164550">

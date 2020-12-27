@@ -16,14 +16,6 @@ import java.util.List;
 
 public class CustomCommands implements CommandInterface {
 
-    /**
-     * Executing command list.
-     *
-     * @param prefix      the plugin's prefix.
-     * @param player      the target player.
-     * @param input       the input commands.
-     * @param placeholder translating placeholders.
-     */
     @Override
     public void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder) {
         if (prefix == null)
@@ -72,14 +64,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Executing command.
-     *
-     * @param prefix      the plugin's prefix.
-     * @param player      the target player.
-     * @param input       the input command.
-     * @param placeholder translating placeholders.
-     */
     @Override
     public void executeCmd(String prefix, Player player, String input, boolean placeholder) {
         if (prefix == null)
@@ -283,15 +267,9 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * To execute custom command.
-     * <p>
-     * custom: group, arg1
-     * group: "console: say %cmd_arg1%"
-     */
     @Override
-    public void dispatchCustomCmd(String prefix, Player player, String input, boolean placeholder) {
-        String[] placeHolderArr = input.split(", ");
+    public void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder) {
+        String[] placeHolderArr = group.split(", ");
         String newCmd = ConfigHandler.getConfigPath().getCmdProp().get(placeHolderArr[0]);
         if (newCmd == null) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the custom command group: " + placeHolderArr[0]);
@@ -303,11 +281,6 @@ public class CustomCommands implements CommandInterface {
         selectCmdType(prefix, player, newCmd, placeholder);
     }
 
-    /**
-     * Executing log message.
-     *
-     * @param input the message of log.
-     */
     @Override
     public void dispatchLogCmd(String prefix, String input) {
         try {
@@ -320,19 +293,11 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-
-    /**
-     * Executing log message from CorePlus config.yml.
-     * Format: "log-custom: GROUP"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param input  the message of log.
-     */
     @Override
-    public void dispatchLogCustomCmd(String prefix, String input) {
-        LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(input);
+    public void dispatchLogCustomCmd(String prefix, String group) {
+        LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(group);
         if (logMap == null) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (log-custom: " + input + ")");
+            UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (log-custom: " + group + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the group of \"Log\" in CorePlus/config.yml.");
             return;
         }
@@ -344,22 +309,14 @@ public class CustomCommands implements CommandInterface {
             path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
         }
         try {
-            UtilsHandler.getLang().addLog(path, logMap.getName(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+            UtilsHandler.getLang().addLog(path, logMap.getName(), group, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception e) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + input + ")");
+            UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + group + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "Please check out the format of \"Log\" in CorePlus/config.yml.");
             UtilsHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
-    /**
-     * Executing console command.
-     * Format: "console: COMMAND"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the command.
-     */
     @Override
     public void dispatchConsoleCmd(String prefix, Player player, String input) {
         try {
@@ -371,14 +328,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Executing operator command.
-     * Format: "op: COMMAND"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the command.
-     */
     @Override
     public void dispatchOpCmd(String prefix, Player player, String input) {
         boolean isOp = player.isOp();
@@ -410,14 +359,6 @@ public class CustomCommands implements CommandInterface {
         }, 20);
     }
 
-    /**
-     * Executing player command.
-     * Format: "player: COMMAND"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the command.
-     */
     @Override
     public void dispatchPlayerCmd(String prefix, Player player, String input) {
         try {
@@ -429,14 +370,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Executing BungeeCord command.
-     * Format: "bungee: COMMAND"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the command.
-     */
     @Override
     public void dispatchBungeeCordCmd(String prefix, Player player, String input) {
         try {
@@ -448,14 +381,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Sending a sound to player.
-     * Format: "Correct format: particle: Sound, Volume, Pitch"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the input sound value.
-     */
     @Override
     public void dispatchSoundCmd(String prefix, Player player, String input) {
         try {
@@ -469,14 +394,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Sending the sound from CorePlus config.yml to player.
-     * Format: "sound-custom: GROUP"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param player target.
-     * @param input  the sound group from CorePlus config.yml.
-     */
     @Override
     public void dispatchSoundCustomCmd(String prefix, Player player, String input) {
         try {
@@ -507,14 +424,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Sending a particle to player.
-     * Format: "Correct format: particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param loc    the location.
-     * @param input  the input particle value.
-     */
     @Override
     public void dispatchParticleCmd(String prefix, Location loc, String input) {
         try {
@@ -528,14 +437,6 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-    /**
-     * Sending the particle from CorePlus config.yml to player.
-     * Format: "particle-custom: GROUP"
-     *
-     * @param prefix the prefix of sending plugin.
-     * @param loc    the location.
-     * @param input  the particle group from CorePlus config.yml.
-     */
     @Override
     public void dispatchParticleCustomCmd(String prefix, Location loc, String input) {
         try {
