@@ -219,4 +219,9 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%nick_length%", langHolder[22])
                 ;
     }
+
+    @Override
+    public void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip) {
+        UtilsHandler.getLang().addLog(path, name, message, true, newFile, zip);
+    }
 }

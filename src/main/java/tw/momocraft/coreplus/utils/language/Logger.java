@@ -1,10 +1,5 @@
-<<<<<<< e5811d5844a80d4babc72785c65de69bd5a57b60:src/main/java/tw/momocraft/coreplus/utils/Logger.java
-package tw.momocraft.coreplus.utils;
-=======
-package tw.momocraft.coreplus.utils.customcommands;
->>>>>>> Rewriting...:src/main/java/tw/momocraft/coreplus/utils/customcommands/Logger.java
+package tw.momocraft.coreplus.utils.language;
 
-import tw.momocraft.coreplus.api.LoggerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -16,9 +11,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Logger implements LoggerInterface {
+public class Logger {
 
-    @Override
     public void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip) {
         File file = new File(path + "\\" + name);
         if (!file.exists()) {
@@ -90,7 +84,7 @@ public class Logger implements LoggerInterface {
                     // Compressing the file.
                     if (zip) {
                         try {
-                            if (UtilsHandler.getZip().zipFiles(file, null, null)) {
+                            if (UtilsHandler.getFile().zipFiles(file, null, null)) {
                                 UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
                             }
                         } catch (Exception e) {

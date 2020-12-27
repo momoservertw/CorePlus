@@ -1,26 +1,15 @@
-<<<<<<< e5811d5844a80d4babc72785c65de69bd5a57b60:src/main/java/tw/momocraft/coreplus/utils/ResidenceUtils.java
-package tw.momocraft.coreplus.utils;
-=======
 package tw.momocraft.coreplus.utils.conditions;
->>>>>>> Rewriting...:src/main/java/tw/momocraft/coreplus/utils/conditions/ResidenceUtils.java
-
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.api.ResidenceInterface;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-public class ResidenceUtils implements ResidenceInterface {
+public class ResidenceUtils {
 
-<<<<<<< e5811d5844a80d4babc72785c65de69bd5a57b60:src/main/java/tw/momocraft/coreplus/utils/ResidenceUtils.java
-    @Override
-    public boolean checkFlag(Player player, Location loc, boolean check, String flag) {
-=======
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
->>>>>>> Rewriting...:src/main/java/tw/momocraft/coreplus/utils/conditions/ResidenceUtils.java
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return false;
         }
