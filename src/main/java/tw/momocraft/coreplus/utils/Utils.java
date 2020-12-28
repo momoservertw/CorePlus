@@ -36,9 +36,9 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public int getRandom(int lower, int upper) {
+    public int getRandom(int lower, int higher) {
         Random random = new Random();
-        return random.nextInt((upper - lower) + 1) + lower;
+        return random.nextInt((higher - lower) + 1) + lower;
     }
 
     @Override
@@ -46,21 +46,11 @@ public class Utils implements UtilsInterface {
         return list.get(new Random().nextInt(list.size()));
     }
 
-    /**
-     * @param value the checking value
-     * @return if the chance will succeed or not.
-     */
     @Override
     public boolean isRandChance(double value) {
         return value < new Random().nextDouble();
     }
 
-    /**
-     * @param value      the spawn reason of this entity.
-     * @param list       the spawn Reasons in configuration.
-     * @param ignoreList the spawn Ignore-Reasons in configuration.
-     * @return if the entity spawn reason match the config setting.
-     */
     @Override
     public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList) {
         if (ignoreList.contains(value)) {
@@ -72,38 +62,16 @@ public class Utils implements UtilsInterface {
         return list.contains(value);
     }
 
-    /**
-     * @param block the checking block.
-     * @param value the option "Liquid" in configuration.
-     * @return if the entity spawned in water or lava.
-     */
     @Override
-    public boolean isLiquid(Block block, String value) {
-        if (value == null) {
-            return true;
-        }
-        boolean blockLiquid = block.isLiquid();
-        return value.equals("true") && blockLiquid || value.equals("false") && !blockLiquid;
+    public boolean isLiquid(Block block) {
+        return block.isLiquid();
     }
 
-    /**
-     * @param time  the checking word time..
-     * @param value the spawn day/night in configuration.
-     * @return if the entity spawn day match the config setting.
-     */
     @Override
-    public boolean isDay(double time, String value) {
-        if (value == null) {
-            return true;
-        }
-        return value.equals("true") && (time < 12300 || time > 23850) || value.equals("false") && (time >= 12300 && time <= 23850);
+    public boolean isDay(double time) {
+        return time < 12300 || time > 23850;
     }
 
-    /**
-     * @param operator the comparison operator to compare two numbers.
-     * @param number1  first number.
-     * @param number2  second number.
-     */
     @Override
     public boolean getCompare(String operator, double number1, double number2) {
         switch (operator) {
@@ -124,56 +92,34 @@ public class Utils implements UtilsInterface {
         return false;
     }
 
-    /**
-     * @param number the checking number
-     * @param r1     the first side of range.
-     * @param r2     another side of range.
-     * @return if the check number is inside the range.
-     * It will return false if the two side of range numbers are equal.
-     */
     @Override
-    public boolean getRange(double number, double r1, double r2) {
-        return r1 <= number && number <= r2 || r2 <= number && number <= r1;
+    public boolean getRange(double number, double r1, double r2, boolean equal) {
+        if (number == r1 || number == r2)
+            return equal;
+        return r1 < number && number < r2 || r2 < number && number < r1;
     }
 
-    /**
-     * @param number the checking number.
-     * @param r1     the first side of range.
-     * @param r2     another side of range.
-     * @return if the check number is inside the range.
-     * It will return false if the two side of range numbers are equal.
-     */
     @Override
-    public boolean getRange(int number, int r1, int r2) {
-        return r1 <= number && number <= r2 || r2 <= number && number <= r1;
+    public boolean getRange(int number, int r1, int r2, boolean equal) {
+        if (number == r1 || number == r2)
+            return equal;
+        return r1 < number && number < r2 || r2 < number && number < r1;
     }
 
-    /**
-     * @param number the location of event.
-     * @param r      the side of range.
-     * @return if the check number is inside the range.
-     */
     @Override
-    public boolean getRange(int number, int r) {
-        return -r <= number && number <= r || r <= number && number <= -r;
+    public boolean getRange(int number, int r, boolean equal) {
+        if (number == r || number == -r)
+            return equal;
+        return -r < number && number < r || r < number && number < -r;
     }
 
-    /**
-     * @param number the location of event.
-     * @param r      the side of range.
-     * @return if the check number is inside the range.
-     */
     @Override
-    public boolean getRange(double number, double r) {
-        return -r <= number && number <= r || r <= number && number <= -r;
+    public boolean getRange(double number, double r, boolean equal) {
+        if (number == r || number == -r)
+            return equal;
+        return -r < number && number < r || r < number && number < -r;
     }
 
-    /**
-     * @param loc      location.
-     * @param loc2     location2.
-     * @param distance The checking value.
-     * @return if two locations is in the distance.
-     */
     @Override
     public boolean inTheRange(Location loc, Location loc2, int distance) {
         if (loc.getWorld() == loc2.getWorld()) {

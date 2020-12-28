@@ -6,6 +6,7 @@ import tw.momocraft.coreplus.utils.*;
 import tw.momocraft.coreplus.utils.conditions.ConditionUtils;
 import tw.momocraft.coreplus.utils.entities.EntityUtils;
 import tw.momocraft.coreplus.utils.files.FileUtils;
+import tw.momocraft.coreplus.utils.files.Zipper;
 import tw.momocraft.coreplus.utils.language.LanguageUtils;
 
 public class UtilsHandler {
@@ -16,6 +17,8 @@ public class UtilsHandler {
         setConditionUtils(new ConditionUtils());
         setPlayerUtils(new PlayerUtils());
         setEntityUtils(new EntityUtils());
+        setFileUtils(new FileUtils());
+        setZipper(new Zipper());
         setUtils(new Utils());
         setUpdater(new Updater());
         if (!reload) {
@@ -28,6 +31,7 @@ public class UtilsHandler {
     private static Updater updater;
     private static Utils utils;
     private static FileUtils fileUtils;
+    private static Zipper zipper;
     private static ConditionUtils conditionUtils;
     private static PlayerUtils playerUtils;
     private static EntityUtils entityUtils;
@@ -96,4 +100,11 @@ public class UtilsHandler {
         fileUtils = file;
     }
 
+    public static Zipper getZip() {
+        return zipper;
+    }
+
+    private static void setZipper(Zipper zip) {
+        zipper = zip;
+    }
 }

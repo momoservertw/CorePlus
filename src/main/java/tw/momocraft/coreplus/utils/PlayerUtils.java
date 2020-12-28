@@ -30,8 +30,8 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public double getTypeBalance(UUID uuid, String priceType) {
-        switch (priceType) {
+    public double getTypeBalance(UUID uuid, String type) {
+        switch (type) {
             case "money":
                 if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
                     return UtilsHandler.getDepend().getVaultApi().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
@@ -44,13 +44,13 @@ public class PlayerUtils implements PlayerInterface {
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(priceType) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().getBalance(uuid, priceType);
+                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoApi().getBalance(uuid, type);
                     }
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + priceType);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
         return 0;
     }
 
