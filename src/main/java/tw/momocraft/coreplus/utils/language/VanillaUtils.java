@@ -10,14 +10,13 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VanillaUtils {
 
-    private Map<String, JsonObject> langProp = new HashMap<>();
+    private final Map<String, JsonObject> langProp = new HashMap<>();
 
     public VanillaUtils() {
         setUp();
@@ -63,6 +62,7 @@ public class VanillaUtils {
     public String getValinaName(String input, String type) {
         return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
     }
+
 
     public String getValinaNode(String local, String input, String type) {
         if (type.equals("entity")) {

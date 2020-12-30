@@ -5,49 +5,32 @@ import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BlocksUtils {
 
-    private Map<String, BlocksMap> blocksMaps;
+    private final Map<String, BlocksMap> blocksProp = new HashMap<>();
 
     public BlocksUtils() {
         setUp();
     }
 
-    public List<BlocksMap> getSpeBlocksMaps(List<String> list) {
-        List<BlocksMap> blocksMapList = new ArrayList<>();
-        BlocksMap blocksMap;
-        for (String group : list) {
-            blocksMap = blocksMaps.get(group);
-            if (blocksMap != null) {
-                blocksMapList.add(blocksMap);
-            }
-        }
-        return blocksMapList;
-    }
-
-    /**
-     * @param loc        the checking location.
-     * @param blocksMaps the Blocks settings.
-     * @return if there are certain blocks nearby the location.
-     */
-    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps, boolean def) {
-        if (blocksMaps == null || blocksMaps.isEmpty()) {
+    public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
+        if (blocksList == null || blocksList.isEmpty()) {
             return def;
         }
-        List<BlocksMap> ignoreMaps;
-        for (BlocksMap blocksMap : blocksMaps) {
-            ignoreMaps = blocksMap.getIgnoreMaps();
-            if (ignoreMaps != null) {
-                for (BlocksMap ignoreMap : ignoreMaps) {
-                    if (getSearchBlocks(loc, ignoreMap)) {
-                        return false;
-                    }
-                }
+        List<String> ignoreList;
+        BlocksMap blocksMap;
+        for (String group : blocksList) {
+            blocksMap = blocksProp.get(group);
+            ignoreList = blocksMap.getIgnoreList();
+            if (ignoreList == null || ignoreList.isEmpty()) {
+                continue;
+            }
+            if (checkBlocks(loc, ignoreList, def)) {
+                return false;
             }
             if (getSearchBlocks(loc, blocksMap)) {
                 return true;
@@ -56,88 +39,65 @@ public class BlocksUtils {
         return false;
     }
 
-    /**
-     * Setup LocMaps.
-     */
     private void setUp() {
-        blocksMaps = new HashMap<>();
         ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Blocks");
-        if (locConfig != null) {
-            ConfigurationSection groupConfig;
-            for (String group : locConfig.getKeys(false)) {
-                groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Blocks." + group);
-                if (groupConfig != null) {
-                    blocksMaps.put(group, getBlocksMap(group));
-                } else {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cThere is an error occurred. Please check your configuration.");
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cBlocks: " + group + " not found.");
-                }
+        if (locConfig == null) {
+            return;
+        }
+        ConfigurationSection groupConfig;
+        for (String group : locConfig.getKeys(false)) {
+            groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Blocks." + group);
+            if (groupConfig == null) {
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "&cCan not set the Blocks: " + group);
+                continue;
             }
+            blocksProp.put(group, setBlocksMap(group));
         }
     }
 
-    private BlocksMap getBlocksMap(String group) {
+    public Map<String, BlocksMap> getBlocksMap() {
+        return blocksProp;
+    }
+
+    private BlocksMap setBlocksMap(String group) {
         BlocksMap blocksMap = new BlocksMap();
-        List<BlocksMap> ignoreList = new ArrayList<>();
         blocksMap.setBlockTypes(ConfigHandler.getConfigPath().getTypeList(ConfigHandler.getPrefix(),
                 ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Types"), "Materials"));
-        // Setting the value of X and Z, and defining the type of horizontal.
-        String r = ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.R");
-        String s = ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.S");
-        if (r != null) {
-            blocksMap.setRound(true);
-            blocksMap.setX(Integer.parseInt(r));
-            blocksMap.setZ(Integer.parseInt(r));
-        } else if (s != null) {
-            blocksMap.setX(Integer.parseInt(s));
-            blocksMap.setZ(Integer.parseInt(s));
-        } else {
-            int x = ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.X");
-            int z = ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Z");
-            blocksMap.setX(x);
-            blocksMap.setZ(z);
-        }
-        // Setting the value of Y, and defining the type of vertical.
-        String v = ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.V");
-        if (v != null) {
-            blocksMap.setVertical(true);
-            blocksMap.setY(Integer.parseInt(v));
-        } else {
-            int y = ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Y");
-            blocksMap.setY(y);
-        }
-        // Setting the ignore block maps.
-        for (String ignoreGroup : ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Ignore")) {
-            ignoreList.add(getBlocksMap("General.Blocks." + ignoreGroup));
-        }
-        blocksMap.setIgnoreMaps(ignoreList);
+        blocksMap.setIgnoreList(ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Ignore"));
+        blocksMap.setS(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.S"));
+        blocksMap.setR(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.R"));
+        blocksMap.setY(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Y"));
+        blocksMap.setV(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.V"));
         return blocksMap;
     }
 
-    /**
-     * @param loc the checking location.
-     * @return Check if there are matching materials nearby.
-     */
     private boolean getSearchBlocks(Location loc, BlocksMap blocksMap) {
         List<String> blockTypes = blocksMap.getBlockTypes();
-        int rangeX = blocksMap.getX();
-        int rangeY = blocksMap.getY();
-        int rangeZ = blocksMap.getZ();
+        int range;
+        if (blocksMap.getR() != 0) {
+            range = blocksMap.getR();
+        } else {
+            range = blocksMap.getS();
+        }
+        int high;
+        if (blocksMap.getV() != 0) {
+            high = blocksMap.getV();
+        } else {
+            high = blocksMap.getY();
+        }
         Location blockLoc;
-        if (blocksMap.isVertical()) {
-            for (int x = -rangeX; x <= rangeX; x++) {
-                for (int z = -rangeZ; z <= rangeZ; z++) {
-                    blockLoc = loc.clone().add(x, rangeY, z);
-                    if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
-                        return true;
-                    }
-                }
-            }
-        } else if (blocksMap.isRound()) {
-            for (int x = -rangeX; x <= rangeX; x++) {
-                for (int z = -rangeZ; z <= rangeZ; z++) {
-                    for (int y = -rangeY; y <= rangeY; y++) {
-                        blockLoc = loc.clone().add(x, y, z);
+        if (blocksMap.getR() != 0) {
+            for (int x = -range; x <= range; x++) {
+                for (int z = -range; z <= range; z++) {
+                    if (blocksMap.getV() != 0) {
+                        for (int y = -high; y <= high; y++) {
+                            blockLoc = loc.clone().add(x, y, z);
+                            if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                                return true;
+                            }
+                        }
+                    } else {
+                        blockLoc = loc.clone().add(x, high, z);
                         if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
                             return true;
                         }
@@ -145,14 +105,19 @@ public class BlocksUtils {
                 }
             }
         } else {
-            for (int x = -rangeX; x <= rangeX; x++) {
-                for (int z = -rangeZ; z <= rangeZ; z++) {
-                    if (x * z <= rangeX) {
-                        for (int y = -rangeY; y <= rangeY; y++) {
+            for (int x = -range; x <= range; x++) {
+                for (int z = -range; z <= range; z++) {
+                    if (blocksMap.getV() != 0) {
+                        for (int y = -high; y <= high; y++) {
                             blockLoc = loc.clone().add(x, y, z);
                             if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
                                 return true;
                             }
+                        }
+                    } else {
+                        blockLoc = loc.clone().add(x, high, z);
+                        if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                            return true;
                         }
                     }
                 }

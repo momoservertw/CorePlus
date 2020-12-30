@@ -8,7 +8,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.util.UUID;
 
 public class LuckPermsAPI {
-
     LuckPerms luckPerms = null;
 
     public LuckPermsAPI() {

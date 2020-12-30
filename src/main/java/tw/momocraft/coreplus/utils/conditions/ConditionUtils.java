@@ -6,6 +6,7 @@ import tw.momocraft.coreplus.api.ConditionInterface;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.List;
+import java.util.Map;
 
 public class ConditionUtils implements ConditionInterface {
 
@@ -21,37 +22,29 @@ public class ConditionUtils implements ConditionInterface {
         locationUtils = loc;
     }
 
-    public static LocationUtils getLoc() {
-        return locationUtils;
-    }
 
     public static void setBlockUtils(BlocksUtils blocks) {
         blocksUtils = blocks;
     }
 
-    public static BlocksUtils getBlock() {
-        return blocksUtils;
+    @Override
+    public Map<String, BlocksMap> getBlocksProp() {
+        return blocksUtils.getBlocksMap();
     }
 
     @Override
-    public boolean checkLocation(Location loc, List<LocationMap> locMaps, boolean def) {
-        return locationUtils.checkLocation(loc, locMaps, def);
+    public Map<String, LocationMap> getLocProp() {
+        return locationUtils.getLocProp();
     }
 
     @Override
-    public List<LocationMap> getSpeLocMaps(List<String> list) {
-        return locationUtils.getSpeLocMaps(list);
-    }
-
-
-    @Override
-    public List<BlocksMap> getSpeBlocksMaps(List<String> list) {
-        return blocksUtils.getSpeBlocksMaps(list);
+    public boolean checkLocation(Location loc, List<String> locList, boolean def) {
+        return locationUtils.checkLocation(loc, locList, def);
     }
 
     @Override
-    public boolean checkBlocks(Location loc, List<BlocksMap> blocksMaps, boolean def) {
-        return blocksUtils.checkBlocks(loc, blocksMaps, def);
+    public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
+        return blocksUtils.checkBlocks(loc, blocksList, def);
     }
 
     @Override

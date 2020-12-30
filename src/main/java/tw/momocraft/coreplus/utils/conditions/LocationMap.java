@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus.utils.conditions;
 
-
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -11,28 +10,18 @@ import java.util.Map;
 
 public class LocationMap {
 
-    private List<String> worlds;
-    private final Map<String, String> cord;
-
-    public LocationMap() {
-        worlds = new ArrayList<>();
-        cord = new HashMap<>();
-    }
+    private List<String> worlds = new ArrayList<>();
+    private final Map<String, String> cord = new HashMap<>();
 
     public void setWorlds(List<String> worlds) {
         this.worlds = worlds;
     }
 
-    public void addWorld(String world) {
-        this.worlds.add(world);
-    }
-
-    public void addCord(String type, String value) {
+    public void addCord(String group, String type, String value) {
         if (isCordFormat(type, value)) {
             cord.put(type, value);
         } else {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(),"&cThere is an error occurred. Please check the \"Location\" format.");
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(),"&c" + type + ": " + value);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "&cCan not set the Location: " + group);
         }
     }
 

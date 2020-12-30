@@ -5,39 +5,34 @@ import java.util.List;
 public class BlocksMap {
 
     private List<String> blockTypes;
-    private int X = 0;
-    private int Z = 0;
-    private int Y = 0;
-    private boolean round = false;
-    private boolean vertical = false;
-    private List<BlocksMap> ignoreMaps;
+    private int s;
+    private int r;
+    private int y;
+    private int v;
+    private List<String> ignoreList;
 
     public List<String> getBlockTypes() {
         return blockTypes;
     }
 
-    int getX() {
-        return X;
+    int getS() {
+        return s;
     }
 
-    int getZ() {
-        return Z;
+    int getR() {
+        return r;
     }
 
     int getY() {
-        return Y;
+        return y;
     }
 
-    boolean isRound() {
-        return round;
+    int getV() {
+        return v;
     }
 
-    boolean isVertical() {
-        return vertical;
-    }
-
-    List<BlocksMap> getIgnoreMaps() {
-        return ignoreMaps;
+    List<String> getIgnoreList() {
+        return ignoreList;
     }
 
 
@@ -45,28 +40,24 @@ public class BlocksMap {
         this.blockTypes = blockTypes;
     }
 
-    void setX(int X) {
-        this.X = X;
+    void setS(int s) {
+        this.s = s;
     }
 
-    void setZ(int z) {
-        this.Z = z;
+    void setR(int r) {
+        this.r = r;
     }
 
     void setY(int y) {
-        this.Y = y;
+        this.y = y;
     }
 
-    void setRound(boolean round) {
-        this.round = round;
+    void setV(int v) {
+        this.v = v;
     }
 
-    void setVertical(boolean vertical) {
-        this.vertical = vertical;
-    }
-
-    void setIgnoreMaps(List<BlocksMap> ignoreMaps) {
-        this.ignoreMaps = ignoreMaps;
+    void setIgnoreList(List<String> ignoreList) {
+        this.ignoreList = ignoreList;
     }
 }
 
