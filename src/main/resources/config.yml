@@ -4,12 +4,14 @@
 # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 1
 Check-Updates: true
-Debugging: true
+Debugging: false
 
 General:
   Settings:
-    # Translating the placeholder of vanilla Items, Entities, Enchantments name.
+    # Translating to placeholder of vanilla Items, Entities, Enchantments name to player client language.
     Vanilla-Translate:
+      Enable: true
+      Force: false
       Local: "en_us"
     Features:
       # Changed these options need to restart the server.
@@ -42,14 +44,14 @@ General:
       Time: true
       New-File: false
       Zip: false
-    LotteryPlus:
-      Path: "plugins//LotteryPlus//Logs"
+    SpawnerChanged:
+      Path: "plugins//EntityPlus//Logs"
       Name: "latest.log"
       Time: true
       New-File: false
       Zip: false
-    SpawnerChange:
-      Path: "plugins//EntityPlus//Logs"
+    LotteryPlus:
+      Path: "plugins//LotteryPlus//Logs"
       Name: "latest.log"
       Time: true
       New-File: false
@@ -177,7 +179,7 @@ Message:
     help: "&a/coreplus help &8- &7This help menu."
     reload: "&a/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
-  Placeholders:
+  Translation:
     points: "points"
     money: "money"
     noNearbyPlayers: "no one"

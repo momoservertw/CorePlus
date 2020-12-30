@@ -29,31 +29,31 @@ public class CustomCommands implements CommandInterface {
                 continue;
             }
             // Executing delay command.
+            String delay;
             try {
-                String delay = cmd.split(": ")[1];
+                delay = cmd.split(": ")[1];
                 delay = delay.substring(0, delay.lastIndexOf(";"));
-
-                List<String> newCommandList = new ArrayList<>(input);
-                newCommandList.subList(i + 1, newCommandList.size());
-                if (cmd.contains(";")) {
-                    cmd = cmd.substring(cmd.indexOf(";") + 1);
-                    newCommandList.add(0, cmd);
-                }
-
-                String finalPrefix = prefix;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        // To restart the method again after delay.
-                        executeCmdList(finalPrefix, player, newCommandList, placeholder);
-                    }
-                }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
-                return;
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command type (" + cmd + ")");
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command (delay: " + cmd + ")");
                 UtilsHandler.getLang().sendErrorMsg(prefix, "Correct format: \"delay: Number\"");
-                UtilsHandler.getLang().sendDebugTrace(prefix, ex);
+                UtilsHandler.getLang().sendDebugTrace(prefix, e);
+                continue;
             }
+            List<String> newCommandList = new ArrayList<>(input);
+            newCommandList.subList(i + 1, newCommandList.size());
+            if (cmd.contains(";;")) {
+                cmd = cmd.substring(cmd.indexOf(";;") + 1);
+                newCommandList.add(0, cmd);
+            }
+            String finalPrefix = prefix;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // To restart the method again after delay.
+                    executeCmdList(finalPrefix, player, newCommandList, placeholder);
+                }
+            }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
+            return;
         }
     }
 
@@ -69,31 +69,31 @@ public class CustomCommands implements CommandInterface {
                 continue;
             }
             // Executing delay command.
+            String delay;
             try {
-                String delay = cmd.split(": ")[1];
-                delay = delay.substring(0, delay.lastIndexOf(";"));
-
-                List<String> newCommandList = new ArrayList<>(input);
-                newCommandList.subList(i + 1, newCommandList.size());
-                if (cmd.contains(";")) {
-                    cmd = cmd.substring(cmd.indexOf(";") + 1);
-                    newCommandList.add(0, cmd);
-                }
-
-                String finalPrefix = prefix;
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        // To restart the method again after delay.
-                        executeCmdList(finalPrefix, newCommandList, placeholder);
-                    }
-                }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
-                return;
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command type (" + cmd + ")");
+                delay = cmd.split(": ")[1];
+                delay = delay.substring(0, delay.lastIndexOf(";;"));
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the execute command (delay: " + cmd + ")");
                 UtilsHandler.getLang().sendErrorMsg(prefix, "Correct format: \"delay: Number\"");
-                UtilsHandler.getLang().sendDebugTrace(prefix, ex);
+                UtilsHandler.getLang().sendDebugTrace(prefix, e);
+                continue;
             }
+            List<String> newCommandList = new ArrayList<>(input);
+            newCommandList.subList(i + 1, newCommandList.size());
+            if (cmd.contains(";;")) {
+                cmd = cmd.substring(cmd.indexOf(";;") + 1);
+                newCommandList.add(0, cmd);
+            }
+            String finalPrefix = prefix;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // To restart the method again after delay.
+                    executeCmdList(finalPrefix, newCommandList, placeholder);
+                }
+            }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
+            return;
         }
     }
 
@@ -105,8 +105,8 @@ public class CustomCommands implements CommandInterface {
         }
         if (prefix == null)
             prefix = "";
-        if (input.contains(";")) {
-            executeCmdList(prefix, player, Arrays.asList(input.split(";")), true);
+        if (input.contains(";;")) {
+            executeCmdList(prefix, player, Arrays.asList(input.split(";;")), true);
             return;
         }
         selectCmdType(prefix, player, input, placeholder);
@@ -116,8 +116,8 @@ public class CustomCommands implements CommandInterface {
     public void executeCmd(String prefix, String input, boolean placeholder) {
         if (prefix == null)
             prefix = "";
-        if (input.contains(";")) {
-            executeCmdList(prefix, Arrays.asList(input.split(";")), true);
+        if (input.contains(";;")) {
+            executeCmdList(prefix, Arrays.asList(input.split(";;")), true);
             return;
         }
         selectCmdType(prefix, input, placeholder);
@@ -133,17 +133,18 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String prefix, Player player, String input, boolean placeholder) {
+        String cmdType = input.split(": ")[0];
         if (placeholder) {
             input = UtilsHandler.getUtil().translateLayout(input, player);
         }
-        switch (input.split(": ")[0]) {
+        switch (cmdType) {
             case "custom":
                 input = input.replace("custom: ", "");
                 dispatchCustomCmd(prefix, player, input, placeholder);
                 return;
             case "print":
                 input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg(null, input);
+                UtilsHandler.getLang().sendConsoleMsg(prefix, input);
                 return;
             case "log":
                 input = input.replace("log: ", "");
@@ -155,7 +156,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "broadcast":
                 input = input.replace("broadcast: ", "");
-                UtilsHandler.getLang().sendBroadcastMsg(null, input);
+                UtilsHandler.getLang().sendBroadcastMsg("", input);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -175,11 +176,11 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "chat":
                 input = input.replace("chat: ", "");
-                UtilsHandler.getLang().sendChatMsg(null, player, input);
+                UtilsHandler.getLang().sendChatMsg("", player, input);
                 return;
             case "message":
                 input = input.replace("message: ", "");
-                UtilsHandler.getLang().sendPlayerMsg(null, player, input);
+                UtilsHandler.getLang().sendPlayerMsg("", player, input);
                 return;
                     /*
                 case "title":
@@ -231,7 +232,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "print":
                 input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg(null, input);
+                UtilsHandler.getLang().sendConsoleMsg(prefix, input);
                 return;
             case "log":
                 input = input.replace("log: ", "");
@@ -243,7 +244,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "broadcast":
                 input = input.replace("broadcast: ", "");
-                UtilsHandler.getLang().sendBroadcastMsg(null, input);
+                UtilsHandler.getLang().sendBroadcastMsg("", input);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -269,10 +270,18 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
-
     @Override
     public void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder) {
-
+        String[] placeHolderArr = group.split(", ");
+        String newCmd = ConfigHandler.getConfigPath().getCmdProp().get(placeHolderArr[0]);
+        if (newCmd == null) {
+            UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the custom command group: " + placeHolderArr[0]);
+            return;
+        }
+        for (int i = 1; i < +placeHolderArr.length; i++) {
+            newCmd = newCmd.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
+        }
+        selectCmdType(prefix, player, newCmd, placeholder);
     }
 
     @Override
@@ -285,10 +294,10 @@ public class CustomCommands implements CommandInterface {
         }
         try {
             UtilsHandler.getLang().addLog(logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
-        } catch (Exception ex) {
+        } catch (Exception e) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log: " + input + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getLang().sendDebugTrace(prefix, ex);
+            UtilsHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 
@@ -301,29 +310,12 @@ public class CustomCommands implements CommandInterface {
             UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the Log group of \"" + group + "\" in CorePlus/config.yml.");
             return;
         }
-        input = input.substring(input.indexOf(", ") + 1);
+        input = input.substring(input.indexOf(",") + 2);
         try {
             UtilsHandler.getLang().addLog(logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception e) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + group + ")");
-            UtilsHandler.getLang().sendErrorMsg(prefix, "Please check out the format of \"Log\" in CorePlus/config.yml.");
-            UtilsHandler.getLang().sendDebugTrace(prefix, e);
-        }
-    }
-
-    @Override
-    public void dispatchLogCustomCmd(String prefix, String group, String message) {
-        LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(group);
-        if (logMap == null) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (log-custom: " + group + ")");
-            UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the group of \"Log\" in CorePlus/config.yml.");
-            return;
-        }
-        try {
-            UtilsHandler.getLang().addLog(logMap.getFile(), message, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + group + ")");
-            UtilsHandler.getLang().sendErrorMsg(prefix, "Please check out the format of \"Log\" in CorePlus/config.yml.");
+            UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (log-custom: " + group + ", " + input + ")");
+            UtilsHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
@@ -345,11 +337,11 @@ public class CustomCommands implements CommandInterface {
         try {
             player.setOp(true);
             player.chat("/" + input);
-        } catch (Exception ex) {
+        } catch (Exception e) {
             player.setOp(isOp);
             UtilsHandler.getLang().sendErrorMsg(prefix, "An error occurred when executing command (op: " + input + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "&7If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getLang().sendDebugTrace(prefix, ex);
+            UtilsHandler.getLang().sendDebugTrace(prefix, e);
             removeOp(prefix, player);
         } finally {
             player.setOp(isOp);
@@ -441,10 +433,10 @@ public class CustomCommands implements CommandInterface {
             String[] arr = input.split(", ");
             loc.getWorld().spawnParticle(Particle.valueOf(arr[0]), loc, Integer.parseInt(arr[1]),
                     Double.parseDouble(arr[2]), Double.parseDouble(arr[3]), Double.parseDouble(arr[4]), Double.parseDouble(arr[5]));
-        } catch (Exception ex) {
+        } catch (Exception e) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (particle: " + input + ")");
             UtilsHandler.getLang().sendErrorMsg(prefix, "Correct format: particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed");
-            UtilsHandler.getLang().sendDebugTrace(prefix, ex);
+            UtilsHandler.getLang().sendDebugTrace(prefix, e);
         }
     }
 

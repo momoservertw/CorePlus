@@ -76,16 +76,6 @@ public interface CommandInterface {
     void dispatchLogCustomCmd(String prefix, String input);
 
     /**
-     * Writing message to file from CorePlus config.yml.
-     * Format: "log-custom: Group, Message"
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param group   the group name.
-     * @param message the input message.
-     */
-    void dispatchLogCustomCmd(String prefix, String group, String message);
-
-    /**
      * Executing a console command.
      * Format: "console: Command"
      *

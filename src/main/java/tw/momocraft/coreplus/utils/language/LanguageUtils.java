@@ -34,8 +34,6 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendConsoleMsg(String prefix, String message) {
-        if (prefix == null)
-            prefix = "";
         message = prefix + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
@@ -43,8 +41,6 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendDebugMsg(String prefix, String message) {
-        if (prefix == null)
-            prefix = "";
         if (ConfigHandler.isDebugging()) {
             message = prefix + "&7[Debug]&r " + message;
             message = ChatColor.translateAlternateColorCodes('&', message);
@@ -54,8 +50,6 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendErrorMsg(String prefix, String message) {
-        if (prefix == null)
-            prefix = "";
         message = prefix + "&4[Error]&e " + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
@@ -82,8 +76,6 @@ public class LanguageUtils implements LanguageInterface {
     @Override
     public void sendDebugTrace(String prefix, Exception e) {
         if (ConfigHandler.isDebugging()) {
-            if (prefix == null)
-                prefix = "";
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             sendErrorMsg(prefix, "showing debug trace.");
             e.printStackTrace();
@@ -95,9 +87,6 @@ public class LanguageUtils implements LanguageInterface {
         if (!ConfigHandler.isDebugging()) {
             return;
         }
-        if (prefix == null)
-            prefix = "";
-        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         switch (action) {
             case "cancel":
             case "remove":
@@ -127,8 +116,6 @@ public class LanguageUtils implements LanguageInterface {
         if (!ConfigHandler.isDebugging()) {
             return;
         }
-        if (prefix == null)
-            prefix = "";
         prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         switch (action) {
             case "cancel":
@@ -169,7 +156,7 @@ public class LanguageUtils implements LanguageInterface {
         if (langMessage != null && !langMessage.isEmpty()) {
             input = langMessage;
         }
-        input = translateLangHolders(input, initializeRows(placeHolder));
+        input = translateLangHolders(player, input, initializeRows(placeHolder));
         input = UtilsHandler.getUtil().translateLayout(input, player);
         String[] langLines = input.split(" /n ");
         for (String langLine : langLines) {
@@ -197,7 +184,7 @@ public class LanguageUtils implements LanguageInterface {
         return new String[25];
     }
 
-    private String translateLangHolders(String langMessage, String... langHolder) {
+    private String translateLangHolders(Player player, String langMessage, String... langHolder) {
         return langMessage
                 .replace("%player%", langHolder[0])
                 .replace("%targetplayer%", langHolder[1])
@@ -206,8 +193,8 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%command%", langHolder[4])
                 .replace("%group%", langHolder[5])
                 .replace("%amount%", langHolder[6])
-                .replace("%material%", langHolder[7])
-                .replace("%entity%", langHolder[8])
+                .replace("%material%", getVanillaTrans(player, langHolder[7], "material"))
+                .replace("%entity%", getVanillaTrans(player, langHolder[8], "entity"))
                 .replace("%pricetype%", langHolder[9])
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
@@ -222,12 +209,52 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String getPlaceholders(String input) {
-        return ConfigHandler.getConfig("config.yml").getString("Message.Placeholders." + input);
+    public String getTranslation(String input) {
+        return ConfigHandler.getConfig("config.yml").getString("Message.Translation." + input);
+    }
+
+    @Override
+    public String getVanillaTrans(Player player, String input, String type) {
+        UtilsHandler.getLang().sendConsoleMsg("", input);
+        UtilsHandler.getLang().sendConsoleMsg("", type);
+        UtilsHandler.getLang().sendConsoleMsg("", LangUtils.getEntityType(input));
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+            return input;
+        }
+        if (!ConfigHandler.getConfigPath().isVanillaTransForce() || player == null) {
+            if (type.equals("entity")) {
+                return LangUtils.getEntityType(input);
+            } else if (type.equals("material")) {
+                return LangUtils.getMaterialType(input);
+            }
+            return input;
+        }
+        if (type.equals("entity")) {
+            return LangUtils.getEntityType(player, input);
+        } else if (type.equals("material")) {
+            return LangUtils.getMaterialType(player, input);
+        }
+        return input;
+    }
+
+    @Override
+    public String getVanillaTrans(String input, String type) {
+        UtilsHandler.getLang().sendConsoleMsg("", input);
+        UtilsHandler.getLang().sendConsoleMsg("", type);
+        UtilsHandler.getLang().sendConsoleMsg("", LangUtils.getEntityType(input));
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+            return input;
+        }
+        if (type.equals("entity")) {
+            return LangUtils.getEntityType(input);
+        } else if (type.equals("material")) {
+            return LangUtils.getMaterialType(input);
+        }
+        return input;
     }
 
     @Override
     public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
-        UtilsHandler.getLang().addLog(file, message, true, newFile, zip);
+        UtilsHandler.getLogger().addLog(file, message, true, newFile, zip);
     }
 }

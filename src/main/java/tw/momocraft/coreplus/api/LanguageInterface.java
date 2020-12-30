@@ -121,7 +121,26 @@ public interface LanguageInterface {
      * @param input the placeholder
      * @return the translated placeholder.
      */
-    String getPlaceholders(String input);
+    String getTranslation(String input);
+
+    /**
+     * Translating vanilla name for player.
+     *
+     * @param player the target player to identify the language.
+     * @param input the input value.
+     * @param type the type of value. Avail: entity, material
+     * @return the player's client language value.
+     */
+    String getVanillaTrans(Player player, String input, String type);
+
+    /**
+     * Translating vanilla name.
+     *
+     * @param input the input value.
+     * @param type the type of value. Avail: entity, material
+     * @return the player's client language value.
+     */
+    String getVanillaTrans(String input, String type);
 
     /**
      * Logging the message in a file.
