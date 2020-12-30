@@ -100,7 +100,7 @@ public class Dependence implements DependInterface {
 
 
     private void sendUtilityDepends() {
-        String hookMsg = "&fHooked [ &e"
+        String hookMsg = "&fHooked: ["
                 + (VaultEnabled() ? "Vault, " : "")
                 + (PlayerPointsEnabled() ? "PlayerPoints, " : "")
                 + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
@@ -115,13 +115,13 @@ public class Dependence implements DependInterface {
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "");
         try {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
         } catch (Exception ignored) {
         }
 
         /*
         if (ResidenceEnabled()) {
-            hookMsg = "&fAdd Residence flags [ &e"
+            hookMsg = "&fResidence Flags: [ "
                     + (FlagPermissions.getPosibleAreaFlags().contains("spawnbypass") ? "spawnbypass, " : "")
                     + (FlagPermissions.getPosibleAreaFlags().contains("spawnerbypass") ? "spawnerbypass, " : "")
                     + (FlagPermissions.getPosibleAreaFlags().contains("damagebypass") ? "damagebypass, " : "")

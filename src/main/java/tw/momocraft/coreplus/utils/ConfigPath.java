@@ -51,7 +51,7 @@ public class ConfigPath implements ConfigInterface {
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
         vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Enable");
-        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
+        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local", "en_us");
         vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Force");
         ConfigurationSection cmdConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Custom-Commands");
         if (cmdConfig != null) {

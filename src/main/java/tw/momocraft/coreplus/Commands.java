@@ -61,7 +61,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("test")) {
             Player player = (Player) sender;
-            UtilsHandler.getLang().sendMsg("", sender, UtilsHandler.getLang().getVanillaTrans(player, "ZOMBIE", "entity"));
+            UtilsHandler.getLang().sendMsg("", sender, ConfigHandler.getVanillaUtils().getValinaName(player, "ZOMBIE", "entity"));
             return true;
         } else {
             UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.unknownCommand", sender);

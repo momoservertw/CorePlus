@@ -217,40 +217,18 @@ public class LanguageUtils implements LanguageInterface {
     public String getVanillaTrans(Player player, String input, String type) {
         UtilsHandler.getLang().sendConsoleMsg("", input);
         UtilsHandler.getLang().sendConsoleMsg("", type);
-        UtilsHandler.getLang().sendConsoleMsg("", LangUtils.getEntityType(input));
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
-            return input;
-        }
-        if (!ConfigHandler.getConfigPath().isVanillaTransForce() || player == null) {
-            if (type.equals("entity")) {
-                return LangUtils.getEntityType(input);
-            } else if (type.equals("material")) {
-                return LangUtils.getMaterialType(input);
-            }
-            return input;
-        }
-        if (type.equals("entity")) {
-            return LangUtils.getEntityType(player, input);
-        } else if (type.equals("material")) {
-            return LangUtils.getMaterialType(player, input);
-        }
-        return input;
+        String test = ConfigHandler.getVanillaUtils().getValinaName(player, input, type);
+        System.out.println(test);
+        return test;
     }
 
     @Override
     public String getVanillaTrans(String input, String type) {
         UtilsHandler.getLang().sendConsoleMsg("", input);
         UtilsHandler.getLang().sendConsoleMsg("", type);
-        UtilsHandler.getLang().sendConsoleMsg("", LangUtils.getEntityType(input));
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
-            return input;
-        }
-        if (type.equals("entity")) {
-            return LangUtils.getEntityType(input);
-        } else if (type.equals("material")) {
-            return LangUtils.getMaterialType(input);
-        }
-        return input;
+        String test = ConfigHandler.getVanillaUtils().getValinaNode(null, input, type);
+        System.out.println(test);
+        return test;
     }
 
     @Override

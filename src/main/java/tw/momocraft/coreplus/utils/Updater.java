@@ -51,11 +51,13 @@ public class Updater implements UpdateInterface {
             return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);
-        if (onlineVer != null) {
+        if (onlineVer == null) {
+            return;
+        } else if (onlineVer.equals("latest")) {
+            UtilsHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
+        } else {
             UtilsHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
             UtilsHandler.getLang().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
-        } else {
-            UtilsHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
         }
     }
 
@@ -78,12 +80,12 @@ public class Updater implements UpdateInterface {
             if ((Integer.parseInt(onlineVerSplit[0]) > Integer.parseInt(verSplit[0]) ||
                     Integer.parseInt(onlineVerSplit[1]) > Integer.parseInt(verSplit[1]) ||
                     Integer.parseInt(onlineVerSplit[2]) > Integer.parseInt(verSplit[2]))) {
-                return null;
+                return onlineVer;
             }
-            return onlineVer;
+            return "latest";
         } catch (Exception e) {
             UtilsHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
+            return null;
         }
-        return null;
     }
 }

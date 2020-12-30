@@ -3,11 +3,11 @@ tw\momocraft\coreplus\utils\Updater.class
 tw\momocraft\coreplus\utils\economy\PriceMap.class
 tw\momocraft\coreplus\api\PlayerInterface.class
 tw\momocraft\coreplus\api\DependInterface.class
+tw\momocraft\coreplus\utils\language\VanillaUtils.class
 tw\momocraft\coreplus\api\CommandInterface.class
 tw\momocraft\coreplus\api\LanguageInterface.class
 tw\momocraft\coreplus\api\UtilsInterface.class
 tw\momocraft\coreplus\api\UpdateInterface.class
-tw\momocraft\coreplus\utils\language\LangUtils.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$3.class
 tw\momocraft\coreplus\utils\conditions\LocationUtils.class

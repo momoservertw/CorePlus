@@ -20,7 +20,6 @@ General:
         PlayerPoints: true
         GemsEconomy: true
         PlaceHolderAPI: true
-        LangUtils: true
         DiscordSRV: true
         LuckPerms: true
         MysqlPlayerDataBridge: true

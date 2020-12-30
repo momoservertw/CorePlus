@@ -133,14 +133,6 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
-        <!--LangUtils API-->
-        <dependency>
-            <groupId>me.LangUtils</groupId>
-            <artifactId>LangUtils</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/LanguageUtils.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
         <!--DiscordSRV API-->
         <dependency>
             <groupId>com.discordsrv</groupId>

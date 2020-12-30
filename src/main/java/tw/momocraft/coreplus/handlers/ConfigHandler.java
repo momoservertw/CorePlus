@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.utils.language.VanillaUtils;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -15,13 +16,14 @@ public class ConfigHandler {
     private static YamlConfiguration spigotYAML;
     private static YamlConfiguration groupsYAML;
     private static ConfigPath configPaths;
+    private static VanillaUtils vanillaUtils;
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
         genConfigFile("groups.yml");
-        getJsonFile("");
         setConfigPath(new ConfigPath());
         UtilsHandler.setUp();
+        setVanillaUtils(new VanillaUtils());
         if (!reload) {
             UtilsHandler.getUpdate().check(getPlugin(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),
@@ -124,6 +126,15 @@ public class ConfigHandler {
 
     public static ConfigPath getConfigPath() {
         return configPaths;
+    }
+
+
+    private static void setVanillaUtils(VanillaUtils vanillaUtil) {
+        vanillaUtils = vanillaUtil;
+    }
+
+    public static VanillaUtils getVanillaUtils() {
+        return vanillaUtils;
     }
 
     public static String getPlugin() {

@@ -68,7 +68,6 @@ public class CustomCommands implements CommandInterface {
                 executeCmd(prefix, cmd, placeholder);
                 continue;
             }
-            // Executing delay command.
             String delay;
             try {
                 delay = cmd.split(": ")[1];
