@@ -1,18 +1,15 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
+import java.io.File;
+
 public class LogMap {
-    private String path;
-    private String name;
+    private File file;
     private boolean time;
     private boolean newFile;
     private boolean zip;
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public void setTime(boolean time) {
@@ -27,12 +24,9 @@ public class LogMap {
         this.zip = zip;
     }
 
-    public String getPath() {
-        return path;
-    }
 
-    public String getName() {
-        return name;
+    public File getFile() {
+        return file;
     }
 
     public boolean isTime() {

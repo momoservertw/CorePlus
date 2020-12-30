@@ -19,8 +19,14 @@ public class ConfigHandler {
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
         genConfigFile("groups.yml");
-        UtilsHandler.setUp(reload);
+        getJsonFile("");
         setConfigPath(new ConfigPath());
+        UtilsHandler.setUp();
+        if (!reload) {
+            UtilsHandler.getUpdate().check(getPlugin(), Bukkit.getConsoleSender(),
+                    CorePlus.getInstance().getDescription().getName(),
+                    CorePlus.getInstance().getDescription().getVersion(), true);
+        }
     }
 
     public static FileConfiguration getConfig(String fileName) {
@@ -118,6 +124,10 @@ public class ConfigHandler {
 
     public static ConfigPath getConfigPath() {
         return configPaths;
+    }
+
+    public static String getPlugin() {
+        return "[" + CorePlus.getInstance().getDescription().getName() + "] ";
     }
 
     public static String getPrefix() {

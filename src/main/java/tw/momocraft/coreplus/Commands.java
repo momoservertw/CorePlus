@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -53,10 +54,14 @@ public class Commands implements CommandExecutor {
             if (UtilsHandler.getPlayer().hasPermission(sender, "coreplus.command.version")) {
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
                         + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion());
+                UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion(), false);
             } else {
                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
             }
+            return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("test")) {
+            Player player = (Player) sender;
+            UtilsHandler.getLang().sendMsg("", sender, UtilsHandler.getLang().getVanillaTrans(player, "ZOMBIE", "entity"));
             return true;
         } else {
             UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.unknownCommand", sender);

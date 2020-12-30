@@ -9,6 +9,7 @@ import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class LanguageUtils implements LanguageInterface {
@@ -212,16 +213,21 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
                 .replace("%flag%", langHolder[13])
+                .replace("%length%", langHolder[14])
+                .replace("%color%", langHolder[15])
                 .replace("%material_display_name%", langHolder[17])
                 .replace("%entity_display_name%", langHolder[18])
-                .replace("%nick%", langHolder[20])
-                .replace("%nick_color%", langHolder[21])
-                .replace("%nick_length%", langHolder[22])
+                .replace("%nick%", langHolder[21])
                 ;
     }
 
     @Override
-    public void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip) {
-        UtilsHandler.getLang().addLog(path, name, message, true, newFile, zip);
+    public String getPlaceholders(String input) {
+        return ConfigHandler.getConfig("config.yml").getString("Message.Placeholders." + input);
+    }
+
+    @Override
+    public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
+        UtilsHandler.getLang().addLog(file, message, true, newFile, zip);
     }
 }

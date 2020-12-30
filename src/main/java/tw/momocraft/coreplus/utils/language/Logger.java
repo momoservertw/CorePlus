@@ -13,8 +13,7 @@ import java.util.Date;
 
 public class Logger {
 
-    public void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip) {
-        File file = new File(path + "\\" + name);
+    public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
         if (!file.exists()) {
             createLog(file, newFile, zip);
         }

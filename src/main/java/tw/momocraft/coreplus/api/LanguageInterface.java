@@ -3,6 +3,8 @@ package tw.momocraft.coreplus.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+
 public interface LanguageInterface {
 
     /**
@@ -114,14 +116,21 @@ public interface LanguageInterface {
     void sendLangMsg(String prefix, String nodeLocation, CommandSender sender, String... placeHolder);
 
     /**
+     * Getting the translation of placeholder.
+     *
+     * @param input the placeholder
+     * @return the translated placeholder.
+     */
+    String getPlaceholders(String input);
+
+    /**
      * Logging the message in a file.
      *
-     * @param path    the path of the file.
-     * @param name    the name of the file like "latest.log" or "test.yml".
+     * @param file    the file from CorePlus configuration.
      * @param message the value of message.
      * @param time    if adding the time in front of the line. Example: "[2020/11/20 18:30:00]: "
      * @param newFile if creating a new file every day.
      * @param zip     if compressing the old log file.
      */
-    void addLog(String path, String name, String message, boolean time, boolean newFile, boolean zip);
+    void addLog(File file, String message, boolean time, boolean newFile, boolean zip);
 }

@@ -17,6 +17,14 @@ public interface CommandInterface {
      */
     void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder);
 
+    /**
+     * Executing command list.
+     *
+     * @param prefix      the executing plugin prefix.
+     * @param input       the input command list.
+     * @param placeholder translating placeholders or not.
+     */
+    void executeCmdList(String prefix, List<String> input, boolean placeholder);
 
     /**
      * Executing a command.
@@ -27,6 +35,15 @@ public interface CommandInterface {
      * @param placeholder translating placeholders or not.
      */
     void executeCmd(String prefix, Player player, String input, boolean placeholder);
+
+    /**
+     * Executing a command.
+     *
+     * @param prefix      the executing plugin prefix.
+     * @param input       the input command.
+     * @param placeholder translating placeholders or not.
+     */
+    void executeCmd(String prefix, String input, boolean placeholder);
 
     /**
      * Executing custom command.
@@ -41,7 +58,7 @@ public interface CommandInterface {
     void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder);
 
     /**
-     * Writing message in log file.
+     * Writing message in default log file.
      * Format: "log: Message"
      *
      * @param prefix the executing plugin prefix.
@@ -51,13 +68,22 @@ public interface CommandInterface {
 
     /**
      * Writing message to file from CorePlus config.yml.
-     * Format: "log-custom: Group"
+     * Format: "log-custom: Group, Message"
      *
      * @param prefix the executing plugin prefix.
-     * @param group  the input message.
+     * @param input  the input group name and message.
      */
-    void dispatchLogCustomCmd(String prefix, String group);
+    void dispatchLogCustomCmd(String prefix, String input);
 
+    /**
+     * Writing message to file from CorePlus config.yml.
+     * Format: "log-custom: Group, Message"
+     *
+     * @param prefix  the executing plugin prefix.
+     * @param group   the group name.
+     * @param message the input message.
+     */
+    void dispatchLogCustomCmd(String prefix, String group, String message);
 
     /**
      * Executing a console command.

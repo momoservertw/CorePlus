@@ -1,11 +1,12 @@
 package tw.momocraft.coreplus.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
-import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.ConfigInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
@@ -13,6 +14,7 @@ import tw.momocraft.coreplus.utils.customcommands.LogMap;
 import tw.momocraft.coreplus.utils.customcommands.ParticleMap;
 import tw.momocraft.coreplus.utils.customcommands.SoundMap;
 
+import java.io.File;
 import java.util.*;
 
 public class ConfigPath implements ConfigInterface {
@@ -26,7 +28,9 @@ public class ConfigPath implements ConfigInterface {
     private String menuIJ;
     private String menuType;
     private String menuName;
-    private String vanillaTrans;
+    private boolean vanillaTrans;
+    private String vanillaTransLocal;
+    private boolean vanillaTransForce;
     private final Map<String, String> cmdProp = new HashMap<>();
     private final Map<String, LogMap> logProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
@@ -46,7 +50,9 @@ public class ConfigPath implements ConfigInterface {
         menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
-        vanillaTrans = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
+        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Enable");
+        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local");
+        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Force");
         ConfigurationSection cmdConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Custom-Commands");
         if (cmdConfig != null) {
             for (String group : cmdConfig.getKeys(false)) {
@@ -56,10 +62,23 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection logConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Logs");
         if (logConfig != null) {
             LogMap logMap;
+            String path;
+            String name;
+
             for (String group : logConfig.getKeys(false)) {
                 logMap = new LogMap();
-                logMap.setPath(ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Path", CorePlus.getInstance().getDataFolder().getPath() + "//Logs"));
-                logMap.setName(ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Name", "latest.log"));
+                path = ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Path");
+                name = ConfigHandler.getConfig("config.yml").getString("General.Logs." + group + ".Name");
+                if (path == null || name == null) {
+                    continue;
+                }
+                if (path.startsWith("plugins//")) {
+                    path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                } else if (path.startsWith("server//")) {
+                    path = path.replace("server//", "");
+                    path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                }
+                logMap.setFile(new File(path, name));
                 logMap.setTime(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".Time", true));
                 logMap.setNewFile(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".New-File", false));
                 logMap.setZip(ConfigHandler.getConfig("config.yml").getBoolean("General.Logs." + group + ".Zip", false));
@@ -124,8 +143,16 @@ public class ConfigPath implements ConfigInterface {
         return soundProp;
     }
 
-    public String getVanillaTrans() {
+    public boolean isVanillaTrans() {
         return vanillaTrans;
+    }
+
+    public String getVanillaTransLocal() {
+        return vanillaTransLocal;
+    }
+
+    public boolean isVanillaTransForce() {
+        return vanillaTransForce;
     }
 
     public String getMenuIJ() {
@@ -156,10 +183,10 @@ public class ConfigPath implements ConfigInterface {
                     case "Materials":
                         list.add(Material.valueOf(type).name());
                         break;
-                    case "sound":
+                    case "Sound":
                         list.add(Sound.valueOf(type).name());
                         continue;
-                    case "particle":
+                    case "Particle":
                         list.add(Particle.valueOf(type).name());
                 }
             } catch (Exception e) {
@@ -170,7 +197,7 @@ public class ConfigPath implements ConfigInterface {
                 for (String customType : customList) {
                     try {
                         switch (listType) {
-                            case "entity":
+                            case "Entities":
                                 try {
                                     list.add(EntityType.valueOf(customType).name());
                                 } catch (Exception ex) {
@@ -183,13 +210,13 @@ public class ConfigPath implements ConfigInterface {
                                     }
                                 }
                                 break;
-                            case "material":
+                            case "Materials":
                                 list.add(Material.valueOf(customType).name());
                                 continue;
-                            case "sound":
+                            case "Sound":
                                 list.add(Sound.valueOf(customType).name());
                                 continue;
-                            case "particle":
+                            case "Particle":
                                 list.add(Particle.valueOf(customType).name());
                         }
                     } catch (Exception ignored) {
@@ -199,5 +226,10 @@ public class ConfigPath implements ConfigInterface {
             }
         }
         return list;
+    }
+
+    @Override
+    public FileConfiguration getConfig(String fileName) {
+        return ConfigHandler.getConfig(fileName);
     }
 }

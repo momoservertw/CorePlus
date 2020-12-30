@@ -8,10 +8,11 @@ import tw.momocraft.coreplus.utils.entities.EntityUtils;
 import tw.momocraft.coreplus.utils.files.FileUtils;
 import tw.momocraft.coreplus.utils.files.Zipper;
 import tw.momocraft.coreplus.utils.language.LanguageUtils;
+import tw.momocraft.coreplus.utils.language.Logger;
 
 public class UtilsHandler {
 
-    public static void setUp(boolean reload) {
+    public static void setUp() {
         setLanguageUtils(new LanguageUtils());
         setDependence(new Dependence());
         setConditionUtils(new ConditionUtils());
@@ -19,11 +20,9 @@ public class UtilsHandler {
         setEntityUtils(new EntityUtils());
         setFileUtils(new FileUtils());
         setZipper(new Zipper());
+        setLogger(new Logger());
         setUtils(new Utils());
         setUpdater(new Updater());
-        if (!reload) {
-            getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(), CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion());
-        }
     }
 
     private static Dependence dependence;
@@ -32,6 +31,7 @@ public class UtilsHandler {
     private static Utils utils;
     private static FileUtils fileUtils;
     private static Zipper zipper;
+    private static Logger logger;
     private static ConditionUtils conditionUtils;
     private static PlayerUtils playerUtils;
     private static EntityUtils entityUtils;
@@ -106,5 +106,13 @@ public class UtilsHandler {
 
     private static void setZipper(Zipper zip) {
         zipper = zip;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    private static void setLogger(Logger log) {
+        logger = log;
     }
 }

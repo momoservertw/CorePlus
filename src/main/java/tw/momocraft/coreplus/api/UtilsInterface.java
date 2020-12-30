@@ -70,12 +70,32 @@ public interface UtilsInterface {
     boolean isLiquid(Block block);
 
     /**
+     * Checking the location of block is liquid and match the expect value.
+     *
+     * @param block the checking location of block.
+     * @param value the expect value.
+     * @param def   the default return value if the value is null.
+     * @return if the location is liquid like water or lava.
+     */
+    boolean isLiquid(Block block, String value, boolean def);
+
+    /**
      * Checking the world time is day or not.
      *
      * @param time the time of world.
      * @return the world time is day or not
      */
     boolean isDay(double time);
+
+    /**
+     * Checking the world time is day or not and match the expect value.
+     *
+     * @param time  the time of world.
+     * @param value the expect value.
+     * @param def   the default return value if the value is null.
+     * @return the world time is day or not
+     */
+    boolean isDay(double time, String value, boolean def);
 
     /**
      * Comparing two numbers.
@@ -137,21 +157,73 @@ public interface UtilsInterface {
      */
     boolean inTheRange(Location loc, Location loc2, int distance);
 
-    String getNearbyPlayer(Player player, int range);
-
+    /**
+     * Translating the placeholders before output.
+     *
+     * @param input  the input string.
+     * @param player the target player.
+     * @return a new string which translated placeholders.
+     */
     String translateLayout(String input, Player player);
 
+    /**
+     * Sorting a map from high to low by the values.
+     *
+     * @param map the input map.
+     * @param <K> the input key.
+     * @param <V> the input value.
+     * @return new sorted map.
+     */
     <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map);
 
+    /**
+     * Sorting a map from low to high by the values.
+     *
+     * @param map the input map.
+     * @param <K> the input key.
+     * @param <V> the input value.
+     * @return new sorted map.
+     */
     <K, V extends Comparable<? super V>> Map<K, V> sortByValueLow(Map<K, V> map);
 
+    /**
+     * Translating the color code "&".
+     *
+     * @param input the input string.
+     * @return the new translated string.
+     */
     String translateColorCode(String input);
 
+    /**
+     * Getting a skull texture value from a skull item.
+     *
+     * @param itemStack the item of skull.
+     * @return the texture value of skull. Returns null if the item isn't skull.
+     */
     String getSkullValue(ItemStack itemStack);
 
+    /**
+     * Checking a ItemJoin's custom item node is menu or not.
+     * Needed to set the menu node in config.yml.
+     *
+     * @param node the node of custom item.
+     * @return if the custom item is menu.
+     */
     boolean isMenuNode(String node);
 
+    /**
+     * Checking a item is menu or not.
+     *
+     * @param itemStack the checking item.
+     * @return the item is menu or not.
+     */
     boolean isMenu(ItemStack itemStack);
 
+    /**
+     * Checking a item is a ItemJoin's custom item or not.
+     *
+     * @param itemStack the checking item.
+     * @return the item is a custom item or not.
+     */
     boolean isCustomItem(ItemStack itemStack);
 }

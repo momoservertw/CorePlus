@@ -74,8 +74,8 @@ public class Dependence implements DependInterface {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.tw.momocraft.coreplus.utils.language.LangUtils")) {
-            LangUtils = Bukkit.getServer().getPluginManager().getPlugin("tw.momocraft.coreplus.utils.language.LangUtils") != null;
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LangUtils")) {
+            LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.DiscordSRV")) {
             DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
@@ -106,7 +106,7 @@ public class Dependence implements DependInterface {
                 + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
                 + (LuckPermsEnabled() ? "LuckPerms, " : "")
                 + (PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
-                + (LangUtilsEnabled() ? "tw.momocraft.coreplus.utils.language.LangUtils, " : "")
+                + (LangUtilsEnabled() ? "LangUtils, " : "")
                 + (DiscordSRVEnabled() ? "DiscordSRV, " : "")
                 + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
                 + (CMIEnabled() ? "CMI, " : "")
@@ -115,7 +115,7 @@ public class Dependence implements DependInterface {
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "");
         try {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
         } catch (Exception ignored) {
         }
 

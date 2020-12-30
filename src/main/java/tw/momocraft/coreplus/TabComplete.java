@@ -35,7 +35,7 @@ public class TabComplete implements TabCompleter {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
         }
          */
         switch (args.length) {

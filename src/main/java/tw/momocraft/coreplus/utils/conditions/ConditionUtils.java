@@ -39,14 +39,14 @@ public class ConditionUtils implements ConditionInterface {
     }
 
     @Override
-    public List<LocationMap> getSpeLocMaps(String file, String path) {
-        return locationUtils.getSpeLocMaps(file, path);
+    public List<LocationMap> getSpeLocMaps(List<String> list) {
+        return locationUtils.getSpeLocMaps(list);
     }
 
 
     @Override
-    public List<BlocksMap> getSpeBlocksMaps(String file, String path) {
-        return blocksUtils.getSpeBlocksMaps(file, path);
+    public List<BlocksMap> getSpeBlocksMaps(List<String> list) {
+        return blocksUtils.getSpeBlocksMaps(list);
     }
 
     @Override
@@ -57,5 +57,10 @@ public class ConditionUtils implements ConditionInterface {
     @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
         return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def);
+    }
+
+    @Override
+    public boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check) {
+        return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def, check);
     }
 }

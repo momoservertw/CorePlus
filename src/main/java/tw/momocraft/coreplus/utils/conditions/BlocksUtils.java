@@ -18,14 +18,10 @@ public class BlocksUtils {
         setUp();
     }
 
-    /**
-     * @param path the specific path.
-     * @return the specific maps from BlocksMaps.
-     */
-    public List<BlocksMap> getSpeBlocksMaps(String file, String path) {
+    public List<BlocksMap> getSpeBlocksMaps(List<String> list) {
         List<BlocksMap> blocksMapList = new ArrayList<>();
         BlocksMap blocksMap;
-        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
+        for (String group : list) {
             blocksMap = blocksMaps.get(group);
             if (blocksMap != null) {
                 blocksMapList.add(blocksMap);

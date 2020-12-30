@@ -18,15 +18,11 @@ public class LocationUtils {
         setUp();
     }
 
-    /**
-     * @param path the specific path.
-     * @return the specific maps from LocMaps.
-     */
-    public List<LocationMap> getSpeLocMaps(String file, String path) {
+    public List<LocationMap> getSpeLocMaps(List<String> list) {
         List<LocationMap> locMapList = new ArrayList<>();
         LocationMap locMap;
         LocationMap locWorldMap = new LocationMap();
-        for (String group : ConfigHandler.getConfig(file).getStringList(path)) {
+        for (String group : list) {
             locMap = locMaps.get(group);
             if (locMap != null) {
                 locMapList.add(locMap);
@@ -117,17 +113,17 @@ public class LocationUtils {
                 // R: 1000
                 switch (type) {
                     case "X":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), true);
                     case "Y":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), true);
                     case "Z":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), true);
                     case "!X":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), true);
                     case "!Y":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), true);
                     case "!Z":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), true);
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]));
                     case "!R":
@@ -158,17 +154,17 @@ public class LocationUtils {
                 // R: "1000 0 0"
                 switch (type) {
                     case "X":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "Y":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "Z":
-                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "!X":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "!Y":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "!Z":
-                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]));
+                        return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                     case "R":
                         return getRound(loc, Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                     case "!R":

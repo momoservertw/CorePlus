@@ -46,11 +46,6 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <!--tw.momocraft.coreplus.utils.language.LangUtils Repo-->
-        <repository>
-            <id>lang-utils-repo</id>
-            <url>https://raw.github.com/MascusJeoraly/LanguageUtils/mvn-repo/</url>
-        </repository>
         <!--MythicMobs Repo-->
         <repository>
             <id>nexus</id>
@@ -79,6 +74,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+        </dependency>
+        <!--  Gson: Java to Json conversion -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+            <scope>compile</scope>
         </dependency>
         <!--Spigot API-->
         <dependency>
@@ -131,12 +133,13 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
-        <!--tw.momocraft.coreplus.utils.language.LangUtils API-->
+        <!--LangUtils API-->
         <dependency>
-            <groupId>com.meowj</groupId>
+            <groupId>me.LangUtils</groupId>
             <artifactId>LangUtils</artifactId>
-            <!--Please check the latest version -->
-            <version>1.9</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/LanguageUtils.jar</systemPath>
+            <version>LEGACY</version>
         </dependency>
         <!--DiscordSRV API-->
         <dependency>

@@ -31,8 +31,8 @@ public class LocationMap {
         if (isCordFormat(type, value)) {
             cord.put(type, value);
         } else {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&cThere is an error occurred. Please check the \"Location\" format.");
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),"&c" + type + ": " + value);
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(),"&cThere is an error occurred. Please check the \"Location\" format.");
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(),"&c" + type + ": " + value);
         }
     }
 

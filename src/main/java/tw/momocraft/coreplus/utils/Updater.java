@@ -13,9 +13,8 @@ import java.net.URLConnection;
 public class Updater implements UpdateInterface {
 
     @Override
-    public void check(String prefix, CommandSender sender, String plugin, String ver) {
-        if (!ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
-            UtilsHandler.getLang().sendMsg(prefix,sender, "&cYou need to enable the option \"Check-Updates\" in CorePlus config.yml");
+    public void check(String prefix, CommandSender sender, String plugin, String ver, boolean auto) {
+        if (auto && !ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
             return;
         }
         if (prefix == null)

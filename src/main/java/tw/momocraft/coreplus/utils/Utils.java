@@ -6,7 +6,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -68,8 +67,22 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
+    public boolean isLiquid(Block block, String value, boolean def) {
+        if (value == null)
+            return def;
+        return block.isLiquid() == Boolean.parseBoolean(value);
+    }
+
+    @Override
     public boolean isDay(double time) {
         return time < 12300 || time > 23850;
+    }
+
+    @Override
+    public boolean isDay(double time, String value, boolean def) {
+        if (value == null)
+            return def;
+        return (time < 12300 || time > 23850) == Boolean.parseBoolean(value);
     }
 
     @Override
@@ -129,32 +142,6 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public String getNearbyPlayer(Player player, int range) {
-        try {
-            ArrayList<Entity> entities = (ArrayList<Entity>) player.getNearbyEntities(range, range, range);
-            ArrayList<Block> sightBlock = (ArrayList<Block>) player.getLineOfSight(null, range);
-            ArrayList<Location> sight = new ArrayList<>();
-            for (Block block : sightBlock) sight.add(block.getLocation());
-            for (Location location : sight) {
-                for (Entity entity : entities) {
-                    if (Math.abs(entity.getLocation().getX() - location.getX()) < 1.3) {
-                        if (Math.abs(entity.getLocation().getY() - location.getY()) < 1.5) {
-                            if (Math.abs(entity.getLocation().getZ() - location.getZ()) < 1.3) {
-                                if (entity instanceof Player) {
-                                    return entity.getName();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return "INVALID";
-        } catch (NullPointerException e) {
-            return "INVALID";
-        }
-    }
-
-    @Override
     public String translateLayout(String input, Player player) {
         if (input == null) {
             return "";
@@ -165,38 +152,32 @@ public class Utils implements UtilsInterface {
             try {
                 input = input.replace("%player%", playerName);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
             // %player_display_name%
             try {
                 input = input.replace("%player_display_name%", player.getDisplayName());
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
             UUID playerUUID = player.getUniqueId();
             // %player_uuid%
             try {
                 input = input.replace("%player_uuid%", playerUUID.toString());
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
-            }
-            // %player_interact%
-            try {
-                input = input.replace("%player_interact%", getNearbyPlayer(player, 3));
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
             // %player_sneaking%
             try {
                 input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
             // %player_flying%
             try {
                 input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
             Location loc = player.getLocation();
             // %player_world%
@@ -236,7 +217,7 @@ public class Utils implements UtilsInterface {
                     input = input.replace("%player_loc_y%", loc_y);
                     input = input.replace("%player_loc_z%", loc_z);
                 } catch (Exception e) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
                 }
             }
             if (UtilsHandler.getDepend().VaultEnabled()) {
@@ -255,20 +236,20 @@ public class Utils implements UtilsInterface {
             try {
                 input = input.replace("%player%", "CONSOLE");
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
         }
         // %server_name%
         try {
             input = input.replace("%server_name%", Bukkit.getServer().getName());
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         try {
             input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
         }
         // %random_number%500%
         if (input.contains("%random_number%")) {
@@ -280,7 +261,7 @@ public class Utils implements UtilsInterface {
                     }
                 }
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
         }
         // %random_player%
@@ -290,7 +271,7 @@ public class Utils implements UtilsInterface {
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
             }
         }
         // %random_player_except%AllBye,huangge0513%
@@ -323,7 +304,7 @@ public class Utils implements UtilsInterface {
                             break;
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
                     }
                 }
             }
@@ -391,7 +372,12 @@ public class Utils implements UtilsInterface {
 
     @Override
     public String getSkullValue(ItemStack itemStack) {
-        SkullMeta headMeta = (SkullMeta) itemStack.getItemMeta();
+        SkullMeta headMeta;
+        try {
+            headMeta = (SkullMeta) itemStack.getItemMeta();
+        } catch (Exception e) {
+            return null;
+        }
         String url = null;
         try {
             Field profileField = headMeta.getClass().getDeclaredField("profile");
