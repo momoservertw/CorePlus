@@ -215,20 +215,12 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String getVanillaTrans(Player player, String input, String type) {
-        UtilsHandler.getLang().sendConsoleMsg("", input);
-        UtilsHandler.getLang().sendConsoleMsg("", type);
-        String test = ConfigHandler.getVanillaUtils().getValinaName(player, input, type);
-        System.out.println(test);
-        return test;
+        return ConfigHandler.getVanillaUtils().getValinaName(player, input, type);
     }
 
     @Override
     public String getVanillaTrans(String input, String type) {
-        UtilsHandler.getLang().sendConsoleMsg("", input);
-        UtilsHandler.getLang().sendConsoleMsg("", type);
-        String test = ConfigHandler.getVanillaUtils().getValinaNode(null, input, type);
-        System.out.println(test);
-        return test;
+        return ConfigHandler.getVanillaUtils().getValinaNode(null, input, type);
     }
 
     @Override

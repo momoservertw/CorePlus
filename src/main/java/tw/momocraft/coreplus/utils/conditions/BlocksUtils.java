@@ -25,6 +25,9 @@ public class BlocksUtils {
         BlocksMap blocksMap;
         for (String group : blocksList) {
             blocksMap = blocksProp.get(group);
+            if (blocksMap == null) {
+                continue;
+            }
             ignoreList = blocksMap.getIgnoreList();
             if (ignoreList == null || ignoreList.isEmpty()) {
                 continue;

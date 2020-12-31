@@ -17,11 +17,11 @@ public class CopyToUpdateFolder {
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\BarrierPlus\\target", fileName));
         fileName = "EntityPlus-1.3.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\EntityPlus\\target", fileName));
-        fileName = "HotKeyPlus-1.0.1.jar";
+        fileName = "HotKeyPlus-1.0.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\HotKeyPlus\\target", fileName));
         fileName = "LotteryPlus-1.1.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\LotteryPlus\\target", fileName));
-        fileName = "ServerPlus-1.0.3.jar";
+        fileName = "ServerPlus-1.0.4.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\ServerPlus\\target", fileName));
         fileName = "SlimeChunkPlus-1.1.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\SlimeChunkPlus\\target", fileName));

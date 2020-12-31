@@ -4,6 +4,10 @@ public interface DependInterface {
 
     boolean VaultEnabled();
 
+    boolean VaultEconEnabled();
+
+    boolean VaultPermEnabled();
+
     boolean PlayerPointsEnabled();
 
     boolean GemsEconomyEnabled();

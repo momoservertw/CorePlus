@@ -140,6 +140,16 @@ public class Dependence implements DependInterface {
     }
 
     @Override
+    public boolean VaultEconEnabled() {
+        return vaultApi.isEconEnable();
+    }
+
+    @Override
+    public boolean VaultPermEnabled() {
+        return vaultApi.isPermEnable();
+    }
+
+    @Override
     public boolean PlayerPointsEnabled() {
         return this.PlayerPoints;
     }

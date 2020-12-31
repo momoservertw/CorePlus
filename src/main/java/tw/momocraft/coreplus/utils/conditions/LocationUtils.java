@@ -32,8 +32,14 @@ public class LocationUtils {
             LocationMap locMap;
             back:
             for (String group : locMaps) {
+                if (group.equals(worldName)) {
+                    return true;
+                }
                 locMap = locProp.get(group);
-                if (locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {
+                if (locMap == null) {
+                    continue;
+                }
+                if (locMap.getWorlds() == null || locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {
                     cord = locMap.getCord();
                     if (cord != null) {
                         for (String key : cord.keySet()) {

@@ -111,5 +111,4 @@ public class CorePlus extends JavaPlugin {
             utilsAPI = new Utils();
         return utilsAPI;
     }
-
 }
