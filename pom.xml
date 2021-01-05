@@ -193,6 +193,14 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
+        <!--PvPManager API-->
+        <dependency>
+            <groupId>me.PvPManager</groupId>
+            <artifactId>PvPManager</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/PvPManager.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
     </dependencies>
 
 </project>

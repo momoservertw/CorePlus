@@ -65,6 +65,9 @@ public class VanillaUtils {
 
 
     public String getValinaNode(String local, String input, String type) {
+        if (input == null) {
+            return "";
+        }
         if (type.equals("entity")) {
             try {
                 EntityType entityType = EntityType.valueOf(input);

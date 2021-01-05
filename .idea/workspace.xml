@@ -3,6 +3,24 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -97,7 +115,7 @@
       <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CopyToUpdateFolder">
+  <component name="RunManager" selected="Application.CopyApiToPlugins">
     <configuration name="CopyApiToPlugins" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.utils.CopyApiToPlugins" />
       <module name="CorePlus" />
@@ -139,8 +157,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CopyToUpdateFolder" />
         <item itemvalue="Application.CopyApiToPlugins" />
+        <item itemvalue="Application.CopyToUpdateFolder" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
@@ -158,6 +176,17 @@
       <updated>1566238716106</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -197,30 +226,30 @@
     </state>
     <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1609232012016" />
     <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608607245880" />
-    <state width="1663" height="251" key="GridCell.Tab.0.bottom" timestamp="1609397461956">
+    <state width="1663" height="251" key="GridCell.Tab.0.bottom" timestamp="1609598209990">
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
-    <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609389860752" />
-    <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609397461956" />
-    <state width="1663" height="251" key="GridCell.Tab.0.center" timestamp="1609397461956">
+    <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
+    <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209990" />
+    <state width="1663" height="251" key="GridCell.Tab.0.center" timestamp="1609598209989">
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
-    <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609389860752" />
-    <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609397461956" />
-    <state width="1663" height="251" key="GridCell.Tab.0.left" timestamp="1609397461956">
+    <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
+    <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209989" />
+    <state width="1663" height="251" key="GridCell.Tab.0.left" timestamp="1609598209989">
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
-    <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609389860752" />
-    <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609397461956" />
-    <state width="1663" height="251" key="GridCell.Tab.0.right" timestamp="1609397461956">
+    <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594273" />
+    <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209989" />
+    <state width="1663" height="251" key="GridCell.Tab.0.right" timestamp="1609598209990">
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
-    <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609389860752" />
-    <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609397461956" />
+    <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
+    <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209990" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1609078164550">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -238,11 +267,11 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="439" y="262" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689@0.0.1280.689" timestamp="1609129548530" />
-    <state x="2901" y="39" width="1026" height="891" key="find.popup" timestamp="1609397146484">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state x="493" y="5" width="1026" height="891" key="find.popup" timestamp="1609570509659">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="370" y="4" width="770" height="668" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1609310509969" />
-    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608964001598" />
+    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609570509659" />
     <state x="2901" y="39" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609397146484" />
     <state x="551" y="206" key="refactoring.ChangeSignatureDialog" timestamp="1604062531792">
       <screen x="0" y="0" width="1707" height="920" />

@@ -8,11 +8,19 @@ Debugging: false
 
 General:
   Settings:
-    # Translating to placeholder of vanilla Items, Entities, Enchantments name to player client language.
+    # Translating the placeholders of vanilla Item, Entity, Enchantment name to player client language.
     Vanilla-Translate:
       Enable: true
       Force: false
       Local: "en_us"
+    # Using to interact some features.
+    Menu:
+      ItemJoin: ""
+      Item:
+        Type: "PLAYER_HEAD"
+        # Setting this option to "" to use vanilla item as menu.
+        Name: "&e&lMy &6&lMenu"
+        Skull-Textures: ""
     Features:
       # Changed these options need to restart the server.
       Hook:
@@ -106,14 +114,8 @@ General:
       Run:
         Times: 8
         Interval: 20
-  # The menu item for some events like showing blocks or destroying it.
-  # If you don't have a menu in your server, you can set Item Name to "" to use a vanilla item.
-  # Support: ItemJoin
-  Menu:
-    ItemJoin: ""
-    Item:
-      Type: "PLAYER_HEAD"
-      Name: "&e&lMy &6&lMenu"
+  # The settings for Location.
+  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Location
   Location:
     NormalWorlds:
       Worlds:
@@ -137,6 +139,11 @@ General:
     Bedrock_Nether:
       Worlds:
         - world_nether
+      Area:
+        Y: "5 ~ 123"
+    VisitorWorlds:
+      Worlds:
+        - world
       Area:
         Y: "5 ~ 123"
   Blocks:
@@ -166,8 +173,8 @@ Message:
   dependNotFound: "&cThis feature needs plugin %plugin%."
   onlyPlayer: "&cThis command can only executing from player."
   noFlagPerm: "&cYou dont have &6%flag% &cpermission<s> here."
-  notEnoughMoney: "&cYou don't have enough %pricetype%! You need %pricetype%: %price%."
-  notEnoughMoneyTarget: "&c%targetplayer% don't have enough %pricetype%! You need %pricetype%: %price%."
+  notEnoughMoney: "&cYou need %pricetype%: %price% - Balance: %balance%"
+  notEnoughMoneyTarget: "&c%targetplayer% need %pricetype%: %price% - Balance: %balance%"
   inventoryFull: "&cYou don't have enough inventory space."
   inventoryFullTarget: '&c%targetplayer% dont have enough inventory space.'
   noShopItem: "&cYou can not buy this block."
@@ -179,6 +186,16 @@ Message:
     reload: "&a/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
   Translation:
-    points: "points"
     money: "money"
+    points: "points"
+    Blocks: "blocks"
     noNearbyPlayers: "no one"
+    fishing: "fishing"
+    resCreate: "create residence"
+    resChangeSize: "change residence size"
+    usingItem: "using items"
+    interactBlock: "interact blocks"
+    interactEntity: "interact entities"
+    damamgeEntity: "damage entities"
+    dropItem: "drop items"
+    pickupItem: "pickup items"

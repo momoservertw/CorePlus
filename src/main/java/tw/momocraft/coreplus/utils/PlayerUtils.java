@@ -1,6 +1,8 @@
 package tw.momocraft.coreplus.utils;
 
+import me.NoChance.PvPManager.PvPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -9,10 +11,7 @@ import tw.momocraft.coreplus.api.PlayerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerUtils implements PlayerInterface {
 
@@ -27,6 +26,41 @@ public class PlayerUtils implements PlayerInterface {
             return Bukkit.getPlayer(playerName);
         }
         return args;
+    }
+
+    @Override
+    public OfflinePlayer getOfflinePlayer(String playerName) {
+        Collection<?> playersOnlineNew;
+        OfflinePlayer[] playersOnlineOld;
+        try {
+            if (Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
+                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                for (Object objPlayer : playersOnlineNew) {
+                    Player player = ((Player) objPlayer);
+                    if (player.getName().equalsIgnoreCase(playerName)) {
+                        return player;
+                    }
+                }
+            } else {
+                playersOnlineOld = ((OfflinePlayer[]) Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                for (OfflinePlayer player : playersOnlineOld) {
+                    if (player.getName().equalsIgnoreCase(playerName)) {
+                        return player;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isPvPEnabled(Player player, boolean def) {
+        if (UtilsHandler.getDepend().PvPManagerEnabled()) {
+            return PvPlayer.get(player).hasPvPEnabled();
+        }
+        return def;
     }
 
     @Override
@@ -81,8 +115,41 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
+    public double giveTypeMoney(UUID uuid, String priceType, double amount) {
+        switch (priceType) {
+            case "money":
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
+                    UtilsHandler.getDepend().getVaultApi().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                    return UtilsHandler.getDepend().getVaultApi().getBalance(uuid);
+                }
+                break;
+            case "points":
+                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
+                    return UtilsHandler.getDepend().getPlayerPointsApi().givePoints(uuid, amount);
+                }
+                break;
+            default:
+                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
+                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(priceType) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, priceType);
+                    }
+                }
+                break;
+        }
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + priceType);
+        return 0;
+    }
+
+
+    @Override
     public boolean hasPermission(CommandSender sender, String permission) {
         return sender.hasPermission(permission) || sender.hasPermission("CorePlus.*") || sender.isOp() || (sender instanceof ConsoleCommandSender);
+    }
+
+    @Override
+    public boolean hasPermissionOffline(OfflinePlayer player, String permission) {
+        return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), player, permission)
+                || player.isOp() || (player instanceof ConsoleCommandSender);
     }
 
     @Override

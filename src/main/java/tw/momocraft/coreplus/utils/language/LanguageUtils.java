@@ -181,10 +181,15 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String[] newString() {
-        return new String[25];
+        return new String[30];
     }
 
     private String translateLangHolders(Player player, String langMessage, String... langHolder) {
+        if (langMessage.contains("%material%")) {
+            langMessage = langMessage.replace("%material%", getVanillaTrans(player, langHolder[7], "material"));
+        } else if (langMessage.contains("%entity%")) {
+            langMessage = langMessage.replace("%entity%", getVanillaTrans(player, langHolder[8], "entity"));
+        }
         return langMessage
                 .replace("%player%", langHolder[0])
                 .replace("%targetplayer%", langHolder[1])
@@ -193,18 +198,20 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%command%", langHolder[4])
                 .replace("%group%", langHolder[5])
                 .replace("%amount%", langHolder[6])
-                .replace("%material%", getVanillaTrans(player, langHolder[7], "material"))
-                .replace("%entity%", getVanillaTrans(player, langHolder[8], "entity"))
                 .replace("%pricetype%", langHolder[9])
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
                 .replace("%flag%", langHolder[13])
                 .replace("%length%", langHolder[14])
-                .replace("%color%", langHolder[15])
+                .replace("%size%", langHolder[15])
+                .replace("%color%", langHolder[16])
                 .replace("%material_display_name%", langHolder[17])
                 .replace("%entity_display_name%", langHolder[18])
                 .replace("%nick%", langHolder[21])
+                .replace("%need%", langHolder[22])
+                .replace("%limit%", langHolder[23])
+                .replace("%next_limit%", langHolder[24])
                 ;
     }
 
@@ -225,6 +232,6 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
-        UtilsHandler.getLogger().addLog(file, message, true, newFile, zip);
+        UtilsHandler.getLogger().addLog(file, message, time, newFile, zip);
     }
 }

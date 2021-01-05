@@ -31,4 +31,6 @@ public interface DependInterface {
     boolean ItemJoinEnabled();
 
     boolean AuthMeEnabled();
+
+    boolean PvPManagerEnabled();
 }

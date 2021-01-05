@@ -62,9 +62,9 @@ public class Commands implements CommandExecutor {
                     }
                     return true;
                 }
-            default:
-                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.unknownCommand", sender);
-                return true;
+                break;
         }
+        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.unknownCommand", sender);
+        return true;
     }
 }

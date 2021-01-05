@@ -10,6 +10,14 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class ResidenceUtils {
 
+    public boolean isInResidence(Location loc) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return false;
+        }
+        ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
+        return res != null;
+    }
+
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return false;
@@ -19,6 +27,15 @@ public class ResidenceUtils {
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
                 if (player == null) {
+                    switch (flag) {
+                        case "destroy":
+                        case "place":
+                            if (perms.has(Flags.build, false)) {
+                                if (perms.has(Flags.getFlag(flag), true))
+                                    return true;
+                            }
+                            break;
+                    }
                     return perms.has(Flags.getFlag(flag), def);
                 }
                 switch (flag) {
@@ -86,6 +103,15 @@ public class ResidenceUtils {
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
                 if (player == null) {
+                    switch (flag) {
+                        case "destroy":
+                        case "place":
+                            if (perms.has(Flags.build, false)) {
+                                if (perms.has(Flags.getFlag(flag), true))
+                                    return true;
+                            }
+                            break;
+                    }
                     return perms.has(Flags.getFlag(flag), def);
                 }
                 switch (flag) {
@@ -136,6 +162,55 @@ public class ResidenceUtils {
                         break;
                 }
                 return perms.playerHas(player, Flags.getFlag(flag), def);
+            }
+        }
+        return true;
+    }
+
+    public boolean checkFlag(Location loc, String flag, boolean def) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return false;
+        }
+        if (flag != null && !flag.equals("")) {
+            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
+            if (res != null) {
+                ResidencePermissions perms = res.getPermissions();
+                switch (flag) {
+                    case "destroy":
+                    case "place":
+                        if (perms.has(Flags.build, false)) {
+                            if (perms.has(Flags.getFlag(flag), true))
+                                return true;
+                        }
+                        break;
+                }
+                return perms.has(Flags.getFlag(flag), def);
+            }
+        }
+        return true;
+    }
+
+    public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
+        if (!check) {
+            return true;
+        }
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return false;
+        }
+        if (flag != null && !flag.equals("")) {
+            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
+            if (res != null) {
+                ResidencePermissions perms = res.getPermissions();
+                switch (flag) {
+                    case "destroy":
+                    case "place":
+                        if (perms.has(Flags.build, false)) {
+                            if (perms.has(Flags.getFlag(flag), true))
+                                return true;
+                        }
+                        break;
+                }
+                return perms.has(Flags.getFlag(flag), def);
             }
         }
         return true;

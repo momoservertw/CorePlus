@@ -17,6 +17,8 @@ public class CopyApiToPlugins {
         String lotteryplus = "C:\\Users\\sayuri\\IdeaProjects\\LotteryPlus\\src\\main\\java\\tw\\momocraft\\lotteryplus\\extra";
         String serverplus = "C:\\Users\\sayuri\\IdeaProjects\\ServerPlus\\src\\main\\java\\tw\\momocraft\\serverplus\\extra";
         String slimechunkplus = "C:\\Users\\sayuri\\IdeaProjects\\SlimeChunkPlus\\src\\main\\java\\tw\\momocraft\\slimechunkplus\\extra";
+        String regionplus = "C:\\Users\\sayuri\\IdeaProjects\\RegionPlus\\src\\main\\java\\tw\\momocraft\\regionplus\\extra";
+        String playerdataplus = "C:\\Users\\sayuri\\IdeaProjects\\PlayerdataPlus\\src\\main\\java\\tw\\momocraft\\playerdataplus\\extra";
         String server = "C:\\Users\\Sayuri\\Desktop\\Minecraft Server\\plugins";
 
         File source = new File("C:\\Users\\sayuri\\IdeaProjects\\CorePlus\\target", fileName);
@@ -27,6 +29,8 @@ public class CopyApiToPlugins {
         targetList.add(new File(lotteryplus, fileName));
         targetList.add(new File(serverplus, fileName));
         targetList.add(new File(slimechunkplus, fileName));
+        targetList.add(new File(regionplus, fileName));
+        targetList.add(new File(playerdataplus, fileName));
         //targetList.add(new File(server, fileName));
 
         copyFiles(source, targetList);

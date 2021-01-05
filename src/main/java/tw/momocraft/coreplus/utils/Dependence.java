@@ -33,6 +33,7 @@ public class Dependence implements DependInterface {
     private boolean Residence = false;
     private boolean ItemJoin = false;
     private boolean AuthMe = false;
+    private boolean PvPManager = false;
 
     public Dependence() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vault")) {
@@ -95,6 +96,9 @@ public class Dependence implements DependInterface {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.AuthMe")) {
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PvPManager")) {
+            PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
+        }
         sendUtilityDepends();
     }
 
@@ -113,7 +117,8 @@ public class Dependence implements DependInterface {
                 + (MythicMobsEnabled() ? "MythicMobs, " : "")
                 + (ResidenceEnabled() ? "Residence, " : "")
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
-                + (AuthMeEnabled() ? "AuthMe, " : "");
+                + (AuthMeEnabled() ? "AuthMe, " : "")
+                + (PvPManagerEnabled() ? "PvPManager, " : "");
         try {
             UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
         } catch (Exception ignored) {
@@ -207,6 +212,11 @@ public class Dependence implements DependInterface {
     @Override
     public boolean AuthMeEnabled() {
         return this.AuthMe;
+    }
+
+    @Override
+    public boolean PvPManagerEnabled() {
+        return this.PvPManager;
     }
 
     public VaultUtils getVaultApi() {

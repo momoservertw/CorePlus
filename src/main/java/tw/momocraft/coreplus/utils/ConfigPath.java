@@ -28,6 +28,7 @@ public class ConfigPath implements ConfigInterface {
     private String menuIJ;
     private String menuType;
     private String menuName;
+    private String menuSkullTextures;
     private boolean vanillaTrans;
     private String vanillaTransLocal;
     private boolean vanillaTransForce;
@@ -47,12 +48,13 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
-        menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
-        menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
-        menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
-        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Enable");
-        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translate.Local", "en_us");
-        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translate.Force");
+        menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.ItemJoin");
+        menuType = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Type");
+        menuName = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Name");
+        menuSkullTextures = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Skull-Textures");
+        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Vanilla-Translate.Enable");
+        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Settings.Vanilla-Translate.Local", "en_us");
+        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Vanilla-Translate.Force");
         ConfigurationSection cmdConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Custom-Commands");
         if (cmdConfig != null) {
             for (String group : cmdConfig.getKeys(false)) {
@@ -165,6 +167,10 @@ public class ConfigPath implements ConfigInterface {
 
     public String getMenuType() {
         return menuType;
+    }
+
+    public String getMenuSkullTextures() {
+        return menuSkullTextures;
     }
 
     //  ============================================== //
