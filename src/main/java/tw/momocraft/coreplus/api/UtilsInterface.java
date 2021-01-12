@@ -51,6 +51,18 @@ public interface UtilsInterface {
      */
     boolean isRandChance(double value);
 
+
+    /**
+     * Checking a value is not in the ignore list and contains in the list.
+     *
+     * @param value      the checking value.
+     * @param list       the success list.
+     * @param ignoreList the ignore list.
+     * @param def        the default value if the list is null or empty.
+     * @return if a value is not in the ignore list and contains in the list.
+     */
+    boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList, boolean def);
+
     /**
      * Checking a value is not in the ignore list and contains in the list.
      *
@@ -60,6 +72,25 @@ public interface UtilsInterface {
      * @return if a value is not in the ignore list and contains in the list.
      */
     boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList);
+
+    /**
+     * Checking a value is not in the ignore list and contains in the list.
+     *
+     * @param value the checking value.
+     * @param list  the success list.
+     * @param def   the default value if the list is null or empty.
+     * @return if a value is not in the ignore list and contains in the list.
+     */
+    boolean containIgnoreValue(String value, List<String> list, boolean def);
+
+    /**
+     * Checking a value is not in the ignore list and contains in the list.
+     *
+     * @param value the checking value.
+     * @param list  the success list.
+     * @return if a value is not in the ignore list and contains in the list.
+     */
+    boolean containIgnoreValue(String value, List<String> list);
 
     /**
      * Checking the location of block is liquid.
@@ -150,12 +181,52 @@ public interface UtilsInterface {
     boolean getRange(double number, double r, boolean equal);
 
     /**
-     * @param loc      location.
-     * @param loc2     location2.
-     * @param distance The checking value.
-     * @return if two locations is in the distance.
+     *
+     * @param loc             location.
+     * @param loc2            location2.
+     * @return get the two location's distance.
      */
-    boolean inTheRange(Location loc, Location loc2, int distance);
+    double getDistanceXZ(Location loc, Location loc2);
+
+    /**
+     *
+     * @param loc             location.
+     * @param loc2            location2.
+     * @return get the two location's distance.
+     */
+    double inTheRangeXZY(Location loc, Location loc2);
+
+    /**
+     * @param loc             location.
+     * @param loc2            location2.
+     * @param distanceSquared The checking squared value.
+     * @return if two locations's squared distance is in the range.
+     */
+    boolean inTheRangeXZY(Location loc, Location loc2, int distanceSquared);
+
+    /**
+     * @param loc             location.
+     * @param loc2            location2.
+     * @param distanceSquared The checking squared value.
+     * @return if two locations's squared distance is in the range.
+     */
+    boolean inTheRangeXZ(Location loc, Location loc2, int distanceSquared);
+
+    /**
+     *
+     * @param loc the checking location.
+     * @param rangeSquared the checking range.
+     * @return the player list nearby.
+     */
+    List<Player> getNearbyPlayersXZY(Location loc, int rangeSquared);
+
+    /**
+     *
+     * @param loc the checking location.
+     * @param rangeSquared the checking range.
+     * @return the player list nearby.
+     */
+    List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared);
 
     /**
      * Translating the placeholders before output.

@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.UtilsInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
@@ -47,15 +48,42 @@ public class Utils implements UtilsInterface {
 
     @Override
     public boolean isRandChance(double value) {
-        return value < new Random().nextDouble();
+        return value > new Random().nextDouble();
+    }
+
+    @Override
+    public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList, boolean def) {
+        if (ignoreList != null && ignoreList.contains(value)) {
+            return false;
+        }
+        if (list == null || list.isEmpty()) {
+            return def;
+        }
+        return list.contains(value);
     }
 
     @Override
     public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList) {
-        if (ignoreList.contains(value)) {
+        if (ignoreList != null && ignoreList.contains(value)) {
             return false;
         }
-        if (list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
+            return true;
+        }
+        return list.contains(value);
+    }
+
+    @Override
+    public boolean containIgnoreValue(String value, List<String> list, boolean def) {
+        if (list == null || list.isEmpty()) {
+            return def;
+        }
+        return list.contains(value);
+    }
+
+    @Override
+    public boolean containIgnoreValue(String value, List<String> list) {
+        if (list == null || list.isEmpty()) {
             return true;
         }
         return list.contains(value);
@@ -134,11 +162,57 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public boolean inTheRange(Location loc, Location loc2, int distance) {
-        if (loc.getWorld() == loc2.getWorld()) {
-            return loc.distanceSquared(loc2) <= distance;
+    public double getDistanceXZ(Location loc, Location loc2) {
+        if (loc.getWorld() != loc2.getWorld()) {
+            return 0;
         }
-        return false;
+        return Math.abs(loc.getX() * loc.getZ() - loc2.getX() * loc2.getZ());
+    }
+
+    @Override
+    public double inTheRangeXZY(Location loc, Location loc2) {
+        if (loc.getWorld() != loc2.getWorld()) {
+            return 0;
+        }
+        return Math.abs(loc.getX() * loc.getZ() * loc.getY() - loc2.getX() * loc2.getZ() * loc2.getY());
+    }
+
+    @Override
+    public boolean inTheRangeXZ(Location loc, Location loc2, int distanceSquared) {
+        if (loc.getWorld() != loc2.getWorld()) {
+            return false;
+        }
+        return Math.abs(loc.getX() * loc.getZ() - loc2.getX() * loc2.getZ()) <= distanceSquared;
+    }
+
+    @Override
+    public boolean inTheRangeXZY(Location loc, Location loc2, int distanceSquared) {
+        if (loc.getWorld() != loc2.getWorld()) {
+            return false;
+        }
+        return Math.abs(loc.getX() * loc.getZ() * loc.getY() - loc2.getX() * loc2.getZ() * loc2.getY()) <= distanceSquared;
+    }
+
+    @Override
+    public List<Player> getNearbyPlayersXZY(Location loc, int rangeSquared) {
+        List<Player> nearbyPlayers = new ArrayList<>();
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            if (inTheRangeXZY(player.getLocation(), loc, rangeSquared)) {
+                nearbyPlayers.add(player);
+            }
+        }
+        return nearbyPlayers;
+    }
+
+    @Override
+    public List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared) {
+        List<Player> nearbyPlayers = new ArrayList<>();
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            if (inTheRangeXZ(player.getLocation(), loc, rangeSquared)) {
+                nearbyPlayers.add(player);
+            }
+        }
+        return nearbyPlayers;
     }
 
     @Override

@@ -21,6 +21,7 @@ public class Logger {
             String date = dateFormat.format(new Date());
             message = "[" + date + "]: " + message;
         }
+
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
             bw.append(message);

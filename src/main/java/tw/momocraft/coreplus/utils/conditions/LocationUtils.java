@@ -43,7 +43,7 @@ public class LocationUtils {
                     cord = locMap.getCord();
                     if (cord != null) {
                         for (String key : cord.keySet()) {
-                            if (!isCord(group, loc, key, cord.get(key))) {
+                            if (!isCord(loc, key, cord.get(key))) {
                                 continue back;
                             }
                         }
@@ -85,7 +85,7 @@ public class LocationUtils {
         return locProp;
     }
 
-    private boolean isCord(String group, Location loc, String type, String value) {
+    private boolean isCord(Location loc, String type, String value) {
         String[] values = value.split("\\s+");
         int length = values.length;
         try {

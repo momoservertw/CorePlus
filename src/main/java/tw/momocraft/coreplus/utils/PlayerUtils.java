@@ -140,16 +140,60 @@ public class PlayerUtils implements PlayerInterface {
         return 0;
     }
 
-
     @Override
     public boolean hasPermission(CommandSender sender, String permission) {
         return sender.hasPermission(permission) || sender.hasPermission("CorePlus.*") || sender.isOp() || (sender instanceof ConsoleCommandSender);
     }
 
+
     @Override
-    public boolean hasPermissionOffline(OfflinePlayer player, String permission) {
-        return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), player, permission)
-                || player.isOp() || (player instanceof ConsoleCommandSender);
+    public boolean hasPermission(Player player, String permission, boolean def) {
+        if (player == null) {
+            return def;
+        }
+        return player.hasPermission(permission) || player.hasPermission("CorePlus.*") || player.isOp() || (player instanceof ConsoleCommandSender);
+    }
+
+    @Override
+    public boolean havePermission(List<CommandSender> senders, String permission) {
+        for (CommandSender sender : senders) {
+            if (sender.hasPermission(permission) || sender.hasPermission("CorePlus.*") || sender.isOp() || (sender instanceof ConsoleCommandSender))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean havePermission(List<Player> players, String permission, boolean def) {
+        if (players == null || players.isEmpty()) {
+            return def;
+        }
+        for (Player player : players) {
+            if (player.hasPermission(permission) || player.hasPermission("CorePlus.*") || player.isOp() || (player instanceof ConsoleCommandSender))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean allHavePermission(List<CommandSender> senders, String permission) {
+        for (CommandSender sender : senders) {
+            if (!sender.hasPermission(permission) && !sender.hasPermission("CorePlus.*") && !sender.isOp() && !(sender instanceof ConsoleCommandSender))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean allHavePermission(List<Player> players, String permission, boolean def) {
+        if (players == null || players.isEmpty()) {
+            return def;
+        }
+        for (Player player : players) {
+            if (!player.hasPermission(permission) && !player.hasPermission("CorePlus.*") && !player.isOp() && !(player instanceof ConsoleCommandSender))
+                return false;
+        }
+        return true;
     }
 
     @Override
@@ -165,6 +209,30 @@ public class PlayerUtils implements PlayerInterface {
         if (numbers.isEmpty())
             return 0;
         return Collections.max(numbers);
+    }
+
+    @Override
+    public int getMaxPermission(Player player, String permission, int def) {
+        if (player == null) {
+            return def;
+        }
+        List<Integer> numbers = new ArrayList<>();
+        String perm;
+        for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
+            perm = permInfo.getPermission();
+            if (perm.startsWith(permission)) {
+                numbers.add(Integer.parseInt(perm.replace(permission, "")));
+            }
+        }
+        if (numbers.isEmpty())
+            return 0;
+        return Collections.max(numbers);
+    }
+
+    @Override
+    public boolean hasPermissionOffline(OfflinePlayer player, String permission) {
+        return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), player, permission)
+                || player.isOp() || (player instanceof ConsoleCommandSender);
     }
 
     @Override

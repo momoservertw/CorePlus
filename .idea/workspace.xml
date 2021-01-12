@@ -24,17 +24,13 @@
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Dependence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Dependence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/GsonUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LangUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LanguageUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LanguageUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/VallinaTranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/VanillaUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/PlayerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/PlayerUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/LocationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/conditions/LocationUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/Logger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
@@ -84,7 +80,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LotteryPlus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BarrierPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -163,7 +159,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -182,7 +178,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -206,10 +204,10 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="426" y="230" width="522" height="239" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1280.689@0.0.1280.689" timestamp="1609240163029" />
-    <state x="2560" y="10" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1609338506949">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1610347157183">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.689@0.0.1280.689" timestamp="1609239574983" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.689@0.0.1280.689" timestamp="1610347157183" />
     <state x="95" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608963855265" />
     <state x="2560" y="10" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609338506949" />
     <state x="438" y="155" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609311321903">
@@ -221,33 +219,33 @@
       <screen x="2560" y="10" width="1707" height="920" />
     </state>
     <state x="3144" y="217" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608196499895" />
-    <state x="475" y="162" key="FileChooserDialogImpl" timestamp="1609232012016">
+    <state x="475" y="162" key="FileChooserDialogImpl" timestamp="1609861113099">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1609232012016" />
+    <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1609861113099" />
     <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608607245880" />
-    <state width="1663" height="251" key="GridCell.Tab.0.bottom" timestamp="1609598209990">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state width="1237" height="123" key="GridCell.Tab.0.bottom" timestamp="1610469336014">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="123" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
+    <state width="1237" height="123" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1610469336014" />
     <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
     <state width="1663" height="251" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209990" />
-    <state width="1663" height="251" key="GridCell.Tab.0.center" timestamp="1609598209989">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state width="1237" height="123" key="GridCell.Tab.0.center" timestamp="1610469336013">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="123" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
+    <state width="1237" height="123" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1610469336013" />
     <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
     <state width="1663" height="251" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209989" />
-    <state width="1663" height="251" key="GridCell.Tab.0.left" timestamp="1609598209989">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state width="1237" height="123" key="GridCell.Tab.0.left" timestamp="1610469336013">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="123" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
+    <state width="1237" height="123" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1610469336013" />
     <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594273" />
     <state width="1663" height="251" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209989" />
-    <state width="1663" height="251" key="GridCell.Tab.0.right" timestamp="1609598209990">
-      <screen x="2560" y="10" width="1707" height="920" />
+    <state width="1237" height="123" key="GridCell.Tab.0.right" timestamp="1610469336014">
+      <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="123" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1609316865290" />
+    <state width="1237" height="123" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1610469336014" />
     <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1609590594274" />
     <state width="1663" height="251" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1609598209990" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1609078164550">
@@ -281,10 +279,10 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="510" y="211" key="run.anything.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1603732834433" />
-    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup" timestamp="1609313136360">
+    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup" timestamp="1610449934269">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1609313136360" />
+    <state x="387" y="146" width="672" height="508" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1610449934269" />
     <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1608034817624" />
   </component>
   <component name="masterDetails">

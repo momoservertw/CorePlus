@@ -146,6 +146,12 @@ General:
         - world
       Area:
         Y: "5 ~ 123"
+    EnderMainLand:
+      Worlds:
+        - world_the_end
+      Area:
+        S: 150
+  # Checking if there are certain blocks nearby.
   Blocks:
     # When creatures spawn in wither_rose.
     InWitherRose:
@@ -173,8 +179,8 @@ Message:
   dependNotFound: "&cThis feature needs plugin %plugin%."
   onlyPlayer: "&cThis command can only executing from player."
   noFlagPerm: "&cYou dont have &6%flag% &cpermission<s> here."
-  notEnoughMoney: "&cYou don't have enough %pricetype%! You need %pricetype%: %price%."
-  notEnoughMoneyTarget: "&c%targetplayer% don't have enough %pricetype%! You need %pricetype%: %price%."
+  notEnoughMoney: "&cYou need %pricetype%: %price% - Balance: %balance%"
+  notEnoughMoneyTarget: "&c%targetplayer% need %pricetype%: %price% - Balance: %balance%"
   inventoryFull: "&cYou don't have enough inventory space."
   inventoryFullTarget: '&c%targetplayer% dont have enough inventory space.'
   noShopItem: "&cYou can not buy this block."
@@ -186,12 +192,14 @@ Message:
     reload: "&a/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
   Translation:
-    points: "points"
     money: "money"
-    noNearbyPlayers: "no one"
-    fishing: "fishing"
+    points: "points"
+    res_points: "points"
+    Blocks: "blocks"
     resCreate: "create residence"
     resChangeSize: "change residence size"
+    noNearbyPlayers: "no one"
+    fishing: "fishing"
     usingItem: "using items"
     interactBlock: "interact blocks"
     interactEntity: "interact entities"

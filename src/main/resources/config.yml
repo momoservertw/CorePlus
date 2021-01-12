@@ -146,6 +146,12 @@ General:
         - world
       Area:
         Y: "5 ~ 123"
+    EnderMainLand:
+      Worlds:
+        - world_the_end
+      Area:
+        S: 150
+  # Checking if there are certain blocks nearby.
   Blocks:
     # When creatures spawn in wither_rose.
     InWitherRose:
@@ -188,11 +194,12 @@ Message:
   Translation:
     money: "money"
     points: "points"
+    res_points: "points"
     Blocks: "blocks"
-    noNearbyPlayers: "no one"
-    fishing: "fishing"
     resCreate: "create residence"
     resChangeSize: "change residence size"
+    noNearbyPlayers: "no one"
+    fishing: "fishing"
     usingItem: "using items"
     interactBlock: "interact blocks"
     interactEntity: "interact entities"

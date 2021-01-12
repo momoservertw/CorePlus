@@ -25,6 +25,7 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Variables                       //
     //  ============================================== //
+    private int mobSpawnRange;
     private String menuIJ;
     private String menuType;
     private String menuName;
@@ -48,6 +49,7 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
+        mobSpawnRange = ConfigHandler.getConfig("spigot.yml").getInt("world-settings.default.mob-spawn-range");
         menuIJ = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.ItemJoin");
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Name");
@@ -129,6 +131,10 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Getter                          //
     //  ============================================== //
+    public int getMobSpawnRange() {
+        return mobSpawnRange;
+    }
+
     public Map<String, String> getCmdProp() {
         return cmdProp;
     }
