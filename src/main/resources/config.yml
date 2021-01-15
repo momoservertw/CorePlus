@@ -13,7 +13,7 @@ General:
       Enable: true
       Force: false
       Local: "en_us"
-    # Using to interact some features.
+    # Using a item to trigger some features.
     Menu:
       ItemJoin: ""
       Item:
@@ -38,7 +38,7 @@ General:
         AuthMe: true
   # The settings for custom commands.
   # To send frequently used commands with placeholders.
-  # More information: https://github.com/momoservertw/LotteryPlus/wiki/Custom-Command
+  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Command
   Custom-Commands:
     reward: "message: &6&lReward&c✤ &f%cmd_arg1%"
     awards: "message: &d✧ &f%cmd_arg1% &d✧"
@@ -64,7 +64,7 @@ General:
       New-File: false
       Zip: false
   # The settings for custom sounds.
-  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Sounds
+  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Sounds
   Sounds:
     Announcement:
       Type: ENTITY_PLAYER_LEVELUP
@@ -81,7 +81,7 @@ General:
         Times: 8
         Interval: 20
   # The settings for custom particles.
-  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Custom-Particles
+  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Particles
   Particles:
     Example:
       Type: FLAME
@@ -114,8 +114,8 @@ General:
       Run:
         Times: 8
         Interval: 20
-  # The settings for Location.
-  # More information: https://github.com/momoservertw/HotkeyPlus/wiki/Location
+  # To specify areas or worlds for other plugins' features.
+  # More information: https://github.com/momoservertw/CorePlus/wiki/Location
   Location:
     NormalWorlds:
       Worlds:
@@ -151,14 +151,17 @@ General:
         - world_the_end
       Area:
         S: 150
-  # Checking if there are certain blocks nearby.
+  # Check if there are certain blocks nearby.
+  # More information: https://github.com/momoservertw/CorePlus/wiki/Blocks
   Blocks:
-    # When creatures spawn in wither_rose.
     InWitherRose:
       Types:
         - WITHER_ROSE
       Search:
-        V: 1
+        H: 1
+    IgnoreNearbyMonument:
+      Ignore:
+        - NearbyMonument
     NearbyMonument:
       Types:
         - PRISMARINE
@@ -167,6 +170,43 @@ General:
       Search:
         S: 5
         Y: 5
+    Cuboid:
+      Types:
+        - STONE
+      Search:
+        Values:
+          X: 2
+          Z: 4
+          Y: 1
+    Cube:
+      Types:
+        - STONE
+      Search:
+      Values:
+        R: 5
+    Sphere:
+      Types:
+        - STONE
+      Search:
+        Mode: Sphere
+        Values:
+          R: 5
+    Cylinder:
+      Types:
+        - STONE
+      Search:
+        Mode: Cylinder
+        Values:
+          R: 5
+          Y: 5
+    Round:
+      Types:
+        - STONE
+      Search:
+        Mode: Cylinder
+        Values:
+          R: 5
+          H: 1
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "
@@ -198,7 +238,7 @@ Message:
     Blocks: "blocks"
     resCreate: "create residence"
     resChangeSize: "change residence size"
-    noNearbyPlayers: "no one"
+    noTargets: "no one"
     fishing: "fishing"
     usingItem: "using items"
     interactBlock: "interact blocks"

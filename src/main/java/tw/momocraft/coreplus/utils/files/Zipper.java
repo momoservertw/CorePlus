@@ -38,7 +38,7 @@ public class Zipper {
                     .map(Path::toFile)
                     .forEach(File::delete);
         } catch (IOException e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
             return false;
         }
         return true;

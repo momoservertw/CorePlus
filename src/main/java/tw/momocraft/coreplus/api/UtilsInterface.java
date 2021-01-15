@@ -229,15 +229,6 @@ public interface UtilsInterface {
     List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared);
 
     /**
-     * Translating the placeholders before output.
-     *
-     * @param input  the input string.
-     * @param player the target player.
-     * @return a new string which translated placeholders.
-     */
-    String translateLayout(String input, Player player);
-
-    /**
      * Sorting a map from high to low by the values.
      *
      * @param map the input map.

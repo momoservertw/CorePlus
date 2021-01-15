@@ -35,28 +35,38 @@ public class TabComplete implements TabCompleter {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
         }
          */
         switch (args.length) {
             case 1:
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.use")) {
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.use")) {
                     commands.add("help");
                 }
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.reload")) {
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.reload")) {
                     commands.add("reload");
                 }
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.version")) {
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.version")) {
                     commands.add("version");
                 }
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.buy")) {
-                    commands.add("buy");
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
+                    commands.add("test");
                 }
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.give")) {
-                    commands.add("give");
+                break;
+            case 2:
+                if (args[0].equalsIgnoreCase("test") &&
+                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
+                    commands.add("location");
+                    commands.add("blocks");
                 }
-                if (UtilsHandler.getPlayer().hasPermission(sender, "barrierplus.command.itemjoinfix")) {
-                    commands.add("itemjoinfix");
+                break;
+            case 3:
+                if (args[0].equalsIgnoreCase("test") && args[1].equalsIgnoreCase("location") &&
+                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
+                    commands.addAll(UtilsHandler.getCondition().getLocProp().keySet());
+                } else if (args[0].equalsIgnoreCase("test") && args[1].equalsIgnoreCase("blocks") &&
+                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
+                    commands.addAll(UtilsHandler.getCondition().getBlocksProp().keySet());
                 }
                 break;
         }

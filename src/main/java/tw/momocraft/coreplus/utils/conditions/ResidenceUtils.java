@@ -6,6 +6,7 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class ResidenceUtils {
@@ -40,43 +41,43 @@ public class ResidenceUtils {
                 }
                 switch (flag) {
                     case "build":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.build")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.build")) {
                             return true;
                         }
                         break;
                     case "use":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.use")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.use")) {
                             return true;
                         }
                         break;
                     case "fly":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.fly")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.fly")) {
                             return true;
                         }
                         break;
                     case "nofly":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.nofly")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.nofly")) {
                             return true;
                         }
                         break;
                     case "tp":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.tp")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.tp")) {
                             return true;
                         }
                         break;
                     case "command":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.command")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.command")) {
                             return true;
                         }
                         break;
                     case "itempickup":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.itempickup")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.itempickup")) {
                             return true;
                         }
                         break;
                     case "destroy":
                     case "place":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.destroy")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.destroy")) {
                             return true;
                         }
                         if (perms.playerHas(player, Flags.build, false)) {
@@ -116,43 +117,43 @@ public class ResidenceUtils {
                 }
                 switch (flag) {
                     case "build":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.build")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.build")) {
                             return true;
                         }
                         break;
                     case "use":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.use")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.use")) {
                             return true;
                         }
                         break;
                     case "fly":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.fly")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.fly")) {
                             return true;
                         }
                         break;
                     case "nofly":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.nofly")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.nofly")) {
                             return true;
                         }
                         break;
                     case "tp":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.tp")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.tp")) {
                             return true;
                         }
                         break;
                     case "command":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.command")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.command")) {
                             return true;
                         }
                         break;
                     case "itempickup":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.itempickup")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.itempickup")) {
                             return true;
                         }
                         break;
                     case "destroy":
                     case "place":
-                        if (UtilsHandler.getPlayer().hasPermission(player, "residence.bypass.destroy")) {
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), player, "residence.bypass.destroy")) {
                             return true;
                         }
                         if (perms.playerHas(player, Flags.build, false)) {

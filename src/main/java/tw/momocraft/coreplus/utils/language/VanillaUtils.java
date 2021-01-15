@@ -56,15 +56,24 @@ public class VanillaUtils {
     }
 
     public String getValinaName(Player player, String input, String type) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+            return input;
+        }
         return getValinaNode(getLocal(player), input, type);
     }
 
     public String getValinaName(String input, String type) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+            return input;
+        }
         return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
     }
 
 
     public String getValinaNode(String local, String input, String type) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+            return input;
+        }
         if (input == null) {
             return "";
         }
@@ -73,7 +82,7 @@ public class VanillaUtils {
                 EntityType entityType = EntityType.valueOf(input);
                 return getLocalLang("entity.minecraft." + input.toLowerCase(), local);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                 return input;
             }
         }
@@ -85,7 +94,7 @@ public class VanillaUtils {
                 }
                 return getLocalLang("item.minecraft." + input.toLowerCase(), local);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                 return input;
             }
         }
@@ -94,7 +103,9 @@ public class VanillaUtils {
 
     public String getLocal(Player player) {
         String local;
-        if (player != null) {
+        if (ConfigHandler.getConfigPath().isVanillaTransForce()) {
+            local = ConfigHandler.getConfigPath().getVanillaTransLocal();
+        } else if (player != null) {
             local = player.getLocale();
             System.out.println(local);
         } else {
@@ -106,9 +117,9 @@ public class VanillaUtils {
     private String getLocalLang(String input, String local) {
         JsonObject jsonObject = getLangProp().get(local);
         try {
-            return jsonObject.get(input).toString().replaceAll("\"","");
+            return jsonObject.get(input).toString().replaceAll("\"", "");
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
             return input;
         }
     }

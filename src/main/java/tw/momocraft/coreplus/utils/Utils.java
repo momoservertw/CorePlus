@@ -182,7 +182,8 @@ public class Utils implements UtilsInterface {
         if (loc.getWorld() != loc2.getWorld()) {
             return false;
         }
-        return Math.abs(loc.getX() * loc.getZ() - loc2.getX() * loc2.getZ()) <= distanceSquared;
+        return Math.pow(loc.getX() - loc2.getX(), 2) + Math.pow(loc.getZ() - loc2.getZ(), 2)
+                <= distanceSquared;
     }
 
     @Override
@@ -190,7 +191,8 @@ public class Utils implements UtilsInterface {
         if (loc.getWorld() != loc2.getWorld()) {
             return false;
         }
-        return Math.abs(loc.getX() * loc.getZ() * loc.getY() - loc2.getX() * loc2.getZ() * loc2.getY()) <= distanceSquared;
+        return Math.pow(loc.getX() - loc2.getX(), 2) + Math.pow(loc.getY() - loc2.getY(), 2) + Math.pow(loc.getZ() - loc2.getZ(), 2)
+                <= distanceSquared;
     }
 
     @Override
@@ -213,188 +215,6 @@ public class Utils implements UtilsInterface {
             }
         }
         return nearbyPlayers;
-    }
-
-    @Override
-    public String translateLayout(String input, Player player) {
-        if (input == null) {
-            return "";
-        }
-        if (player != null && !(player instanceof ConsoleCommandSender)) {
-            String playerName = player.getName();
-            // %player%
-            try {
-                input = input.replace("%player%", playerName);
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-            // %player_display_name%
-            try {
-                input = input.replace("%player_display_name%", player.getDisplayName());
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-            UUID playerUUID = player.getUniqueId();
-            // %player_uuid%
-            try {
-                input = input.replace("%player_uuid%", playerUUID.toString());
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-            // %player_sneaking%
-            try {
-                input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-            // %player_flying%
-            try {
-                input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-            Location loc = player.getLocation();
-            // %player_world%
-            if (input.contains("%player_world%")) {
-                input = input.replace("%player_world%", loc.getWorld().getName());
-            }
-            // %player_loc%
-            // %player_loc_x%, %player_loc_y%, %player_loc_z%
-            // %player_loc_x_NUMBER%, %player_loc_y_NUMBER%, %player_loc_z_NUMBER%
-            if (input.contains("%player_loc")) {
-                try {
-                    String loc_x = String.valueOf(loc.getBlockX());
-                    String loc_y = String.valueOf(loc.getBlockY());
-                    String loc_z = String.valueOf(loc.getBlockZ());
-                    String[] arr = input.split("%");
-                    for (int i = 0; i < arr.length; i++) {
-                        switch (arr[i]) {
-                            case "player_loc_x":
-                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                    input = input.replace("%player_loc_x%" + arr[i + 1] + "%", loc_x + Integer.parseInt(arr[i + 1]));
-                                }
-                                break;
-                            case "player_loc_y":
-                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                    input = input.replace("%player_loc_y%" + arr[i + 1] + "%", loc_y + Integer.parseInt(arr[i + 1]));
-                                }
-                                break;
-                            case "player_loc_z":
-                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                    input = input.replace("%player_loc_z%" + arr[i + 1] + "%", loc_z + Integer.parseInt(arr[i + 1]));
-                                }
-                                break;
-                        }
-                    }
-                    input = input.replace("%player_loc%", loc_x + ", " + loc_y + ", " + loc_z);
-                    input = input.replace("%player_loc_x%", loc_x);
-                    input = input.replace("%player_loc_y%", loc_y);
-                    input = input.replace("%player_loc_z%", loc_z);
-                } catch (Exception e) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-                }
-            }
-            if (UtilsHandler.getDepend().VaultEnabled()) {
-                if (input.contains("%money%")) {
-                    input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(playerUUID)));
-                }
-            }
-            if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                if (input.contains("%points%")) {
-                    input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(playerUUID)));
-                }
-            }
-        }
-        // %player% => CONSOLE
-        if (player == null) {
-            try {
-                input = input.replace("%player%", "CONSOLE");
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-        }
-        // %server_name%
-        try {
-            input = input.replace("%server_name%", Bukkit.getServer().getName());
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-        }
-        // %localtime_time% => 2020/08/08 12:30:00
-        try {
-            input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-        }
-        // %random_number%500%
-        if (input.contains("%random_number%")) {
-            try {
-                String[] arr = input.split("%");
-                for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("random_number") && arr[i + 1].matches("^[0-9]*$")) {
-                        input = input.replace("%random_number%" + arr[i + 1] + "%", String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
-                    }
-                }
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-        }
-        // %random_player%
-        if (input.contains("%random_player%")) {
-            try {
-                List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
-                String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
-                input = input.replace("%random_player%", randomPlayer);
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-            }
-        }
-        // %random_player_except%AllBye,huangge0513%
-        if (input.contains("%random_player_except%")) {
-            List<String> placeholderList = new ArrayList<>();
-            List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
-            String[] arr = input.split("%");
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i].equals("random_player_except")) {
-                    placeholderList.add((arr[i + 1]));
-                }
-            }
-            String[] playerArr;
-            Player randomPlayer;
-            String randomPlayerName;
-            for (String exceptPlayer : placeholderList) {
-                playerArr = exceptPlayer.split(",");
-                while (true) {
-                    if (playerList.isEmpty()) {
-                        input = input.replace("%random_player_except%" + exceptPlayer + "%", "");
-                        break;
-                    }
-                    randomPlayer = playerList.get(new Random().nextInt(playerList.size()));
-                    randomPlayerName = randomPlayer.getName();
-                    playerList.remove(randomPlayer);
-                    try {
-                        if (!Arrays.asList(playerArr).contains(randomPlayerName)) {
-                            String newList = placeholderList.toString().replaceAll("[\\[\\]\\s]", "");
-                            input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
-                            break;
-                        }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
-                    }
-                }
-            }
-        }
-        // Translate color codes.
-        input = ChatColor.translateAlternateColorCodes('&', input);
-        // Translate PlaceHolderAPI's placeholders.
-        if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
-            try {
-                return PlaceholderAPI.setPlaceholders(player, input);
-            } catch (NoSuchFieldError e) {
-                UtilsHandler.getLang().sendDebugMsg(ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
-                return input;
-            }
-        }
-        return input;
     }
 
     /**
@@ -482,7 +302,8 @@ public class Utils implements UtilsInterface {
             }
         }
         // Holding a menu item.
-        if (itemStack.getType().name().equals(ConfigHandler.getConfigPath().getMenuType())) {
+        String itemType = itemStack.getType().name();
+        if (itemType.equals(ConfigHandler.getConfigPath().getMenuType())) {
             String itemName;
             try {
                 itemName = itemStack.getItemMeta().getDisplayName();
@@ -490,7 +311,12 @@ public class Utils implements UtilsInterface {
                 itemName = "";
             }
             String menuName = ConfigHandler.getConfigPath().getMenuName();
-            return menuName.equals("") || itemName.equals(translateColorCode(menuName));
+            if (menuName.equals("") || itemName.equals(translateColorCode(menuName))) {
+                if (itemType.equals("PLAYER_HEAD")) {
+                    return getSkullValue(itemStack).equals(ConfigHandler.getConfigPath().getMenuSkullTextures());
+                }
+                return true;
+            }
         }
         return false;
     }

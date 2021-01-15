@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.conditions;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -52,7 +53,7 @@ public class LocationUtils {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
         }
         return false;
     }
@@ -60,24 +61,28 @@ public class LocationUtils {
     private void setUp() {
         locProp = new HashMap<>();
         ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location");
-        if (locConfig != null) {
-            ConfigurationSection groupConfig;
-            LocationMap locMap;
-            ConfigurationSection areaConfig;
-            for (String group : locConfig.getKeys(false)) {
-                groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group);
-                if (groupConfig != null) {
-                    locMap = new LocationMap();
-                    areaConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group + ".Area");
-                    locMap.setWorlds(ConfigHandler.getConfig("config.yml").getStringList("General.Location." + group + ".Worlds"));
-                    if (areaConfig != null) {
-                        for (String area : areaConfig.getKeys(false)) {
-                            locMap.addCord(group, area, ConfigHandler.getConfig("config.yml").getString("General.Location." + group + ".Area." + area));
-                        }
-                    }
-                    locProp.put(group, locMap);
+        if (locConfig == null) {
+            return;
+        }
+        ConfigurationSection groupConfig;
+        LocationMap locMap;
+        ConfigurationSection areaConfig;
+        for (String group : locConfig.getKeys(false)) {
+            groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group);
+            if (groupConfig == null) {
+                continue;
+            }
+            locMap = new LocationMap();
+            areaConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group + ".Area");
+            locMap.setWorlds(ConfigHandler.getConfig("config.yml").getStringList("General.Location." + group + ".Worlds"));
+            if (areaConfig != null) {
+                for (String area : areaConfig.getKeys(false)) {
+                    locMap.addCord(group, area, ConfigHandler.getConfig("config.yml").getString("General.Location." + group + ".Area." + area));
                 }
             }
+            locProp.put(group, locMap);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Location", group, "setup", "continue",
+                    new Throwable().getStackTrace()[0]);
         }
     }
 

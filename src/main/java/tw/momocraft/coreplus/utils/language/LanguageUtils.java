@@ -1,8 +1,13 @@
 package tw.momocraft.coreplus.utils.language;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
@@ -10,7 +15,8 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class LanguageUtils implements LanguageInterface {
 
@@ -40,15 +46,6 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendDebugMsg(String prefix, String message) {
-        if (ConfigHandler.isDebugging()) {
-            message = prefix + "&7[Debug]&r " + message;
-            message = ChatColor.translateAlternateColorCodes('&', message);
-            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
-        }
-    }
-
-    @Override
     public void sendErrorMsg(String prefix, String message) {
         message = prefix + "&4[Error]&e " + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -74,8 +71,17 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendDebugTrace(String prefix, Exception e) {
-        if (ConfigHandler.isDebugging()) {
+    public void sendDebugMsg(boolean debugging, String prefix, String message) {
+        if (debugging) {
+            message = prefix + "&7[Debug]&r " + message;
+            message = ChatColor.translateAlternateColorCodes('&', message);
+            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
+        }
+    }
+
+    @Override
+    public void sendDebugTrace(boolean debugging, String prefix, Exception e) {
+        if (debugging) {
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
             sendErrorMsg(prefix, "showing debug trace.");
             e.printStackTrace();
@@ -83,8 +89,8 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendFeatureMsg(String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
-        if (!ConfigHandler.isDebugging()) {
+    public void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
+        if (!debugging) {
             return;
         }
         switch (action) {
@@ -94,26 +100,26 @@ public class LanguageUtils implements LanguageInterface {
             case "damage":
             case "fail":
             case "warning":
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action + "&8, &7" + detail
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action + "&8, &7" + detail
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
             case "continue":
             case "bypass":
             case "change":
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action + "&8, &7" + detail
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action + "&8, &7" + detail
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
             case "return":
             default:
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action + "&8, &7" + detail
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action + "&8, &7" + detail
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
         }
     }
 
     @Override
-    public void sendFeatureMsg(String prefix, String feature, String target, String check, String action, StackTraceElement ste) {
-        if (!ConfigHandler.isDebugging()) {
+    public void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste) {
+        if (!debugging) {
             return;
         }
         prefix = ChatColor.translateAlternateColorCodes('&', prefix);
@@ -123,18 +129,18 @@ public class LanguageUtils implements LanguageInterface {
             case "kill":
             case "damage":
             case "warning":
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
             case "continue":
             case "bypass":
             case "change":
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
             case "return":
             default:
-                sendDebugMsg(prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action
+                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action
                         + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
         }
@@ -157,7 +163,7 @@ public class LanguageUtils implements LanguageInterface {
             input = langMessage;
         }
         input = translateLangHolders(player, input, initializeRows(placeHolder));
-        input = UtilsHandler.getUtil().translateLayout(input, player);
+        input = translateLayout(input, player);
         String[] langLines = input.split(" /n ");
         for (String langLine : langLines) {
             sender.sendMessage(prefix + langLine);
@@ -184,7 +190,8 @@ public class LanguageUtils implements LanguageInterface {
         return new String[30];
     }
 
-    private String translateLangHolders(Player player, String langMessage, String... langHolder) {
+    @Override
+    public String translateLangHolders(Player player, String langMessage, String... langHolder) {
         if (langMessage.contains("%material%")) {
             langMessage = langMessage.replace("%material%", getVanillaTrans(player, langHolder[7], "material"));
         } else if (langMessage.contains("%entity%")) {
@@ -198,6 +205,8 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%command%", langHolder[4])
                 .replace("%group%", langHolder[5])
                 .replace("%amount%", langHolder[6])
+                .replace("%material%", langHolder[7])
+                .replace("%entity%", langHolder[8])
                 .replace("%pricetype%", langHolder[9])
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
@@ -208,11 +217,196 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%color%", langHolder[16])
                 .replace("%material_display_name%", langHolder[17])
                 .replace("%entity_display_name%", langHolder[18])
+                .replace("%targets%", langHolder[19])
                 .replace("%nick%", langHolder[21])
                 .replace("%need%", langHolder[22])
                 .replace("%limit%", langHolder[23])
                 .replace("%next_limit%", langHolder[24])
+                .replace("%new_entity%", langHolder[25])
+                .replace("%new_entity_display_name%", langHolder[26])
                 ;
+    }
+
+    @Override
+    public String translateLayout(String input, Player player) {
+        if (input == null) {
+            return "";
+        }
+        if (player != null && !(player instanceof ConsoleCommandSender)) {
+            String playerName = player.getName();
+            // %player%
+            try {
+                input = input.replace("%player%", playerName);
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+            // %player_display_name%
+            try {
+                input = input.replace("%player_display_name%", player.getDisplayName());
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+            UUID playerUUID = player.getUniqueId();
+            // %player_uuid%
+            try {
+                input = input.replace("%player_uuid%", playerUUID.toString());
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+            // %player_sneaking%
+            try {
+                input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+            // %player_flying%
+            try {
+                input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+            Location loc = player.getLocation();
+            // %player_world%
+            if (input.contains("%player_world%")) {
+                input = input.replace("%player_world%", loc.getWorld().getName());
+            }
+            // %player_loc%
+            // %player_loc_x%, %player_loc_y%, %player_loc_z%
+            // %player_loc_x_NUMBER%, %player_loc_y_NUMBER%, %player_loc_z_NUMBER%
+            if (input.contains("%player_loc")) {
+                try {
+                    String loc_x = String.valueOf(loc.getBlockX());
+                    String loc_y = String.valueOf(loc.getBlockY());
+                    String loc_z = String.valueOf(loc.getBlockZ());
+                    String[] arr = input.split("%");
+                    for (int i = 0; i < arr.length; i++) {
+                        switch (arr[i]) {
+                            case "player_loc_x":
+                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                                    input = input.replace("%player_loc_x%" + arr[i + 1] + "%", loc_x + Integer.parseInt(arr[i + 1]));
+                                }
+                                break;
+                            case "player_loc_y":
+                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                                    input = input.replace("%player_loc_y%" + arr[i + 1] + "%", loc_y + Integer.parseInt(arr[i + 1]));
+                                }
+                                break;
+                            case "player_loc_z":
+                                if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                                    input = input.replace("%player_loc_z%" + arr[i + 1] + "%", loc_z + Integer.parseInt(arr[i + 1]));
+                                }
+                                break;
+                        }
+                    }
+                    input = input.replace("%player_loc%", loc_x + ", " + loc_y + ", " + loc_z);
+                    input = input.replace("%player_loc_x%", loc_x);
+                    input = input.replace("%player_loc_y%", loc_y);
+                    input = input.replace("%player_loc_z%", loc_z);
+                } catch (Exception e) {
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                }
+            }
+            if (UtilsHandler.getDepend().VaultEnabled()) {
+                if (input.contains("%money%")) {
+                    input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(playerUUID)));
+                }
+            }
+            if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
+                if (input.contains("%points%")) {
+                    input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(playerUUID)));
+                }
+            }
+        }
+        // %player% => CONSOLE
+        if (player == null) {
+            try {
+                input = input.replace("%player%", "CONSOLE");
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+        }
+        // %server_name%
+        try {
+            input = input.replace("%server_name%", Bukkit.getServer().getName());
+        } catch (Exception e) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+        }
+        // %localtime_time% => 2020/08/08 12:30:00
+        try {
+            input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+        } catch (Exception e) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+        }
+        // %random_number%500%
+        if (input.contains("%random_number%")) {
+            try {
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i].equals("random_number") && arr[i + 1].matches("^[0-9]*$")) {
+                        input = input.replace("%random_number%" + arr[i + 1] + "%", String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
+                    }
+                }
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+        }
+        // %random_player%
+        if (input.contains("%random_player%")) {
+            try {
+                List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+                String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
+                input = input.replace("%random_player%", randomPlayer);
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+        }
+        // %random_player_except%AllBye,huangge0513%
+        if (input.contains("%random_player_except%")) {
+            List<String> placeholderList = new ArrayList<>();
+            List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+            String[] arr = input.split("%");
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i].equals("random_player_except")) {
+                    placeholderList.add((arr[i + 1]));
+                }
+            }
+            String[] playerArr;
+            Player randomPlayer;
+            String randomPlayerName;
+            for (String exceptPlayer : placeholderList) {
+                playerArr = exceptPlayer.split(",");
+                while (true) {
+                    if (playerList.isEmpty()) {
+                        input = input.replace("%random_player_except%" + exceptPlayer + "%", "");
+                        break;
+                    }
+                    randomPlayer = playerList.get(new Random().nextInt(playerList.size()));
+                    randomPlayerName = randomPlayer.getName();
+                    playerList.remove(randomPlayer);
+                    try {
+                        if (!Arrays.asList(playerArr).contains(randomPlayerName)) {
+                            String newList = placeholderList.toString().replaceAll("[\\[\\]\\s]", "");
+                            input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
+                            break;
+                        }
+                    } catch (Exception e) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                    }
+                }
+            }
+        }
+        // Translate color codes.
+        input = ChatColor.translateAlternateColorCodes('&', input);
+        // Translate PlaceHolderAPI's placeholders.
+        if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
+            try {
+                return PlaceholderAPI.setPlaceholders(player, input);
+            } catch (NoSuchFieldError e) {
+                UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
+                return input;
+            }
+        }
+        return input;
     }
 
     @Override
@@ -233,5 +427,59 @@ public class LanguageUtils implements LanguageInterface {
     @Override
     public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
         UtilsHandler.getLogger().addLog(file, message, time, newFile, zip);
+    }
+
+    @Override
+    public String getPlayersString(List<Player> players) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Player player;
+        int size = players.size();
+        for (int i = 0; i < size; i++) {
+            player = players.get(i);
+            stringBuilder.append(player.getName());
+            if (i != size - 1) {
+                stringBuilder.append(player.getName()).append(", ");
+            }
+        }
+        if (stringBuilder.toString().equals("")) {
+            return getTranslation("noTarget");
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String getBlocksString(List<Block> blocks) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Block block;
+        int size = blocks.size();
+        for (int i = 0; i < size; i++) {
+            block = blocks.get(i);
+            stringBuilder.append(block.getType().name());
+            if (i != size - 1) {
+                stringBuilder.append(block.getType().name()).append(", ");
+            }
+        }
+        if (stringBuilder.toString().equals("")) {
+            return getTranslation("noTarget");
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String getEntitiesString(List<Entity> entities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Entity entity;
+        int size = entities.size();
+        for (int i = 0; i < size; i++) {
+            entity = entities.get(i);
+            stringBuilder.append(entity.getType().name());
+            if (i != size - 1) {
+                stringBuilder.append(entity.getType().name()).append(", ");
+            }
+        }
+        if (stringBuilder.toString().equals("")) {
+            return getTranslation("noTarget");
+        }
+        return stringBuilder.toString();
     }
 }

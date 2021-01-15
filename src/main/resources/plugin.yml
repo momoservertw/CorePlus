@@ -31,9 +31,13 @@ permissions:
     children:
       CorePlus.command.reload: true
       CorePlus.command.version: true
+      CorePlus.command.test: true
   CorePlus.command.reload:
-    description: Allows use of /CorePlus command reload.
+    description: Allows use of /coreplus command reload.
     default: op
   CorePlus.command.version:
-    description: Allows use of command /CorePlus version.
+    description: Allows use of command /coreplus version.
+    default: op
+  CorePlus.command.test:
+    description: Allows use of command /coreplus test.
     default: op

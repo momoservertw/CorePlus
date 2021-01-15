@@ -8,6 +8,16 @@ import java.util.List;
 public interface CommandInterface {
 
     /**
+     * Executing command list for targets.
+     *
+     * @param prefix      the executing plugin prefix.
+     * @param players      the target players.
+     * @param input       the input command list.
+     * @param placeholder translating placeholders or not.
+     */
+    void executeCmdList(String prefix, List<Player> players, List<String> input, boolean placeholder, String... langHolder);
+
+    /**
      * Executing command list.
      *
      * @param prefix      the executing plugin prefix.
@@ -15,7 +25,7 @@ public interface CommandInterface {
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder);
+    void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder, String... langHolder);
 
     /**
      * Executing command list.
@@ -24,7 +34,17 @@ public interface CommandInterface {
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmdList(String prefix, List<String> input, boolean placeholder);
+    void executeCmdList(String prefix, List<String> input, boolean placeholder, String... langHolder);
+
+    /**
+     * Executing a command for multiple target.
+     *
+     * @param prefix      the executing plugin prefix.
+     * @param players      the target s.
+     * @param input       the input command.
+     * @param placeholder translating placeholders or not.
+     */
+    void executeCmd(String prefix, List<Player> players, String input, boolean placeholder, String... langHolder);
 
     /**
      * Executing a command.
@@ -34,7 +54,7 @@ public interface CommandInterface {
      * @param input       the input command.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmd(String prefix, Player player, String input, boolean placeholder);
+    void executeCmd(String prefix, Player player, String input, boolean placeholder, String... langHolder);
 
     /**
      * Executing a command.
@@ -43,7 +63,7 @@ public interface CommandInterface {
      * @param input       the input command.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmd(String prefix, String input, boolean placeholder);
+    void executeCmd(String prefix, String input, boolean placeholder, String... langHolder);
 
     /**
      * Executing custom command.
@@ -55,7 +75,7 @@ public interface CommandInterface {
      * @param group       the input group name.
      * @param placeholder translating placeholders or not.
      */
-    void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder);
+    void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder, String... langHolder);
 
     /**
      * Writing message in default log file.

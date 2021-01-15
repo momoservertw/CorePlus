@@ -21,7 +21,7 @@ public class BungeeCordUtils implements PluginMessageListener {
 		try {
 			out.writeUTF("Connect");
 			out.writeUTF(server);
-		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e); }
+		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e); }
 		player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
 	}
 	
@@ -35,7 +35,7 @@ public class BungeeCordUtils implements PluginMessageListener {
 			out.writeUTF("Subchannel");
 			out.writeUTF("Argument");
 			out.writeUTF(cmd);
-		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.getPlugin(), e); }
+		} catch (Exception e) { UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e); }
 		player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
 	}
 	

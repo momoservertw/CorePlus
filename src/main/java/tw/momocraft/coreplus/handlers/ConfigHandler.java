@@ -137,12 +137,17 @@ public class ConfigHandler {
         return vanillaUtils;
     }
 
+
     public static String getPlugin() {
         return "[" + CorePlus.getInstance().getDescription().getName() + "] ";
     }
 
     public static String getPrefix() {
         return getConfig("config.yml").getString("Message.prefix");
+    }
+
+    public static String getPluginName() {
+        return CorePlus.getInstance().getDescription().getName();
     }
 
     public static boolean isDebugging() {

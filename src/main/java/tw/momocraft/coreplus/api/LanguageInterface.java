@@ -1,9 +1,12 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
 
 public interface LanguageInterface {
 
@@ -26,10 +29,11 @@ public interface LanguageInterface {
     /**
      * Sending debug message in console.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param message the value of message.
+     * @param debugging check or not.
+     * @param prefix    the executing plugin prefix.
+     * @param message   the value of message.
      */
-    void sendDebugMsg(String prefix, String message);
+    void sendDebugMsg(boolean debugging, String prefix, String message);
 
     /**
      * Sending error message in console.
@@ -42,10 +46,11 @@ public interface LanguageInterface {
     /**
      * Sending exception message in console.
      *
-     * @param prefix the executing plugin prefix.
-     * @param e      the type of exception.
+     * @param debugging check or not.
+     * @param prefix    the executing plugin prefix.
+     * @param e         the type of exception.
      */
-    void sendDebugTrace(String prefix, Exception e);
+    void sendDebugTrace(boolean debugging, String prefix, Exception e);
 
     /**
      * Sending message to a player.
@@ -83,7 +88,7 @@ public interface LanguageInterface {
      * @param action  the feature's action like succeed, failed, return...
      * @param ste     the class and the line of code of this feature.
      */
-    void sendFeatureMsg(String prefix, String feature, String target, String check, String action, StackTraceElement ste);
+    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste);
 
     /**
      * Sending the information of feature in console to debug.
@@ -96,7 +101,7 @@ public interface LanguageInterface {
      * @param detail  more information.
      * @param ste     the class and the line of code of this feature.
      */
-    void sendFeatureMsg(String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste);
+    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste);
 
     /**
      * Creating a array for translation the placeholder of message.
@@ -124,11 +129,30 @@ public interface LanguageInterface {
     String getTranslation(String input);
 
     /**
+     * Translating the placeholders before output.
+     *
+     * @param player     the target player.
+     * @param input      the input string.
+     * @param langHolder the custom placeholder.
+     * @return a new string which translated language placeholders.
+     */
+    String translateLangHolders(Player player, String input, String... langHolder);
+
+    /**
+     * Translating the placeholders before output.
+     *
+     * @param input  the input string.
+     * @param player the target player.
+     * @return a new string which translated placeholders.
+     */
+    String translateLayout(String input, Player player);
+
+    /**
      * Translating vanilla name for player.
      *
      * @param player the target player to identify the language.
-     * @param input the input value.
-     * @param type the type of value. Avail: entity, material
+     * @param input  the input value.
+     * @param type   the type of value. Avail: entity, material
      * @return the player's client language value.
      */
     String getVanillaTrans(Player player, String input, String type);
@@ -137,7 +161,7 @@ public interface LanguageInterface {
      * Translating vanilla name.
      *
      * @param input the input value.
-     * @param type the type of value. Avail: entity, material
+     * @param type  the type of value. Avail: entity, material
      * @return the player's client language value.
      */
     String getVanillaTrans(String input, String type);
@@ -152,4 +176,23 @@ public interface LanguageInterface {
      * @param zip     if compressing the old log file.
      */
     void addLog(File file, String message, boolean time, boolean newFile, boolean zip);
+
+
+    /**
+     * @param players the list of player.
+     * @return a string of player list.
+     */
+    String getPlayersString(List<Player> players);
+
+    /**
+     * @param blocks the list of block.
+     * @return a string of block list.
+     */
+    String getBlocksString(List<Block> blocks);
+
+    /**
+     * @param entities the list of entity.
+     * @return a string of entity list.
+     */
+    String getEntitiesString(List<Entity> entities);
 }

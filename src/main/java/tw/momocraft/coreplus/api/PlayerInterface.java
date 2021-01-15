@@ -60,87 +60,142 @@ public interface PlayerInterface {
     /**
      * Checking if the sender has permission.
      *
+     * @param plugin     the sending plugin name.
      * @param sender     the checking player or console.
      * @param permission the permission node.
      * @return if the sender has permission.
      */
-    boolean hasPermission(CommandSender sender, String permission);
+    boolean hasPerm(String plugin, CommandSender sender, String permission);
 
     /**
-     * Checking if the sender has permission.
+     * Checking if the player has permission.
      *
+     * @param plugin     the sending plugin name.
      * @param player     the checking player.
      * @param permission the permission node.
-     * @param def        the default value if player is null.
-     * @return if the sender has permission.
+     * @return if the player has permission.
      */
-    boolean hasPermission(Player player, String permission, boolean def);
+    boolean hasPerm(String plugin, Player player, String permission);
 
     /**
-     * Checking if one of the sender has permission.
+     * Checking if the uuid of player has permission.
      *
-     * @param senders    the checking players or console.
+     * @param plugin     the sending plugin name.
+     * @param uuid       the checking uuid.
      * @param permission the permission node.
-     * @return if one of the sender has permission.
+     * @return if the uuid of player has permission.
      */
-    boolean havePermission(List<CommandSender> senders, String permission);
-
-    /**
-     * Checking if one of the sender has permission.
-     *
-     * @param players    the checking player list.
-     * @param permission the permission node.
-     * @param def        the default value if player list is null or empty.
-     * @return if one of the sender has permission.
-     */
-    boolean havePermission(List<Player> players, String permission, boolean def);
-
-    /**
-     * Checking if all of the senders have permission.
-     *
-     * @param senders    the checking players or console.
-     * @param permission the permission node.
-     * @return if all of the senders have permission.
-     */
-    boolean allHavePermission(List<CommandSender> senders, String permission);
-
-    /**
-     * Checking if all of the senders have permission.
-     *
-     * @param players    the checking player list.
-     * @param permission the permission node.
-     * @param def        the default value if player list is null or empty.
-     * @return if all of the senders have permission.
-     */
-    boolean allHavePermission(List<Player> players, String permission, boolean def);
-
-    /**
-     * Getting the highest level of permission of sender.
-     *
-     * @param sender     the checking player or console.
-     * @param permission the start with permission node.
-     * @return the hightest level of permission of sender.
-     */
-    int getMaxPermission(CommandSender sender, String permission);
-
-    /**
-     * Getting the highest level of permission of sender.
-     *
-     * @param player     the checking player.
-     * @param permission the start with permission node.
-     * @param def        the default value if player is null.
-     * @return the hightest level of permission of sender.
-     */
-    int getMaxPermission(Player player, String permission, int def);
+    boolean hasPerm(String plugin, UUID uuid, String permission);
 
     /**
      * Checking if the offline player has permission.
      *
-     * @param player     the checking player.
-     * @param permission the permission node.
-     * @return if the sender has permission.
+     * @param plugin        the sending plugin name.
+     * @param offlinePlayer the checking offlinePlayer.
+     * @param permission    the permission node.
+     * @return if the offline player has permission.
      */
-    boolean hasPermissionOffline(OfflinePlayer player, String permission);
+    boolean hasPerm(String plugin, OfflinePlayer offlinePlayer, String permission);
+
+    /**
+     * Checking if one of the sender has permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param senders    the checking players or console.
+     * @param permission the permission node.
+     * @return if one of the sender has permission.
+     */
+    boolean havePerm(String plugin, List<CommandSender> senders, String permission);
+
+    /**
+     * Checking if one of the player has permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param players    the checking player list.
+     * @param permission the permission node.
+     * @return if one of the player has permission.
+     */
+    boolean havePermPlayer(String plugin, List<Player> players, String permission);
+
+    /**
+     * Checking if one of the uuid has permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param uuids      the checking uuid list.
+     * @param permission the permission node.
+     * @return if one of the uuid of player has permission.
+     */
+    boolean havePermUUID(String plugin, List<UUID> uuids, String permission);
+
+    /**
+     * Checking if one of the offlinePlayer has permission.
+     *
+     * @param plugin         the sending plugin name.
+     * @param offlinePlayers the checking offlinePlayer list.
+     * @param permission     the permission node.
+     * @return if one of the offlinePlayer has permission.
+     */
+    boolean havePermOffline(String plugin, List<OfflinePlayer> offlinePlayers, String permission);
+
+    /**
+     * Checking if all of the senders have permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param senders    the checking sender list.
+     * @param permission the permission node.
+     * @return if all of the senders have permission.
+     */
+    boolean allHavePerm(String plugin, List<CommandSender> senders, String permission);
+
+    /**
+     * Checking if all of the players have permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param players    the checking player list.
+     * @param permission the permission node.
+     * @return if all of the players have permission.
+     */
+    boolean allHavePermPlayer(String plugin, List<Player> players, String permission);
+
+    /**
+     * Checking if all of the uuids have permission.
+     *
+     * @param plugin     the sending plugin name.
+     * @param uuids      the checking uuid list.
+     * @param permission the permission node.
+     * @return if all of the uuids of players have permission.
+     */
+    boolean allHavePermUUID(String plugin, List<UUID> uuids, String permission);
+
+    /**
+     * Checking if all of the offlinePlayers have permission.
+     *
+     * @param plugin         the sending plugin name.
+     * @param offlinePlayers the checking offlinePlayer list.
+     * @param permission     the permission node.
+     * @return if all of the offlinePlayers have permission.
+     */
+    boolean allHavePermOffline(String plugin, List<OfflinePlayer> offlinePlayers, String permission);
+
+    /**
+     * Getting the highest level of permission of sender.
+     *
+     * @param sender     the checking player or console.
+     * @param permission the start with permission node.
+     * @param def        the default value if the sender doesn't have any permission.
+     * @return the hightest level of permission of sender.
+     */
+    int getMaxPerm(CommandSender sender, String permission, int def);
+
+    /**
+     * Getting the highest level of permission of sender.
+     *
+     * @param player     the checking player.
+     * @param permission the start with permission node.
+     * @param def        the default value if the player doesn't have any permission.
+     * @return the hightest level of permission of sender.
+     */
+    int getMaxPerm(Player player, String permission, int def);
 
     /**
      * Getting the primary group of player.
@@ -149,7 +204,7 @@ public interface PlayerInterface {
      * @param uuid the uuid of player.
      * @return the primary group of player.
      */
-    String getPlayerPrimaryGroup(UUID uuid);
+    String getPrimaryGroup(UUID uuid);
 
     /**
      * Setting the primary group for player.
@@ -158,15 +213,14 @@ public interface PlayerInterface {
      * @param group the new primary group of player
      * @return if the process succeed. It may be failed if can not find the player or group.
      */
-    boolean setPlayerPrimaryGroup(UUID uuid, String group);
+    boolean setPrimaryGroup(UUID uuid, String group);
 
     /**
-     * Checking if player is in a group.
+     * Checking if player is inherited a group.
      *
-     * @param player the target player.
-     * @param group  the checking group name.
+     * @param uuid  the target uuid.
+     * @param group the checking group name.
      * @return if player is in a group.
      */
-    boolean isPlayerInGroup(Player player, String group);
-
+    boolean isInheritedGroup(UUID uuid, String group);
 }
