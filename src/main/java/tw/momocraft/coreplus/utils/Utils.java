@@ -2,20 +2,16 @@ package tw.momocraft.coreplus.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.UtilsInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Utils implements UtilsInterface {
@@ -289,14 +285,14 @@ public class Utils implements UtilsInterface {
 
     @Override
     public boolean isMenuNode(String node) {
-        return ConfigHandler.getConfigPath().getMenuIJ().equals(node);
+        return ConfigHandler.getConfigPath().getMenuItemJoin().equals(node);
     }
 
     @Override
     public boolean isMenu(ItemStack itemStack) {
         // Holding ItemJoin menu.
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
-            String menuIJ = ConfigHandler.getConfigPath().getMenuIJ();
+            String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
             if (!menuIJ.equals("")) {
                 return UtilsHandler.getDepend().getItemJoinUtils().isMenu(itemStack);
             }

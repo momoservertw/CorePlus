@@ -111,4 +111,12 @@ public class CorePlus extends JavaPlugin {
             utilsAPI = new Utils();
         return utilsAPI;
     }
+
+    private MySQLInterface mySQLAPI = null;
+
+    public MySQLInterface getMySQLManager() {
+        if (mySQLAPI == null)
+            mySQLAPI = new MySQLUtils();
+        return mySQLAPI;
+    }
 }

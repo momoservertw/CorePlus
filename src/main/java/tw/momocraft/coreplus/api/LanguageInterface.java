@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -77,6 +78,39 @@ public interface LanguageInterface {
      * @param message the value of message.
      */
     void sendMsg(String prefix, CommandSender sender, String message);
+
+
+    /**
+     * Sending message to a player or console.
+     *
+     * @param prefix  the executing plugin prefix.
+     * @param player  the executing player.
+     * @param message the value of message.
+     */
+    void sendActionBarMsg(String prefix, Player player, String message);
+
+    /**
+     * @param player   the executing player.
+     * @param input    the input message.
+     */
+    void sendTitleMsg(Player player, String input);
+
+    /**
+     * @param player   the executing player.
+     * @param title    the title message.
+     * @param subtitle the subtitle message.
+     */
+    void sendTitleMsg(Player player, String title, String subtitle);
+
+    /**
+     * @param player   the executing player.
+     * @param title    the title message.
+     * @param subtitle the subtitle message.
+     * @param fadeIn   the time in ticks for titles to fade in.
+     * @param stay     the  time in ticks for titles to stay.
+     * @param fadeOut  the time in ticks for titles to fade out.
+     */
+    void sendTitleMsg(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
 
     /**
      * Sending the information of feature in console to debug.

@@ -1,0 +1,11 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/title-messages.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+Title-Messages:
+  Winner:
+    stay: 70
+    fadeIn: 10
+    fadeOut: 20

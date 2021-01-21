@@ -4,6 +4,7 @@ import org.bukkit.Particle;
 
 public class ParticleMap {
 
+    private String groupName;
     private Particle type;
     private int amount;
     private int times;
@@ -12,6 +13,10 @@ public class ParticleMap {
     private double offsetY;
     private double offsetZ;
     private double extra;
+
+    public String getGroupName() {
+        return groupName;
+    }
 
     public Particle getType() {
         return type;
@@ -43,6 +48,11 @@ public class ParticleMap {
 
     public double getExtra() {
         return extra;
+    }
+
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public void setType(Particle type) {

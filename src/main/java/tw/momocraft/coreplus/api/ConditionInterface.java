@@ -2,27 +2,10 @@ package tw.momocraft.coreplus.api;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.utils.conditions.BlocksMap;
-import tw.momocraft.coreplus.utils.conditions.LocationMap;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ConditionInterface {
-
-    /**
-     * Getting the setting of LocationMap in CorePlus config.yml general.
-     *
-     * @return the property to LocationMaps.
-     */
-    Map<String, LocationMap> getLocProp();
-
-    /**
-     * Getting the setting of BlocksMap in CorePlus config.yml general.
-     *
-     * @return the property to BlocksMaps.
-     */
-    Map<String, BlocksMap> getBlocksProp();
 
     /**
      * Checking a location.

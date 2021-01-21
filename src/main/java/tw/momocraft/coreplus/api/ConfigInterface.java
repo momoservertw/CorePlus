@@ -1,10 +1,15 @@
 package tw.momocraft.coreplus.api;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import tw.momocraft.coreplus.utils.conditions.BlocksMap;
+import tw.momocraft.coreplus.utils.conditions.LocationMap;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ConfigInterface {
+
+    boolean isMySQL();
 
     /**
      * Adding custom group to the list and checking the type is exist.

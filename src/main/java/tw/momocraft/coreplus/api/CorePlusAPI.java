@@ -43,4 +43,8 @@ public class CorePlusAPI {
     public static UtilsInterface getUtilsManager() {
         return CorePlus.getInstance().getUtilsManager();
     }
+
+    public static MySQLInterface getMySQLManager() {
+        return CorePlus.getInstance().getMySQLManager();
+    }
 }

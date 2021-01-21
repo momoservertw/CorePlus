@@ -7,206 +7,44 @@ Check-Updates: true
 Debugging: false
 
 General:
-  Settings:
-    # Translating the placeholders of vanilla Item, Entity, Enchantment name to player client language.
-    Vanilla-Translate:
-      Enable: true
-      Force: false
-      Local: "en_us"
-    # Using a item to trigger some features.
-    Menu:
-      ItemJoin: ""
-      Item:
-        Type: "PLAYER_HEAD"
-        # Setting this option to "" to use vanilla item as menu.
-        Name: "&e&lMy &6&lMenu"
-        Skull-Textures: ""
-    Features:
-      # Changed these options need to restart the server.
-      Hook:
-        Vault: true
-        PlayerPoints: true
-        GemsEconomy: true
-        PlaceHolderAPI: true
-        DiscordSRV: true
-        LuckPerms: true
-        MysqlPlayerDataBridge: true
-        CMI: true
-        Residence: true
-        MythicMobs: true
-        ItemJoin: true
-        AuthMe: true
-  # The settings for custom commands.
-  # To send frequently used commands with placeholders.
-  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Command
-  Custom-Commands:
-    reward: "message: &6&lReward&c✤ &f%cmd_arg1%"
-    awards: "message: &d✧ &f%cmd_arg1% &d✧"
-    cgl: "broadcast: &6Congratulate &e%player% &6use &f%cmd_arg1% &8- &6Get the %cmd_arg2% &7<&f%cmd_arg3%&7>"
-    money: "console: money give %player% %cmd_arg1%"
-  Logs:
-    Default:
-      Path: "plugins//CorePlus//Logs"
-      Name: "latest.log"
-      Time: true
-      New-File: false
-      Zip: false
-    SpawnerChanged:
-      Path: "plugins//EntityPlus//Logs"
-      Name: "latest.log"
-      Time: true
-      New-File: false
-      Zip: false
-    LotteryPlus:
-      Path: "plugins//LotteryPlus//Logs"
-      Name: "latest.log"
-      Time: true
-      New-File: false
-      Zip: false
-  # The settings for custom sounds.
-  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Sounds
-  Sounds:
-    Announcement:
-      Type: ENTITY_PLAYER_LEVELUP
-    Celebrate:
-      Levelup:
-        Type: ENTITY_PLAYER_LEVELUP
-    Succeed:
-      Type: ENTITY_PLAYER_LEVELUP
-    Failed:
-      Type: ENTITY_SHULKER_HURT
-    SlimeJump:
-      Type: ENTITY_SLIME_JUMP
-      Run:
-        Times: 8
-        Interval: 20
-  # The settings for custom particles.
-  # More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Particles
-  Particles:
-    Example:
-      Type: FLAME
-      Offset:
-        X: 1
-        Y: 1
-        Z: 1
-      Speed: 1
-      Run:
-        Times: 5
-        Interval: 20
-    Barrier:
-      Type: BARRIER
-      Amount: 1
-    Crit_Magic:
-      Type: CRIT_MAGIC
-      Amount: 1
-      Run:
-        Times: 6
-        Interval: 10
-    Slime:
-      Type: SLIME
-      Amount: 3
-      Run:
-        Times: 8
-        Interval: 20
-    Flame:
-      Type: FLAME
-      Amount: 3
-      Run:
-        Times: 8
-        Interval: 20
-  # To specify areas or worlds for other plugins' features.
-  # More information: https://github.com/momoservertw/CorePlus/wiki/Location
-  Location:
-    NormalWorlds:
-      Worlds:
-        - world
-    NetherWorlds:
-      Worlds:
-        - world_nether
-    EndWorlds:
-      Worlds:
-        - world_the_end
-    NormalBorder:
-      Worlds:
-        - world
-      Area:
-        S: 10000
-    Bedrock_World:
-      Worlds:
-        - world
-      Area:
-        Y: ">= 5"
-    Bedrock_Nether:
-      Worlds:
-        - world_nether
-      Area:
-        Y: "5 ~ 123"
-    VisitorWorlds:
-      Worlds:
-        - world
-      Area:
-        Y: "5 ~ 123"
-    EnderMainLand:
-      Worlds:
-        - world_the_end
-      Area:
-        S: 150
-  # Check if there are certain blocks nearby.
-  # More information: https://github.com/momoservertw/CorePlus/wiki/Blocks
-  Blocks:
-    InWitherRose:
-      Types:
-        - WITHER_ROSE
-      Search:
-        H: 1
-    IgnoreNearbyMonument:
-      Ignore:
-        - NearbyMonument
-    NearbyMonument:
-      Types:
-        - PRISMARINE
-        - DARK_PRISMARINE
-        - PRISMARINE_BRICKS
-      Search:
-        S: 5
-        Y: 5
-    Cuboid:
-      Types:
-        - STONE
-      Search:
-        Values:
-          X: 2
-          Z: 4
-          Y: 1
-    Cube:
-      Types:
-        - STONE
-      Search:
-      Values:
-        R: 5
-    Sphere:
-      Types:
-        - STONE
-      Search:
-        Mode: Sphere
-        Values:
-          R: 5
-    Cylinder:
-      Types:
-        - STONE
-      Search:
-        Mode: Cylinder
-        Values:
-          R: 5
-          Y: 5
-    Round:
-      Types:
-        - STONE
-      Search:
-        Mode: Cylinder
-        Values:
-          R: 5
-          H: 1
+  # Saving data for some features.
+  MySQL:
+    Enable: false
+    username: root
+    password: ""
+    hostname: localhost
+    port: 3306
+  # Translating the placeholders of vanilla Item, Entity, Enchantment name to player client language.
+  # Need to setup. More information: https://github.com/momoservertw/CorePlus/wiki/Language
+  Language:
+    Enable: true
+    Local:
+      Enable: false
+      Tag: ""
+  # Using a item as menu to trigger some features.
+  Menu:
+    # To custom item node from plugin ItemJoin.
+    ItemJoin: ""
+    Item:
+      Type: "PLAYER_HEAD"
+      # Setting this option to "" to use vanilla item as menu.
+      Name: "&e&lMy &6&lMenu"
+      Skull-Textures: ""
+  Features:
+    # Changed these options need to restart the server.
+    Hook:
+      Vault: true
+      PlayerPoints: true
+      GemsEconomy: true
+      PlaceHolderAPI: true
+      DiscordSRV: true
+      LuckPerms: true
+      MysqlPlayerDataBridge: true
+      CMI: true
+      Residence: true
+      MythicMobs: true
+      ItemJoin: true
+      AuthMe: true
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "
@@ -217,6 +55,7 @@ Message:
   cooldown: "&fPlease try it again later."
   featureDisabled: "&cThis feature is disabled."
   dependNotFound: "&cThis feature needs plugin %plugin%."
+  groupNotFound: "&cCan not find: %group%"
   onlyPlayer: "&cThis command can only executing from player."
   noFlagPerm: "&cYou dont have &6%flag% &cpermission<s> here."
   notEnoughMoney: "&cYou need %pricetype%: %price% - Balance: %balance%"
@@ -226,11 +65,18 @@ Message:
   noShopItem: "&cYou can not buy this block."
   buySuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% &8- &a%pricetype%: %balance%"
   buyTargetSuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% for %targetplayer% &8- &a%pricetype%: %balance%"
+  runcmdOther: "&eExecuted command for %targetplayer%: %command%"
+  runcmdCustomOther: "&eExecuted custom command for %targetplayer%: %group%"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
     help: "&a/coreplus help &8- &7This help menu."
     reload: "&a/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
+    test: "&f/coreplus test <location/blocks> <group> &8- &7Check if the condition is match."
+    runcmd: "&f/coreplus runcmd <command> &8- &7Executing input custom command."
+    runcmdOther: "&f/coreplus runcmd <player> <command> &8- &7Executing input custom command for other player."
+    runcmdCustom: "&f/coreplus runcmd <group> &8- &7Executing custom command from configuration."
+    runcmdCustomOther: "&f/coreplus runcmd <player> <group> &8- &7Executing custom command from configuration for other player."
   Translation:
     money: "money"
     points: "points"

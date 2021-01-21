@@ -1,0 +1,38 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/particles.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+Particles:
+  Example:
+    Type: FLAME
+    Offset:
+      X: 1
+      Y: 1
+      Z: 1
+    Speed: 1
+    Run:
+      Times: 5
+      Interval: 20
+  Barrier:
+    Type: BARRIER
+    Amount: 1
+  Crit_Magic:
+    Type: CRIT_MAGIC
+    Amount: 1
+    Run:
+      Times: 6
+      Interval: 10
+  Slime:
+    Type: SLIME
+    Amount: 3
+    Run:
+      Times: 8
+      Interval: 20
+  Flame:
+    Type: FLAME
+    Amount: 3
+    Run:
+      Times: 8
+      Interval: 20

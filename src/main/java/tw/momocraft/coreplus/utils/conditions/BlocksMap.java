@@ -51,39 +51,39 @@ public class BlocksMap {
     }
 
 
-    void setGroupName(String groupName) {
+    public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
-    void setBlockTypes(List<String> blockTypes) {
+    public void setBlockTypes(List<String> blockTypes) {
         this.blockTypes = blockTypes;
     }
 
-    void setX(int x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    void setY(int y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    void setZ(int z) {
+    public void setZ(int z) {
         this.z = z;
     }
 
-    void setR(int r) {
+    public void setR(int r) {
         this.r = r;
     }
 
-    void setH(int h) {
+    public void setH(int h) {
         this.h = h;
     }
 
-    void setMode(String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
-    void setIgnoreList(List<String> ignoreList) {
+    public void setIgnoreList(List<String> ignoreList) {
         this.ignoreList = ignoreList;
     }
 }

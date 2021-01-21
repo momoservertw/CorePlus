@@ -1,0 +1,25 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/logs.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+Logs:
+  Default:
+    Path: "plugins//CorePlus//Logs"
+    Name: "latest.log"
+    Time: true
+    New-File: false
+    Zip: false
+  SpawnerChanged:
+    Path: "plugins//EntityPlus//Logs"
+    Name: "spawner.log"
+    Time: true
+    New-File: false
+    Zip: false
+  LotteryPlus:
+    Path: "plugins//LotteryPlus//Logs"
+    Name: "latest.log"
+    Time: true
+    New-File: false
+    Zip: false

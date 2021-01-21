@@ -12,12 +12,6 @@ import java.util.Map;
 
 public class BlocksUtils {
 
-    private final Map<String, BlocksMap> blocksProp = new HashMap<>();
-
-    public BlocksUtils() {
-        setUp();
-    }
-
     public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
         if (blocksList == null || blocksList.isEmpty()) {
             return def;
@@ -25,7 +19,7 @@ public class BlocksUtils {
         List<String> ignoreList;
         BlocksMap blocksMap;
         for (String group : blocksList) {
-            blocksMap = blocksProp.get(group);
+            blocksMap = ConfigHandler.getConfigPath().getBlocksProp().get(group);
             if (blocksMap == null) {
                 continue;
             }
@@ -42,44 +36,6 @@ public class BlocksUtils {
         return false;
     }
 
-    private void setUp() {
-        ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Blocks");
-        if (locConfig == null) {
-            return;
-        }
-        ConfigurationSection groupConfig;
-        for (String group : locConfig.getKeys(false)) {
-            groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Blocks." + group);
-            if (groupConfig == null) {
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "&cCan not set the Blocks: " + group);
-                continue;
-            }
-            blocksProp.put(group, setBlocksMap(group));
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Blocks", group, "setup", "continue",
-                    new Throwable().getStackTrace()[0]);
-        }
-    }
-
-    public Map<String, BlocksMap> getBlocksMap() {
-        return blocksProp;
-    }
-
-    private BlocksMap setBlocksMap(String group) {
-        BlocksMap blocksMap = new BlocksMap();
-        blocksMap.setGroupName(group);
-        blocksMap.setBlockTypes(ConfigHandler.getConfigPath().getTypeList(ConfigHandler.getPrefix(),
-                ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Types"), "Materials"));
-        blocksMap.setIgnoreList(ConfigHandler.getConfig("config.yml").getStringList("General.Blocks." + group + ".Ignore"));
-        int r = ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Values.R");
-        blocksMap.setR(r);
-        blocksMap.setX(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Values.X", r));
-        int y = ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Values.Y", r);
-        blocksMap.setY(y);
-        blocksMap.setZ(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Values.Z", r));
-        blocksMap.setH(ConfigHandler.getConfig("config.yml").getInt("General.Blocks." + group + ".Search.Values.H"));
-        blocksMap.setMode(ConfigHandler.getConfig("config.yml").getString("General.Blocks." + group + ".Search.Mode", "Cuboid"));
-        return blocksMap;
-    }
 
     private boolean getSearchBlocks(Location loc, BlocksMap blocksMap) {
         List<String> blockTypes = blocksMap.getBlockTypes();

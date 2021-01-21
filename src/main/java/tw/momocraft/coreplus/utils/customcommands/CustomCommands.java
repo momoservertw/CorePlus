@@ -154,15 +154,19 @@ public class CustomCommands implements CommandInterface {
     @Override
     public void dispatchCustomCmd(String prefix, Player player, String group, boolean placeholder, String... langHolder) {
         String[] placeHolderArr = group.split(", ");
-        String newCmd = ConfigHandler.getConfigPath().getCmdProp().get(placeHolderArr[0]);
-        if (newCmd == null) {
+        List<String> commands = ConfigHandler.getConfigPath().getCmdProp().get(placeHolderArr[0]);
+        List<String> newCommands = new ArrayList<>();
+        if (commands == null || commands.isEmpty()) {
             UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the custom command group: " + placeHolderArr[0]);
             return;
         }
-        for (int i = 1; i < +placeHolderArr.length; i++) {
-            newCmd = newCmd.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
+        for (String command : commands) {
+            for (int i = 1; i < +placeHolderArr.length; i++) {
+                command = command.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
+                newCommands.add(command);
+            }
         }
-        selectCmdType(prefix, player, newCmd, placeholder, langHolder);
+        executeCmdList(prefix, player, newCommands, placeholder, langHolder);
     }
 
     /**
@@ -224,16 +228,14 @@ public class CustomCommands implements CommandInterface {
                 input = input.replace("message: ", "");
                 UtilsHandler.getLang().sendPlayerMsg("", player, input);
                 return;
-                    /*
-                case "title":
-                    input = input.replace("title: ", "");
-                    UtilsHandler.getLang().sendTitleMsg(null, player, input);
-                    return;
-                case "action-bar":
-                    input = input.replace("title: ", "");
-                    UtilsHandler.getLang().sendTitleMsg(null, player, input);
-                    return;
-                     */
+            case "action-bar":
+                input = input.replace("action-bar: ", "");
+                UtilsHandler.getLang().sendActionBarMsg("", player, input);
+                return;
+            case "title":
+                input = input.replace("title: ", "");
+                UtilsHandler.getLang().sendTitleMsg(player, input);
+                return;
             case "sound":
                 input = input.replace("sound: ", "");
                 dispatchSoundCmd(prefix, player, input);
@@ -431,7 +433,7 @@ public class CustomCommands implements CommandInterface {
         try {
             Location loc = player.getLocation();
             SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(input);
-            Sound sound = Sound.valueOf(soundMap.getType());
+            Sound sound = soundMap.getType();
             int times = soundMap.getTimes();
             int interval = soundMap.getInterval();
             long volume = soundMap.getVolume();

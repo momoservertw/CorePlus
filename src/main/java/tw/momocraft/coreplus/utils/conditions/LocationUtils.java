@@ -12,11 +12,6 @@ import java.util.Map;
 
 public class LocationUtils {
 
-    private Map<String, LocationMap> locProp;
-
-    public LocationUtils() {
-        setUp();
-    }
 
     /**
      * @param loc     location.
@@ -36,7 +31,7 @@ public class LocationUtils {
                 if (group.equals(worldName)) {
                     return true;
                 }
-                locMap = locProp.get(group);
+                locMap = ConfigHandler.getConfigPath().getLocProp().get(group);
                 if (locMap == null) {
                     continue;
                 }
@@ -56,38 +51,6 @@ public class LocationUtils {
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
         }
         return false;
-    }
-
-    private void setUp() {
-        locProp = new HashMap<>();
-        ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location");
-        if (locConfig == null) {
-            return;
-        }
-        ConfigurationSection groupConfig;
-        LocationMap locMap;
-        ConfigurationSection areaConfig;
-        for (String group : locConfig.getKeys(false)) {
-            groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group);
-            if (groupConfig == null) {
-                continue;
-            }
-            locMap = new LocationMap();
-            areaConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("General.Location." + group + ".Area");
-            locMap.setWorlds(ConfigHandler.getConfig("config.yml").getStringList("General.Location." + group + ".Worlds"));
-            if (areaConfig != null) {
-                for (String area : areaConfig.getKeys(false)) {
-                    locMap.addCord(group, area, ConfigHandler.getConfig("config.yml").getString("General.Location." + group + ".Area." + area));
-                }
-            }
-            locProp.put(group, locMap);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Location", group, "setup", "continue",
-                    new Throwable().getStackTrace()[0]);
-        }
-    }
-
-    public Map<String, LocationMap> getLocProp() {
-        return locProp;
     }
 
     private boolean isCord(Location loc, String type, String value) {

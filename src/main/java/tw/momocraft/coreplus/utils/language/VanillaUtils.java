@@ -56,22 +56,22 @@ public class VanillaUtils {
     }
 
     public String getValinaName(Player player, String input, String type) {
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+        if (!ConfigHandler.getConfigPath().isLanguage()) {
             return input;
         }
         return getValinaNode(getLocal(player), input, type);
     }
 
     public String getValinaName(String input, String type) {
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+        if (!ConfigHandler.getConfigPath().isLanguage()) {
             return input;
         }
-        return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
+        return getValinaNode(ConfigHandler.getConfigPath().getLanguageLocalTag(), input, type);
     }
 
 
     public String getValinaNode(String local, String input, String type) {
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+        if (!ConfigHandler.getConfigPath().isLanguage()) {
             return input;
         }
         if (input == null) {
@@ -103,13 +103,13 @@ public class VanillaUtils {
 
     public String getLocal(Player player) {
         String local;
-        if (ConfigHandler.getConfigPath().isVanillaTransForce()) {
-            local = ConfigHandler.getConfigPath().getVanillaTransLocal();
+        if (ConfigHandler.getConfigPath().isLanguageLocal()) {
+            local = ConfigHandler.getConfigPath().getLanguageLocalTag();
         } else if (player != null) {
             local = player.getLocale();
             System.out.println(local);
         } else {
-            local = ConfigHandler.getConfigPath().getVanillaTransLocal();
+            local = ConfigHandler.getConfigPath().getLanguageLocalTag();
         }
         return local;
     }

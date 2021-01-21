@@ -1,0 +1,41 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/location.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+Location:
+  NormalWorlds:
+    Worlds:
+      - world
+  NetherWorlds:
+    Worlds:
+      - world_nether
+  EndWorlds:
+    Worlds:
+      - world_the_end
+  NormalBorder:
+    Worlds:
+      - world
+    Area:
+      S: 10000
+  Bedrock_World:
+    Worlds:
+      - world
+    Area:
+      Y: ">= 5"
+  Bedrock_Nether:
+    Worlds:
+      - world_nether
+    Area:
+      Y: "5 ~ 123"
+  VisitorWorlds:
+    Worlds:
+      - world
+    Area:
+      Y: "5 ~ 123"
+  EnderMainLand:
+    Worlds:
+      - world_the_end
+    Area:
+      S: 150

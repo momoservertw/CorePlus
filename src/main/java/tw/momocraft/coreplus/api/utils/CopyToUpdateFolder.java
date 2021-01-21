@@ -25,6 +25,8 @@ public class CopyToUpdateFolder {
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\ServerPlus\\target", fileName));
         fileName = "SlimeChunkPlus-1.1.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\SlimeChunkPlus\\target", fileName));
+        fileName = "RegionPlus-1.1.0.jar";
+        targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\RegionPlus\\target", fileName));
 
         copyFiles(path, targetList);
     }

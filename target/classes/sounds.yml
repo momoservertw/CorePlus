@@ -1,0 +1,21 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/sounds.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+Sounds:
+  Announcement:
+    Type: ENTITY_PLAYER_LEVELUP
+  Celebrate:
+    Levelup:
+      Type: ENTITY_PLAYER_LEVELUP
+  Succeed:
+    Type: ENTITY_PLAYER_LEVELUP
+  Failed:
+    Type: ENTITY_SHULKER_HURT
+  SlimeJump:
+    Type: ENTITY_SLIME_JUMP
+    Run:
+      Times: 8
+      Interval: 20

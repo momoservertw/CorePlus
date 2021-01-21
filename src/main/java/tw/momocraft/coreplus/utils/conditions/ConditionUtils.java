@@ -6,7 +6,6 @@ import tw.momocraft.coreplus.api.ConditionInterface;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.List;
-import java.util.Map;
 
 public class ConditionUtils implements ConditionInterface {
 
@@ -22,19 +21,8 @@ public class ConditionUtils implements ConditionInterface {
         locationUtils = loc;
     }
 
-
     public static void setBlockUtils(BlocksUtils blocks) {
         blocksUtils = blocks;
-    }
-
-    @Override
-    public Map<String, BlocksMap> getBlocksProp() {
-        return blocksUtils.getBlocksMap();
-    }
-
-    @Override
-    public Map<String, LocationMap> getLocProp() {
-        return locationUtils.getLocProp();
     }
 
     @Override

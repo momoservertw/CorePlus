@@ -1,6 +1,8 @@
 package tw.momocraft.coreplus.utils.language;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,6 +19,7 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class LanguageUtils implements LanguageInterface {
 
@@ -47,7 +50,7 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendErrorMsg(String prefix, String message) {
-        message = prefix + "&4[Error]&e " + message;
+        message = "&c[" + prefix + "_Error] &r" + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
     }
@@ -68,6 +71,37 @@ public class LanguageUtils implements LanguageInterface {
         message = prefix + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
         sender.sendMessage(message);
+    }
+
+    @Override
+    public void sendActionBarMsg(String prefix, Player player, String message) {
+        if (prefix == null)
+            prefix = "";
+        message = prefix + message;
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+    }
+
+    // title: "title/nsubtitle"
+    @Override
+    public void sendTitleMsg(Player player, String input) {
+        input = ChatColor.translateAlternateColorCodes('&', input);
+        String[] args = input.split("/n");
+        player.sendTitle(args[0], args[1], 10, 70, 20);
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String title, String subtitle) {
+        title = ChatColor.translateAlternateColorCodes('&', title);
+        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
+        player.sendTitle(title, subtitle, 10, 70, 20);
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        title = ChatColor.translateAlternateColorCodes('&', title);
+        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
     @Override
@@ -192,6 +226,9 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String translateLangHolders(Player player, String langMessage, String... langHolder) {
+        if (langHolder.length == 0) {
+            return langMessage;
+        }
         if (langMessage.contains("%material%")) {
             langMessage = langMessage.replace("%material%", getVanillaTrans(player, langHolder[7], "material"));
         } else if (langMessage.contains("%entity%")) {
@@ -416,12 +453,12 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String getVanillaTrans(Player player, String input, String type) {
-        return ConfigHandler.getVanillaUtils().getValinaName(player, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaName(player, input, type);
     }
 
     @Override
     public String getVanillaTrans(String input, String type) {
-        return ConfigHandler.getVanillaUtils().getValinaNode(null, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaNode(null, input, type);
     }
 
     @Override
