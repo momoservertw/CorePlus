@@ -18,6 +18,24 @@ import java.util.List;
 public class Commands implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length > 1 && args[0].equalsIgnoreCase("runcmd")) {
+            if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                String command = String.join(" ", args);
+                command = command.substring(args[0].length() + 1);
+                Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
+                if (player != null) {
+                    command = command.substring(args[1].length() + 1);
+                }
+                if (sender instanceof ConsoleCommandSender) {
+                    UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), command, true);
+                    return true;
+                }
+                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), (Player) sender, command, true);
+            } else {
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+            }
+            return true;
+        }
         switch (args.length) {
             case 0:
                 if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.use")) {
@@ -48,6 +66,14 @@ public class Commands implements CommandExecutor {
                         if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.test")) {
                             UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
                         }
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmd", sender);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdOther", sender);
+                        }
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdCustom", sender);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdCustomOther", sender);
+                        }
                         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
@@ -67,6 +93,50 @@ public class Commands implements CommandExecutor {
                                 + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                         UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(),
                                 CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion(), false);
+                    } else {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    }
+                    return true;
+                } else if (args[0].equalsIgnoreCase("test")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
+                    } else {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    }
+                    return true;
+                } else if (args[0].equalsIgnoreCase("runcmd")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmd", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdOther", sender);
+                    } else {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    }
+                    return true;
+                } else if (args[0].equalsIgnoreCase("runcmdcustom")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdCustom", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.runcmdCustomOther", sender);
+                    } else {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    }
+                    return true;
+                }
+                break;
+            case 2:
+                if (args[0].equalsIgnoreCase("runcmdcustom")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
+                        List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[1]);
+                        if (cmds == null || cmds.isEmpty()) {
+                            String[] langHandler = UtilsHandler.getLang().newString();
+                            langHandler[5] = args[1];
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender, langHandler);
+                            return true;
+                        }
+                        if (sender instanceof ConsoleCommandSender) {
+                            UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), cmds, true);
+                            return true;
+                        }
+                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), (Player) sender, cmds, true);
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
@@ -102,69 +172,8 @@ public class Commands implements CommandExecutor {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
-                } else if (args[0].equalsIgnoreCase("runcmd")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        if (sender instanceof ConsoleCommandSender) {
-                            UtilsHandler.getCustomCommands().executeCmd("",
-                                    String.join(",", args).substring(args[0].length() + 1), true);
-                            return true;
-                        }
-                        Player player = (Player) sender;
-                        UtilsHandler.getCustomCommands().executeCmd("", player,
-                                String.join(",", args).substring(args[0].length() + 1), true);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
-                    return true;
                 } else if (args[0].equalsIgnoreCase("runcmdcustom")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        if (sender instanceof ConsoleCommandSender) {
-                            List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[1]);
-                            if (cmds == null || cmds.isEmpty()) {
-                                String[] langHandler = UtilsHandler.getLang().newString();
-                                langHandler[5] = args[1];
-                                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender);
-                                return true;
-                            }
-                            UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPrefix(), cmds, true);
-                            return true;
-                        }
-                        Player player = (Player) sender;
-                        List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[1]);
-                        if (cmds == null || cmds.isEmpty()) {
-                            String[] langHandler = UtilsHandler.getLang().newString();
-                            langHandler[5] = args[1];
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender);
-                            return true;
-                        }
-                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPrefix(), player, cmds, true);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
-                    return true;
-                }
-                break;
-            case 4:
-                if (args[0].equalsIgnoreCase("runcmd")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
-                        String runcmd = String.join(",", args).substring(args[0].length() + 1);
-
-                        String[] langHandler = CorePlusAPI.getLangManager().newString();
-                        langHandler[1] = args[1]; // %targetplayer%
-                        langHandler[4] = runcmd; // %command%
-                        if (player == null) {
-                            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, langHandler);
-                            return true;
-                        }
-                        UtilsHandler.getCustomCommands().executeCmd("", player, runcmd, true);
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.runcmdOther", sender, langHandler);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("runcmdcustom")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
                         Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
                         String[] langHandler = CorePlusAPI.getLangManager().newString();
                         langHandler[1] = args[1]; // %targetplayer%
@@ -178,7 +187,7 @@ public class Commands implements CommandExecutor {
                             UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender);
                             return true;
                         }
-                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPrefix(), player, cmds, true);
+                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), player, cmds, true);
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.runcmdCustomOther", sender, langHandler);
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);

@@ -8,8 +8,7 @@ Sounds:
   Announcement:
     Type: ENTITY_PLAYER_LEVELUP
   Celebrate:
-    Levelup:
-      Type: ENTITY_PLAYER_LEVELUP
+    Type: ENTITY_PLAYER_LEVELUP
   Succeed:
     Type: ENTITY_PLAYER_LEVELUP
   Failed:

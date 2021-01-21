@@ -163,8 +163,8 @@ public class CustomCommands implements CommandInterface {
         for (String command : commands) {
             for (int i = 1; i < +placeHolderArr.length; i++) {
                 command = command.replace("%cmd_arg" + i + "%", placeHolderArr[i]);
-                newCommands.add(command);
             }
+            newCommands.add(command);
         }
         executeCmdList(prefix, player, newCommands, placeholder, langHolder);
     }

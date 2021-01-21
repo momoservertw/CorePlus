@@ -69,14 +69,14 @@ Message:
   runcmdCustomOther: "&eExecuted custom command for %targetplayer%: %group%"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
-    help: "&a/coreplus help &8- &7This help menu."
-    reload: "&a/coreplus reload &8- &7Reloads config file."
+    help: "&f/coreplus help &8- &7This help menu."
+    reload: "&f/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
     test: "&f/coreplus test <location/blocks> <group> &8- &7Check if the condition is match."
     runcmd: "&f/coreplus runcmd <command> &8- &7Executing input custom command."
     runcmdOther: "&f/coreplus runcmd <player> <command> &8- &7Executing input custom command for other player."
-    runcmdCustom: "&f/coreplus runcmd <group> &8- &7Executing custom command from configuration."
-    runcmdCustomOther: "&f/coreplus runcmd <player> <group> &8- &7Executing custom command from configuration for other player."
+    runcmdCustom: "&f/coreplus runcmdcustom <group> &8- &7Executing custom command from configuration."
+    runcmdCustomOther: "&f/coreplus runcmdcustom <player> <group> &8- &7Executing custom command from configuration for other player."
   Translation:
     money: "money"
     points: "points"

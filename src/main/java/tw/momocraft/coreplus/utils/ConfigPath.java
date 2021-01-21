@@ -67,7 +67,7 @@ public class ConfigPath implements ConfigInterface {
     }
 
     private void sendSetupMessage() {
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Groups: " + groupProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Groups: ");
         for (String group : groupProp.keySet()) {
             UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "  " + group + ": " + groupProp.get(group).keySet());
         }
@@ -127,7 +127,7 @@ public class ConfigPath implements ConfigInterface {
             }
             groupMap = new HashMap<>();
             for (String group : groupConfig.getKeys(false)) {
-                groupList = ConfigHandler.getConfig("groups.yml").getStringList(type);
+                groupList = ConfigHandler.getConfig("groups.yml").getStringList(type + "." + group);
                 if (groupList.isEmpty()) {
                     continue;
                 }
@@ -204,7 +204,7 @@ public class ConfigPath implements ConfigInterface {
             }
             blocksMap = new BlocksMap();
             blocksMap.setGroupName(group);
-            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPrefix(),
+            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPluginName(),
                     ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + group + ".Types"), "Materials"));
             blocksMap.setIgnoreList(ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + group + ".Ignore"));
             int r = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.R");
