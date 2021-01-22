@@ -244,11 +244,11 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%amount%", langHolder[6])
                 .replace("%material%", langHolder[7])
                 .replace("%entity%", langHolder[8])
-                .replace("%pricetype%", langHolder[9])
+                .replace("%pricetype%", getMessageTranslation(langHolder[9]))
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
-                .replace("%flag%", langHolder[13])
+                .replace("%flag%", getMessageTranslation(langHolder[13]))
                 .replace("%length%", langHolder[14])
                 .replace("%size%", langHolder[15])
                 .replace("%color%", langHolder[16])
@@ -447,8 +447,8 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String getTranslation(String input) {
-        return ConfigHandler.getConfig("config.yml").getString("Message.Translation." + input);
+    public String getMessageTranslation(String input) {
+        return ConfigHandler.getConfig("config.yml").getString("Message.Translation." + input, input);
     }
 
     @Override
@@ -479,7 +479,7 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getTranslation("noTarget");
+            return getMessageTranslation("noTarget");
         }
         return stringBuilder.toString();
     }
@@ -497,7 +497,7 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getTranslation("noTarget");
+            return getMessageTranslation("noTarget");
         }
         return stringBuilder.toString();
     }
@@ -515,7 +515,7 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getTranslation("noTarget");
+            return getMessageTranslation("noTarget");
         }
         return stringBuilder.toString();
     }

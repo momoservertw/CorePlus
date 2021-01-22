@@ -160,7 +160,7 @@ public interface LanguageInterface {
      * @param input the placeholder
      * @return the translated placeholder.
      */
-    String getTranslation(String input);
+    String getMessageTranslation(String input);
 
     /**
      * Translating the placeholders before output.
