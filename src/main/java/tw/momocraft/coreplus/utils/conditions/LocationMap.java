@@ -21,7 +21,7 @@ public class LocationMap {
         if (isCordFormat(type, value)) {
             cord.put(type, value);
         } else {
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "&cCan not set the Location: " + group);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&cCan not set the Location: " + group);
         }
     }
 

@@ -36,67 +36,67 @@ public class Dependence implements DependInterface {
     private boolean PvPManager = false;
 
     public Dependence() {
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vault")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vault")) {
             Vault = Bukkit.getServer().getPluginManager().getPlugin("Vault") != null;
             if (Vault) {
                 setVaultApi();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlayerPoints")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlayerPoints")) {
             PlayerPoints = Bukkit.getServer().getPluginManager().getPlugin("PlayerPoints") != null;
             if (PlayerPoints) {
                 setPlayerPointsApi();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.GemsEconomy")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.GemsEconomy")) {
             GemsEconomy = Bukkit.getServer().getPluginManager().getPlugin("GemsEconomy") != null;
             if (GemsEconomy) {
                 setGemsEconomyApi();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LuckPerms")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.LuckPerms")) {
             LuckPerms = Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null;
             if (LuckPerms) {
                 setLuckPermsApi();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.ItemJoin")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.ItemJoin")) {
             ItemJoin = Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null;
             if (ItemJoin) {
                 setItemJoinUtils();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence")) {
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
             if (Residence) {
                 setResidenceUtils();
             }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PlaceHolderAPI")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.LangUtils")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.LangUtils")) {
             LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.DiscordSRV")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.DiscordSRV")) {
             DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MysqlPlayerDataBridge")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MysqlPlayerDataBridge")) {
             MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence")) {
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.CMI")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.CMI")) {
             CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MythicMobs")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MythicMobs")) {
             MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.AuthMe")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.AuthMe")) {
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PvPManager")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PvPManager")) {
             PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
         }
         sendUtilityDepends();
@@ -119,10 +119,7 @@ public class Dependence implements DependInterface {
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "")
                 + (PvPManagerEnabled() ? "PvPManager, " : "");
-        try {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
-        } catch (Exception ignored) {
-        }
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.length() - 2) + "]");
 
         /*
         if (ResidenceEnabled()) {
@@ -132,7 +129,7 @@ public class Dependence implements DependInterface {
                     + (FlagPermissions.getPosibleAreaFlags().contains("damagebypass") ? "damagebypass, " : "")
             ;
             try {
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
+                UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
             } catch (Exception ignored) {
             }
         }

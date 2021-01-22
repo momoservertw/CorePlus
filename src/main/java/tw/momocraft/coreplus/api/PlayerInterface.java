@@ -201,26 +201,29 @@ public interface PlayerInterface {
      * Getting the primary group of player.
      * Need: LuckPerms
      *
+     * @param pluginName the name of plugin.
      * @param uuid the uuid of player.
      * @return the primary group of player.
      */
-    String getPrimaryGroup(UUID uuid);
+    String getPrimaryGroup(String pluginName, UUID uuid);
 
     /**
      * Setting the primary group for player.
      *
+     * @param pluginName the name of plugin.
      * @param uuid  the uuid of player.
      * @param group the new primary group of player
      * @return if the process succeed. It may be failed if can not find the player or group.
      */
-    boolean setPrimaryGroup(UUID uuid, String group);
+    boolean setPrimaryGroup(String pluginName, UUID uuid, String group);
 
     /**
      * Checking if player is inherited a group.
      *
+     * @param pluginName the name of plugin.
      * @param uuid  the target uuid.
      * @param group the checking group name.
      * @return if player is in a group.
      */
-    boolean isInheritedGroup(UUID uuid, String group);
+    boolean isInheritedGroup(String pluginName, UUID uuid, String group);
 }

@@ -39,20 +39,20 @@ public class Logger {
             if (!parentFile.exists()) {
                 try {
                     if (!parentFile.mkdir()) {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
                     }
                 } catch (Exception e) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
                     UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                 }
             }
             // Creating file.
             try {
                 if (!file.createNewFile()) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                 }
             } catch (Exception e) {
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
             }
         } else {
@@ -76,21 +76,21 @@ public class Logger {
                     // Renaming the old file.
                     try {
                         if (!file.renameTo(renameFile)) {
-                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
                         UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                     }
                     // Compressing the file.
                     if (zip) {
                         try {
                             if (UtilsHandler.getFile().zipFiles(file, null, null)) {
-                                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(),
+                                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
                                         "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
                             }
                         } catch (Exception e) {
-                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(),
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
                                     "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
                             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                         }
@@ -98,10 +98,10 @@ public class Logger {
                     // Create a new the file.
                     try {
                         if (!file.createNewFile()) {
-                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                         UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                     }
                 }

@@ -278,17 +278,29 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public String getPrimaryGroup(UUID uuid) {
+    public String getPrimaryGroup(String pluginName, UUID uuid) {
+        if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
+            return null;
+        }
         return UtilsHandler.getDepend().getLuckPermsApi().getPlayerPrimaryGroup(uuid);
     }
 
     @Override
-    public boolean setPrimaryGroup(UUID uuid, String group) {
+    public boolean setPrimaryGroup(String pluginName, UUID uuid, String group) {
+        if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
+            return false;
+        }
         return UtilsHandler.getDepend().getLuckPermsApi().setPlayerPrimaryGroup(uuid, group);
     }
 
     @Override
-    public boolean isInheritedGroup(UUID uuid, String group) {
+    public boolean isInheritedGroup(String pluginName, UUID uuid, String group) {
+        if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
+            return false;
+        }
         return UtilsHandler.getDepend().getLuckPermsApi().isInheritedGroup(uuid, group);
     }
 }

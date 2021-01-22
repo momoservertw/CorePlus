@@ -13,11 +13,11 @@ import tw.momocraft.coreplus.utils.language.VanillaUtils;
 public class UtilsHandler {
 
     public static void setUpFirst() {
-        dependence = new Dependence();
         languageUtils = new LanguageUtils();
     }
 
     public static void setUpLast() {
+        dependence = new Dependence();
         customCommands = new CustomCommands();
         utils = new Utils();
         fileUtils = new FileUtils();

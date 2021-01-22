@@ -107,7 +107,6 @@ public class VanillaUtils {
             local = ConfigHandler.getConfigPath().getLanguageLocalTag();
         } else if (player != null) {
             local = player.getLocale();
-            System.out.println(local);
         } else {
             local = ConfigHandler.getConfigPath().getLanguageLocalTag();
         }

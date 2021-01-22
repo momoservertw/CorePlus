@@ -253,8 +253,7 @@ public class CustomCommands implements CommandInterface {
                 dispatchParticleCustomCmd(prefix, player.getLocation(), input);
                 return;
             default:
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (" + input + ")");
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Please check whether CorePlus is the latest version.");
+                dispatchConsoleCmd(prefix, player, input);
         }
     }
 
@@ -307,11 +306,12 @@ public class CustomCommands implements CommandInterface {
             case "sound-custom":
             case "particle":
             case "particle-custom":
+            case "actionbar":
+            case "title":
                 UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the execute target (" + input + ")");
                 return;
             default:
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Can not execute command (" + input + ")");
-                UtilsHandler.getLang().sendErrorMsg(prefix, "Please check whether CorePlus is the latest version.");
+                dispatchConsoleCmd(prefix, null, input);
         }
     }
 

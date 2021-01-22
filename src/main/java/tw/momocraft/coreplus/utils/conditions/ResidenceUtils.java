@@ -20,9 +20,6 @@ public class ResidenceUtils {
     }
 
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
-            return false;
-        }
         if (flag != null && !flag.equals("")) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
@@ -96,9 +93,6 @@ public class ResidenceUtils {
         if (!check) {
             return true;
         }
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
-            return false;
-        }
         if (flag != null && !flag.equals("")) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
@@ -169,9 +163,6 @@ public class ResidenceUtils {
     }
 
     public boolean checkFlag(Location loc, String flag, boolean def) {
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
-            return false;
-        }
         if (flag != null && !flag.equals("")) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
@@ -194,9 +185,6 @@ public class ResidenceUtils {
     public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
         if (!check) {
             return true;
-        }
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
-            return false;
         }
         if (flag != null && !flag.equals("")) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);

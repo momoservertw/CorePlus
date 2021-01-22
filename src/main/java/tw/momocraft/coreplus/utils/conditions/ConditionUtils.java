@@ -37,26 +37,41 @@ public class ConditionUtils implements ConditionInterface {
 
     @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def);
     }
 
     @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def, check);
     }
 
     @Override
     public boolean checkFlag(Location loc, String flag, boolean def) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         return UtilsHandler.getDepend().getResidenceUtils().checkFlag(loc, flag, def);
     }
 
     @Override
     public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         return UtilsHandler.getDepend().getResidenceUtils().checkFlag(loc, flag, def, check);
     }
 
     @Override
     public boolean isInResidence(Location loc) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return false;
+        }
         return UtilsHandler.getDepend().getResidenceUtils().isInResidence(loc);
     }
 }

@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.utils.*;
-import tw.momocraft.coreplus.utils.language.VanillaUtils;
 
 import java.io.File;
 import java.time.LocalDateTime;

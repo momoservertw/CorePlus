@@ -85,18 +85,18 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
-        mySQL = ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.MySQL.Enable");
-        mySQLUsername = ConfigHandler.getConfig("config.yml").getString("General.Settings.MySQL.username");
-        mySQLPassword = ConfigHandler.getConfig("config.yml").getString("General.Settings.MySQL.password");
-        mySQLHostname = ConfigHandler.getConfig("config.yml").getString("General.Settings.MySQL.hostname");
-        mySQLPort = ConfigHandler.getConfig("config.yml").getInt("General.Settings.MySQL.port");
-        language = ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Language.Enable");
-        languageLocal = ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Language.Local.Enable");
-        languageLocalTag = ConfigHandler.getConfig("config.yml").getString("General.Settings.Language.Local.Tag");
-        menuItemJoin = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.ItemJoin");
-        menuType = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Type");
-        menuName = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Item.Name");
-        menuSkullTextures = ConfigHandler.getConfig("config.yml").getString("General.Settings.Menu.Skull-Textures");
+        mySQL = ConfigHandler.getConfig("config.yml").getBoolean("General.MySQL.Enable");
+        mySQLUsername = ConfigHandler.getConfig("config.yml").getString("General.MySQL.username");
+        mySQLPassword = ConfigHandler.getConfig("config.yml").getString("General.MySQL.password");
+        mySQLHostname = ConfigHandler.getConfig("config.yml").getString("General.MySQL.hostname");
+        mySQLPort = ConfigHandler.getConfig("config.yml").getInt("General.MySQL.port");
+        language = ConfigHandler.getConfig("config.yml").getBoolean("General.Language.Enable");
+        languageLocal = ConfigHandler.getConfig("config.yml").getBoolean("General.Language.Local.Enable");
+        languageLocalTag = ConfigHandler.getConfig("config.yml").getString("General.Language.Local.Tag");
+        menuItemJoin = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
+        menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
+        menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
+        menuSkullTextures = ConfigHandler.getConfig("config.yml").getString("General.Menu.Skull-Textures");
     }
 
     private void setCommands() {
@@ -231,7 +231,7 @@ public class ConfigPath implements ConfigInterface {
                 try {
                     soundMap.setType(Sound.valueOf(ConfigHandler.getConfig("sounds.yml").getString("Sounds." + group + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cUnknown sound type: " + group);
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&cUnknown sound type: " + group);
                     continue;
                 }
                 soundMap.setGroupName(group);
@@ -258,7 +258,7 @@ public class ConfigPath implements ConfigInterface {
                 try {
                     particleMap.setType(Particle.valueOf(ConfigHandler.getConfig("particles.yml").getString("Particles." + group + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "&cUnknown particle type: " + group);
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&cUnknown particle type: " + group);
                     continue;
                 }
                 particleMap.setGroupName(group);
@@ -377,10 +377,12 @@ public class ConfigPath implements ConfigInterface {
         return particleProp;
     }
 
+    @Override
     public Map<String, LocationMap> getLocProp() {
         return locProp;
     }
 
+    @Override
     public Map<String, BlocksMap> getBlocksProp() {
         return blockProp;
     }

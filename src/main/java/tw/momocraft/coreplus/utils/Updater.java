@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 
 public class Updater implements UpdateInterface {
 
@@ -63,7 +64,7 @@ public class Updater implements UpdateInterface {
 
     private String searching(CommandSender sender, String prefix, String plugin, String ver, String id) {
         UtilsHandler.getLang().sendMsg(prefix, sender, "Checking updates...");
-        String onlineVer = null;
+        String onlineVer;
         try {
             URLConnection connection = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + id + "?_=" + System.currentTimeMillis()).openConnection();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -77,12 +78,18 @@ public class Updater implements UpdateInterface {
                     .replace("-RELEASE", "");
             String[] verSplit = ver.split("\\.");
             String[] onlineVerSplit = onlineVer.split("\\.");
-            if ((Integer.parseInt(onlineVerSplit[0]) > Integer.parseInt(verSplit[0]) ||
-                    Integer.parseInt(onlineVerSplit[1]) > Integer.parseInt(verSplit[1]) ||
-                    Integer.parseInt(onlineVerSplit[2]) > Integer.parseInt(verSplit[2]))) {
-                return onlineVer;
+            if (Integer.parseInt(verSplit[0]) > Integer.parseInt(onlineVerSplit[0])) {
+                return "latest";
             }
-            return "latest";
+            if (Integer.parseInt(verSplit[0]) == Integer.parseInt(onlineVerSplit[0]) && Integer.parseInt(verSplit[1]) > Integer.parseInt(onlineVerSplit[1])) {
+                return "latest";
+            }
+            if (Integer.parseInt(verSplit[0]) == Integer.parseInt(onlineVerSplit[0]) &&
+                    Integer.parseInt(verSplit[1]) == Integer.parseInt(onlineVerSplit[1]) &&
+                    Integer.parseInt(verSplit[2]) >= Integer.parseInt(onlineVerSplit[2])) {
+                return "latest";
+            }
+            return onlineVer;
         } catch (Exception e) {
             UtilsHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
             return null;

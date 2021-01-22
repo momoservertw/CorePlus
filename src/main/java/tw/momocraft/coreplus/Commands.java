@@ -147,7 +147,7 @@ public class Commands implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("test")) {
                     if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
                         if (sender instanceof ConsoleCommandSender) {
-                            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
                             return true;
                         }
                         Player player = (Player) sender;
@@ -175,11 +175,11 @@ public class Commands implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("runcmdcustom")) {
                     if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
                         Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
-                        String[] langHandler = CorePlusAPI.getLangManager().newString();
+                        String[] langHandler = UtilsHandler.getLang().newString();
                         langHandler[1] = args[1]; // %targetplayer%
                         langHandler[5] = args[2]; // %group%
                         if (player == null) {
-                            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, langHandler);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, langHandler);
                             return true;
                         }
                         List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[2]);

@@ -9,7 +9,24 @@ import java.util.Map;
 
 public interface ConfigInterface {
 
+    /**
+     *
+     * @return if mySQL feature enabled.
+     */
     boolean isMySQL();
+
+
+    /**
+     *
+     * @return to get the property of Location settings.
+     */
+    Map<String, LocationMap> getLocProp();
+
+    /**
+     *
+     * @return to get the property of Blocks settings.
+     */
+    Map<String, BlocksMap> getBlocksProp();
 
     /**
      * Adding custom group to the list and checking the type is exist.
