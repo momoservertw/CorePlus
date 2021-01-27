@@ -257,6 +257,13 @@ public interface UtilsInterface {
     String translateColorCode(String input);
 
     /**
+     * Translating the color code "&".
+     *
+     * @param input the input string list.
+     * @return the new translated string.
+     */
+    List<String> translateColorCode(List<String> input);
+    /**
      * Getting a skull texture value from a skull item.
      *
      * @param itemStack the item of skull.
@@ -288,4 +295,31 @@ public interface UtilsInterface {
      * @return the item is a custom item or not.
      */
     boolean isCustomItem(ItemStack itemStack);
+
+    /**
+     * To get the ItemStack of menu which specified for a player.
+     *
+     * @param player the specify item for that player.
+     * @return the specify item.
+     */
+    ItemStack getMenuItemStack(Player player);
+
+    /**
+     * To get the ItemStack which specified for a player.
+     *
+     * @param player the specify item for that player.
+     * @param node the ItemJoin's custom item node.
+     * @return the specify item.
+     */
+    ItemStack getItemJoinItemStack(Player player, String node);
+
+    /**
+     * To get the item node form item itemStack.
+     * Return null is the itemStack are not ItemJoin's item.
+     *
+     * @param itemStack the itemStack to get node.
+     * @return the item node form item itemStack.
+     */
+    String getItemNode(ItemStack itemStack);
+
 }

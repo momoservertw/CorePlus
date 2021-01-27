@@ -261,6 +261,15 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
+    public List<String> translateColorCode(List<String> input) {
+        List<String> list = new ArrayList<>();
+        for (String s : input) {
+            list.add(ChatColor.translateAlternateColorCodes('&', s));
+        }
+        return list;
+    }
+
+    @Override
     public String getSkullValue(ItemStack itemStack) {
         SkullMeta headMeta;
         try {
@@ -285,7 +294,20 @@ public class Utils implements UtilsInterface {
 
     @Override
     public boolean isMenuNode(String node) {
+        if (node == null) {
+            return false;
+        }
         return ConfigHandler.getConfigPath().getMenuItemJoin().equals(node);
+    }
+
+    @Override
+    public ItemStack getMenuItemStack(Player player) {
+        return UtilsHandler.getDepend().getItemJoinUtils().getItemStack(player, ConfigHandler.getConfigPath().getMenuItemJoin());
+    }
+
+    @Override
+    public ItemStack getItemJoinItemStack(Player player, String node) {
+        return UtilsHandler.getDepend().getItemJoinUtils().getItemStack(player, node);
     }
 
     @Override
@@ -324,5 +346,10 @@ public class Utils implements UtilsInterface {
             return UtilsHandler.getDepend().getItemJoinUtils().isCustom(itemStack);
         }
         return false;
+    }
+
+    @Override
+    public String getItemNode(ItemStack itemStack) {
+        return UtilsHandler.getDepend().getItemJoinUtils().getItemNode(itemStack);
     }
 }

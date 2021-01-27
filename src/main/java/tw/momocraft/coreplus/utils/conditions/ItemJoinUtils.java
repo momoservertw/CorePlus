@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.utils.conditions;
 import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
@@ -34,5 +35,13 @@ public class ItemJoinUtils {
             }
         }
         return false;
+    }
+
+    public String getItemNode(ItemStack itemStack) {
+        return ij.getNode(itemStack);
+    }
+
+    public ItemStack getItemStack(Player player, String node) {
+        return ij.getItemStack(player, node);
     }
 }
