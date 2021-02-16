@@ -79,15 +79,13 @@ public interface LanguageInterface {
      */
     void sendMsg(String prefix, CommandSender sender, String message);
 
-
     /**
      * Sending message to a player or console.
      *
-     * @param prefix  the executing plugin prefix.
      * @param player  the executing player.
      * @param message the value of message.
      */
-    void sendActionBarMsg(String prefix, Player player, String message);
+    void sendActionBarMsg(Player player, String message);
 
     /**
      * @param player   the executing player.

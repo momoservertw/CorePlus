@@ -254,7 +254,9 @@ public class PlayerUtils implements PlayerInterface {
         for (PermissionAttachmentInfo permInfo : sender.getEffectivePermissions()) {
             perm = permInfo.getPermission();
             if (perm.startsWith(permission)) {
-                numbers.add(Integer.parseInt(perm.replace(permission, "")));
+                try {
+                    numbers.add(Integer.parseInt(perm.replace(permission, "")));
+                } catch (Exception ignored) {}
             }
         }
         if (numbers.isEmpty())
@@ -268,9 +270,9 @@ public class PlayerUtils implements PlayerInterface {
         String perm;
         for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
             perm = permInfo.getPermission();
-            if (perm.startsWith(permission)) {
+            try {
                 numbers.add(Integer.parseInt(perm.replace(permission, "")));
-            }
+            } catch (Exception ignored) {}
         }
         if (numbers.isEmpty())
             return def;
@@ -302,5 +304,25 @@ public class PlayerUtils implements PlayerInterface {
             return false;
         }
         return UtilsHandler.getDepend().getLuckPermsApi().isInheritedGroup(uuid, group);
+    }
+
+    @Override
+    public void addPermission(String pluginName, UUID uuid, String permission) {
+        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
+            UtilsHandler.getDepend().getLuckPermsApi().addPermission(pluginName, uuid, permission);
+            return;
+        }
+        UtilsHandler.getDepend().getVaultApi().getPermissions().playerAdd(Bukkit.getWorlds().get(0).getName(),
+                Bukkit.getOfflinePlayer(uuid), permission);
+    }
+
+    @Override
+    public void removePermission(String pluginName, UUID uuid, String permission) {
+        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
+            UtilsHandler.getDepend().getLuckPermsApi().removePermission(pluginName, uuid, permission);
+            return;
+        }
+        UtilsHandler.getDepend().getVaultApi().getPermissions().playerRemove(Bukkit.getWorlds().get(0).getName(),
+                Bukkit.getOfflinePlayer(uuid), permission);
     }
 }

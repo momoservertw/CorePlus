@@ -26,14 +26,14 @@
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
-        <!--Spigot/CraftBukkit Repo-->
+        <!--Paper Repo-->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
-        <!-- mojang Repo-->
+        <!-- Mojang Repo-->
         <repository>
-            <id>minecraft-repo</id>
+            <id>mojang</id>
             <url>https://libraries.minecraft.net/</url>
         </repository>
         <!--Vault Repo-->
@@ -82,21 +82,14 @@
             <version>2.8.6</version>
             <scope>compile</scope>
         </dependency>
-        <!--Spigot API-->
+        <!--Paper API-->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+        <groupId>com.destroystokyo.paper</groupId>
+        <artifactId>paper-api</artifactId>
+        <version>1.16.5-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
         </dependency>
-        <!--CraftBukkit API-->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- mojang API -->
+        <!-- Mojang API -->
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>

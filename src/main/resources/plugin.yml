@@ -4,21 +4,22 @@ author: Momocraft
 api-version: 1.13
 version: 1.0.0
 description: The API contains all utils for my plugins.
-softdepend: [Vault, PlayerPoints, GemsEconomy, PlaceHolderAPI, LangUtils, DiscordSRV, LuckPerms, MysqlPlayerDataBridge, CMI, Residence, MythicMobs, MyPet, ItemJoin, MorphTool, AuthMe, PvPManager]
+softdepend: [Vault, PlayerPoints, GemsEconomy, PlaceHolderAPI, LuckPerms, MysqlPlayerDataBridge, CMI, Residence, ItemJoin, MythicMobs, PvPManager]
 
 commands:
   coreplus:
     description: Displays main command menu.
-    permission: coreplus.use
+    permission: coreplus.admin
     aliases: [crp]
     usage: |
       /coreplus
 
 permissions:
   coreplus.*:
-    description: Allows use of all commands and feature.
+    description: Allows use of all commands and features.
     default: op
     children:
+<<<<<<< Updated upstream
       coreplus.use: true
       CorePlus.command.*: true
       CorePlus.bypass.*: true
@@ -48,4 +49,9 @@ permissions:
     default: op
   CorePlus.command.configbuilder:
     description: Allows use of command /coreplus configbuilder.
+=======
+      coreplus.admin: true
+  CorePlus.admin:
+    description: Allows use of all commands and features.
+>>>>>>> Stashed changes
     default: op

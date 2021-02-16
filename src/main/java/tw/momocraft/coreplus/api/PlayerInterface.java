@@ -226,4 +226,22 @@ public interface PlayerInterface {
      * @return if player is in a group.
      */
     boolean isInheritedGroup(String pluginName, UUID uuid, String group);
+
+    /**
+     * Adding a permission for player.
+     *
+     * @param pluginName the name of plugin.
+     * @param uuid  the uuid of player.
+     * @param permission the permission node.
+     */
+    void addPermission(String pluginName, UUID uuid, String permission);
+
+    /**
+     * Removing a permission for player.
+     *
+     * @param pluginName the name of plugin.
+     * @param uuid  the uuid of player.
+     * @param permission the permission node.
+     */
+    void removePermission(String pluginName, UUID uuid, String permission);
 }

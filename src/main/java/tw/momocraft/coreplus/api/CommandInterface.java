@@ -135,6 +135,16 @@ public interface CommandInterface {
     void dispatchPlayerCmd(String prefix, Player player, String input);
 
     /**
+     * sending a chat message for player as operator to bypass the color limit.
+     * Format: "chat-op: Message"
+     *
+     * @param prefix the executing plugin prefix.
+     * @param player the target player.
+     * @param input  the input message.
+     */
+    void sendChatOpMsg(String prefix, Player player, String input);
+
+    /**
      * Executing a BungeeCord command.
      * Format: "bungee: Command"
      *

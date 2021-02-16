@@ -24,70 +24,53 @@ import java.util.List;
 
 public class LanguageUtils implements LanguageInterface {
 
-    @Override
-    public void sendChatMsg(String prefix, Player player, String message) {
+    private String addPrefix(String prefix, String input) {
         if (prefix == null)
             prefix = "";
-        message = prefix + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        input = prefix + input;
+        return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    @Override
+    public void sendChatMsg(String prefix, Player player, String message) {
+        message = addPrefix(prefix, message);
         player.chat(message);
     }
 
     @Override
     public void sendBroadcastMsg(String prefix, String message) {
-        if (prefix == null)
-            prefix = "";
-        message = prefix + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = addPrefix(prefix, message);
         Bukkit.broadcastMessage(message);
     }
 
     @Override
     public void sendConsoleMsg(String prefix, String message) {
-        message = prefix + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
-    }
-
-    @Override
-    public void sendErrorMsg(String prefix, String message) {
-        message = "&c[" + prefix + "_Error] &r" + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = addPrefix(prefix, message);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
     }
 
     @Override
     public void sendPlayerMsg(String prefix, Player player, String message) {
-        if (prefix == null)
-            prefix = "";
-        message = prefix + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = addPrefix(prefix, message);
         player.sendMessage(message);
     }
 
     @Override
     public void sendMsg(String prefix, CommandSender sender, String message) {
-        if (prefix == null)
-            prefix = "";
-        message = prefix + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = addPrefix(prefix, message);
         sender.sendMessage(message);
     }
 
     @Override
-    public void sendActionBarMsg(String prefix, Player player, String message) {
-        if (prefix == null)
-            prefix = "";
-        message = prefix + message;
+    public void sendActionBarMsg(Player player, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
 
-    // title: "title/nsubtitle"
     @Override
-    public void sendTitleMsg(Player player, String input) {
-        input = ChatColor.translateAlternateColorCodes('&', input);
-        String[] args = input.split("/n");
+    public void sendTitleMsg(Player player, String message) {
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        String[] args = message.split("/n");
         player.sendTitle(args[0], args[1], 10, 70, 20);
     }
 
@@ -106,26 +89,33 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendDebugMsg(boolean debugging, String prefix, String message) {
-        if (debugging) {
-            message = prefix + "&7[Debug]&r " + message;
+    public void sendErrorMsg(String pluginName, String message) {
+        message = "&c[" + pluginName + "_Error] &r" + message;
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
+    }
+
+    //////////////////
+    @Override
+    public void sendDebugMsg(boolean isDebugging, String pluginName, String message) {
+        if (isDebugging) {
+            message = "&7[" + pluginName + "_Debug]&r " + message;
             message = ChatColor.translateAlternateColorCodes('&', message);
             CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
         }
     }
 
     @Override
-    public void sendDebugTrace(boolean debugging, String prefix, Exception e) {
-        if (debugging) {
-            prefix = ChatColor.translateAlternateColorCodes('&', prefix);
-            sendErrorMsg(prefix, "showing debug trace.");
+    public void sendDebugTrace(boolean isDebugging, String pluginName, Exception e) {
+        if (isDebugging) {
+            sendErrorMsg(pluginName, "showing debug trace.");
             e.printStackTrace();
         }
     }
 
     @Override
-    public void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
-        if (!debugging) {
+    public void sendFeatureMsg(boolean isDebugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
+        if (!isDebugging) {
             return;
         }
         switch (action) {
@@ -135,60 +125,56 @@ public class LanguageUtils implements LanguageInterface {
             case "damage":
             case "fail":
             case "warning":
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action + "&8, &7" + detail
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+                action = "&c" + action;
                 break;
             case "continue":
             case "bypass":
             case "change":
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action + "&8, &7" + detail
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+                action = "&e" + action;
                 break;
             case "return":
+            case "success":
+                action = "&a" + action;
             default:
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action + "&8, &7" + detail
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
         }
+        sendDebugMsg(true, pluginName, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &f" + action + "&8, &7" + detail
+                + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
 
     @Override
-    public void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste) {
+    public void sendFeatureMsg(boolean debugging, String pluign, String feature, String target, String check, String action, StackTraceElement ste) {
         if (!debugging) {
             return;
         }
-        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         switch (action) {
             case "cancel":
             case "remove":
             case "kill":
             case "damage":
             case "warning":
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &c" + action
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+                action = "&c" + action;
                 break;
             case "continue":
             case "bypass":
             case "change":
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &e" + action
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+                action = "&e" + action;
                 break;
             case "return":
+            case "success":
+                action = "&a" + action;
             default:
-                sendDebugMsg(true, prefix, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &a" + action
-                        + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
                 break;
         }
+        sendDebugMsg(true, pluign, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &f" + action
+                + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
 
     @Override
     public void sendLangMsg(String prefix, String input, CommandSender sender, String... placeHolder) {
-        if (input == null) {
+        if (input == null || input.equals("")) {
             return;
         }
-        if (prefix == null)
-            prefix = "";
-        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         Player player = null;
         if (sender instanceof Player) {
             player = (Player) sender;
@@ -197,11 +183,15 @@ public class LanguageUtils implements LanguageInterface {
         if (langMessage != null && !langMessage.isEmpty()) {
             input = langMessage;
         }
+        // %prefix%
+        if (prefix == null)
+            prefix = "";
+        input = input.replace("%prefix%", prefix);
         input = translateLangHolders(player, input, initializeRows(placeHolder));
         input = translateLayout(input, player);
-        String[] langLines = input.split(" /n ");
+        String[] langLines = input.split("\\n");
         for (String langLine : langLines) {
-            sender.sendMessage(prefix + langLine);
+            sender.sendMessage(langLine);
         }
     }
 
@@ -237,7 +227,7 @@ public class LanguageUtils implements LanguageInterface {
         }
         return langMessage
                 .replace("%player%", langHolder[0])
-                .replace("%targetplayer%", langHolder[1])
+                .replace("%target_player%", langHolder[1])
                 .replace("%plugin%", langHolder[2])
                 .replace("%prefix%", langHolder[3])
                 .replace("%command%", langHolder[4])
@@ -245,7 +235,7 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%amount%", langHolder[6])
                 .replace("%material%", langHolder[7])
                 .replace("%entity%", langHolder[8])
-                .replace("%pricetype%", getMessageTranslation(langHolder[9]))
+                .replace("%price_type%", getMessageTranslation(langHolder[9]))
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
@@ -380,12 +370,30 @@ public class LanguageUtils implements LanguageInterface {
             try {
                 String[] arr = input.split("%");
                 for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("random_number") && arr[i + 1].matches("^[0-9]*$")) {
-                        input = input.replace("%random_number%" + arr[i + 1] + "%", String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
+                    if (arr[i].equals("random_number")) {
+                        input = input.replace("%random_number%" + arr[i + 1] + "%",
+                                String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
                     }
                 }
             } catch (Exception e) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+        }
+        // %random_list%String1,String2%
+        if (input.contains("%random_list%")) {
+            List<String> placeholderList = new ArrayList<>();
+            String[] arr = input.split("%");
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i].equals("random_list")) {
+                    placeholderList.add((arr[i + 1]));
+                }
+            }
+            String[] stringArr;
+            String randomString;
+            for (String placeholderValue : placeholderList) {
+                stringArr = placeholderValue.split(",");
+                randomString = stringArr[new Random().nextInt(stringArr.length) - 1];
+                input = input.replace("%random_list%" + placeholderValue + "%", randomString);
             }
         }
         // %random_player%

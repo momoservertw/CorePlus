@@ -322,4 +322,19 @@ public interface UtilsInterface {
      */
     String getItemNode(ItemStack itemStack);
 
+    /**
+     * To check if the block type can be use like door, craft table...
+     *
+     * @param blockType the checking block type.
+     * @return if the block type can be use like door, craft table...
+     */
+    boolean isCanUse(String blockType);
+
+    /**
+     * To check if the block type is a container like chest...
+     *
+     * @param blockType the checking block type.
+     * @return if the block type is a container like chest...
+     */
+    boolean isContainer(String blockType);
 }

@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import tw.momocraft.coreplus.api.ConfigInterface;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.conditions.BlocksMap;
@@ -31,9 +30,9 @@ public class ConfigPath implements ConfigInterface {
     private String mySQLPassword;
     private String mySQLHostname;
     private int mySQLPort;
-    private boolean language;
-    private String languageLocalTag;
-    private boolean languageLocal;
+    private boolean VanillaTrans;
+    private String VanillaTransLocal;
+    private boolean VanillaTransForce;
     private String menuItemJoin;
     private String menuType;
     private String menuName;
@@ -97,9 +96,9 @@ public class ConfigPath implements ConfigInterface {
         mySQLPassword = ConfigHandler.getConfig("config.yml").getString("General.MySQL.password");
         mySQLHostname = ConfigHandler.getConfig("config.yml").getString("General.MySQL.hostname");
         mySQLPort = ConfigHandler.getConfig("config.yml").getInt("General.MySQL.port");
-        language = ConfigHandler.getConfig("config.yml").getBoolean("General.Language.Enable");
-        languageLocal = ConfigHandler.getConfig("config.yml").getBoolean("General.Language.Local.Enable");
-        languageLocalTag = ConfigHandler.getConfig("config.yml").getString("General.Language.Local.Tag");
+        VanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
+        VanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
+        VanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translation.Force.Local");
         menuItemJoin = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
@@ -353,16 +352,16 @@ public class ConfigPath implements ConfigInterface {
         return mySQLPort;
     }
 
-    public boolean isLanguage() {
-        return language;
+    public boolean isVanillaTrans() {
+        return VanillaTrans;
     }
 
-    public String getLanguageLocalTag() {
-        return languageLocalTag;
+    public String getVanillaTransLocal() {
+        return VanillaTransLocal;
     }
 
-    public boolean isLanguageLocal() {
-        return languageLocal;
+    public boolean isVanillaTransForce() {
+        return VanillaTransForce;
     }
 
     public String getMenuItemJoin() {

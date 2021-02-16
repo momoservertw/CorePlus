@@ -7,9 +7,11 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PermissionNode;
 import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.Set;
 import java.util.UUID;
@@ -92,4 +94,23 @@ public class LuckPermsAPI {
         return true;
     }
 
+    public void addPermission(String prefix, UUID uuid, String permission) {
+        User user = getUser(uuid);
+        if (user == null) {
+            UtilsHandler.getLang().sendErrorMsg(prefix, "can not found LuckPerms user: " + uuid.toString());
+            return;
+        }
+        user.data().add(PermissionNode.builder(permission).build());
+        luckPerms.getUserManager().saveUser(user);
+    }
+
+    public void removePermission(String prefix, UUID uuid, String permission) {
+        User user = getUser(uuid);
+        if (user == null) {
+            UtilsHandler.getLang().sendErrorMsg(prefix, "can not found LuckPerms user: " + uuid.toString());
+            return;
+        }
+        user.data().remove(PermissionNode.builder(permission).build());
+        luckPerms.getUserManager().saveUser(user);
+    }
 }

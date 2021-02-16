@@ -24,7 +24,7 @@ public class VanillaUtils {
 
     private void setUp() {
         Gson gson = new Gson();
-        File file = new File(CorePlus.getInstance().getDataFolder().getPath() + "\\VanillaLanguage");
+        File file = new File(CorePlus.getInstance().getDataFolder().getPath() + "\\Vanilla-Translation");
         String[] fileList = file.list();
         if (fileList == null) {
             return;
@@ -56,45 +56,46 @@ public class VanillaUtils {
     }
 
     public String getValinaName(Player player, String input, String type) {
-        if (!ConfigHandler.getConfigPath().isLanguage()) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
             return input;
+        }
+        if (input == null) {
+            return "";
         }
         return getValinaNode(getLocal(player), input, type);
     }
 
     public String getValinaName(String input, String type) {
-        if (!ConfigHandler.getConfigPath().isLanguage()) {
-            return input;
-        }
-        return getValinaNode(ConfigHandler.getConfigPath().getLanguageLocalTag(), input, type);
-    }
-
-
-    public String getValinaNode(String local, String input, String type) {
-        if (!ConfigHandler.getConfigPath().isLanguage()) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
             return input;
         }
         if (input == null) {
             return "";
+        }
+        return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
+    }
+
+
+    public String getValinaNode(String local, String input, String type) {
+        if (local == null || local.equals("")) {
+            return input;
         }
         if (type.equals("entity")) {
             try {
                 EntityType entityType = EntityType.valueOf(input);
                 return getLocalLang("entity.minecraft." + input.toLowerCase(), local);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                 return input;
             }
         }
         if (type.equals("material")) {
             try {
-                Material material = Material.getMaterial(input);
+                Material material = Material.valueOf(input);
                 if (material.isBlock()) {
                     return getLocalLang("block.minecraft." + input.toLowerCase(), local);
                 }
                 return getLocalLang("item.minecraft." + input.toLowerCase(), local);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
                 return input;
             }
         }
@@ -102,15 +103,13 @@ public class VanillaUtils {
     }
 
     public String getLocal(Player player) {
-        String local;
-        if (ConfigHandler.getConfigPath().isLanguageLocal()) {
-            local = ConfigHandler.getConfigPath().getLanguageLocalTag();
+        if (ConfigHandler.getConfigPath().isVanillaTransForce()) {
+            return ConfigHandler.getConfigPath().getVanillaTransLocal();
         } else if (player != null) {
-            local = player.getLocale();
+            return player.getLocale();
         } else {
-            local = ConfigHandler.getConfigPath().getLanguageLocalTag();
+            return ConfigHandler.getConfigPath().getVanillaTransLocal();
         }
-        return local;
     }
 
     private String getLocalLang(String input, String local) {

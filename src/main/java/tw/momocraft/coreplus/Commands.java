@@ -22,7 +22,15 @@ public class Commands implements CommandExecutor {
         Discord
         switch (args.length) {
             case 0:
-                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.use")) {
+                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.title", sender);
+                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
+                        + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.help", sender);
+                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                return true;
+            case 1:
+                if (args[0].equalsIgnoreCase("help")) {
                     UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.title", sender);
                     UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
@@ -61,31 +69,32 @@ public class Commands implements CommandExecutor {
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.version")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.version", sender);
+                    }
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.test")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
+                    }
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmd", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustom", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdonline", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustomonline", sender);
+                    }
+                    UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
                     return true;
                 } else if (args[0].equalsIgnoreCase("reload")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.reload")) {
-                        ConfigHandler.generateData(true);
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.configReload", sender);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
+                    ConfigHandler.generateData(true);
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.configReload", sender);
                     return true;
                 } else if (args[0].equalsIgnoreCase("version")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.version")) {
-                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
-                                + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                        UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(),
-                                CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion(), false);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
+                    UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + CorePlus.getInstance().getDescription().getName()
+                            + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
+                    UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), Bukkit.getConsoleSender(),
+                            CorePlus.getInstance().getDescription().getName(), CorePlus.getInstance().getDescription().getVersion(), false);
                     return true;
                 } else if (args[0].equalsIgnoreCase("test")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
                     return true;
                 } else if (args[0].equalsIgnoreCase("configbuilder")) {
                     if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.configbuilder")) {
@@ -130,31 +139,9 @@ public class Commands implements CommandExecutor {
             case 3:
                 // /crp test <blocks/location> <group>
                 if (args[0].equalsIgnoreCase("test")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
-                        if (sender instanceof ConsoleCommandSender) {
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
-                            return true;
-                        }
-                        Player player = (Player) sender;
-                        List<String> group = new ArrayList<>();
-                        group.add(args[2]);
-                        if (args[1].equalsIgnoreCase("location")) {
-                            if (UtilsHandler.getCondition().checkLocation(player.getLocation(), group, false)) {
-                                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Location: " + args[2] + ")");
-                                return true;
-                            }
-                            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Location: " + args[2] + ")");
-                        } else if (args[1].equalsIgnoreCase("blocks")) {
-                            if (UtilsHandler.getCondition().checkBlocks(player.getLocation(), group, false)) {
-                                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Blocks: " + args[2] + ")");
-                                return true;
-                            }
-                            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Blocks: " + args[2] + ")");
-                        } else {
-                            break;
-                        }
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    if (sender instanceof ConsoleCommandSender) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
+                        return true;
                     }
                     return true;
                 }
