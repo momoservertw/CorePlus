@@ -49,6 +49,11 @@ public class ConfigPath implements ConfigInterface {
     private final Map<String, SoundMap> soundProp = new HashMap<>();
 
     //  ============================================== //
+    //         ConfigBuilder Variables                 //
+    //  ============================================== //
+    private final Map<String, String> configBuilderProp = new HashMap<>();
+
+    //  ============================================== //
     //         Setup all configuration                 //
     //  ============================================== //
     private void setUp() {
@@ -64,6 +69,8 @@ public class ConfigPath implements ConfigInterface {
         setSounds();
 
         sendSetupMessage();
+
+        setConfigBuilder();
     }
 
     private void sendSetupMessage() {
@@ -310,6 +317,19 @@ public class ConfigPath implements ConfigInterface {
     }
 
     //  ============================================== //
+    //         ConfigBuilder Setter                    //
+    //  ============================================== //
+    private void setConfigBuilder() {
+        ConfigurationSection config = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder");
+        if (config != null) {
+            for (String group : config.getKeys(false)) {
+                configBuilderProp.put(group,
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder." + group + ".Format"));
+            }
+        }
+    }
+
+    //  ============================================== //
     //         General Getter                          //
     //  ============================================== //
     @Override
@@ -385,6 +405,13 @@ public class ConfigPath implements ConfigInterface {
     @Override
     public Map<String, BlocksMap> getBlocksProp() {
         return blockProp;
+    }
+
+    //  ============================================== //
+    //         ConfigBuilder Getter                    //
+    //  ============================================== //
+    public Map<String, String> getConfigBuilderProp() {
+        return configBuilderProp;
     }
 
     //  ============================================== //

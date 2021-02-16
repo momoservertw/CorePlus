@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
+import tw.momocraft.coreplus.utils.ConfigBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +17,9 @@ import java.util.List;
 
 public class Commands implements CommandExecutor {
 
+
     public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length > 1 && args[0].equalsIgnoreCase("runcmd")) {
-            if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                String command = String.join(" ", args);
-                command = command.substring(args[0].length() + 1);
-                Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
-                if (player != null) {
-                    command = command.substring(args[1].length() + 1);
-                }
-                if (sender instanceof ConsoleCommandSender) {
-                    UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), command, true);
-                    return true;
-                }
-                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), (Player) sender, command, true);
-            } else {
-                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-            }
-            return true;
-        }
+        Discord
         switch (args.length) {
             case 0:
                 if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.use")) {
@@ -66,13 +50,14 @@ public class Commands implements CommandExecutor {
                         if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.test")) {
                             UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.test", sender);
                         }
-                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmd", sender);
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustom", sender);
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdonline", sender);
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustomonline", sender);
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.configbuilder")) {
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.configbuilder", sender);
                         }
-                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                        if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "CorePlus.command.cmd")) {
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmd", sender);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdplayer", sender);
+                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdonline", sender);
+                        }
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
@@ -102,58 +87,48 @@ public class Commands implements CommandExecutor {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
+                } else if (args[0].equalsIgnoreCase("configbuilder")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.configbuilder")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.configbuilder", sender);
+                    } else {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                    }
+                    return true;
                 } else if (args[0].equalsIgnoreCase("cmd")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmd", sender);
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
-                } else if (args[0].equalsIgnoreCase("cmdcustom")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustom", sender);
+                } else if (args[0].equalsIgnoreCase("cmdplayer")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdplayer", sender);
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
-                } else if (args[0].equalsIgnoreCase("cmdtime")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdtime", sender);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("cmdcustomtime")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdcustomtime", sender);
+                } else if (args[0].equalsIgnoreCase("cmdonline")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdonline", sender);
                     } else {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
                 }
+
                 break;
             case 2:
-                if (args[0].equalsIgnoreCase("runcmdcustom")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[1]);
-                        if (cmds == null || cmds.isEmpty()) {
-                            String[] langHandler = UtilsHandler.getLang().newString();
-                            langHandler[5] = args[1];
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender, langHandler);
-                            return true;
-                        }
-                        if (sender instanceof ConsoleCommandSender) {
-                            UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), cmds, true);
-                            return true;
-                        }
-                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), (Player) sender, cmds, true);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+                if (args[0].equalsIgnoreCase("configbuilder")) {
+                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.configbuilder")) {
+                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "Creating configuration for " + args[1] + "...");
+                        ConfigBuilder.start(sender, args[1]);
+                        return true;
                     }
-                    return true;
                 }
                 break;
             case 3:
+                // /crp test <blocks/location> <group>
                 if (args[0].equalsIgnoreCase("test")) {
                     if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
                         if (sender instanceof ConsoleCommandSender) {
@@ -182,29 +157,62 @@ public class Commands implements CommandExecutor {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
                     return true;
-                } else if (args[0].equalsIgnoreCase("runcmdcustom")) {
-                    if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                        Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
-                        String[] langHandler = UtilsHandler.getLang().newString();
-                        langHandler[1] = args[1]; // %targetplayer%
-                        langHandler[5] = args[2]; // %group%
-                        if (player == null) {
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, langHandler);
-                            return true;
-                        }
-                        List<String> cmds = ConfigHandler.getConfigPath().getCmdProp().get(args[2]);
-                        if (cmds == null || cmds.isEmpty()) {
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.groupNotFound", sender);
-                            return true;
-                        }
-                        UtilsHandler.getCustomCommands().executeCmdList(ConfigHandler.getPluginName(), player, cmds, true);
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.runcmdCustomOther", sender, langHandler);
-                    } else {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
-                    }
-                    return true;
                 }
                 break;
+        }
+        // /crp cmd <command>
+        if (args.length > 1 && args[0].equalsIgnoreCase("cmd")) {
+            if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
+                String command = String.join(" ", args).substring(args[0].length() + 1);
+                if (sender instanceof ConsoleCommandSender) {
+                    UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPlugin(), command, true);
+                } else {
+                    UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPlugin(), (Player) sender, command, true);
+                }
+            } else {
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+            }
+            return true;
+            // /crp cmdplayer <playerName> <command>
+        } else if (args.length > 3 && args[0].equalsIgnoreCase("cmdplayer")) {
+            if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
+                Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
+                if (player == null) {
+                    String[] placeHolders = CorePlusAPI.getLangManager().newString();
+                    placeHolders[1] = args[1]; // %targetplayer%
+                    CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, placeHolders);
+                    return true;
+                }
+                String command = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
+                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPlugin(), player, command, true);
+            } else {
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+            }
+            return true;
+            // /crp cmdonline <player> <expiration> <command>
+        } else if (args.length > 5 && args[0].equalsIgnoreCase("cmdonline")) {
+            if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPlugin(), sender, "coreplus.command.cmd")) {
+                int waitingTime;
+                try {
+                    waitingTime = Integer.parseInt(args[2]);
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.Commands.cmdonline", sender);
+                    return true;
+                }
+                String command = String.join(" ", args).substring(args[0].length() + args[1].length() + args[2].length() + 3);
+                UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
+                        "Online command start - Player: " + args[1] + ", Expiration: " + args[2] + ", Command: " + command);
+                Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
+                if (player != null) {
+                    CorePlusAPI.getCommandManager().executeCmd(ConfigHandler.getPluginName(), player,
+                            command, true);
+                    return true;
+                }
+                UtilsHandler.getCustomCommands().addWaiting(args[1], waitingTime, command);
+            } else {
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
+            }
+            return true;
         }
         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPrefix(), "Message.unknownCommand", sender);
         return true;

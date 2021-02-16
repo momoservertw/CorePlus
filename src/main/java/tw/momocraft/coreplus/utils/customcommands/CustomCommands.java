@@ -1,5 +1,8 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import javafx.util.Pair;
 import org.bukkit.*;;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +16,30 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 import java.util.*;
 
 public class CustomCommands implements CommandInterface {
+
+    // Table<PlayerName, Pair<sendTime, expiration>, Command>
+    private final Table<String, Pair<Long, Integer>, String> waitingTable = HashBasedTable.create();
+
+    public Table<String, Pair<Long, Integer>, String> getWaitingTable() {
+        return waitingTable;
+    }
+
+    @Override
+    public void addWaiting(String playerName, int expiration, String command) {
+        Pair<Long, Integer> waitingPair = new Pair<>(System.currentTimeMillis(), expiration * 1000);
+        waitingTable.put(playerName, waitingPair, command);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    waitingTable.remove(playerName, waitingPair);
+                    UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
+                            "Online command start - Player: " + playerName + ", Expiration: " + expiration + ", Command: " + command);
+                } catch (Exception ignored) {
+                }
+            }
+        }.runTaskLater(CorePlus.getInstance(), expiration * 20);
+    }
 
     @Override
     public void executeCmdList(String prefix, List<Player> players, List<String> input, boolean placeholder, String... langHolder) {
@@ -32,12 +59,12 @@ public class CustomCommands implements CommandInterface {
 
     @Override
     public void executeCmdList(String prefix, Player player, List<String> input, boolean placeholder, String... langHolder) {
+        if (prefix == null)
+            prefix = "";
         if (player == null || player instanceof ConsoleCommandSender) {
             executeCmdList(prefix, input, placeholder);
             return;
         }
-        if (prefix == null)
-            prefix = "";
         String cmd;
         for (int i = 0; i < input.size(); i++) {
             cmd = input.get(i);
@@ -115,6 +142,8 @@ public class CustomCommands implements CommandInterface {
 
     @Override
     public void executeCmd(String prefix, List<Player> players, String input, boolean placeholder, String... langHolder) {
+        if (prefix == null)
+            prefix = "";
         if (input.startsWith("targets-")) {
             input = input.replace("targets-", "");
             for (Player player : players) {
@@ -127,12 +156,12 @@ public class CustomCommands implements CommandInterface {
 
     @Override
     public void executeCmd(String prefix, Player player, String input, boolean placeholder, String... langHolder) {
+        if (prefix == null)
+            prefix = "";
         if (player == null || player instanceof ConsoleCommandSender) {
             executeCmd(prefix, input, placeholder);
             return;
         }
-        if (prefix == null)
-            prefix = "";
         if (input.contains(";;")) {
             executeCmdList(prefix, player, Arrays.asList(input.split(";;")), true, langHolder);
             return;
@@ -253,7 +282,8 @@ public class CustomCommands implements CommandInterface {
                 dispatchParticleCustomCmd(prefix, player.getLocation(), input);
                 return;
             default:
-                dispatchConsoleCmd(prefix, player, input);
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown command type, more information:");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
         }
     }
 

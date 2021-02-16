@@ -46,6 +46,18 @@ General:
       ItemJoin: true
       AuthMe: true
 
+# To create a custom configuration in the path of log.yml "ConfigBuilder".
+# Command: /crp configbuilder <Type>
+Config-Builder:
+  Entity:
+    Format: " - %type%"
+  Material:
+    Format: " - %type%"
+  OfflinePlayer-UUID:
+    Format: " - %type%"
+  OfflinePlayer-Name:
+    Format: " - %type%"
+
 Message:
   prefix: "&7[&dCorePlus&7]&r "
   unknownCommand: "&fUnknown command."
@@ -72,11 +84,11 @@ Message:
     help: "&f/coreplus help &8- &7This help menu."
     reload: "&f/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
-    test: "&f/coreplus test <location/blocks> <group> &8- &7Check if the condition is match."
-    cmd: "&f/coreplus cmd [player] <command> &8- &7Executing custom command."
-    cmdcustom: "&f/coreplus cmdcustom [player] <group> &8- &7Executing custom command from configuration."
-    cmdonline: "&f/coreplus cmdonline <player> <time> <command> &8- &7Waiting then execute custom command."
-    cmdcustomonline: "&f/coreplus cmdcustomonline <player> <time> <group> &8- &7Waiting then execute custom command from configuration."
+    test: "&f/coreplus test <location/blocks> <group> &8- &7Checks if the condition is match."
+    configbuilder: "&f/coreplus configbuilder <group> &8- &7Creates a configuration for that group."
+    cmd: "&f/coreplus cmd <command> &8- &7Executes custom command."
+    cmdplayer: "&f/coreplus cmdplayer <player> <command> &8- &7Executes custom command for a player."
+    cmdonline: "&f/coreplus cmdonline <player> <expiration> <command> &8- &7Executes the custom command after the player joined the server."
   Translation:
     money: "money"
     points: "points"

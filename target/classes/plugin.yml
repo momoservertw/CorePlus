@@ -32,6 +32,8 @@ permissions:
       CorePlus.command.reload: true
       CorePlus.command.version: true
       CorePlus.command.test: true
+      CorePlus.command.cmd: true
+      CorePlus.command.configbuilder: true
   CorePlus.command.reload:
     description: Allows use of /coreplus command reload.
     default: op
@@ -40,4 +42,10 @@ permissions:
     default: op
   CorePlus.command.test:
     description: Allows use of command /coreplus test.
+    default: op
+  CorePlus.command.cmd:
+    description: Allows use of command /coreplus cmd/cmdplayer/cmdonline.
+    default: op
+  CorePlus.command.configbuilder:
+    description: Allows use of command /coreplus configbuilder.
     default: op

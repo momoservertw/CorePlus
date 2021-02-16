@@ -15,6 +15,7 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.customcommands.BungeePlayerUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -391,6 +392,16 @@ public class LanguageUtils implements LanguageInterface {
         if (input.contains("%random_player%")) {
             try {
                 List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+                String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
+                input = input.replace("%random_player%", randomPlayer);
+            } catch (Exception e) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            }
+        }
+        // %random_player%
+        if (input.contains("%random_player%")) {
+            try {
+                List<String> playerList = BungeePlayerUtils.getPlayerMap();
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {

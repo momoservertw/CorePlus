@@ -23,9 +23,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/BungeePlayerUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/TabComplete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/TabComplete.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CommandInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/RegisterHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/RegisterHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/BungeeCordUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/BungeeCordUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommands/CustomCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LanguageUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/language/LanguageUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/logs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/logs.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +88,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/zh_tw" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LotteryPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -87,11 +105,11 @@
       <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="tw.momocraft.coreplus.listeners" />
       <recent name="tw.momocraft.coreplus.utils" />
       <recent name="tw.momocraft.coreplus.api" />
       <recent name="tw.momocraft.serverplus.listeners.event" />
       <recent name="tw.momocraft.serverplus.utils" />
-      <recent name="tw.momocraft.serverplus.listeners" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\sayuri\IdeaProjects\CorePlus\src\main\resources\zh_tw" />
@@ -101,7 +119,7 @@
       <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\java\tw\momocraft\entityplus\utils\locationapi" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CopyApiToPlugins">
+  <component name="RunManager" selected="Application.CopyToUpdateFolder">
     <configuration name="CopyApiToPlugins" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.utils.CopyApiToPlugins" />
       <module name="CorePlus" />
@@ -143,8 +161,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.CopyToUpdateFolder" />
+        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
@@ -183,11 +201,11 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="480" y="139" key="#Inspections/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611268903948" />
-    <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser" timestamp="1611242413102">
+    <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser" timestamp="1612634914262">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="494" y="92" key="#com.intellij.ide.util.MemberChooser/0.0.1280.689@0.0.1280.689" timestamp="1610520677256" />
-    <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611242413102" />
+    <state x="659" y="166" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612634914262" />
     <state x="3219" y="176" key="#com.intellij.ide.util.MemberChooser/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608152837116" />
     <state x="426" y="230" width="522" height="239" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1609240163029">
       <screen x="0" y="0" width="1280" height="689" />
@@ -210,43 +228,39 @@
     <state x="438" y="155" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1280.689@0.0.1280.689" timestamp="1610546298156" />
     <state x="584" y="207" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611243945855" />
     <state x="3144" y="217" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1608196499895" />
-    <state x="634" y="216" key="FileChooserDialogImpl" timestamp="1611037408756">
+    <state x="634" y="216" key="FileChooserDialogImpl" timestamp="1612583839321">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="475" y="162" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1609861113099" />
-    <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611037408756" />
-    <state width="1663" height="229" key="GridCell.Tab.0.bottom" timestamp="1611497602514">
+    <state x="634" y="216" key="FileChooserDialogImpl/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612583839321" />
+    <state width="1663" height="331" key="GridCell.Tab.0.bottom" timestamp="1612630786428">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1610734602803" />
-    <state width="1663" height="229" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611497602514" />
+    <state width="1663" height="331" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612630786428" />
     <state width="1663" height="229" key="GridCell.Tab.0.bottom/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611339639818" />
-    <state width="1663" height="229" key="GridCell.Tab.0.center" timestamp="1611497602513">
+    <state width="1663" height="331" key="GridCell.Tab.0.center" timestamp="1612630786428">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1610734602803" />
-    <state width="1663" height="229" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611497602513" />
+    <state width="1663" height="331" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612630786428" />
     <state width="1663" height="229" key="GridCell.Tab.0.center/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611339639818" />
-    <state width="1663" height="229" key="GridCell.Tab.0.left" timestamp="1611497602513">
+    <state width="1663" height="331" key="GridCell.Tab.0.left" timestamp="1612630786428">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1610734602803" />
-    <state width="1663" height="229" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611497602513" />
+    <state width="1663" height="331" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612630786428" />
     <state width="1663" height="229" key="GridCell.Tab.0.left/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611339639818" />
-    <state width="1663" height="229" key="GridCell.Tab.0.right" timestamp="1611497602514">
+    <state width="1663" height="331" key="GridCell.Tab.0.right" timestamp="1612630786428">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1237" height="123" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1610734602803" />
-    <state width="1663" height="229" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611497602514" />
+    <state width="1663" height="331" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612630786428" />
     <state width="1663" height="229" key="GridCell.Tab.0.right/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611339639818" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1609078164550">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.689@0.0.1280.689" timestamp="1609078164550" />
-    <state x="326" y="169" key="com.intellij.ide.util.TipDialog" timestamp="1603852864974">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="326" y="169" key="com.intellij.ide.util.TipDialog/0.0.1280.689@0.0.1280.689" timestamp="1603852864974" />
     <state x="297" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1609180276741">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -256,25 +270,17 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="439" y="262" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689@0.0.1280.689" timestamp="1609129548530" />
-    <state x="493" y="5" width="1026" height="891" key="find.popup" timestamp="1611429268387">
+    <state x="493" y="5" width="1026" height="891" key="find.popup" timestamp="1612582760632">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="370" y="4" width="770" height="668" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1610640689016" />
-    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611429268387" />
+    <state x="493" y="5" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612582760632" />
     <state x="2901" y="39" width="1026" height="891" key="find.popup/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611338959718" />
-    <state width="562" height="500" key="javadoc.popup.new" timestamp="1611481910071">
+    <state width="562" height="500" key="javadoc.popup.new" timestamp="1612819092648">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="562" height="500" key="javadoc.popup.new/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1611481910071" />
+    <state width="562" height="500" key="javadoc.popup.new/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1612819092648" />
     <state width="562" height="500" key="javadoc.popup.new/2560.10.1707.920/0.0.1707.920@2560.10.1707.920" timestamp="1611338832026" />
-    <state x="551" y="206" key="refactoring.ChangeSignatureDialog" timestamp="1604062531792">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="551" y="206" key="refactoring.ChangeSignatureDialog/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1604062531792" />
-    <state x="510" y="211" key="run.anything.popup" timestamp="1603732834433">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="510" y="211" key="run.anything.popup/2560.10.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1603732834433" />
     <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1611250802420">
       <screen x="0" y="0" width="1707" height="920" />
     </state>

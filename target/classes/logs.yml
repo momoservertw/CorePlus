@@ -11,6 +11,12 @@ Logs:
     Time: true
     New-File: false
     Zip: false
+  ConfigBuilder:
+    Path: "plugins//CorePlus//Logs"
+    Name: "config_builder.yml"
+    Time: false
+    New-File: false
+    Zip: false
   SpawnerChanged:
     Path: "plugins//EntityPlus//Logs"
     Name: "spawner.log"

@@ -38,11 +38,13 @@ public class TabComplete implements TabCompleter {
                 if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
                     commands.add("test");
                 }
-                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                    commands.add("runcmd");
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.configbuilder")) {
+                    commands.add("configbuilder");
                 }
-                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
-                    commands.add("runcmdcustom");
+                if (UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.cmd")) {
+                    commands.add("cmd");
+                    commands.add("cmdplayer");
+                    commands.add("cmdonline");
                 }
                 break;
             case 2:
@@ -50,45 +52,8 @@ public class TabComplete implements TabCompleter {
                         UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.test")) {
                     commands.add("location");
                     commands.add("blocks");
-                } else if (args[0].equalsIgnoreCase("runcmd") &&
-                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmd")) {
-                    try {
-                        if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                for (Object objPlayer : playersOnlineNew) {
-                                    commands.add(((Player) objPlayer).getName());
-                                }
-                            }
-                        } else {
-                            playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                            for (Player player : playersOnlineOld) {
-                                commands.add(player.getName());
-                            }
-                        }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
-                    }
-                } else if (args[0].equalsIgnoreCase("runcmdcustom") &&
-                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
-                    commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
-                    try {
-                        if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                for (Object objPlayer : playersOnlineNew) {
-                                    commands.add(((Player) objPlayer).getName());
-                                }
-                            }
-                        } else {
-                            playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                            for (Player player : playersOnlineOld) {
-                                commands.add(player.getName());
-                            }
-                        }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
-                    }
+                } else if (args[0].equalsIgnoreCase("configbuilder") && UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.configbuilder")) {
+                    commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderProp().keySet());
                 }
                 break;
             case 3:
@@ -100,11 +65,6 @@ public class TabComplete implements TabCompleter {
                     commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
                 }
                 break;
-            case 4:
-                if (args[0].equalsIgnoreCase("runcmdcustom") &&
-                        UtilsHandler.getPlayer().hasPerm(ConfigHandler.getPluginName(), sender, "coreplus.command.runcmdcustom")) {
-                    commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
-                }
         }
         StringUtil.copyPartialMatches(args[(args.length - 1)], commands, completions);
         Collections.sort(completions);

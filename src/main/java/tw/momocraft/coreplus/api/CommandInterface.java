@@ -8,6 +8,15 @@ import java.util.List;
 public interface CommandInterface {
 
     /**
+     * Executing command for a player when he is login.
+     *
+     * @param playerName  the target player name.
+     * @param waitingTime the waiting seconds.
+     * @param command     the dispatch command.
+     */
+    void addWaiting(String playerName, int waitingTime, String command);
+
+    /**
      * Executing command list for targets.
      *
      * @param prefix      the executing plugin prefix.

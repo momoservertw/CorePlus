@@ -1,3 +1,4 @@
+tw\momocraft\coreplus\listeners\CommandOnline.class
 tw\momocraft\coreplus\utils\conditions\ItemJoinUtils.class
 tw\momocraft\coreplus\api\FileInterface.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands.class
@@ -6,6 +7,7 @@ tw\momocraft\coreplus\api\MySQLInterface.class
 tw\momocraft\coreplus\utils\Updater.class
 tw\momocraft\coreplus\utils\economy\PriceMap.class
 tw\momocraft\coreplus\api\PlayerInterface.class
+tw\momocraft\coreplus\utils\customcommands\CustomCommands$5.class
 tw\momocraft\coreplus\api\DependInterface.class
 tw\momocraft\coreplus\utils\language\VanillaUtils.class
 tw\momocraft\coreplus\CorePlus.class
@@ -23,6 +25,7 @@ tw\momocraft\coreplus\utils\economy\PlayerPointsUtils.class
 tw\momocraft\coreplus\api\UpdateInterface.class
 tw\momocraft\coreplus\api\utils\CopyApiToPlugins.class
 tw\momocraft\coreplus\utils\customcommands\TitleMessageMap.class
+tw\momocraft\coreplus\utils\ConfigBuilder.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class
 tw\momocraft\coreplus\utils\MySQLUtils.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$3.class
