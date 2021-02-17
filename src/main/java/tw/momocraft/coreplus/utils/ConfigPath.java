@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.utils;
 
+import javafx.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -50,7 +51,7 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         ConfigBuilder Variables                 //
     //  ============================================== //
-    private final Map<String, String> configBuilderProp = new HashMap<>();
+    private final Map<String, Pair<String, List<String>>> configBuilderProp = new HashMap<>();
 
     //  ============================================== //
     //         Setup all configuration                 //
@@ -322,8 +323,9 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection config = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder");
         if (config != null) {
             for (String group : config.getKeys(false)) {
-                configBuilderProp.put(group,
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder." + group + ".Format"));
+                configBuilderProp.put(group, new Pair<>(
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder." + group + ".Format"),
+                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder." + group + ".Ignore")));
             }
         }
     }
@@ -409,7 +411,7 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         ConfigBuilder Getter                    //
     //  ============================================== //
-    public Map<String, String> getConfigBuilderProp() {
+    public Map<String, Pair<String, List<String>>> getConfigBuilderProp() {
         return configBuilderProp;
     }
 

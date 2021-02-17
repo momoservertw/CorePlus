@@ -51,12 +51,18 @@ General:
 Config-Builder:
   Entity:
     Format: " - %type%"
+    Ignore:
+      - PLAYER
   Material:
     Format: " - %type%"
+    Ignore: []
   OfflinePlayer-UUID:
     Format: " - %type%"
+    # Can be UUID or Player name.
+    Ignore: []
   OfflinePlayer-Name:
     Format: " - %type%"
+    Ignore: []
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "

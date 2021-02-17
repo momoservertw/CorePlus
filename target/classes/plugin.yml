@@ -19,7 +19,6 @@ permissions:
     description: Allows use of all commands and features.
     default: op
     children:
-<<<<<<< Updated upstream
       coreplus.use: true
       CorePlus.command.*: true
       CorePlus.bypass.*: true
@@ -33,8 +32,11 @@ permissions:
       CorePlus.command.reload: true
       CorePlus.command.version: true
       CorePlus.command.test: true
-      CorePlus.command.cmd: true
       CorePlus.command.configbuilder: true
+      CorePlus.command.cmdcustom: true
+      CorePlus.command.cmd: true
+      CorePlus.command.cmdplayer: true
+      CorePlus.command.cmdonline: true
   CorePlus.command.reload:
     description: Allows use of /coreplus command reload.
     default: op
@@ -44,14 +46,17 @@ permissions:
   CorePlus.command.test:
     description: Allows use of command /coreplus test.
     default: op
-  CorePlus.command.cmd:
-    description: Allows use of command /coreplus cmd/cmdplayer/cmdonline.
-    default: op
   CorePlus.command.configbuilder:
     description: Allows use of command /coreplus configbuilder.
-=======
-      coreplus.admin: true
-  CorePlus.admin:
-    description: Allows use of all commands and features.
->>>>>>> Stashed changes
+  CorePlus.command.cmdcustom:
+    description: Allows use of command /coreplus cmdcustom
+    default: op
+  CorePlus.command.cmd:
+    description: Allows use of command /coreplus cmd
+    default: op
+  CorePlus.command.cmdplayer:
+    description: Allows use of command /coreplus cmdplayer.
+    default: op
+  CorePlus.command.cmdonline:
+    description: Allows use of command /coreplus cmdonline.
     default: op

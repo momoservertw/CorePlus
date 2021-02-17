@@ -9,66 +9,82 @@ import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import java.util.List;
+
 public class ConfigBuilder {
 
     public static void start(CommandSender sender, String type) {
         String format;
         switch (type.toLowerCase()) {
             case "entity":
-                format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Entity");
-                if (format == null)
-                    break;
-                createEntity(format);
+                createEntity();
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aSucceed create the configuration for group: &e" + type);
                 return;
             case "material":
-                format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Material");
-                if (format == null)
-                    break;
-                createMaterial(format);
+                createMaterial();
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aSucceed create the configuration for group: &e" + type);
                 return;
             case "offlineplayer-name":
-                format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-Name");
-                if (format == null)
-                    break;
-                createOfflinePlayerName(format);
+                createOfflinePlayerName();
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aSucceed create the configuration for group: &e" + type);
                 return;
             case "offlineplayer-uuid":
-                format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-UUID");
-                if (format == null)
-                    break;
-                createOfflinePlayerUUID(format);
+                createOfflinePlayerUUID();
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aSucceed create the configuration for group: &e" + type);
                 return;
         }
         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cCan not find the group or format: " + type);
     }
 
-    public static void createEntity(String format) {
+    public static void createEntity() {
+        String format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Entity").getKey();
+        if (format == null)
+            return;
+        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Entity").getValue();
         String input;
+        String typeName;
         for (EntityType type : EntityType.values()) {
-            input = format.replace("%type%", type.name());
+            typeName = type.name();
+            if (ignoreList.contains(typeName))
+                continue;
+            input = format.replace("%type%", typeName);
             CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                     "ConfigBuilder, " + input);
         }
     }
 
-    public static void createMaterial(String format) {
+    public static void createMaterial() {
+        String format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Material").getKey();
+        if (format == null)
+            return;
+        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderProp().get("Material").getValue();
         String input;
+        String typeName;
         for (Material type : Material.values()) {
-            input = format.replace("%type%", type.name());
+            typeName = type.name();
+            if (ignoreList.contains(typeName))
+                continue;
+            input = format.replace("%type%", typeName);
             CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                     "ConfigBuilder, " + input);
         }
     }
 
-    public static void createOfflinePlayerName(String format) {
+    public static void createOfflinePlayerName() {
+        String format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-Name").getKey();
+        if (format == null)
+            return;
+        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-Name").getValue();
         String input;
+        String uuid;
+        String name;
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             try {
-                input = format.replace("%type%", offlinePlayer.getName());
+                uuid = offlinePlayer.getUniqueId().toString();
+                name = offlinePlayer.getName();
+                if (ignoreList.contains(uuid) || ignoreList.contains(name))
+                    continue;
+                input = format.replace("%type%", name);
                 CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                         "ConfigBuilder, " + input);
             } catch (Exception ignored) {
@@ -76,11 +92,21 @@ public class ConfigBuilder {
         }
     }
 
-    public static void createOfflinePlayerUUID(String format) {
+    public static void createOfflinePlayerUUID() {
+        String format = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-UUID").getKey();
+        if (format == null)
+            return;
+        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderProp().get("OfflinePlayer-UUID").getValue();
         String input;
+        String uuid;
+        String name;
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             try {
-                input = format.replace("%type%", offlinePlayer.getUniqueId().toString());
+                uuid = offlinePlayer.getUniqueId().toString();
+                name = offlinePlayer.getName();
+                if (ignoreList.contains(uuid) || ignoreList.contains(name))
+                    continue;
+                input = format.replace("%type%", uuid);
                 CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                         "ConfigBuilder, " + input);
             } catch (Exception ignored) {
