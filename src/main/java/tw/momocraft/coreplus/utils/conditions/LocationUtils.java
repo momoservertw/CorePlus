@@ -1,12 +1,9 @@
 package tw.momocraft.coreplus.utils.conditions;
 
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +45,7 @@ public class LocationUtils {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         return false;
     }

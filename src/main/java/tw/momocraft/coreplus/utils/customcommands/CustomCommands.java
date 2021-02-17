@@ -294,8 +294,8 @@ public class CustomCommands implements CommandInterface {
                 dispatchParticleCustomCmd(pluginName, player.getLocation(), input);
                 return;
             default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown command type, more information:");
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPlugin(), "https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "Unknown command type, more information:");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
         }
     }
 

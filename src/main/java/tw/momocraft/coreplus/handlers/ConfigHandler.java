@@ -41,7 +41,7 @@ public class ConfigHandler {
         setConfigPath(new ConfigPath());
         UtilsHandler.setUpLast();
         if (!reload) {
-            UtilsHandler.getUpdate().check(getPlugin(), Bukkit.getConsoleSender(),
+            UtilsHandler.getUpdate().check(getPluginPrefix(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),
                     CorePlus.getInstance().getDescription().getVersion(), true);
         }
@@ -240,17 +240,16 @@ public class ConfigHandler {
         return configPaths;
     }
 
+    public static String getPluginName() {
+        return CorePlus.getInstance().getDescription().getName();
+    }
 
-    public static String getPlugin() {
+    public static String getPluginPrefix() {
         return "[" + CorePlus.getInstance().getDescription().getName() + "] ";
     }
 
     public static String getPrefix() {
         return getConfig("config.yml").getString("Message.prefix");
-    }
-
-    public static String getPluginName() {
-        return CorePlus.getInstance().getDescription().getName();
     }
 
     public static boolean isDebugging() {

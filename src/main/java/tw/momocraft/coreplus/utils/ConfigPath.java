@@ -73,18 +73,18 @@ public class ConfigPath implements ConfigInterface {
     }
 
     private void sendSetupMessage() {
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Groups: ");
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Groups: ");
         for (String group : groupProp.keySet()) {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "  " + group + ": " + groupProp.get(group).keySet());
+            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "  " + group + ": " + groupProp.get(group).keySet());
         }
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Commands: " + cmdProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Logs: " + logProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Location: " + locProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Blocks: " + blockProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Particles: " + particleProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Sounds: " + soundProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Action Bars: " + actionProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "Setup Title Messages: " + titleProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Commands: " + cmdProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Logs: " + logProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Location: " + locProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Blocks: " + blockProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Particles: " + particleProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Sounds: " + soundProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Action Bars: " + actionProp.keySet());
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Setup Title Messages: " + titleProp.keySet());
     }
 
     //  ============================================== //

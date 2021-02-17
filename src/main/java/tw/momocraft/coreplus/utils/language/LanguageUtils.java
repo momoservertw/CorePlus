@@ -15,7 +15,6 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.customcommands.BungeePlayerUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -266,32 +265,32 @@ public class LanguageUtils implements LanguageInterface {
             try {
                 input = input.replace("%player%", playerName);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
             // %player_display_name%
             try {
                 input = input.replace("%player_display_name%", player.getDisplayName());
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
             UUID playerUUID = player.getUniqueId();
             // %player_uuid%
             try {
                 input = input.replace("%player_uuid%", playerUUID.toString());
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
             // %player_sneaking%
             try {
                 input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
             // %player_flying%
             try {
                 input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
             Location loc = player.getLocation();
             // %player_world%
@@ -331,7 +330,7 @@ public class LanguageUtils implements LanguageInterface {
                     input = input.replace("%player_loc_y%", loc_y);
                     input = input.replace("%player_loc_z%", loc_z);
                 } catch (Exception e) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
                 }
             }
             if (UtilsHandler.getDepend().VaultEnabled()) {
@@ -350,20 +349,20 @@ public class LanguageUtils implements LanguageInterface {
             try {
                 input = input.replace("%player%", "CONSOLE");
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
         }
         // %server_name%
         try {
             input = input.replace("%server_name%", Bukkit.getServer().getName());
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         try {
             input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         // %random_number%500%
         if (input.contains("%random_number%")) {
@@ -376,7 +375,7 @@ public class LanguageUtils implements LanguageInterface {
                     }
                 }
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
         }
         // %random_list%String1,String2%
@@ -403,19 +402,21 @@ public class LanguageUtils implements LanguageInterface {
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
         }
         // %random_player%
+        /*
         if (input.contains("%random_player%")) {
             try {
                 List<String> playerList = BungeePlayerUtils.getPlayerMap();
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
             } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             }
         }
+         */
         // %random_player_except%AllBye,huangge0513%
         if (input.contains("%random_player_except%")) {
             List<String> placeholderList = new ArrayList<>();
@@ -446,7 +447,7 @@ public class LanguageUtils implements LanguageInterface {
                             break;
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
                     }
                 }
             }

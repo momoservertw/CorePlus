@@ -50,7 +50,7 @@ public class PlayerUtils implements PlayerInterface {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         return null;
     }
@@ -141,107 +141,107 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public boolean hasPerm(String plugin, CommandSender sender, String permission) {
-        if (sender.hasPermission(plugin + ".*"))
+    public boolean hasPerm(CommandSender sender, String permission) {
+        if (sender.hasPermission(permission + ".*"))
             return true;
         return sender.hasPermission(permission) || sender.isOp() || (sender instanceof ConsoleCommandSender);
     }
 
     @Override
-    public boolean hasPerm(String plugin, Player player, String permission) {
-        if (player.hasPermission(plugin + ".*"))
+    public boolean hasPerm(Player player, String permission) {
+        if (player.hasPermission(permission + ".*"))
             return true;
         return player.hasPermission(permission) || player.isOp() || (player instanceof ConsoleCommandSender);
     }
 
     @Override
-    public boolean hasPerm(String plugin, UUID uuid, String permission) {
+    public boolean hasPerm(UUID uuid, String permission) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         if (offlinePlayer.isOp())
             return true;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             return UtilsHandler.getDepend().getLuckPermsApi().hasPermission(uuid, permission) ||
-                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(uuid, plugin + ".*");
+                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(uuid, permission + ".*");
         }
         return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
     }
 
     @Override
-    public boolean hasPerm(String plugin, OfflinePlayer offlinePlayer, String permission) {
+    public boolean hasPerm(OfflinePlayer offlinePlayer, String permission) {
         if (offlinePlayer.isOp())
             return true;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             return UtilsHandler.getDepend().getLuckPermsApi().hasPermission(offlinePlayer.getUniqueId(), permission) ||
-                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(offlinePlayer.getUniqueId(), plugin + ".*");
+                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(offlinePlayer.getUniqueId(), permission + ".*");
         }
         return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
     }
 
     @Override
-    public boolean havePerm(String plugin, List<CommandSender> senders, String permission) {
+    public boolean havePerm(List<CommandSender> senders, String permission) {
         for (CommandSender sender : senders) {
-            if (hasPerm(plugin, sender, permission))
+            if (hasPerm(sender, permission))
                 return true;
         }
         return false;
     }
 
     @Override
-    public boolean havePermPlayer(String plugin, List<Player> players, String permission) {
+    public boolean havePermPlayer(List<Player> players, String permission) {
         for (Player player : players) {
-            if (hasPerm(plugin, player, permission))
+            if (hasPerm(player, permission))
                 return true;
         }
         return false;
     }
 
     @Override
-    public boolean havePermUUID(String plugin, List<UUID> uuids, String permission) {
+    public boolean havePermUUID(List<UUID> uuids, String permission) {
         for (UUID uuid : uuids) {
-            return hasPerm(plugin, uuid, permission);
+            return hasPerm(uuid, permission);
         }
         return false;
     }
 
     @Override
-    public boolean havePermOffline(String plugin, List<OfflinePlayer> offlinePlayers, String permission) {
+    public boolean havePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            return hasPerm(plugin, offlinePlayer, permission);
+            return hasPerm(offlinePlayer, permission);
         }
         return false;
     }
 
     @Override
-    public boolean allHavePerm(String plugin, List<CommandSender> senders, String permission) {
+    public boolean allHavePerm(List<CommandSender> senders, String permission) {
         for (CommandSender sender : senders) {
-            if (!hasPerm(plugin, sender, permission))
+            if (!hasPerm(sender, permission))
                 return false;
         }
         return true;
     }
 
     @Override
-    public boolean allHavePermPlayer(String plugin, List<Player> players, String permission) {
+    public boolean allHavePermPlayer(List<Player> players, String permission) {
         for (Player player : players) {
-            if (!hasPerm(plugin, player, permission))
+            if (!hasPerm(player, permission))
                 return false;
         }
         return true;
     }
 
     @Override
-    public boolean allHavePermUUID(String plugin, List<UUID> uuids, String permission) {
+    public boolean allHavePermUUID(List<UUID> uuids, String permission) {
         for (UUID uuid : uuids) {
-            if (!hasPerm(plugin, uuid, permission))
+            if (!hasPerm(uuid, permission))
                 return false;
         }
         return true;
     }
 
     @Override
-    public boolean allHavePermOffline(String plugin, List<OfflinePlayer> offlinePlayers, String permission) {
+    public boolean allHavePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            if (!hasPerm(plugin, offlinePlayer, permission))
+            if (!hasPerm(offlinePlayer, permission))
                 return false;
         }
         return true;
@@ -256,7 +256,8 @@ public class PlayerUtils implements PlayerInterface {
             if (perm.startsWith(permission)) {
                 try {
                     numbers.add(Integer.parseInt(perm.replace(permission, "")));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         }
         if (numbers.isEmpty())
@@ -270,9 +271,12 @@ public class PlayerUtils implements PlayerInterface {
         String perm;
         for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
             perm = permInfo.getPermission();
+            if (!perm.contains(permission))
+                continue;
             try {
                 numbers.add(Integer.parseInt(perm.replace(permission, "")));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         if (numbers.isEmpty())
             return def;
@@ -280,36 +284,101 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public String getPrimaryGroup(String pluginName, UUID uuid) {
+    public int getMaxPerm(UUID uuid, String permission, int def) {
+        List<Integer> numbers = new ArrayList<>();
+        for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
+            if (!perm.contains(permission))
+                continue;
+            try {
+                numbers.add(Integer.parseInt(perm.replace(permission, "")));
+            } catch (Exception ignored) {
+            }
+        }
+        if (numbers.isEmpty())
+            return def;
+        return Collections.max(numbers);
+    }
+
+    @Override
+    public int getMinPerm(CommandSender sender, String permission, int def) {
+        List<Integer> numbers = new ArrayList<>();
+        String perm;
+        for (PermissionAttachmentInfo permInfo : sender.getEffectivePermissions()) {
+            perm = permInfo.getPermission();
+            if (perm.startsWith(permission)) {
+                try {
+                    numbers.add(Integer.parseInt(perm.replace(permission, "")));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        if (numbers.isEmpty())
+            return def;
+        return Collections.min(numbers);
+    }
+
+    @Override
+    public int getMinPerm(Player player, String permission, int def) {
+        List<Integer> numbers = new ArrayList<>();
+        String perm;
+        for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
+            perm = permInfo.getPermission();
+            if (!perm.contains(permission))
+                continue;
+            try {
+                numbers.add(Integer.parseInt(perm.replace(permission, "")));
+            } catch (Exception ignored) {
+            }
+        }
+        if (numbers.isEmpty())
+            return def;
+        return Collections.min(numbers);
+    }
+
+    @Override
+    public int getMinPerm(UUID uuid, String permission, int def) {
+        List<Integer> numbers = new ArrayList<>();
+        for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
+            if (!perm.contains(permission))
+                continue;
+            try {
+                numbers.add(Integer.parseInt(perm.replace(permission, "")));
+            } catch (Exception ignored) {
+            }
+        }
+        if (numbers.isEmpty())
+            return def;
+        return Collections.min(numbers);
+    }
+
+    @Override
+    public String getPrimaryGroup(UUID uuid) {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
             return null;
         }
         return UtilsHandler.getDepend().getLuckPermsApi().getPlayerPrimaryGroup(uuid);
     }
 
     @Override
-    public boolean setPrimaryGroup(String pluginName, UUID uuid, String group) {
+    public boolean setPrimaryGroup(UUID uuid, String group) {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
             return false;
         }
         return UtilsHandler.getDepend().getLuckPermsApi().setPlayerPrimaryGroup(uuid, group);
     }
 
     @Override
-    public boolean isInheritedGroup(String pluginName, UUID uuid, String group) {
+    public boolean isInheritedGroup(UUID uuid, String group) {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find LuckPerms.");
             return false;
         }
         return UtilsHandler.getDepend().getLuckPermsApi().isInheritedGroup(uuid, group);
     }
 
     @Override
-    public void addPermission(String pluginName, UUID uuid, String permission) {
+    public void addPermission(UUID uuid, String permission) {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getDepend().getLuckPermsApi().addPermission(pluginName, uuid, permission);
+            UtilsHandler.getDepend().getLuckPermsApi().addPermission(uuid, permission);
             return;
         }
         UtilsHandler.getDepend().getVaultApi().getPermissions().playerAdd(Bukkit.getWorlds().get(0).getName(),
@@ -317,12 +386,23 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public void removePermission(String pluginName, UUID uuid, String permission) {
+    public void removePermission(UUID uuid, String permission) {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getDepend().getLuckPermsApi().removePermission(pluginName, uuid, permission);
+            UtilsHandler.getDepend().getLuckPermsApi().removePermission(uuid, permission);
             return;
         }
         UtilsHandler.getDepend().getVaultApi().getPermissions().playerRemove(Bukkit.getWorlds().get(0).getName(),
                 Bukkit.getOfflinePlayer(uuid), permission);
+    }
+
+    @Override
+    public void changePermLevel(UUID uuid, String permission, int number, int def) {
+        int level = getMaxPerm(uuid, permission, def);
+        int nextLevel = level + number;
+        if (nextLevel < 0) {
+            nextLevel = 0;
+        }
+        removePermission(uuid, permission + level);
+        addPermission(uuid, permission + nextLevel);
     }
 }

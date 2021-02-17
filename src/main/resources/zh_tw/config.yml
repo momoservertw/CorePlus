@@ -44,6 +44,9 @@ General:
       MythicMobs: true
       ItemJoin: true
       AuthMe: true
+      SurvivalMechanics: true
+      Vehicles: true
+      MultiverseCore: true
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "

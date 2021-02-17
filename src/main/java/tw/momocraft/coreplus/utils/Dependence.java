@@ -119,7 +119,7 @@ public class Dependence implements DependInterface {
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "")
                 + (PvPManagerEnabled() ? "PvPManager, " : "");
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.length() - 2) + "]");
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), hookMsg.substring(0, hookMsg.length() - 2) + "]");
 
         /*
         if (ResidenceEnabled()) {

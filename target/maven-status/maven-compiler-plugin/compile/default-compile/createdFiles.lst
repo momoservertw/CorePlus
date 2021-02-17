@@ -26,6 +26,7 @@ tw\momocraft\coreplus\api\UpdateInterface.class
 tw\momocraft\coreplus\api\utils\CopyApiToPlugins.class
 tw\momocraft\coreplus\utils\customcommands\TitleMessageMap.class
 tw\momocraft\coreplus\utils\ConfigBuilder.class
+tw\momocraft\coreplus\utils\customcommands\BungeePlayerUtils.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class
 tw\momocraft\coreplus\utils\MySQLUtils.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$3.class

@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.utils.permission;
 
+import com.sun.javafx.collections.MappingChange;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.context.ContextManager;
@@ -11,10 +12,8 @@ import net.luckperms.api.node.types.PermissionNode;
 import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -28,16 +27,14 @@ public class LuckPermsAPI {
         }
     }
 
-    public User getUser(UUID uniqueId) {
+    public User getUser(UUID uuid) {
         UserManager userManager = luckPerms.getUserManager();
-        CompletableFuture<User> userFuture = userManager.loadUser(uniqueId);
+        CompletableFuture<User> userFuture = userManager.loadUser(uuid);
         return userFuture.join();
     }
 
     public boolean hasPermission(UUID uuid, String permission) {
         User user = getUser(uuid);
-        if (user == null)
-            return false;
         ContextManager cm = luckPerms.getContextManager();
         QueryOptions queryOptions = cm.getQueryOptions(user).orElse(cm.getStaticQueryOptions());
         CachedPermissionData permissionData = user.getCachedData().getPermissionData(queryOptions);
@@ -50,8 +47,6 @@ public class LuckPermsAPI {
 
     public Set<String> getInheritedGroups(UUID uuid) {
         User user = getUser(uuid);
-        if (user == null)
-            return null;
         return user.getNodes().stream()
                 .filter(NodeType.INHERITANCE::matches)
                 .map(NodeType.INHERITANCE::cast)
@@ -62,7 +57,7 @@ public class LuckPermsAPI {
     public String getPrefix(UUID uuid) {
         User user = getUser(uuid);
         if (user == null)
-            return "";
+            return null;
         ContextManager cm = luckPerms.getContextManager();
         QueryOptions queryOptions = cm.getQueryOptions(user).orElse(cm.getStaticQueryOptions());
         return user.getCachedData().getMetaData(queryOptions).getPrefix();
@@ -71,7 +66,7 @@ public class LuckPermsAPI {
     public String getSuffix(UUID uuid) {
         User user = getUser(uuid);
         if (user == null)
-            return "";
+            return null;
         ContextManager cm = luckPerms.getContextManager();
         QueryOptions queryOptions = cm.getQueryOptions(user).orElse(cm.getStaticQueryOptions());
         return user.getCachedData().getMetaData(queryOptions).getSuffix();
@@ -80,12 +75,12 @@ public class LuckPermsAPI {
     public String getPlayerPrimaryGroup(UUID uuid) {
         User user = getUser(uuid);
         if (user == null)
-            return "";
+            return null;
         return user.getPrimaryGroup();
     }
 
     public boolean setPlayerPrimaryGroup(UUID uuid, String group) {
-        User user = luckPerms.getUserManager().getUser(uuid);
+        User user = getUser(uuid);
         if (user == null)
             return false;
         if (luckPerms.getGroupManager().getGroup(group) == null)
@@ -94,23 +89,36 @@ public class LuckPermsAPI {
         return true;
     }
 
-    public void addPermission(String prefix, UUID uuid, String permission) {
+    public void addPermission(UUID uuid, String permission) {
         User user = getUser(uuid);
-        if (user == null) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "can not found LuckPerms user: " + uuid.toString());
+        if (user == null)
             return;
-        }
         user.data().add(PermissionNode.builder(permission).build());
         luckPerms.getUserManager().saveUser(user);
     }
 
-    public void removePermission(String prefix, UUID uuid, String permission) {
+    public void removePermission(UUID uuid, String permission) {
         User user = getUser(uuid);
-        if (user == null) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "can not found LuckPerms user: " + uuid.toString());
+        if (user == null)
             return;
-        }
         user.data().remove(PermissionNode.builder(permission).build());
         luckPerms.getUserManager().saveUser(user);
+    }
+
+    public List<String> getAllPerms(UUID uuid) {
+        User user = getUser(uuid);
+        if (user == null)
+            return null;
+        ContextManager cm = luckPerms.getContextManager();
+        QueryOptions queryOptions = cm.getQueryOptions(user).orElse(cm.getStaticQueryOptions());
+        CachedPermissionData permissionData = user.getCachedData().getPermissionData(queryOptions);
+        Map<String, Boolean> permissionMap = permissionData.getPermissionMap();
+        List<String> permList = new ArrayList<>();
+        for (String key : permissionMap.keySet()) {
+            if (permissionMap.get(key)) {
+                permList.add(key);
+            }
+        }
+        return permList;
     }
 }

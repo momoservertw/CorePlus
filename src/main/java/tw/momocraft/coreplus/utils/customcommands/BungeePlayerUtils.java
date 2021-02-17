@@ -13,8 +13,11 @@ import tw.momocraft.coreplus.CorePlus;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BungeePlayerUtils implements PluginMessageListener {
+public class BungeePlayerUtils {
 
+    //implements PluginMessageListener {
+
+    /*
     public BungeePlayerUtils() {
         CorePlus.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(CorePlus.getInstance(), "BungeeCord");
         CorePlus.getInstance().getServer().getMessenger().registerIncomingPluginChannel(CorePlus.getInstance(), "BungeeCord", this);
@@ -65,4 +68,6 @@ public class BungeePlayerUtils implements PluginMessageListener {
         serverList = null;
         return playerMap;
     }
+
+     */
 }

@@ -11,7 +11,7 @@ public class RegisterHandler {
     public static void registerEvents() {
         CorePlus.getInstance().getCommand("CorePlus").setExecutor(new Commands());
         CorePlus.getInstance().getCommand("CorePlus").setTabCompleter(new TabComplete());
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                 "Register-Event", "Command Online", "CommandOnline", "continue", new Throwable().getStackTrace()[0]);
     }
 }

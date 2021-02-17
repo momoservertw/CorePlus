@@ -10,10 +10,6 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class BungeeCordUtils implements PluginMessageListener {
 
 
@@ -28,7 +24,7 @@ public class BungeeCordUtils implements PluginMessageListener {
             out.writeUTF("Connect");
             out.writeUTF(server);
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }
@@ -44,7 +40,7 @@ public class BungeeCordUtils implements PluginMessageListener {
             out.writeUTF("Argument");
             out.writeUTF(cmd);
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }

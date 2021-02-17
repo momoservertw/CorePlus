@@ -48,7 +48,7 @@ public class VanillaUtils {
     }
 
     private void sendLanguageHook() {
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPlugin(), "&fLanguage: " + langProp.keySet().toString().replaceAll("\\.json", ""));
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fLanguage: " + langProp.keySet().toString().replaceAll("\\.json", ""));
     }
 
     public Map<String, JsonObject> getLangProp() {
@@ -117,7 +117,7 @@ public class VanillaUtils {
         try {
             return jsonObject.get(input).toString().replaceAll("\"", "");
         } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), e);
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
             return input;
         }
     }
