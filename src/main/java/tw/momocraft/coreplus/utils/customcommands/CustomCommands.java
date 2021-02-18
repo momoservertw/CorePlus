@@ -89,15 +89,14 @@ public class CustomCommands implements CommandInterface {
             List<String> newCommandList = new ArrayList<>(input);
             newCommandList.subList(i + 1, newCommandList.size());
             if (cmd.contains("{n}")) {
-                cmd = cmd.substring(cmd.indexOf("{n}") + 1);
+                cmd = cmd.substring(cmd.indexOf("{n}") + 2);
                 newCommandList.add(0, cmd);
             }
-            String finalPrefix = pluginName;
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     // To restart the method again after delay.
-                    executeCmdList(finalPrefix, player, newCommandList, placeholder, langHolder);
+                    executeCmdList(pluginName, player, newCommandList, placeholder, langHolder);
                 }
             }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
             return;
@@ -128,15 +127,14 @@ public class CustomCommands implements CommandInterface {
             List<String> newCommandList = new ArrayList<>(input);
             newCommandList.subList(i + 1, newCommandList.size());
             if (cmd.contains("{n}")) {
-                cmd = cmd.substring(cmd.indexOf("{n}") + 1);
+                cmd = cmd.substring(cmd.indexOf("{n}") + 2);
                 newCommandList.add(0, cmd);
             }
-            String finalPrefix = pluginName;
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     // To restart the method again after delay.
-                    executeCmdList(finalPrefix, newCommandList, placeholder, langHolder);
+                    executeCmdList(pluginName, newCommandList, placeholder, langHolder);
                 }
             }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
             return;
@@ -424,7 +422,8 @@ public class CustomCommands implements CommandInterface {
         if (input == null)
             return;
         boolean type;
-        String condition = input.split(", ")[0];
+        String condition = input.substring(0, input.lastIndexOf(", ") - 1);
+        String action = input.substring(input.lastIndexOf(", ") + 1);
         String[] conditionValues;
         if (condition.contains(">=")) {
             conditionValues = condition.split(">=");
@@ -479,7 +478,6 @@ public class CustomCommands implements CommandInterface {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             return;
         }
-        String action = input.substring(input.indexOf(", "));
         String trueCmd = null;
         String falseCmd = null;
         if (action.startsWith("{true}")) {
@@ -499,9 +497,13 @@ public class CustomCommands implements CommandInterface {
                 falseCmd = action.replace("{false}", "");
             }
         } else {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            return;
+            if (action.contains("{false}")) {
+                trueCmd = action.split("\\{false}")[0];
+                trueCmd = trueCmd.replace("{true}", "");
+                falseCmd = action.split("\\{false}")[1];
+            } else {
+                trueCmd = action.replace("{true}", "");
+            }
         }
         if (type) {
             executeCmd(pluginName, player, trueCmd, placeholder);

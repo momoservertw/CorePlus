@@ -451,7 +451,10 @@ public class LanguageUtils implements LanguageInterface {
                             break;
                         }
                     } catch (Exception ex) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"%random_player_except%PLAYERS%\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     }
                 }
             }
@@ -478,8 +481,129 @@ public class LanguageUtils implements LanguageInterface {
                 try {
                     newPlaceholder = engine.eval(placeholder.replace("{calculate: ", "")).toString();
                     input = input.replace(placeholder, newPlaceholder);
-                } catch (Exception ignored) {
+                } catch (Exception ex) {
                     input = input.replace(placeholder, "ERROR_CALCULATE_PLACEHOLDER");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                }
+            } else {
+                break;
+            }
+        }
+        String condition;
+        String action;
+        String[] conditionValues;
+        boolean type;
+        while (true) {
+            if (input.contains("$condition: ")) {
+                placeholder = input.substring(input.indexOf("$condition: ") - 1);
+                placeholder = placeholder.substring(0, placeholder.indexOf("$") + 1);
+                condition = placeholder.substring(0, placeholder.lastIndexOf(", ") - 1);
+                action = placeholder.substring(placeholder.lastIndexOf(", ") + 1);
+                if (condition.contains(">=")) {
+                    conditionValues = condition.split(">=");
+                    try {
+                        type = UtilsHandler.getUtil().getCompare(">=",
+                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                    } catch (Exception ex) {
+                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        continue;
+                    }
+                } else if (condition.contains("<=")) {
+                    conditionValues = condition.split("<=");
+                    try {
+                        type = UtilsHandler.getUtil().getCompare("<=",
+                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                    } catch (Exception ex) {
+                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        continue;
+                    }
+                } else if (condition.contains(">")) {
+                    conditionValues = condition.split(">");
+                    try {
+                        type = UtilsHandler.getUtil().getCompare(">",
+                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                    } catch (Exception ex) {
+                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        continue;
+                    }
+                } else if (condition.contains("<")) {
+                    conditionValues = condition.split("<");
+                    try {
+                        type = UtilsHandler.getUtil().getCompare("<",
+                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                    } catch (Exception ex) {
+                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        continue;
+                    }
+                } else if (condition.contains("=")) {
+                    conditionValues = condition.split("=");
+                    try {
+                        type = UtilsHandler.getUtil().getCompare("=",
+                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                    } catch (Exception ex) {
+                        type = conditionValues[0].equals(conditionValues[1]);
+                    }
+                } else {
+                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    continue;
+                }
+                String truePlaceholder = null;
+                String falsePlaceholder = null;
+                if (action.startsWith("{true}")) {
+                    if (action.contains("{false}")) {
+                        truePlaceholder = action.split("\\{false}")[0];
+                        truePlaceholder = truePlaceholder.replace("{true}", "");
+                        falsePlaceholder = action.split("\\{false}")[1];
+                    } else {
+                        truePlaceholder = action.replace("{true}", "");
+                    }
+                } else if (action.startsWith("{false}")) {
+                    if (action.contains("{true}")) {
+                        falsePlaceholder = action.split("\\{true}")[0];
+                        falsePlaceholder = falsePlaceholder.replace("{false}", "");
+                        truePlaceholder = action.split("\\{true}")[1];
+                    } else {
+                        falsePlaceholder = action.replace("{false}", "");
+                    }
+                } else {
+                    if (action.contains("{false}")) {
+                        truePlaceholder = action.split("\\{false}")[0];
+                        truePlaceholder = truePlaceholder.replace("{true}", "");
+                        falsePlaceholder = action.split("\\{false}")[1];
+                    } else {
+                        truePlaceholder = action.replace("{true}", "");
+                    }
+                }
+                if (truePlaceholder == null)
+                    truePlaceholder = "";
+                if (falsePlaceholder == null)
+                    falsePlaceholder = "";
+                if (type) {
+                    input = input.replace(placeholder, truePlaceholder);
+                } else {
+                    input = input.replace(placeholder, falsePlaceholder);
                 }
             } else {
                 break;

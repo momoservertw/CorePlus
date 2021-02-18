@@ -45,7 +45,7 @@ public class Logger {
                     }
                 } catch (Exception ex) {
                     UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                 }
             }
             // Creating file.
@@ -55,7 +55,7 @@ public class Logger {
                 }
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         } else {
             // Creating new file on new date.
@@ -82,7 +82,7 @@ public class Logger {
                         }
                     } catch (Exception ex) {
                         UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     }
                     // Compressing the file.
                     if (zip) {
@@ -94,7 +94,7 @@ public class Logger {
                         } catch (Exception ex) {
                             UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
                                     "&6Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
-                            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                         }
                     }
                     // Create a new the file.
@@ -104,7 +104,7 @@ public class Logger {
                         }
                     } catch (Exception ex) {
                         UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "&6Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     }
                 }
             }
