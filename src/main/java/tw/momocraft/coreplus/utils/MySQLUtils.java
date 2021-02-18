@@ -1,12 +1,13 @@
 package tw.momocraft.coreplus.utils;
 
-import javafx.util.Pair;
 import tw.momocraft.coreplus.api.MySQLInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MySQLUtils implements MySQLInterface {
     final String hostname = ConfigHandler.getConfigPath().getMySQLHostname();

@@ -16,10 +16,11 @@ import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 public class LanguageUtils implements LanguageInterface {
 
@@ -170,7 +171,7 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendLangMsg(String prefix, String input, CommandSender sender, String... placeHolder) {
+    public void sendLangMsg(String pluginName, String prefix, String input, CommandSender sender, String... placeHolder) {
         if (input == null || input.equals("")) {
             return;
         }
@@ -187,7 +188,7 @@ public class LanguageUtils implements LanguageInterface {
             prefix = "";
         input = input.replace("%prefix%", prefix);
         input = translateLangHolders(player, input, initializeRows(placeHolder));
-        input = translateLayout(input, player);
+        input = translateLayout(pluginName, input, player);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines) {
             sender.sendMessage(langLine);
@@ -255,7 +256,7 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String translateLayout(String input, Player player) {
+    public String translateLayout(String pluginName, String input, Player player) {
         if (input == null) {
             return "";
         }
@@ -264,33 +265,33 @@ public class LanguageUtils implements LanguageInterface {
             // %player%
             try {
                 input = input.replace("%player%", playerName);
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
             // %player_display_name%
             try {
                 input = input.replace("%player_display_name%", player.getDisplayName());
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
             UUID playerUUID = player.getUniqueId();
             // %player_uuid%
             try {
                 input = input.replace("%player_uuid%", playerUUID.toString());
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
             // %player_sneaking%
             try {
                 input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
             // %player_flying%
             try {
                 input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
             Location loc = player.getLocation();
             // %player_world%
@@ -329,8 +330,8 @@ public class LanguageUtils implements LanguageInterface {
                     input = input.replace("%player_loc_x%", loc_x);
                     input = input.replace("%player_loc_y%", loc_y);
                     input = input.replace("%player_loc_z%", loc_z);
-                } catch (Exception e) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                 }
             }
             if (UtilsHandler.getDepend().VaultEnabled()) {
@@ -348,21 +349,21 @@ public class LanguageUtils implements LanguageInterface {
         if (player == null) {
             try {
                 input = input.replace("%player%", "CONSOLE");
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
         }
         // %server_name%
         try {
             input = input.replace("%server_name%", Bukkit.getServer().getName());
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         try {
             input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
         }
         // %random_number%500%
         if (input.contains("%random_number%")) {
@@ -374,8 +375,11 @@ public class LanguageUtils implements LanguageInterface {
                                 String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
                     }
                 }
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"\"%random_number%NUMBER%\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             }
         }
         // %random_list%String1,String2%
@@ -401,8 +405,8 @@ public class LanguageUtils implements LanguageInterface {
                 List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
         }
         // %random_player%
@@ -412,8 +416,8 @@ public class LanguageUtils implements LanguageInterface {
                 List<String> playerList = BungeePlayerUtils.getPlayerMap();
                 String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                 input = input.replace("%random_player%", randomPlayer);
-            } catch (Exception e) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
         }
          */
@@ -446,8 +450,8 @@ public class LanguageUtils implements LanguageInterface {
                             input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
                             break;
                         }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+                    } catch (Exception ex) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
                 }
             }
@@ -461,6 +465,24 @@ public class LanguageUtils implements LanguageInterface {
             } catch (NoSuchFieldError e) {
                 UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
                 return input;
+            }
+        }
+        String placeholder;
+        String newPlaceholder;
+        while (true) {
+            if (input.contains("{calculate: ")) {
+                placeholder = input.substring(0, input.indexOf("{calculate: "));
+                placeholder = placeholder.substring(placeholder.indexOf("}") + 1);
+                ScriptEngineManager mgr = new ScriptEngineManager();
+                ScriptEngine engine = mgr.getEngineByName("JavaScript");
+                try {
+                    newPlaceholder = engine.eval(placeholder.replace("{calculate: ", "")).toString();
+                    input = input.replace(placeholder, newPlaceholder);
+                } catch (Exception ignored) {
+                    input = input.replace(placeholder, "ERROR_CALCULATE_PLACEHOLDER");
+                }
+            } else {
+                break;
             }
         }
         return input;
@@ -482,8 +504,8 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void addLog(File file, String message, boolean time, boolean newFile, boolean zip) {
-        UtilsHandler.getLogger().addLog(file, message, time, newFile, zip);
+    public void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip) {
+        UtilsHandler.getLogger().addLog(pluginName, file, message, time, newFile, zip);
     }
 
     @Override

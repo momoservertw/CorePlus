@@ -19,7 +19,7 @@ import java.util.zip.ZipOutputStream;
 
 public class Zipper {
 
-    public boolean zipFiles(File file, String path, String name) {
+    public boolean zipFiles(String pluginName, File file, String path, String name) {
         String OUTPUT_ZIP_FILE;
         if (path == null || path.equals("")) {
             path =  file.getParentFile().getPath();
@@ -32,19 +32,21 @@ public class Zipper {
         String SOURCE_FOLDER = path;
         List<String> fileList = new ArrayList<>();
         generateFileList(new File(SOURCE_FOLDER), fileList, SOURCE_FOLDER);
-        zipIt(OUTPUT_ZIP_FILE, SOURCE_FOLDER, fileList);
+        zipIt(pluginName, OUTPUT_ZIP_FILE, SOURCE_FOLDER, fileList);
         try (Stream<Path> walk = Files.walk(file.toPath())) {
             walk.sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
-        } catch (IOException e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (IOException ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while compressing file.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             return false;
         }
         return true;
     }
 
-    private void zipIt(String zipFile, String SOURCE_FOLDER, List<String> fileList) {
+    private void zipIt(String pluginName,String zipFile, String SOURCE_FOLDER, List<String> fileList) {
         byte[] buffer = new byte[1024];
         String source = new File(SOURCE_FOLDER).getName();
         FileOutputStream fos;
@@ -72,8 +74,10 @@ public class Zipper {
         } finally {
             try {
                 zos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while compressing file.");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         }
     }

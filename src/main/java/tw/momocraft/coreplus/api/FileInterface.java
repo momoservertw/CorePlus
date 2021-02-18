@@ -12,5 +12,5 @@ public interface FileInterface {
      * @param name the new file's name.
      * @return if the compressing succeed or not.
      */
-    boolean zipFiles(File file, String path, String name);
+    boolean zipFiles(String pluginName, File file, String path, String name);
 }

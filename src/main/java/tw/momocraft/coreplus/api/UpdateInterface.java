@@ -7,7 +7,7 @@ public interface UpdateInterface {
     /**
      * Checking the plugin update.
      *
-     * @param prefix the executing plugin prefix.
+     * @param pluginName the executing plugin name.
      * @param sender the executing player or console.
      * @param plugin the checking name of plugin.
      * @param ver    the current version of that plugin..

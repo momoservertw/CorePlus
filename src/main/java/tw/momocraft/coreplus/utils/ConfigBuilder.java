@@ -48,7 +48,7 @@ public class ConfigBuilder {
             if (ignoreList.contains(typeName))
                 continue;
             input = format.replace("%type%", typeName);
-            CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
+            UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                     "ConfigBuilder, " + input);
         }
     }
@@ -65,7 +65,7 @@ public class ConfigBuilder {
             if (ignoreList.contains(typeName))
                 continue;
             input = format.replace("%type%", typeName);
-            CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
+            UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                     "ConfigBuilder, " + input);
         }
     }
@@ -85,7 +85,7 @@ public class ConfigBuilder {
                 if (ignoreList.contains(uuid) || ignoreList.contains(name))
                     continue;
                 input = format.replace("%type%", name);
-                CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
+                UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                         "ConfigBuilder, " + input);
             } catch (Exception ignored) {
             }
@@ -107,7 +107,7 @@ public class ConfigBuilder {
                 if (ignoreList.contains(uuid) || ignoreList.contains(name))
                     continue;
                 input = format.replace("%type%", uuid);
-                CorePlusAPI.getCommandManager().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
+                UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPrefix(),
                         "ConfigBuilder, " + input);
             } catch (Exception ignored) {
             }

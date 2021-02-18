@@ -28,7 +28,7 @@ public class CommandOnline implements Listener {
         }
         for (Pair<Long, Integer> waitingPair : waitingTable.row(playerName).keySet()) {
             if (waitingPair.getKey() == -1000 || System.currentTimeMillis() - waitingPair.getValue() < waitingPair.getKey()) {
-                CorePlusAPI.getCommandManager().executeCmd(ConfigHandler.getPluginPrefix(), player,
+                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), player,
                         waitingTable.get(playerName, waitingPair), true);
             }
             waitingTable.remove(playerName, waitingPair);
@@ -45,7 +45,7 @@ public class CommandOnline implements Listener {
         }
         for (Pair<Long, Integer> waitingPair : waitingTable.row(playerName).keySet()) {
             if (waitingPair.getKey() == -1000 || System.currentTimeMillis() - waitingPair.getValue() < waitingPair.getKey()) {
-                CorePlusAPI.getCommandManager().executeCmd(ConfigHandler.getPluginPrefix(), player,
+                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), player,
                         waitingTable.get(playerName, waitingPair), true);
             }
             waitingTable.remove(playerName, waitingPair);

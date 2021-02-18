@@ -437,7 +437,7 @@ public class ConfigPath implements ConfigInterface {
                     case "Particle":
                         list.add(Particle.valueOf(type).name());
                 }
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 customList = groupProp.get(listType).get(type);
                 if (customList == null || customList.isEmpty()) {
                     continue;

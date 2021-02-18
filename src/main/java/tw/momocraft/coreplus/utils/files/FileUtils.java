@@ -8,7 +8,7 @@ import java.io.File;
 public class FileUtils implements FileInterface {
 
     @Override
-    public boolean zipFiles(File file, String path, String name) {
-        return UtilsHandler.getZip().zipFiles(file, path, name);
+    public boolean zipFiles(String pluginName, File file, String path, String name) {
+        return UtilsHandler.getZip().zipFiles(pluginName, file, path, name);
     }
 }

@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 
 public class Updater implements UpdateInterface {
 
@@ -90,7 +89,7 @@ public class Updater implements UpdateInterface {
                 return "latest";
             }
             return onlineVer;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             UtilsHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
             return null;
         }

@@ -103,8 +103,8 @@ public class TabComplete implements TabCompleter {
                                 commands.add(player.getName());
                             }
                         }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+                    } catch (Exception ex) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
                 }
                 break;
@@ -124,8 +124,8 @@ public class TabComplete implements TabCompleter {
                                 commands.add(player.getName());
                             }
                         }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+                    } catch (Exception ex) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
                 }
                 break;
@@ -145,8 +145,8 @@ public class TabComplete implements TabCompleter {
                                 commands.add(player.getName());
                             }
                         }
-                    } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+                    } catch (Exception ex) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
                 }
                 break;

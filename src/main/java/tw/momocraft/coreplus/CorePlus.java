@@ -3,9 +3,12 @@ package tw.momocraft.coreplus;
 import org.bukkit.plugin.java.JavaPlugin;
 import tw.momocraft.coreplus.api.*;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.handlers.RegisterHandler;
-import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.MySQLUtils;
+import tw.momocraft.coreplus.utils.PlayerUtils;
+import tw.momocraft.coreplus.utils.Updater;
+import tw.momocraft.coreplus.utils.Utils;
 import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
 
 public class CorePlus extends JavaPlugin {

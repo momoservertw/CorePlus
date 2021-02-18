@@ -2,7 +2,9 @@ package tw.momocraft.coreplus.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -274,7 +276,7 @@ public class Utils implements UtilsInterface {
         SkullMeta headMeta;
         try {
             headMeta = (SkullMeta) itemStack.getItemMeta();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return null;
         }
         String url = null;

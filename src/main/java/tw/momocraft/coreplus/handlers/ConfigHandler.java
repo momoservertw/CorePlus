@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
-import tw.momocraft.coreplus.utils.*;
+import tw.momocraft.coreplus.utils.ConfigPath;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -119,7 +119,7 @@ public class ConfigHandler {
         if (!(file).exists()) {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 String prefix = "";
                 if (!fileName.equals("config.yml")) {
                     prefix = ConfigHandler.getPrefix();

@@ -14,7 +14,9 @@ public class BungeeCordUtils implements PluginMessageListener {
 
 
 
-    public static void SwitchServers(Player player, String server) {
+    public static void SwitchServers(String pluginName, Player player, String server) {
+        if (player== null)
+            return;
         Messenger messenger = CorePlus.getInstance().getServer().getMessenger();
         if (!messenger.isOutgoingChannelRegistered(CorePlus.getInstance(), "BungeeCord")) {
             messenger.registerOutgoingPluginChannel(CorePlus.getInstance(), "BungeeCord");
@@ -23,13 +25,15 @@ public class BungeeCordUtils implements PluginMessageListener {
         try {
             out.writeUTF("Connect");
             out.writeUTF(server);
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"switch: " + server + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }
 
-    public static void ExecuteCommand(Player player, String cmd) {
+    public static void ExecuteCommand(String pluginName, Player player, String cmd) {
         Messenger messenger = CorePlus.getInstance().getServer().getMessenger();
         if (!messenger.isOutgoingChannelRegistered(CorePlus.getInstance(), "BungeeCord")) {
             messenger.registerOutgoingPluginChannel(CorePlus.getInstance(), "BungeeCord");
@@ -39,8 +43,10 @@ public class BungeeCordUtils implements PluginMessageListener {
             out.writeUTF("Subchannel");
             out.writeUTF("Argument");
             out.writeUTF(cmd);
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"bungee: " + cmd + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }
@@ -53,9 +59,11 @@ public class BungeeCordUtils implements PluginMessageListener {
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
 
+        /*
         if (subchannel.equals("PlayerCount")) {
             String[] serverList = in.readUTF().split(", ");
         }
+         */
         if (!subchannel.contains("PlayerCount")) {
             player.sendMessage(subchannel + " " + in.readByte());
         }

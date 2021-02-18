@@ -49,8 +49,8 @@ public class PlayerUtils implements PlayerInterface {
                     }
                 }
             }
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
         }
         return null;
     }

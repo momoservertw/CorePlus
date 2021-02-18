@@ -10,12 +10,13 @@ public interface ConditionInterface {
     /**
      * Checking a location.
      *
-     * @param loc     the checking location.
-     * @param locList the property of Location settings.
-     * @param def     the return value when the locMaps is empty or null.
+     * @param pluginName the sending plugin name.
+     * @param loc        the checking location.
+     * @param locList    the property of Location settings.
+     * @param def        the return value when the locMaps is empty or null.
      * @return if match the Location.
      */
-    boolean checkLocation(Location loc, List<String> locList, boolean def);
+    boolean checkLocation(String pluginName, Location loc, List<String> locList, boolean def);
 
     /**
      * Checking the location is nearby certain blocks.

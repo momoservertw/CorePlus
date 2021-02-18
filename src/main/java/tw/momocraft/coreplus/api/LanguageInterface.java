@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus.api;
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -88,8 +87,8 @@ public interface LanguageInterface {
     void sendActionBarMsg(Player player, String message);
 
     /**
-     * @param player   the executing player.
-     * @param input    the input message.
+     * @param player the executing player.
+     * @param input  the input message.
      */
     void sendTitleMsg(Player player, String input);
 
@@ -150,7 +149,7 @@ public interface LanguageInterface {
      * @param sender       the executing sender.
      * @param placeHolder  the translation of placeholders. It could be empty.
      */
-    void sendLangMsg(String prefix, String nodeLocation, CommandSender sender, String... placeHolder);
+    void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... placeHolder);
 
     /**
      * Getting the translation of placeholder.
@@ -173,11 +172,12 @@ public interface LanguageInterface {
     /**
      * Translating the placeholders before output.
      *
+     * @param pluginName  the sending plugin name.
      * @param input  the input string.
      * @param player the target player.
      * @return a new string which translated placeholders.
      */
-    String translateLayout(String input, Player player);
+    String translateLayout(String pluginName, String input, Player player);
 
     /**
      * Translating vanilla name for player.
@@ -201,13 +201,14 @@ public interface LanguageInterface {
     /**
      * Logging the message in a file.
      *
-     * @param file    the file from CorePlus configuration.
-     * @param message the value of message.
-     * @param time    if adding the time in front of the line. Example: "[2020/11/20 18:30:00]: "
-     * @param newFile if creating a new file every day.
-     * @param zip     if compressing the old log file.
+     * @param pluginName the sending plugin name.
+     * @param file       the file from CorePlus configuration.
+     * @param message    the value of message.
+     * @param time       if adding the time in front of the line. Example: "[2020/11/20 18:30:00]: "
+     * @param newFile    if creating a new file every day.
+     * @param zip        if compressing the old log file.
      */
-    void addLog(File file, String message, boolean time, boolean newFile, boolean zip);
+    void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip);
 
 
     /**

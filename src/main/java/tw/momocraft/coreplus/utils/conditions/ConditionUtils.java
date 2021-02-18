@@ -26,8 +26,8 @@ public class ConditionUtils implements ConditionInterface {
     }
 
     @Override
-    public boolean checkLocation(Location loc, List<String> locList, boolean def) {
-        return locationUtils.checkLocation(loc, locList, def);
+    public boolean checkLocation(String pluginName, Location loc, List<String> locList, boolean def) {
+        return locationUtils.checkLocation(pluginName, loc, locList, def);
     }
 
     @Override

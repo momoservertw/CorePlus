@@ -15,7 +15,7 @@ public class LocationUtils {
      * @param locMaps the checking location maps.
      * @return if the location is one of locMaps.
      */
-    public boolean checkLocation(Location loc, List<String> locMaps, boolean def) {
+    public boolean checkLocation(String pluginName, Location loc, List<String> locMaps, boolean def) {
         if (locMaps == null || locMaps.isEmpty()) {
             return def;
         }
@@ -44,8 +44,10 @@ public class LocationUtils {
                     return true;
                 }
             }
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking location.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         return false;
     }
@@ -137,7 +139,7 @@ public class LocationUtils {
                             return !getSquared(loc, Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]), Integer.parseInt(values[3]));
                     }
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "There is an error occurred. Please check the \"Location\" format.");
             UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), type + ": " + value);
         }

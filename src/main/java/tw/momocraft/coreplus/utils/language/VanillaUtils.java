@@ -37,8 +37,8 @@ public class VanillaUtils {
             try {
                 json = gson.fromJson(new FileReader(new File(file.getPath(), fileName)), JsonObject.class);
                 langProp.put(fileName.replace(".json", ""), json);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         }
         if (langProp.keySet().isEmpty()) {
@@ -84,7 +84,7 @@ public class VanillaUtils {
             try {
                 EntityType entityType = EntityType.valueOf(input);
                 return getLocalLang("entity.minecraft." + input.toLowerCase(), local);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 return input;
             }
         }
@@ -95,7 +95,7 @@ public class VanillaUtils {
                     return getLocalLang("block.minecraft." + input.toLowerCase(), local);
                 }
                 return getLocalLang("item.minecraft." + input.toLowerCase(), local);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 return input;
             }
         }
@@ -116,8 +116,8 @@ public class VanillaUtils {
         JsonObject jsonObject = getLangProp().get(local);
         try {
             return jsonObject.get(input).toString().replaceAll("\"", "");
-        } catch (Exception e) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             return input;
         }
     }
