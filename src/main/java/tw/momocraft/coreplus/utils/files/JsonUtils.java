@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.YamlUtils;
+package tw.momocraft.coreplus.utils.files;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -31,7 +31,7 @@ public class JsonUtils {
         try {
             Gson gson = new Gson();
             JsonObject json = gson.fromJson(new FileReader(new File(filePath, fileName)), JsonObject.class);
-            jsonMap.put(fileName.replace(".json", ""), json);
+            jsonMap.put(fileName, json);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
@@ -49,7 +49,7 @@ public class JsonUtils {
                 continue;
             }
             loadFile(ConfigHandler.getPluginName(), fileName, filePath);
-            langList.add(fileName.replace(".json", ""));
+            langList.add(fileName);
         }
     }
 

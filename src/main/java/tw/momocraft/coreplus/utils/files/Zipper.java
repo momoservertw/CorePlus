@@ -1,5 +1,5 @@
 
-package tw.momocraft.coreplus.utils.YamlUtils;
+package tw.momocraft.coreplus.utils.files;
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.YamlUtils;
+package tw.momocraft.coreplus.utils.files;
 
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
