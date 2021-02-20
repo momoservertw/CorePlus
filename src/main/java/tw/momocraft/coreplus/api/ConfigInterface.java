@@ -10,20 +10,16 @@ import java.util.Map;
 public interface ConfigInterface {
 
     /**
-     *
      * @return if mySQL feature enabled.
      */
     boolean isMySQL();
 
-
     /**
-     *
      * @return to get the property of Location settings.
      */
     Map<String, LocationMap> getLocProp();
 
     /**
-     *
      * @return to get the property of Blocks settings.
      */
     Map<String, BlocksMap> getBlocksProp();
@@ -32,8 +28,8 @@ public interface ConfigInterface {
      * Adding custom group to the list and checking the type is exist.
      *
      * @param pluginName the executing plugin name.
-     * @param list   the checking list.
-     * @param type   the type of the list like Entity or Material.
+     * @param list       the checking list.
+     * @param type       the type of the list like Entity or Material.
      * @return a new list without custom group.
      */
     List<String> getTypeList(String pluginName, List<String> list, String type);
@@ -46,4 +42,34 @@ public interface ConfigInterface {
      * @return the FileConfiguration of this file.
      */
     FileConfiguration getConfig(String fileName);
+
+    /**
+     * Getting the value from property file.
+     * Avail: server.properties
+     *
+     * @param pluginName the sending plugin name.
+     * @param fileName   the file name.
+     * @param input      the checking name.
+     * @return the value from property file.
+     */
+    String getProp(String pluginName, String fileName, String input);
+
+    /**
+     * Getting the value from json file.
+     * Avail:
+     *
+     * @param pluginName the sending plugin name.
+     * @param fileName   the file name.
+     * @param input      the checking name.
+     * @return the value from property file.
+     */
+    String getJson(String pluginName, String fileName, String input);
+
+    /**
+     * Getting the configuration from yaml file.
+     * Avail: discord_message
+     *
+     * @param fileName   the file name.
+     */
+    FileConfiguration getYaml(String fileName);
 }

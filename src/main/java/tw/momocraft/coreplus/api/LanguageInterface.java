@@ -87,10 +87,10 @@ public interface LanguageInterface {
     void sendActionBarMsg(Player player, String message);
 
     /**
-     * @param player the executing player.
-     * @param input  the input message.
+     * @param player  the executing player.
+     * @param message the input message.
      */
-    void sendTitleMsg(Player player, String input);
+    void sendTitleMsg(Player player, String message);
 
     /**
      * @param player   the executing player.
@@ -147,9 +147,30 @@ public interface LanguageInterface {
      * @param prefix       the executing plugin prefix.
      * @param nodeLocation the configuration path of this message.
      * @param sender       the executing sender.
-     * @param placeHolder  the translation of placeholders. It could be empty.
+     * @param langHolder  the translation of placeholders. It could be empty.
      */
-    void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... placeHolder);
+    void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... langHolder);
+
+    /**
+     * Sending a message from configuration.
+     *
+     * @param pluginName  the executing plugin name.
+     * @param input       the input message.
+     * @param placeholder translating placeholders or not.
+     * @param langHolder  the translation of placeholders. It could be empty.
+     */
+    void sendDiscordMsg(String pluginName, String input, boolean placeholder, String... langHolder);
+
+    /**
+     * Sending a message from configuration.
+     *
+     * @param pluginName  the executing plugin name.
+     * @param player     the target player.
+     * @param input       the input message.
+     * @param placeholder translating placeholders or not.
+     * @param langHolder  the translation of placeholders. It could be empty.
+     */
+    void sendDiscordMsg(String pluginName, Player player, String input, boolean placeholder, String... langHolder);
 
     /**
      * Getting the translation of placeholder.
@@ -172,9 +193,9 @@ public interface LanguageInterface {
     /**
      * Translating the placeholders before output.
      *
-     * @param pluginName  the sending plugin name.
-     * @param input  the input string.
-     * @param player the target player.
+     * @param pluginName the sending plugin name.
+     * @param input      the input string.
+     * @param player     the target player.
      * @return a new string which translated placeholders.
      */
     String translateLayout(String pluginName, String input, Player player);

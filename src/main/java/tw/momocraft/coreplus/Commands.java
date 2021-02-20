@@ -98,7 +98,7 @@ public class Commands implements CommandExecutor {
                     UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
                             "&f " + CorePlus.getInstance().getDescription().getName()
                                     + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    UtilsHandler.getUpdate().check(ConfigHandler.getPrefix(), sender,
+                    UtilsHandler.getUpdate().check(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), sender,
                             CorePlus.getInstance().getName(), CorePlus.getInstance().getDescription().getVersion(), true);
                 } else {
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

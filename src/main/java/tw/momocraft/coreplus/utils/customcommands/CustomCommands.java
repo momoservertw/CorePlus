@@ -200,7 +200,7 @@ public class CustomCommands implements CommandInterface {
                 if (UtilsHandler.getDepend().ItemJoinEnabled()) {
                     if (placeHolderArr[i].contains("ij: ")) {
                         try {
-                            placeHolderArr[i] = UtilsHandler.getDepend().getItemJoinUtils().
+                            placeHolderArr[i] = UtilsHandler.getDepend().getItemJoinApi().
                                     getItemStack(player, placeHolderArr[i].substring(4)).getItemMeta().getDisplayName();
                         } catch (Exception ignored) {
                         }
@@ -250,6 +250,14 @@ public class CustomCommands implements CommandInterface {
             case "broadcast":
                 input = input.replace("broadcast: ", "");
                 UtilsHandler.getLang().sendBroadcastMsg("", input);
+                return;
+            case "discord":
+                input = input.replace("discord: ", "");
+                UtilsHandler.getLang().sendDiscordMsg(pluginName, player, input, placeholder, langHolder);
+                return;
+            case "discord-chat":
+                input = input.replace("discord-chat: ", "");
+                UtilsHandler.getLang().sendDiscordMsg(pluginName, player, input, placeholder, langHolder);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -350,6 +358,10 @@ public class CustomCommands implements CommandInterface {
                 input = input.replace("broadcast: ", "");
                 UtilsHandler.getLang().sendBroadcastMsg("", input);
                 return;
+            case "discord":
+                input = input.replace("discord: ", "");
+                UtilsHandler.getLang().sendDiscordMsg(pluginName, null, input, placeholder, langHolder);
+                return;
             case "bungee":
                 input = input.replace("bungee: ", "");
                 dispatchBungeeCordCmd(pluginName, null, input);
@@ -368,6 +380,7 @@ public class CustomCommands implements CommandInterface {
             case "particle-custom":
             case "actionbar":
             case "title":
+            case "discord-chat":
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"" + input + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the execute target.");
                 return;

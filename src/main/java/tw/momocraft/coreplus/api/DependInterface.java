@@ -33,4 +33,14 @@ public interface DependInterface {
     boolean AuthMeEnabled();
 
     boolean PvPManagerEnabled();
+
+    boolean MultiverseCoreEnabled();
+
+    boolean SurvivalMechanicsEnabled();
+
+    boolean VehiclesEnabled();
+
+    boolean MyPetEnabled();
+
+    boolean MorphToolEnabled();
 }

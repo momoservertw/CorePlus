@@ -6,11 +6,11 @@ Config-Version: 1
 
 Logs:
   Default:
-    Path: "plugins//CorePlus//Logs"
-    Name: "latest.log"
-    Time: true
-    New-File: false
-    Zip: false
+      Path: "plugins//CorePlus//Logs"
+      Name: "latest.log"
+      Time: true
+      New-File: false
+      Zip: false
   ConfigBuilder:
     Path: "plugins//CorePlus//Logs"
     Name: "config_builder.yml"

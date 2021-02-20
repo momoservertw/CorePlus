@@ -3,19 +3,31 @@ package tw.momocraft.coreplus.utils.conditions;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import java.util.ArrayList;
+
 public class ResidenceUtils {
 
+    public void registerFlag(String flag) {
+        FlagPermissions.addFlag(flag);
+    }
+
     public boolean isInResidence(Location loc) {
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
-            return false;
-        }
         ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
         return res != null;
+    }
+
+    public boolean isRegisteredFlag(String flag) {
+        return FlagPermissions.getPosibleAreaFlags().contains(flag);
+    }
+
+    public ArrayList<String> getRegisteredFlags() {
+        return FlagPermissions.getPosibleAreaFlags();
     }
 
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {

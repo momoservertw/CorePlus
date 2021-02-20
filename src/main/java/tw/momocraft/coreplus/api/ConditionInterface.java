@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.api;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ConditionInterface {
@@ -27,6 +28,28 @@ public interface ConditionInterface {
      * @return nearby certain blocks.
      */
     boolean checkBlocks(Location loc, List<String> blocksList, boolean def);
+
+    /**
+     * Register the residence flag.
+     *
+     * @param flag the name of flag.
+     */
+    void registerFlag(String flag);
+
+    /**
+     * Getting the registered residence flags.
+     *
+     * @return the registered residence flags.
+     */
+    ArrayList<String> getRegisteredFlags();
+
+    /**
+     * Checking if the residence flag registered.
+     *
+     * @param flag the name of flag.
+     * @return if the residence flag registered.
+     */
+    boolean isRegisteredFlag(String flag);
 
     /**
      * Checking player has the permission of residence or not.

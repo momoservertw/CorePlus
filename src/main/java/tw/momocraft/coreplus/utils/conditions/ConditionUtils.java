@@ -1,10 +1,12 @@
 package tw.momocraft.coreplus.utils.conditions;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.api.ConditionInterface;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionUtils implements ConditionInterface {
@@ -36,11 +38,31 @@ public class ConditionUtils implements ConditionInterface {
     }
 
     @Override
+    public ArrayList<String> getRegisteredFlags() {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return UtilsHandler.getDepend().getResidenceApi().getRegisteredFlags();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isRegisteredFlag(String flag) {
+        return FlagPermissions.getPosibleAreaFlags().contains(flag);
+    }
+
+    @Override
+    public void registerFlag(String flag) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            UtilsHandler.getDepend().getResidenceApi().registerFlag(flag);
+        }
+    }
+
+    @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return def;
         }
-        return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def);
+        return UtilsHandler.getDepend().getResidenceApi().checkFlag(player, loc, flag, def);
     }
 
     @Override
@@ -48,7 +70,7 @@ public class ConditionUtils implements ConditionInterface {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return def;
         }
-        return UtilsHandler.getDepend().getResidenceUtils().checkFlag(player, loc, flag, def, check);
+        return UtilsHandler.getDepend().getResidenceApi().checkFlag(player, loc, flag, def, check);
     }
 
     @Override
@@ -56,7 +78,7 @@ public class ConditionUtils implements ConditionInterface {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return def;
         }
-        return UtilsHandler.getDepend().getResidenceUtils().checkFlag(loc, flag, def);
+        return UtilsHandler.getDepend().getResidenceApi().checkFlag(loc, flag, def);
     }
 
     @Override
@@ -64,7 +86,7 @@ public class ConditionUtils implements ConditionInterface {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return def;
         }
-        return UtilsHandler.getDepend().getResidenceUtils().checkFlag(loc, flag, def, check);
+        return UtilsHandler.getDepend().getResidenceApi().checkFlag(loc, flag, def, check);
     }
 
     @Override
@@ -72,6 +94,6 @@ public class ConditionUtils implements ConditionInterface {
         if (!UtilsHandler.getDepend().ResidenceEnabled()) {
             return false;
         }
-        return UtilsHandler.getDepend().getResidenceUtils().isInResidence(loc);
+        return UtilsHandler.getDepend().getResidenceApi().isInResidence(loc);
     }
 }

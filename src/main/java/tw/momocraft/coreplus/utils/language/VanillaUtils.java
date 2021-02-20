@@ -1,59 +1,14 @@
 package tw.momocraft.coreplus.utils.language;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-
 public class VanillaUtils {
 
-    private final Map<String, JsonObject> langProp = new HashMap<>();
-
-    public VanillaUtils() {
-        setUp();
-    }
-
-    private void setUp() {
-        Gson gson = new Gson();
-        File file = new File(CorePlus.getInstance().getDataFolder().getPath() + "\\Vanilla-Translation");
-        String[] fileList = file.list();
-        if (fileList == null) {
-            return;
-        }
-        JsonObject json;
-        for (String fileName : fileList) {
-            if (!fileName.endsWith(".json")) {
-                continue;
-            }
-            try {
-                json = gson.fromJson(new FileReader(new File(file.getPath(), fileName)), JsonObject.class);
-                langProp.put(fileName.replace(".json", ""), json);
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-            }
-        }
-        if (langProp.keySet().isEmpty()) {
-            return;
-        }
-        sendLanguageHook();
-    }
-
-    private void sendLanguageHook() {
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fLanguage: " + langProp.keySet().toString().replaceAll("\\.json", ""));
-    }
-
-    public Map<String, JsonObject> getLangProp() {
-        return langProp;
-    }
 
     public String getValinaName(Player player, String input, String type) {
         if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
@@ -113,7 +68,7 @@ public class VanillaUtils {
     }
 
     private String getLocalLang(String input, String local) {
-        JsonObject jsonObject = getLangProp().get(local);
+        JsonObject jsonObject = UtilsHandler.getJson().getJsonMap().get(local + ".json");
         try {
             return jsonObject.get(input).toString().replaceAll("\"", "");
         } catch (Exception ex) {

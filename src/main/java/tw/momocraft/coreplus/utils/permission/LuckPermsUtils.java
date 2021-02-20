@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus.utils.permission;
 
-import com.sun.javafx.collections.MappingChange;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.context.ContextManager;
@@ -17,10 +16,10 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class LuckPermsAPI {
+public class LuckPermsUtils {
     LuckPerms luckPerms = null;
 
-    public LuckPermsAPI() {
+    public LuckPermsUtils() {
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             luckPerms = provider.getProvider();

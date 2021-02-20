@@ -9,16 +9,17 @@ import tw.momocraft.coreplus.utils.conditions.ResidenceUtils;
 import tw.momocraft.coreplus.utils.economy.GemsEcoUtils;
 import tw.momocraft.coreplus.utils.economy.PlayerPointsUtils;
 import tw.momocraft.coreplus.utils.economy.VaultUtils;
-import tw.momocraft.coreplus.utils.permission.LuckPermsAPI;
+import tw.momocraft.coreplus.utils.permission.LuckPermsUtils;
 
 public class Dependence implements DependInterface {
 
     private VaultUtils vaultApi;
     private PlayerPointsUtils playerPointsApi;
     private GemsEcoUtils gemsEcoApi;
-    private LuckPermsAPI luckPermsApi;
-    private ItemJoinUtils itemJoinUtils;
-    private ResidenceUtils residenceUtils;
+    private LuckPermsUtils luckPermsApi;
+    private ItemJoinUtils itemJoinApi;
+    private ResidenceUtils residenceApi;
+    private MultiverseCoreUtils multiverseCoreApi;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
@@ -34,6 +35,11 @@ public class Dependence implements DependInterface {
     private boolean ItemJoin = false;
     private boolean AuthMe = false;
     private boolean PvPManager = false;
+    private boolean MultiverseCore = false;
+    private boolean SurvivalMechanics = false;
+    private boolean Vehicles = false;
+    private boolean MyPet = false;
+    private boolean MorphTool = false;
 
     public Dependence() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vault")) {
@@ -72,6 +78,12 @@ public class Dependence implements DependInterface {
                 setResidenceUtils();
             }
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MultiverseCore")) {
+            MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
+            if (MultiverseCore) {
+                setMultiverseCoreUtils();
+            }
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlaceHolderAPI")) {
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
         }
@@ -99,6 +111,18 @@ public class Dependence implements DependInterface {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PvPManager")) {
             PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.SurvivalMechanics")) {
+            SurvivalMechanics = Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vehicles")) {
+            Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MyPet")) {
+            MyPet = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool")) {
+            MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
+        }
         sendUtilityDepends();
     }
 
@@ -118,7 +142,15 @@ public class Dependence implements DependInterface {
                 + (ResidenceEnabled() ? "Residence, " : "")
                 + (ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (AuthMeEnabled() ? "AuthMe, " : "")
-                + (PvPManagerEnabled() ? "PvPManager, " : "");
+                + (PvPManagerEnabled() ? "PvPManager, " : "")
+                + (MultiverseCoreEnabled() ? "MultiverseCore, " : "")
+                + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
+                + (VehiclesEnabled() ? "Vehicles, " : "")
+                + (CMIEnabled() ? "CMI, " : "")
+                + (AuthMeEnabled() ? "AuthMe, " : "")
+                + (PvPManagerEnabled() ? "PvPManager, " : "")
+                + (MyPetEnabled() ? "MyPet, " : "")
+                + (MorphToolEnabled() ? "MorphTool, " : "");
         UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), hookMsg.substring(0, hookMsg.length() - 2) + "]");
 
         /*
@@ -216,6 +248,32 @@ public class Dependence implements DependInterface {
         return this.PvPManager;
     }
 
+    @Override
+    public boolean MultiverseCoreEnabled() {
+        return this.MultiverseCore;
+    }
+
+    @Override
+    public boolean SurvivalMechanicsEnabled() {
+        return this.SurvivalMechanics;
+    }
+
+    @Override
+    public boolean VehiclesEnabled() {
+        return this.Vehicles;
+    }
+
+    @Override
+    public boolean MyPetEnabled() {
+        return this.MyPet;
+    }
+
+    @Override
+    public boolean MorphToolEnabled() {
+        return this.MorphTool;
+    }
+
+
     public VaultUtils getVaultApi() {
         return this.vaultApi;
     }
@@ -228,17 +286,22 @@ public class Dependence implements DependInterface {
         return this.gemsEcoApi;
     }
 
-    public LuckPermsAPI getLuckPermsApi() {
+    public LuckPermsUtils getLuckPermsApi() {
         return this.luckPermsApi;
     }
 
-    public ItemJoinUtils getItemJoinUtils() {
-        return this.itemJoinUtils;
+    public ItemJoinUtils getItemJoinApi() {
+        return this.itemJoinApi;
     }
 
-    public ResidenceUtils getResidenceUtils() {
-        return this.residenceUtils;
+    public ResidenceUtils getResidenceApi() {
+        return this.residenceApi;
     }
+
+    public MultiverseCoreUtils getMultiverseCoreApi() {
+        return multiverseCoreApi;
+    }
+
 
     private void setVaultApi() {
         vaultApi = new VaultUtils();
@@ -253,15 +316,18 @@ public class Dependence implements DependInterface {
     }
 
     private void setLuckPermsApi() {
-        luckPermsApi = new LuckPermsAPI();
+        luckPermsApi = new LuckPermsUtils();
     }
 
     private void setItemJoinUtils() {
-        itemJoinUtils = new ItemJoinUtils();
+        itemJoinApi = new ItemJoinUtils();
     }
 
     private void setResidenceUtils() {
-        residenceUtils = new ResidenceUtils();
+        residenceApi = new ResidenceUtils();
     }
 
+    private void setMultiverseCoreUtils() {
+        multiverseCoreApi = new MultiverseCoreUtils();
+    }
 }

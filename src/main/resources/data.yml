@@ -1,0 +1,14 @@
+MySQL:
+  Enable: false
+  username: root
+  password: ""
+  hostname: localhost
+  port: 3306
+  database:
+    PlayerdataPlus: playerdataplus
+    HotkeyPlus: hotkeyplus
+    ServerPlus: serverplus
+    MySQLPlayerDataBridge:
+      Value: mysqlplayerdatabridge
+      ExpTable: mpdb_experience
+    MyCommand: mycommand

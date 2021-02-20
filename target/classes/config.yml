@@ -7,13 +7,6 @@ Check-Updates: true
 Debugging: false
 
 General:
-  # Saving data for some features.
-  MySQL:
-    Enable: false
-    username: root
-    password: ""
-    hostname: localhost
-    port: 3306
   # Translating the placeholders of vanilla Items, Entities, Enchantment name to player client language.
   # Need to setup. More information: https://github.com/momoservertw/CorePlus/wiki/Vanilla-Translation
   Vanilla-Translation:
@@ -110,3 +103,19 @@ Message:
     damamgeEntity: "damage entities"
     dropItem: "drop items"
     pickupItem: "pickup items"
+    colorA: "green"
+    colorB: "aqua"
+    colorC: "red"
+    colorD: "light_purple"
+    colorE: "yellow"
+    colorF: "white"
+    color0: "black"
+    color1: "dark_blue"
+    color2: "dark_green"
+    color3: "dark_aqua"
+    color4: "dark_red"
+    color5: "dark_purple"
+    color6: "gold"
+    color7: "gray"
+    color8: "dark_gray"
+    color9: "blue"

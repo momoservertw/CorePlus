@@ -195,6 +195,32 @@ public class LanguageUtils implements LanguageInterface {
         }
     }
 
+    @Override
+    public void sendDiscordMsg(String pluginName, String input, boolean placeholder, String... langHolder) {
+        input = UtilsHandler.getLang().translateLangHolders(null, input, langHolder);
+        if (placeholder) {
+            input = UtilsHandler.getLang().translateLayout(pluginName, input, null);
+        }
+        int index = input.indexOf(", ");
+        UtilsHandler.getDiscord().sendDiscordMsg(input.substring(0, index - 1), input.substring(index + 1));
+    }
+
+    @Override
+    public void sendDiscordMsg(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
+        String message = UtilsHandler.getYaml().getConfig("discord_message").getString("MinecraftChatToDiscordMessageFormat");
+        try {
+            message = message.replace("%message%", input);
+            message = UtilsHandler.getLang().translateLangHolders(player, message, langHolder);
+            if (placeholder) {
+                message = UtilsHandler.getLang().translateLayout(pluginName, message, player);
+            }
+        } catch (Exception ex) {
+            message = input;
+        }
+        int index = message.indexOf(", ");
+        UtilsHandler.getDiscord().sendDiscordMsg(message.substring(0, index - 1), message.substring(index + 1));
+    }
+
     private String[] initializeRows(String... placeHolder) {
         if (placeHolder == null || placeHolder.length != newString().length) {
             String[] langHolder = newString();

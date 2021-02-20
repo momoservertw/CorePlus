@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.files;
+package tw.momocraft.coreplus.utils.YamlUtils;
 
 import tw.momocraft.coreplus.api.FileInterface;
 import tw.momocraft.coreplus.handlers.UtilsHandler;

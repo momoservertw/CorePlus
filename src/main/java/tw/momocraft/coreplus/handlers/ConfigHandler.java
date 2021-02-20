@@ -24,7 +24,7 @@ public class ConfigHandler {
     private static YamlConfiguration actionBarsYAML;
     private static YamlConfiguration titleMessagesYAML;
 
-    private static ConfigPath configPaths;
+    private static ConfigPath configPath;
 
     public static void generateData(boolean reload) {
         UtilsHandler.setUpFirst();
@@ -41,7 +41,7 @@ public class ConfigHandler {
         setConfigPath(new ConfigPath());
         UtilsHandler.setUpLast();
         if (!reload) {
-            UtilsHandler.getUpdate().check(getPluginPrefix(), Bukkit.getConsoleSender(),
+            UtilsHandler.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),
                     CorePlus.getInstance().getDescription().getVersion(), true);
         }
@@ -120,11 +120,11 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                String prefix = "";
+                String pluginName = "";
                 if (!fileName.equals("config.yml")) {
-                    prefix = ConfigHandler.getPrefix();
+                    pluginName = ConfigHandler.getPrefix();
                 }
-                UtilsHandler.getLang().sendErrorMsg(prefix, "&cCannot save " + fileName + " to disk!");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "&cCannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -232,13 +232,14 @@ public class ConfigHandler {
         getConfig(fileName).options().copyDefaults(false);
     }
 
-    private static void setConfigPath(ConfigPath configPath) {
-        configPaths = configPath;
+    private static void setConfigPath(ConfigPath configPaths) {
+        configPath = configPaths;
     }
 
     public static ConfigPath getConfigPath() {
-        return configPaths;
+        return configPath;
     }
+
 
     public static String getPluginName() {
         return CorePlus.getInstance().getDescription().getName();

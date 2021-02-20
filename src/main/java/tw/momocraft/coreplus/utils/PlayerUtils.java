@@ -1,6 +1,9 @@
 package tw.momocraft.coreplus.utils;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
 import me.NoChance.PvPManager.PvPlayer;
+import net.craftersland.data.bridge.PD;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -56,17 +59,81 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public boolean isPvPEnabled(Player player, boolean def) {
-        if (UtilsHandler.getDepend().PvPManagerEnabled()) {
-            return PvPlayer.get(player).hasPvPEnabled();
+    public double getLastLogin(String playerName) {
+        OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
+        double lastLogin = 0;
+        try {
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+                    "playerdataplus", "players", "UUID", offlinePlayer.getUniqueId().toString(), "last_login"));
+        } catch (Exception ignored) {
         }
-        return def;
+        if (lastLogin != 0)
+            return lastLogin;
+        return offlinePlayer.getLastLogin() * 1000;
     }
 
     @Override
-    public double getTypeBalance(UUID uuid, String type) {
+    public double getLastLogin(UUID uuid) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        double lastLogin = 0;
+        try {
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+                    "playerdataplus", "players", "UUID", uuid.toString(), "last_login"));
+        } catch (Exception ignored) {
+        }
+        if (lastLogin != 0)
+            return lastLogin;
+        return offlinePlayer.getLastLogin() * 1000;
+    }
+
+    @Override
+    public Map<String, Long> getLastLoginMap() {
+        Map<String, Long> map = new HashMap<>();
+        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            map.put(offlinePlayer.getUniqueId().toString(), offlinePlayer.getLastLogin());
+        }
+        Map<Object, Object> mySQLMap = UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPluginName(),
+                "playerdataplus", "players", "uuid", "last_login",
+                "string", "long");
+        for (Map.Entry<Object, Object> entry : mySQLMap.entrySet()) {
+            map.put(String.valueOf(entry.getKey()), Long.valueOf((String) entry.getValue()));
+        }
+        return map;
+    }
+
+    @Override
+    public boolean isPvPEnabled(Player player) {
+        if (UtilsHandler.getDepend().PvPManagerEnabled()) {
+            return PvPlayer.get(player).hasPvPEnabled();
+        }
+        if (UtilsHandler.getDepend().MultiverseCoreEnabled()) {
+            return UtilsHandler.getDepend().getMultiverseCoreApi().isPvPEnabled(player.getWorld().getName());
+        }
+        return ConfigHandler.getConfigPath().isPvp();
+    }
+
+    @Override
+    public boolean isAFK(Player player) {
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            return CMI.getInstance().getPlayerManager().getUser(player).isAfk();
+        }
+        return false;
+    }
+
+    @Override
+    public double getCurrencyBalance(UUID uuid, String type) {
         switch (type) {
             case "money":
+                if (UtilsHandler.getDepend().MpdbEnabled()) {
+                    return PD.api.getDatabaseMoney(uuid);
+                }
+                if (UtilsHandler.getDepend().CMIEnabled()) {
+                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+                    if (user != null) {
+                        return user.getBalance();
+                    }
+                }
                 if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
                     return UtilsHandler.getDepend().getVaultApi().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
                 }
@@ -89,9 +156,21 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
-    public double takeTypeMoney(UUID uuid, String priceType, double amount) {
-        switch (priceType) {
+    public double takeCurrency(UUID uuid, String type, double amount) {
+        switch (type) {
             case "money":
+                if (UtilsHandler.getDepend().CMIEnabled()) {
+                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+                    if (user != null) {
+                        return user.withdraw(amount);
+                    }
+                }
+                if (UtilsHandler.getDepend().MpdbEnabled()) {
+                    double money = PD.api.getDatabaseMoney(uuid);
+                    money -= amount;
+                    PD.api.setDatabaseMoney(uuid, money);
+                    return money;
+                }
                 if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
                     UtilsHandler.getDepend().getVaultApi().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
                     return UtilsHandler.getDepend().getVaultApi().getBalance(uuid);
@@ -104,20 +183,32 @@ public class PlayerUtils implements PlayerInterface {
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(priceType) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().withdraw(uuid, amount, priceType);
+                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoApi().withdraw(uuid, amount, type);
                     }
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + priceType);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
         return 0;
     }
 
     @Override
-    public double giveTypeMoney(UUID uuid, String priceType, double amount) {
-        switch (priceType) {
+    public double giveCurrency(UUID uuid, String type, double amount) {
+        switch (type) {
             case "money":
+                if (UtilsHandler.getDepend().CMIEnabled()) {
+                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+                    if (user != null) {
+                        user.deposit(amount);
+                    }
+                }
+                if (UtilsHandler.getDepend().MpdbEnabled()) {
+                    double money = PD.api.getDatabaseMoney(uuid);
+                    money += amount;
+                    PD.api.setDatabaseMoney(uuid, money);
+                    return money;
+                }
                 if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
                     UtilsHandler.getDepend().getVaultApi().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
                     return UtilsHandler.getDepend().getVaultApi().getBalance(uuid);
@@ -130,14 +221,135 @@ public class PlayerUtils implements PlayerInterface {
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(priceType) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, priceType);
+                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, type);
                     }
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + priceType);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
         return 0;
+    }
+
+    public double setCurrency(UUID uuid, String type, double amount) {
+        switch (type) {
+            case "money":
+                if (UtilsHandler.getDepend().CMIEnabled()) {
+                    double money = getCurrencyBalance(uuid, type);
+                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+                    if (user != null) {
+                        user.withdraw(money);
+                        user.deposit(money);
+                        return amount;
+                    }
+                }
+                if (UtilsHandler.getDepend().MpdbEnabled()) {
+                    PD.api.setDatabaseMoney(uuid, amount);
+                    return amount;
+                }
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
+                    double money = getCurrencyBalance(uuid, type);
+                    UtilsHandler.getDepend().getVaultApi().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), money);
+                    UtilsHandler.getDepend().getVaultApi().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                    return amount;
+                }
+                break;
+            case "points":
+                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
+                    return UtilsHandler.getDepend().getPlayerPointsApi().givePoints(uuid, amount);
+                }
+                break;
+            default:
+                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
+                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, type);
+                    }
+                }
+                break;
+        }
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
+        return 0;
+    }
+
+    @Override
+    public float getExp(String pluginName, UUID uuid, int amount) {
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            if (getOnlineStatus(uuid).equals("offline")) {
+                float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                        ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                        "player_uuid", uuid.toString(), "total_exp"));
+                return exp;
+            }
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Target is in other server: " + uuid);
+            return 0;
+        }
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            if (user != null) {
+                return user.getExp();
+            }
+        }
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            player.getExp();
+        }
+        return 0;
+    }
+
+    @Override
+    public void setExp(String pluginName, UUID uuid, int amount) {
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            if (getOnlineStatus(uuid).equals("offline")) {
+                UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                        ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                        "player_uuid", uuid.toString(), "total_exp", String.valueOf(amount));
+                return;
+            }
+        }
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            user.setExp(amount);
+        }
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            player.setExp(amount);
+        }
+    }
+
+    @Override
+    public void giveExp(String pluginName, UUID uuid, int amount) {
+        if (getOnlineStatus(uuid).equals("offline")) {
+            float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                    ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                    "player_uuid", uuid.toString(), "total_exp"));
+            exp += amount;
+            UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                    ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                    "player_uuid", uuid.toString(), "total_exp", String.valueOf(exp));
+            return;
+        }
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            if (user != null) {
+                user.addExp(amount);
+            }
+        }
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            player.giveExp(amount);
+        }
+    }
+
+    public String getOnlineStatus(UUID uuid) {
+        if (Bukkit.getPlayer(uuid) == null) {
+            if (UtilsHandler.getDepend().MythicMobsEnabled()) {
+                if (PD.api.isPlayerOnline(uuid)) {
+                    return "bungee";
+                }
+                return "offline";
+            }
+        }
+        return "server";
     }
 
     @Override

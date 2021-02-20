@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface PlayerInterface {
@@ -25,7 +26,46 @@ public interface PlayerInterface {
      */
     OfflinePlayer getOfflinePlayer(String playerName);
 
-    boolean isPvPEnabled(Player player, boolean def);
+    /**
+     * Getting the last login time(milliseconds) of player.
+     *
+     * @param playerName the name of player.
+     * @return the last login time(milliseconds) of player.
+     */
+    double getLastLogin(String playerName);
+
+    /**
+     * Getting a map with player's uuid and last login time(milliseconds).
+     *
+     * @return a map with player's uuid and last login time(milliseconds).
+     */
+    Map<String, Long> getLastLoginMap();
+
+    /**
+     * Getting the last login time(milliseconds) of player.
+     *
+     * @param uuid the uuid of player.
+     * @return the last login time(milliseconds) of player.
+     */
+    double getLastLogin(UUID uuid);
+
+
+    /**
+     * Checking if player is enable pvp.
+     *
+     * @param player the target player.
+     * @return if player is enable pvp.
+     */
+    boolean isPvPEnabled(Player player);
+
+    /**
+     * Checking if player is in AFK mode.
+     *
+     * @param player the target player.
+     * @return if player is in AFK mode.
+     */
+    boolean isAFK(Player player);
+
 
     /**
      * Getting the amount of currency of player.
@@ -34,7 +74,7 @@ public interface PlayerInterface {
      * @param type the type of currency. Types: money, points, GemsEconomyAPI
      * @return the amount of currency of player.
      */
-    double getTypeBalance(UUID uuid, String type);
+    double getCurrencyBalance(UUID uuid, String type);
 
     /**
      * Taking the amount of currency from player.
@@ -44,7 +84,7 @@ public interface PlayerInterface {
      * @param amount the amount to take.
      * @return the name amount of currency of player.
      */
-    double takeTypeMoney(UUID uuid, String type, double amount);
+    double takeCurrency(UUID uuid, String type, double amount);
 
     /**
      * Giving the amount of currency from player.
@@ -54,7 +94,37 @@ public interface PlayerInterface {
      * @param amount the amount to take.
      * @return the name amount of currency of player.
      */
-    double giveTypeMoney(UUID uuid, String type, double amount);
+    double giveCurrency(UUID uuid, String type, double amount);
+
+    /**
+     * Giving the amount of exp from player.
+     *
+     * @param pluginName the sending plugin name.
+     * @param uuid       the uuid of player.
+     * @param amount     the amount to take.
+     * @return the name amount of exp of player.
+     */
+    float getExp(String pluginName, UUID uuid, int amount);
+
+    /**
+     * Setting the amount of exp from player.
+     *
+     * @param pluginName the sending plugin name.
+     * @param uuid       the uuid of player.
+     * @param amount     the amount to take.
+     * @return the name amount of exp of player.
+     */
+    void setExp(String pluginName, UUID uuid, int amount);
+
+    /**
+     * Giving the amount of exp from player.
+     *
+     * @param pluginName the sending plugin name.
+     * @param uuid       the uuid of player.
+     * @param amount     the amount to take.
+     * @return the name amount of exp of player.
+     */
+    void giveExp(String pluginName, UUID uuid, int amount);
 
     /**
      * Checking if the sender has permission.

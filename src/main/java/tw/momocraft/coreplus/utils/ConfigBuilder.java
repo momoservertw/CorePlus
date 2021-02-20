@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -14,7 +13,6 @@ import java.util.List;
 public class ConfigBuilder {
 
     public static void start(CommandSender sender, String type) {
-        String format;
         switch (type.toLowerCase()) {
             case "entity":
                 createEntity();

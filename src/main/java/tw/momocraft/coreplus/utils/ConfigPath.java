@@ -16,7 +16,10 @@ import tw.momocraft.coreplus.utils.conditions.LocationMap;
 import tw.momocraft.coreplus.utils.customcommands.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigPath implements ConfigInterface {
     public ConfigPath() {
@@ -26,11 +29,19 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Variables                       //
     //  ============================================== //
+    private boolean pvp;
+
     private boolean mySQL;
     private String mySQLUsername;
     private String mySQLPassword;
     private String mySQLHostname;
     private int mySQLPort;
+    private String mySQLPlayerdataPlus;
+    private String mySQLHotkeyPlus;
+    private String mySQLServerPlus;
+    private String mySQLMySQLPlayerDataBridge;
+    private String mySQLMySQLPlayerDataBridgeExp;
+
     private boolean VanillaTrans;
     private String VanillaTransLocal;
     private boolean VanillaTransForce;
@@ -92,11 +103,18 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
+        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
+
         mySQL = ConfigHandler.getConfig("config.yml").getBoolean("General.MySQL.Enable");
         mySQLUsername = ConfigHandler.getConfig("config.yml").getString("General.MySQL.username");
         mySQLPassword = ConfigHandler.getConfig("config.yml").getString("General.MySQL.password");
         mySQLHostname = ConfigHandler.getConfig("config.yml").getString("General.MySQL.hostname");
         mySQLPort = ConfigHandler.getConfig("config.yml").getInt("General.MySQL.port");
+        mySQLPlayerdataPlus = ConfigHandler.getConfig("config.yml").getString("General.MySQL.database.PlayerdataPlus");
+        mySQLHotkeyPlus = ConfigHandler.getConfig("config.yml").getString("General.MySQL.database.HotkeyPlus");
+        mySQLServerPlus = ConfigHandler.getConfig("config.yml").getString("General.MySQL.database.ServerPlus");
+        mySQLMySQLPlayerDataBridge = ConfigHandler.getConfig("config.yml").getString("General.MySQL.database.MySQLPlayerDataBridge.Value");
+        mySQLMySQLPlayerDataBridgeExp = ConfigHandler.getConfig("config.yml").getString("General.MySQL.database.MySQLPlayerDataBridge.ExpTable");
         VanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
         VanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
         VanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translation.Force.Local");
@@ -333,6 +351,10 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Getter                          //
     //  ============================================== //
+    public boolean isPvp() {
+        return pvp;
+    }
+
     @Override
     public boolean isMySQL() {
         return mySQL;
@@ -353,6 +375,27 @@ public class ConfigPath implements ConfigInterface {
     public int getMySQLPort() {
         return mySQLPort;
     }
+
+    public String getMySQLPlayerdataPlus() {
+        return mySQLPlayerdataPlus;
+    }
+
+    public String getMySQLHotkeyPlus() {
+        return mySQLHotkeyPlus;
+    }
+
+    public String getMySQLServerPlus() {
+        return mySQLServerPlus;
+    }
+
+    public String getMySQLMySQLPlayerDataBridge() {
+        return mySQLMySQLPlayerDataBridge;
+    }
+
+    public String getMySQLMySQLPlayerDataBridgeExp() {
+        return mySQLMySQLPlayerDataBridgeExp;
+    }
+
 
     public boolean isVanillaTrans() {
         return VanillaTrans;
@@ -419,7 +462,7 @@ public class ConfigPath implements ConfigInterface {
     //         Others                                  //
     //  ============================================== //
     @Override
-    public List<String> getTypeList(String prefix, List<String> types, String listType) {
+    public List<String> getTypeList(String pluginName, List<String> types, String listType) {
         List<String> list = new ArrayList<>();
         List<String> customList;
         for (String type : types) {
@@ -464,12 +507,12 @@ public class ConfigPath implements ConfigInterface {
                                         list.add(type);
                                         continue;
                                     }
-                                    UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
+                                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + listType + ": " + type);
                                 }
                                 break;
                         }
                     } catch (Exception ignored) {
-                        UtilsHandler.getLang().sendErrorMsg(prefix, "Can not find the " + listType + ": " + type);
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + listType + ": " + type);
                     }
                 }
             }
@@ -480,5 +523,20 @@ public class ConfigPath implements ConfigInterface {
     @Override
     public FileConfiguration getConfig(String fileName) {
         return ConfigHandler.getConfig(fileName);
+    }
+
+    @Override
+    public String getProp(String pluginName, String fileName, String input) {
+        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
+    }
+
+    @Override
+    public String getJson(String pluginName, String fileName, String input) {
+        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
+    }
+
+    @Override
+    public FileConfiguration getYaml(String fileName) {
+        return UtilsHandler.getYaml().getConfig(fileName);
     }
 }

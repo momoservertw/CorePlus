@@ -13,7 +13,7 @@ import java.net.URLConnection;
 public class Updater implements UpdateInterface {
 
     @Override
-    public void check(String prefix, CommandSender sender, String plugin, String ver, boolean auto) {
+    public void check(String pluginName, String prefix, CommandSender sender, String plugin, String ver, boolean auto) {
         if (auto && !ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
             return;
         }
@@ -45,10 +45,10 @@ public class Updater implements UpdateInterface {
             case "SlimeChunkPlus":
                 id = "86532";
                 break;
-        }
-        if (ver == null) {
-            UtilsHandler.getLang().sendErrorMsg(prefix, "CorePlus is out of date.");
-            return;
+            default:
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not check the update: " + plugin);
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7Please update CorePlus.");
+                return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);
         if (onlineVer == null) {

@@ -304,12 +304,12 @@ public class Utils implements UtilsInterface {
 
     @Override
     public ItemStack getMenuItemStack(Player player) {
-        return UtilsHandler.getDepend().getItemJoinUtils().getItemStack(player, ConfigHandler.getConfigPath().getMenuItemJoin());
+        return UtilsHandler.getDepend().getItemJoinApi().getItemStack(player, ConfigHandler.getConfigPath().getMenuItemJoin());
     }
 
     @Override
     public ItemStack getItemJoinItemStack(Player player, String node) {
-        return UtilsHandler.getDepend().getItemJoinUtils().getItemStack(player, node);
+        return UtilsHandler.getDepend().getItemJoinApi().getItemStack(player, node);
     }
 
     @Override
@@ -318,7 +318,7 @@ public class Utils implements UtilsInterface {
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
             String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
             if (!menuIJ.equals("")) {
-                return UtilsHandler.getDepend().getItemJoinUtils().isMenu(itemStack);
+                return UtilsHandler.getDepend().getItemJoinApi().isMenu(itemStack);
             }
         }
         // Holding a menu item.
@@ -345,14 +345,14 @@ public class Utils implements UtilsInterface {
     public boolean isCustomItem(ItemStack itemStack) {
         // Holding ItemJoin menu.
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
-            return UtilsHandler.getDepend().getItemJoinUtils().isCustom(itemStack);
+            return UtilsHandler.getDepend().getItemJoinApi().isCustom(itemStack);
         }
         return false;
     }
 
     @Override
     public String getItemNode(ItemStack itemStack) {
-        return UtilsHandler.getDepend().getItemJoinUtils().getItemNode(itemStack);
+        return UtilsHandler.getDepend().getItemJoinApi().getItemNode(itemStack);
     }
 
 
