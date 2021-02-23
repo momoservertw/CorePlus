@@ -82,7 +82,7 @@ public class CustomCommands implements CommandInterface {
                 delay = delay.substring(0, delay.lastIndexOf("{n}"));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
                 continue;
             }
@@ -120,7 +120,7 @@ public class CustomCommands implements CommandInterface {
                 delay = delay.substring(0, delay.lastIndexOf("{n}"));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
                 continue;
             }
@@ -222,9 +222,9 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().translateLangHolders(player, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, player, input, langHolder);
         if (placeholder) {
-            input = UtilsHandler.getLang().translateLayout(pluginName, input, player);
+            input = UtilsHandler.getLang().transLayoutPlayer(pluginName, input, player);
         }
         switch (input.split(": ")[0]) {
             case "custom":
@@ -316,8 +316,8 @@ public class CustomCommands implements CommandInterface {
                 dispatchParticleCustomCmd(pluginName, player.getLocation(), input);
                 return;
             default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "Unknown command type: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
         }
     }
 
@@ -329,9 +329,9 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().translateLangHolders(null, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, input, langHolder);
         if (placeholder) {
-            input = UtilsHandler.getLang().translateLayout(pluginName, input, null);
+            input = UtilsHandler.getLang().transByGeneral(pluginName, input);
         }
         switch (input.split(": ")[0]) {
             case "custom":
@@ -385,8 +385,8 @@ public class CustomCommands implements CommandInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the execute target.");
                 return;
             default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "Unknown command type: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
         }
     }
 
@@ -404,7 +404,7 @@ public class CustomCommands implements CommandInterface {
             UtilsHandler.getLang().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -425,7 +425,7 @@ public class CustomCommands implements CommandInterface {
             UtilsHandler.getLang().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + group + ", " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -445,7 +445,7 @@ public class CustomCommands implements CommandInterface {
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 return;
             }
         } else if (condition.contains("<=")) {
@@ -455,7 +455,7 @@ public class CustomCommands implements CommandInterface {
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 return;
             }
         } else if (condition.contains(">")) {
@@ -465,7 +465,7 @@ public class CustomCommands implements CommandInterface {
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 return;
             }
         } else if (condition.contains("<")) {
@@ -475,7 +475,7 @@ public class CustomCommands implements CommandInterface {
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 return;
             }
         } else if (condition.contains("=")) {
@@ -488,7 +488,7 @@ public class CustomCommands implements CommandInterface {
             }
         } else {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             return;
         }
         String trueCmd = null;
@@ -533,7 +533,7 @@ public class CustomCommands implements CommandInterface {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"console: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -551,7 +551,7 @@ public class CustomCommands implements CommandInterface {
         } catch (Exception ex) {
             player.setOp(isOp);
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"chat-op: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             removeOp(pluginName, player);
         } finally {
@@ -569,7 +569,7 @@ public class CustomCommands implements CommandInterface {
         } catch (Exception ex) {
             player.setOp(isOp);
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"op: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             removeOp(pluginName, player);
         } finally {
@@ -583,9 +583,9 @@ public class CustomCommands implements CommandInterface {
         Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlus.getInstance(), () -> {
             try {
                 player.setOp(false);
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&fSucceed to remove \"" + playerName + "\" Op status!");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Succeed to remove \"" + playerName + "\" Op status!");
             } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&cCan not remove \"&e" + playerName + "&c\" Op status.");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not remove \"&e" + playerName + "&c\" Op status.");
             }
         }, 20);
     }
@@ -598,7 +598,7 @@ public class CustomCommands implements CommandInterface {
             player.chat("/" + input);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"player: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -626,12 +626,35 @@ public class CustomCommands implements CommandInterface {
         if (input == null)
             return;
         try {
-            String[] arr = input.split(", ");
-            Location loc = player.getLocation();
-            player.playSound(loc, Sound.valueOf(arr[0]), Long.parseLong(arr[1]), Long.parseLong(arr[2]));
+            SoundMap soundMap = new SoundMap();
+            // sound: -s:Sound, -p:Pitch -v:Volume -t:Times -i:Interval
+            String[] args = input.split("\\s+");
+            for (String arg : args) {
+                if (arg.startsWith("-S:")) {
+                    soundMap.setType(Sound.valueOf(arg.replace("-s:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-p:")) {
+                    soundMap.setPitch(Integer.parseInt(arg.replace("-p:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-v:")) {
+                    soundMap.setVolume(Integer.parseInt(arg.replace("-v:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-i:")) {
+                    soundMap.setInterval(Integer.parseInt(arg.replace("-i:", "")));
+                }
+            }
+            if (soundMap.getType() == null) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                return;
+            }
+            SoundUtils.sendSound(pluginName, player, player.getLocation(), soundMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -648,27 +671,10 @@ public class CustomCommands implements CommandInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/sound.yml.");
                 return;
             }
-            Sound sound = soundMap.getType();
-            int times = soundMap.getTimes();
-            int interval = soundMap.getInterval();
-            long volume = soundMap.getVolume();
-            long pitch = soundMap.getPitch();
-            new BukkitRunnable() {
-                int i = 1;
-
-                @Override
-                public void run() {
-                    if (i > times) {
-                        cancel();
-                    } else {
-                        ++i;
-                        player.playSound(loc, sound, volume, pitch);
-                    }
-                }
-            }.runTaskTimer(CorePlus.getInstance(), 0, interval);
+            SoundUtils.sendSound(pluginName, player, loc, soundMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound-custom: " + group + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
     }
@@ -678,50 +684,83 @@ public class CustomCommands implements CommandInterface {
         if (input == null)
             return;
         try {
-            String[] arr = input.split(", ");
-            loc.getWorld().spawnParticle(Particle.valueOf(arr[0]), loc, Integer.parseInt(arr[1]),
-                    Double.parseDouble(arr[2]), Double.parseDouble(arr[3]), Double.parseDouble(arr[4]), Double.parseDouble(arr[5]));
+            ParticleMap particleMap = new ParticleMap();
+            // particle: -p:Particle, -a:Amount -t:Times -i:Interval -x:OffsetX -y:OffsetY -z:OffsetZ -e:Extra -m:Material -c:Color -rgb:0,0,0
+            String[] args = input.split("\\s+");
+            for (String arg : args) {
+                if (arg.startsWith("-p:")) {
+                    particleMap.setType(Particle.valueOf(arg.replace("-p:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-a:")) {
+                    particleMap.setAmount(Integer.parseInt(arg.replace("-a:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-t:")) {
+                    particleMap.setTimes(Integer.parseInt(arg.replace("-t:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-x:")) {
+                    particleMap.setOffsetX(Integer.parseInt(arg.replace("-x:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-y:")) {
+                    particleMap.setOffsetY(Integer.parseInt(arg.replace("-y:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-z:")) {
+                    particleMap.setOffsetZ(Integer.parseInt(arg.replace("-z:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-e:")) {
+                    particleMap.setExtra(Integer.parseInt(arg.replace("-e:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-m:")) {
+                    particleMap.setMaterial(Material.getMaterial(arg.replace("-m:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-c:")) {
+                    particleMap.setColorType(arg.replace("-c:", ""));
+                    continue;
+                }
+                if (arg.startsWith("-r:")) {
+                    particleMap.setColorR(Integer.parseInt(arg.replace("-r:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-g:")) {
+                    particleMap.setColorG(Integer.parseInt(arg.replace("-g:", "")));
+                    continue;
+                }
+                if (arg.startsWith("-b:")) {
+                    particleMap.setColorB(Integer.parseInt(arg.replace("-b:", "")));
+                }
+            }
+            ParticleUtils.spawnParticle(pluginName, loc, particleMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
     }
 
     @Override
     public void dispatchParticleCustomCmd(String pluginName, Location loc, String group) {
-        if (group == null)
-            return;
         try {
+            if (group == null)
+                return;
             ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(group);
             if (particleMap == null) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"particle-custom: " + group + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/particle.yml.");
                 return;
             }
-            Particle particle = particleMap.getType();
-            int amount = particleMap.getAmount();
-            int times = particleMap.getTimes();
-            double offsetX = particleMap.getOffsetX();
-            double offsetY = particleMap.getOffsetY();
-            double offsetZ = particleMap.getOffsetZ();
-            double extra = particleMap.getExtra();
-            new BukkitRunnable() {
-                int i = 1;
+            ParticleUtils.spawnParticle(pluginName, loc, particleMap);
 
-                @Override
-                public void run() {
-                    if (i > times) {
-                        cancel();
-                    } else {
-                        ++i;
-                        loc.getWorld().spawnParticle(particle, loc, amount, offsetX, offsetY, offsetZ, extra);
-                    }
-                }
-            }.runTaskTimer(CorePlus.getInstance(), 0, particleMap.getInterval());
-        } catch (Exception ex) {
+        } catch (
+                Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle-custom: " + group + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
     }

@@ -10,6 +10,11 @@ Blocks:
       - WITHER_ROSE
     Search:
       H: 1
+  InCave:
+    Types:
+      - CAVE_AIR
+    Search:
+      H: 1
   IgnoreNearbyMonument:
     Ignore:
       - NearbyMonument

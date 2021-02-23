@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.utils.conditions;
 
+import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
@@ -9,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class ResidenceUtils {
 
@@ -23,15 +24,25 @@ public class ResidenceUtils {
     }
 
     public boolean isRegisteredFlag(String flag) {
-        return FlagPermissions.getPosibleAreaFlags().contains(flag);
+        return Residence.getInstance().getPermissionManager().getAllFlags().getFlags().containsKey(flag);
     }
 
-    public ArrayList<String> getRegisteredFlags() {
-        return FlagPermissions.getPosibleAreaFlags();
+    public String getResidenceName(Location loc) {
+        ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
+        if (res != null)
+            return res.getName();
+        return null;
+    }
+
+    public Set<String> getRegisteredFlags() {
+        return Residence.getInstance().getPermissionManager().getAllFlags().getFlags().keySet();
     }
 
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
-        if (flag != null && !flag.equals("")) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
+        if (flag != null) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
@@ -40,12 +51,12 @@ public class ResidenceUtils {
                         case "destroy":
                         case "place":
                             if (perms.has(Flags.build, false)) {
-                                if (perms.has(Flags.getFlag(flag), true))
+                                if (perms.has(flag, true))
                                     return true;
                             }
                             break;
                     }
-                    return perms.has(Flags.getFlag(flag), def);
+                    return perms.has(flag, def);
                 }
                 switch (flag) {
                     case "build":
@@ -101,10 +112,13 @@ public class ResidenceUtils {
     }
 
     public boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         if (!check) {
             return true;
         }
-        if (flag != null && !flag.equals("")) {
+        if (flag != null) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
@@ -113,12 +127,12 @@ public class ResidenceUtils {
                         case "destroy":
                         case "place":
                             if (perms.has(Flags.build, false)) {
-                                if (perms.has(Flags.getFlag(flag), true))
+                                if (perms.has(flag, true))
                                     return true;
                             }
                             break;
                     }
-                    return perms.has(Flags.getFlag(flag), def);
+                    return perms.has(flag, def);
                 }
                 switch (flag) {
                     case "build":
@@ -174,7 +188,10 @@ public class ResidenceUtils {
     }
 
     public boolean checkFlag(Location loc, String flag, boolean def) {
-        if (flag != null && !flag.equals("")) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
+        if (flag != null) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
@@ -182,22 +199,25 @@ public class ResidenceUtils {
                     case "destroy":
                     case "place":
                         if (perms.has(Flags.build, false)) {
-                            if (perms.has(Flags.getFlag(flag), true))
+                            if (perms.has(flag, true))
                                 return true;
                         }
                         break;
                 }
-                return perms.has(Flags.getFlag(flag), def);
+                return perms.has(flag, def);
             }
         }
         return true;
     }
 
     public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+            return def;
+        }
         if (!check) {
             return true;
         }
-        if (flag != null && !flag.equals("")) {
+        if (flag != null) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
             if (res != null) {
                 ResidencePermissions perms = res.getPermissions();
@@ -210,7 +230,7 @@ public class ResidenceUtils {
                         }
                         break;
                 }
-                return perms.has(Flags.getFlag(flag), def);
+                return perms.has(flag, def);
             }
         }
         return true;

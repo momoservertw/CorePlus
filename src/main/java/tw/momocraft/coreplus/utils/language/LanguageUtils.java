@@ -3,14 +3,14 @@ package tw.momocraft.coreplus.utils.language;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
@@ -90,7 +90,7 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendErrorMsg(String pluginName, String message) {
-        message = "&c[" + pluginName + "_Error] &r" + message;
+        message = "&4[" + pluginName + "_Error] &e" + message;
         message = ChatColor.translateAlternateColorCodes('&', message);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
     }
@@ -180,15 +180,11 @@ public class LanguageUtils implements LanguageInterface {
             player = (Player) sender;
         }
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
-        if (langMessage != null && !langMessage.isEmpty()) {
+        if (langMessage != null && !langMessage.isEmpty())
             input = langMessage;
-        }
-        // %prefix%
-        if (prefix == null)
-            prefix = "";
-        input = input.replace("%prefix%", prefix);
-        input = translateLangHolders(player, input, initializeRows(placeHolder));
-        input = translateLayout(pluginName, input, player);
+        input = input.replace("%prefix%", prefix != null ? prefix : "");
+        input = transLangHolders(pluginName, player, input, initializeRows(placeHolder));
+        input = transLayoutPlayer(pluginName, input, player);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines) {
             sender.sendMessage(langLine);
@@ -197,9 +193,9 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendDiscordMsg(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().translateLangHolders(null, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, input, langHolder);
         if (placeholder) {
-            input = UtilsHandler.getLang().translateLayout(pluginName, input, null);
+            input = transByGeneral(pluginName, input);
         }
         int index = input.indexOf(", ");
         UtilsHandler.getDiscord().sendDiscordMsg(input.substring(0, index - 1), input.substring(index + 1));
@@ -207,12 +203,13 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendDiscordMsg(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        String message = UtilsHandler.getYaml().getConfig("discord_message").getString("MinecraftChatToDiscordMessageFormat");
+        input = translate(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), player, input, "player", true, langHolder);
+        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         try {
             message = message.replace("%message%", input);
-            message = UtilsHandler.getLang().translateLangHolders(player, message, langHolder);
+            message = UtilsHandler.getLang().transLangHolders(pluginName, player, message, langHolder);
             if (placeholder) {
-                message = UtilsHandler.getLang().translateLayout(pluginName, message, player);
+                message = UtilsHandler.getLang().transLayoutPlayer(pluginName, message, player);
             }
         } catch (Exception ex) {
             message = input;
@@ -242,16 +239,15 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String translateLangHolders(Player player, String langMessage, String... langHolder) {
-        if (langHolder.length == 0) {
-            return langMessage;
+    public String transLangHolders(String pluginName, String input, String... langHolder) {
+        if (langHolder.length == 0)
+            return input;
+        if (input.contains("%material%")) {
+            input = input.replace("%material%", getVanillaTrans(pluginName, langHolder[7], "material"));
+        } else if (input.contains("%entity%")) {
+            input = input.replace("%entity%", getVanillaTrans(pluginName, langHolder[8], "entity"));
         }
-        if (langMessage.contains("%material%")) {
-            langMessage = langMessage.replace("%material%", getVanillaTrans(player, langHolder[7], "material"));
-        } else if (langMessage.contains("%entity%")) {
-            langMessage = langMessage.replace("%entity%", getVanillaTrans(player, langHolder[8], "entity"));
-        }
-        return langMessage
+        return input
                 .replace("%player%", langHolder[0])
                 .replace("%target_player%", langHolder[1])
                 .replace("%plugin%", langHolder[2])
@@ -261,11 +257,11 @@ public class LanguageUtils implements LanguageInterface {
                 .replace("%amount%", langHolder[6])
                 .replace("%material%", langHolder[7])
                 .replace("%entity%", langHolder[8])
-                .replace("%price_type%", getMessageTranslation(langHolder[9]))
+                .replace("%price_type%", getMsgTrans(langHolder[9]))
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
-                .replace("%flag%", getMessageTranslation(langHolder[13]))
+                .replace("%flag%", getMsgTrans(langHolder[13]))
                 .replace("%length%", langHolder[14])
                 .replace("%size%", langHolder[15])
                 .replace("%color%", langHolder[16])
@@ -282,52 +278,296 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String translateLayout(String pluginName, String input, Player player) {
-        if (input == null) {
+    public String transByPlayerName(String pluginName, String local, String input, String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null)
+            return transLayoutPlayer(pluginName, local, input, player, "player", false);
+        OfflinePlayer offlinePlayer = UtilsHandler.getPlayer().getOfflinePlayer(playerName);
+        if (offlinePlayer != null)
+            return transLayoutOfflinePlayer(pluginName, local, input, offlinePlayer, "player", false);
+        return transByGeneral(pluginName, local, input);
+    }
+
+    @Override
+    public String transByPlayerName(String pluginName, String local, String input, UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null)
+            return transLayoutPlayer(pluginName, local, input, player, "player", false);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        return transLayoutOfflinePlayer(pluginName, local, input, offlinePlayer, "player", false);
+    }
+
+    @Override
+    public String transByPlayer(String pluginName, Player player, String input) {
+        transByPlayer(pluginName, player, input, UtilsHandler.getVanillaUtils().getLocal(player), "player");
+    }
+
+    @Override
+    public String transByPlayer(String pluginName, Player player, String input, String local, String target) {
+        if (input == null)
             return "";
+        if (player == null) {
+            // %TARGET_has_played%
+            input = input.replace("%" + target + "_has_played%", "false");
+            return transByGeneral(pluginName, local, input);
+        } else if (player instanceof ConsoleCommandSender) {
+            return transByGeneral(pluginName, local, input);
         }
-        if (player != null && !(player instanceof ConsoleCommandSender)) {
-            String playerName = player.getName();
-            // %player%
+        while (true) {
+            // %TARGET_display_name%
             try {
-                input = input.replace("%player%", playerName);
+                input = input.replace("%" + target + "_display_name%", player.getDisplayName());
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            // %player_display_name%
+            // %TARGET_last_login%
+            input = input.replace("%" + target + "_last_login%", String.valueOf(player.getLastLogin()));
+            // %money%
+            UUID uuid = player.getUniqueId();
+            if (UtilsHandler.getDepend().VaultEnabled()) {
+                if (input.contains("%money%")) {
+                    input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(uuid)));
+                }
+            }
+            // %points%
+            if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
+                if (input.contains("%points%")) {
+                    input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid)));
+                }
+            }
+            // %TARGET_sneaking%
+            input = input.replace("%" + target + "_sneaking%", String.valueOf(player.isSneaking()));
+            // %TARGET_flying%
+            input = input.replace("%" + target + "_flying%", String.valueOf(player.isFlying()));
+            // Translate PlaceHolderAPI placeholders.
+            if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
+                try {
+                    input = PlaceholderAPI.setPlaceholders(player, input);
+                } catch (NoSuchFieldError e) {
+                    UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
+                            "Error has occurred when setting the PlaceHolder " + e.getMessage() +
+                                    ", if this issue persist contact the developer of PlaceholderAPI.");
+                }
+            }
+            // Entity
+            input = transByEntity(pluginName, local, input, player, target, true);
+            // General
+            input = transByGeneral(pluginName, local, input);
+            // PlaceHolderAPI
+            input = transLayoutPAPI(pluginName, input, player);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input)) {
+                break;
+            }
+        }
+        return input;
+    }
+
+    @Override
+    public String transByEntity(String pluginName, String local, String input, Entity entity, String target, boolean isTransGeneral) {
+        if (input == null)
+            return "";
+        if (entity == null)
+            return transByGeneral(pluginName, local, input);
+        while (true) {
+            String displayName = entity.getCustomName();
+            String type = entity.getType().name();
+            // %TARGET%
+            input = input.replace("%" + target + "%", displayName != null ? displayName : type);
+            // %TARGET_display_name%
+            input = input.replace("%" + target + "_display_name%", displayName != null ? displayName : type);
+            // %TARGET_has_custom_name%
+            input = input.replace("%" + target + "_has_custom_name%", displayName != null ? "true" : "false");
+            // %TARGET_type%
+            input = input.replace("%" + target + "_type%", type);
+            // %TARGET_type_local%
+            input = input.replace("%" + target + "_type_local%", getVanillaTrans(pluginName, local, type, "entity"));
+            // %TARGET_uuid%
+            UUID uuid = entity.getUniqueId();
+            input = input.replace("%" + target + "_uuid%", uuid.toString());
+            // Location
+            input = transByLocation(pluginName, local, input, entity.getLocation(), target, true);
+            // General
+            if (!isTransGeneral)
+                input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
+        }
+        return input;
+    }
+
+    public String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer offlinePlayer, String target) {
+        if (input == null)
+            return "";
+        if (offlinePlayer == null) {
+            // %TARGET_has_played%
+            input = input.replace("%" + target + "_has_played%", "false");
+            return transByGeneral(pluginName, local, input);
+        }
+        while (true) {
+            // %TARGET%
             try {
-                input = input.replace("%player_display_name%", player.getDisplayName());
+                input = input.replace("%" + target + "%", offlinePlayer.getName());
+            } catch (Exception ex) {
+                input = input.replace("%" + target + "%", getMsgTrans("noTarget"));
+            }
+            // %TARGET_uuid%
+            try {
+                input = input.replace("%" + target + "_uuid%", offlinePlayer.getUniqueId().toString());
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            UUID playerUUID = player.getUniqueId();
-            // %player_uuid%
+            // %TARGET_last_login%
+            boolean hasPlayed = offlinePlayer.hasPlayedBefore();
             try {
-                input = input.replace("%player_uuid%", playerUUID.toString());
+                input = input.replace("%" + target + "_last_login%",
+                        hasPlayed ? String.valueOf(offlinePlayer.getLastLogin()) : getMsgTrans("noData"));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            // %player_sneaking%
+            // %TARGET_has_played%
             try {
-                input = input.replace("%player_sneaking%", String.valueOf(player.isSneaking()));
+                input = input.replace("%" + target + "_has_played%", String.valueOf(hasPlayed));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            // %player_flying%
+            // Translate PlaceHolderAPI's placeholders.
+            if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
+                try {
+                    input = PlaceholderAPI.setPlaceholders(offlinePlayer, input);
+                } catch (NoSuchFieldError e) {
+                    UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
+                            "Error has occurred when setting the PlaceHolder " + e.getMessage() +
+                                    ", if this issue persist contact the developer of PlaceholderAPI.");
+                }
+            }
+            // General
+            input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
+        }
+        return input;
+    }
+
+    public String transByBlock(String pluginName, String local, String input, Block block, String target) {
+        if (input == null)
+            return "";
+        if (block == null)
+            return transByGeneral(pluginName, local, input);
+        while (true) {
+            // Material
+            input = transByMaterial(pluginName, local, input, block.getType(), target, true);
+            // Location
+            input = transByLocation(pluginName, local, input, block.getLocation(), target, true);
+            // General
+            input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
+        }
+        return input;
+    }
+
+    public String transByItem(String pluginName, String local, String input, ItemStack itemStack, String target) {
+        if (input == null)
+            return "";
+        if (itemStack == null)
+            return transByGeneral(pluginName, local, input);
+        while (true) {
+            // %TARGET_display_name%
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            String displayName = null;
+            if (itemMeta != null)
+                displayName = itemStack.getItemMeta().getDisplayName();
             try {
-                input = input.replace("%player_flying%", String.valueOf(player.isFlying()));
+                input = input.replace("%" + target + "_display_name%", displayName != null ? displayName : itemStack.getType().name());
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            Location loc = player.getLocation();
-            // %player_world%
-            if (input.contains("%player_world%")) {
-                input = input.replace("%player_world%", loc.getWorld().getName());
+            // %TARGET_has_custom_name%
+            try {
+                input = input.replace("%" + target + "_display_name%", displayName != null ? "true" : "false");
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-            // %player_loc%
-            // %player_loc_x%, %player_loc_y%, %player_loc_z%
-            // %player_loc_x_NUMBER%, %player_loc_y_NUMBER%, %player_loc_z_NUMBER%
-            if (input.contains("%player_loc")) {
+            // %TARGET_amount%
+            try {
+                input = input.replace("%" + target + "_amount%", String.valueOf(itemStack.getAmount()));
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            }
+            // Material
+            input = transByMaterial(pluginName, local, input, itemStack.getType(), target, true);
+            // General
+            input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
+        }
+        return input;
+    }
+
+    /**
+     * Translating the item placeholders.
+     * Material -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName the sending plugin name.
+     * @param input      the input string.
+     * @param material   the target material.
+     * @param target     the target type: block, target
+     * @return a new string with translated block placeholders.
+     */
+    @Override
+    public String transByMaterial(String pluginName, String local, String input, Material material, String target, boolean isTransGeneral) {
+        if (input == null)
+            return "";
+        if (material == null)
+            return transByGeneral(pluginName, local, input);
+        while (true) {
+            // %TARGET%
+            String type = material.name();
+            try {
+                input = input.replace("%" + target + "%", type);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            }
+            // %TARGET_type%
+            try {
+                input = input.replace("%" + target + "_type%", type);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            }
+            // %TARGET_type_local%
+            try {
+                input = input.replace("%" + target + "_type_local%", getVanillaTrans(pluginName, type, "material"));
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            }
+            // General
+            if (!isTransGeneral)
+                input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input)) {
+                break;
+            }
+        }
+        return input;
+    }
+
+    @Override
+    public String transByLocation(String pluginName, String local, String input, Location loc, String target, boolean isTransGeneral) {
+        World world = loc.getWorld();
+        Block block = loc.getBlock();
+        while (true) {
+            // %TARGET_world%
+            if (input.contains("%" + target + "_world%"))
+                input = input.replace("%" + target + "_world%", world.getName());
+            // %TARGET_loc%
+            // %TARGET_loc_x%, %TARGET_loc_y%, %TARGET_loc_z%
+            // %TARGET_loc_x_NUMBER%, %TARGET_loc_y_NUMBER%, %TARGET_loc_z_NUMBER%
+            if (input.contains("%" + target + "_loc")) {
                 try {
                     String loc_x = String.valueOf(loc.getBlockX());
                     String loc_y = String.valueOf(loc.getBlockY());
@@ -352,90 +592,189 @@ public class LanguageUtils implements LanguageInterface {
                                 break;
                         }
                     }
-                    input = input.replace("%player_loc%", loc_x + ", " + loc_y + ", " + loc_z);
-                    input = input.replace("%player_loc_x%", loc_x);
-                    input = input.replace("%player_loc_y%", loc_y);
-                    input = input.replace("%player_loc_z%", loc_z);
+                    input = input.replace("%" + target + "_loc%", loc_x + ", " + loc_y + ", " + loc_z);
+                    input = input.replace("%" + target + "_loc_x%", loc_x);
+                    input = input.replace("%" + target + "_loc_y%", loc_y);
+                    input = input.replace("%" + target + "_loc_z%", loc_z);
                 } catch (Exception ex) {
                     UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                 }
             }
-            if (UtilsHandler.getDepend().VaultEnabled()) {
-                if (input.contains("%money%")) {
-                    input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(playerUUID)));
-                }
-            }
-            if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                if (input.contains("%points%")) {
-                    input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(playerUUID)));
-                }
-            }
-        }
-        // %player% => CONSOLE
-        if (player == null) {
-            try {
-                input = input.replace("%player%", "CONSOLE");
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-            }
-        }
-        // %server_name%
-        try {
-            input = input.replace("%server_name%", Bukkit.getServer().getName());
-        } catch (Exception ex) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-        }
-        // %localtime_time% => 2020/08/08 12:30:00
-        try {
-            input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-        } catch (Exception ex) {
-            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-        }
-        // %random_number%500%
-        if (input.contains("%random_number%")) {
-            try {
-                String[] arr = input.split("%");
-                for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("random_number")) {
-                        input = input.replace("%random_number%" + arr[i + 1] + "%",
-                                String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
+            // %TARGET_cave%
+            if (input.contains("%" + target + "_cave%")) {
+                Location blockLoc;
+                back:
+                for (int x = -3; x <= 3; x++) {
+                    for (int z = -3; z <= 3; z++) {
+                        for (int y = -3; y <= 3; y++) {
+                            blockLoc = loc.clone().add(x, y, z);
+                            if (Material.CAVE_AIR.equals(blockLoc.getBlock().getType())) {
+                                input = input.replace("%" + target + "_cave%", "true");
+                                continue back;
+                            }
+                        }
                     }
                 }
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"\"%random_number%NUMBER%\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             }
-        }
-        // %random_list%String1,String2%
-        if (input.contains("%random_list%")) {
-            List<String> placeholderList = new ArrayList<>();
-            String[] arr = input.split("%");
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i].equals("random_list")) {
-                    placeholderList.add((arr[i + 1]));
+            // %TARGET_loc_material%
+            if (input.contains("%" + target + "_loc_material%")) {
+                input = input.replace("%" + target + "_material%", block.getType().name());
+            }
+            // %TARGET_loc_cave%
+            if (input.contains("%" + target + "_loc_cave%")) {
+                Location blockLoc;
+                back:
+                for (int x = -3; x <= 3; x++) {
+                    for (int z = -3; z <= 3; z++) {
+                        for (int y = -3; y <= 3; y++) {
+                            blockLoc = loc.clone().add(x, y, z);
+                            if (Material.CAVE_AIR.equals(blockLoc.getBlock().getType())) {
+                                input = input.replace("%" + target + "_loc_cave%", "true");
+                                continue back;
+                            }
+                        }
+                    }
                 }
             }
-            String[] stringArr;
-            String randomString;
-            for (String placeholderValue : placeholderList) {
-                stringArr = placeholderValue.split(",");
-                randomString = stringArr[new Random().nextInt(stringArr.length) - 1];
-                input = input.replace("%random_list%" + placeholderValue + "%", randomString);
+            // %TARGET_world_time%
+            if (input.contains("%" + target + "_world_time%"))
+                input = input.replace("%" + target + "_loc_time%", String.valueOf(world.getTime()));
+
+            // %TARGET_biomed%
+            if (input.contains("%" + target + "_biome%"))
+                input = input.replace("%" + target + "_solid%", String.valueOf(block.isSolid()));
+
+            // %TARGET_light%
+            if (input.contains("%" + target + "_light_light%"))
+                input = input.replace("%" + target + "_solid%", String.valueOf(block.getLightLevel()));
+
+            // %TARGET_liquid%
+            if (input.contains("%" + target + "_liquid%"))
+                input = input.replace("%" + target + "_liquid%", String.valueOf(block.isLiquid()));
+
+            // %TARGET_solid%
+            if (input.contains("%" + target + "_solid%"))
+                input = input.replace("%" + target + "_solid%", String.valueOf(block.isSolid()));
+
+            // %TARGET_cave%
+            if (input.contains("%" + target + "_cave%"))
+                input = input.replace("%" + target + "_solid%", String.valueOf(UtilsHandler.getCondition().isInCave(loc)));
+
+            // %TARGET_residence%
+            if (input.contains("%" + target + "_residence%")) {
+                String residenceName = UtilsHandler.getCondition().getResidenceName(loc);
+                input = input.replace("%" + target + "_residence%", residenceName != null ? residenceName : "");
             }
+            // %TARGET_in_residence%
+            if (input.contains("%" + target + "_in_residence%"))
+                input = input.replace("%" + target + "_residence%", String.valueOf(UtilsHandler.getCondition().isInResidence(loc)));
+            // %TARGET_nearby%TYPE%RETURN%GROUP%RADIUS%
+            // arr[0]=Target_nearby, arr[1]=Return, arr[2]=Type, arr[3]=Group, arr[4]=Radius
+            if (input.contains("%" + target + "_nearby%")) {
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i += 3) {
+                    if (arr[i].equals("%" + target + "_nearby%")) {
+                        List checkList;
+                        try {
+                            checkList = ConfigHandler.getConfigPath().getGroupProp().get(arr[2]).get(arr[3]);
+                        } catch (Exception ex) {
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"\"%random_number%NUMBER%\"");
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
+                            return null;
+                        }
+                        if (checkList.isEmpty() && !group.equals("all")) {
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
+                            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
+                            return null;
+                        }
+                        try {
+
+                            input = input.replace("%" + target + "_nearby%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%",
+                                    UtilsHandler.getUtil().getNearbyString(loc, arr[i], arr[i + 1], arr[i + 2], Integer.parseInt(arr[3])));
+                        } catch (Exception ex) {
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"%TARGET_nearby%RETURN%TYPE%GROUP%RADIUS%\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        }
+                    }
+                }
+            }
+            // General
+            if (!isTransGeneral)
+                input = transByGeneral(pluginName, local, input);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
         }
-        // %random_player%
-        if (input.contains("%random_player%")) {
+        return input;
+    }
+
+    public String transByGeneral(String pluginName, String input) {
+        return transByGeneral(pluginName, );
+    }
+
+
+    public String transByGeneral(String pluginName, String local, String input) {
+        while (true) {
+            // %player%, %entity%, %block%, %item%, %target%
             try {
-                List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
-                String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
-                input = input.replace("%random_player%", randomPlayer);
+                input = input.replace("%player%", getMsgTrans("console"));
+                input = input.replace("%entity%", getMsgTrans("console"));
+                input = input.replace("%block%", getMsgTrans("console"));
+                input = input.replace("%item%", getMsgTrans("console"));
+                input = input.replace("%target%", getMsgTrans("console"));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
             }
-        }
-        // %random_player%
+            // %server_name%
+            input = input.replace("%server_name%", Bukkit.getServer().getName());
+            // %localtime_time% => 2020/08/08 12:30:00
+            input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
+            // %random_number%500%
+            if (input.contains("%random_number%")) {
+                try {
+                    String[] arr = input.split("%");
+                    for (int i = 0; i < arr.length; i++) {
+                        if (arr[i].equals("random_number"))
+                            input = input.replace("%random_number%" + arr[i + 1] + "%",
+                                    String.valueOf(new Random().nextInt(Integer.parseInt(arr[i + 1]))));
+                    }
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"\"%random_number%NUMBER%\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+                }
+            }
+            // %random_list%String1,String2%
+            if (input.contains("%random_list%")) {
+                List<String> placeholderList = new ArrayList<>();
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i].equals("random_list"))
+                        placeholderList.add((arr[i + 1]));
+                }
+                String[] stringArr;
+                String randomString;
+                for (String placeholderValue : placeholderList) {
+                    stringArr = placeholderValue.split(",");
+                    randomString = stringArr[new Random().nextInt(stringArr.length) - 1];
+                    input = input.replace("%random_list%" + placeholderValue + "%", randomString);
+                }
+            }
+            // %random_player%
+            if (input.contains("%random_player%")) {
+                try {
+                    List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+                    String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
+                    input = input.replace("%random_player%", randomPlayer);
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                }
+            }
+            // %random_player%
         /*
         if (input.contains("%random_player%")) {
             try {
@@ -447,210 +786,229 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
          */
-        // %random_player_except%AllBye,huangge0513%
-        if (input.contains("%random_player_except%")) {
-            List<String> placeholderList = new ArrayList<>();
-            List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
-            String[] arr = input.split("%");
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i].equals("random_player_except")) {
-                    placeholderList.add((arr[i + 1]));
-                }
-            }
-            String[] playerArr;
-            Player randomPlayer;
-            String randomPlayerName;
-            for (String exceptPlayer : placeholderList) {
-                playerArr = exceptPlayer.split(",");
-                while (true) {
-                    if (playerList.isEmpty()) {
-                        input = input.replace("%random_player_except%" + exceptPlayer + "%", "");
-                        break;
+            // %random_player_except%AllBye,huangge0513%
+            if (input.contains("%random_player_except%")) {
+                List<String> placeholderList = new ArrayList<>();
+                List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i].equals("random_player_except")) {
+                        placeholderList.add((arr[i + 1]));
                     }
-                    randomPlayer = playerList.get(new Random().nextInt(playerList.size()));
-                    randomPlayerName = randomPlayer.getName();
-                    playerList.remove(randomPlayer);
-                    try {
-                        if (!Arrays.asList(playerArr).contains(randomPlayerName)) {
-                            String newList = placeholderList.toString().replaceAll("[\\[\\]\\s]", "");
-                            input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
+                }
+                String[] playerArr;
+                Player randomPlayer;
+                String randomPlayerName;
+                for (String exceptPlayer : placeholderList) {
+                    playerArr = exceptPlayer.split(",");
+                    while (true) {
+                        if (playerList.isEmpty()) {
+                            input = input.replace("%random_player_except%" + exceptPlayer + "%", "");
                             break;
                         }
-                    } catch (Exception ex) {
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"%random_player_except%PLAYERS%\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        randomPlayer = playerList.get(new Random().nextInt(playerList.size()));
+                        randomPlayerName = randomPlayer.getName();
+                        playerList.remove(randomPlayer);
+                        try {
+                            if (!Arrays.asList(playerArr).contains(randomPlayerName)) {
+                                String newList = placeholderList.toString().replaceAll("[\\[\\]\\s]", "");
+                                input = input.replace("%random_player_except%" + newList + "%", randomPlayerName);
+                                break;
+                            }
+                        } catch (Exception ex) {
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"%random_player_except%PLAYERS%\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        }
                     }
                 }
             }
+            // Color codes
+            input = ChatColor.translateAlternateColorCodes('&', input);
+            // Others
+            input = input.replace("{s}", " ");
+            input = input.replace("{e}", "");
+            // PlaceHolderAPI
+            input = transLayoutPAPI(pluginName, input, null);
+            // Custom
+            if (transByCustom(pluginName, local, input).equals(input))
+                break;
         }
-        // Translate color codes.
-        input = ChatColor.translateAlternateColorCodes('&', input);
-        // Translate PlaceHolderAPI's placeholders.
+        return input;
+    }
+
+    private String transLayoutPAPI(String pluginName, String input, Player player) {
         if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
             try {
                 return PlaceholderAPI.setPlaceholders(player, input);
             } catch (NoSuchFieldError e) {
-                UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(), "Error has occurred when setting the PlaceHolder " + e.getMessage() + ", if this issue persist contact the developer of PlaceholderAPI.");
-                return input;
+                UtilsHandler.getLang().sendDebugMsg(true, pluginName,
+                        "Error has occurred when setting the PlaceHolder " + e.getMessage() +
+                                ", if this issue persist contact the developer of PlaceholderAPI.");
             }
         }
+        return input;
+    }
+
+    private String transByCustom(String pluginName, String local, String input) {
         String placeholder;
         String newPlaceholder;
         while (true) {
-            if (input.contains("{calculate: ")) {
-                placeholder = input.substring(0, input.indexOf("{calculate: "));
-                placeholder = placeholder.substring(placeholder.indexOf("}") + 1);
-                ScriptEngineManager mgr = new ScriptEngineManager();
-                ScriptEngine engine = mgr.getEngineByName("JavaScript");
-                try {
-                    newPlaceholder = engine.eval(placeholder.replace("{calculate: ", "")).toString();
-                    input = input.replace(placeholder, newPlaceholder);
-                } catch (Exception ex) {
-                    input = input.replace(placeholder, "ERROR_CALCULATE_PLACEHOLDER");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                }
-            } else {
+            if (!input.contains("{calculate: "))
                 break;
+            placeholder = input.substring(0, input.indexOf("{calculate: "));
+            placeholder = placeholder.substring(placeholder.indexOf("}") + 1);
+            ScriptEngineManager mgr = new ScriptEngineManager();
+            ScriptEngine engine = mgr.getEngineByName("JavaScript");
+            try {
+                newPlaceholder = engine.eval(placeholder.replace("{calculate: ", "")).toString();
+                input = input.replace(placeholder, newPlaceholder);
+            } catch (Exception ex) {
+                input = input.replace(placeholder, "ERROR_CALCULATE_PLACEHOLDER");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         }
         String condition;
         String action;
         String[] conditionValues;
         boolean type;
+
         while (true) {
-            if (input.contains("$condition: ")) {
-                placeholder = input.substring(input.indexOf("$condition: ") - 1);
-                placeholder = placeholder.substring(0, placeholder.indexOf("$") + 1);
-                condition = placeholder.substring(0, placeholder.lastIndexOf(", ") - 1);
-                action = placeholder.substring(placeholder.lastIndexOf(", ") + 1);
-                if (condition.contains(">=")) {
-                    conditionValues = condition.split(">=");
-                    try {
-                        type = UtilsHandler.getUtil().getCompare(">=",
-                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                    } catch (Exception ex) {
-                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                        continue;
-                    }
-                } else if (condition.contains("<=")) {
-                    conditionValues = condition.split("<=");
-                    try {
-                        type = UtilsHandler.getUtil().getCompare("<=",
-                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                    } catch (Exception ex) {
-                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                        continue;
-                    }
-                } else if (condition.contains(">")) {
-                    conditionValues = condition.split(">");
-                    try {
-                        type = UtilsHandler.getUtil().getCompare(">",
-                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                    } catch (Exception ex) {
-                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                        continue;
-                    }
-                } else if (condition.contains("<")) {
-                    conditionValues = condition.split("<");
-                    try {
-                        type = UtilsHandler.getUtil().getCompare("<",
-                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                    } catch (Exception ex) {
-                        input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                        continue;
-                    }
-                } else if (condition.contains("=")) {
-                    conditionValues = condition.split("=");
-                    try {
-                        type = UtilsHandler.getUtil().getCompare("=",
-                                Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                    } catch (Exception ex) {
-                        type = conditionValues[0].equals(conditionValues[1]);
-                    }
-                } else {
+            if (!input.contains("$condition: "))
+                break;
+            placeholder = input.substring(input.indexOf("$condition: ") - 1);
+            placeholder = placeholder.substring(0, placeholder.indexOf("$") + 1);
+            condition = placeholder.substring(0, placeholder.lastIndexOf(", ") - 1);
+            action = placeholder.substring(placeholder.lastIndexOf(", ") + 1);
+            if (condition.contains(">=")) {
+                conditionValues = condition.split(">=");
+                try {
+                    type = UtilsHandler.getUtil().getCompare(">=",
+                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                } catch (Exception ex) {
                     input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
                     UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
                     UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "&7More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     continue;
                 }
-                String truePlaceholder = null;
-                String falsePlaceholder = null;
-                if (action.startsWith("{true}")) {
-                    if (action.contains("{false}")) {
-                        truePlaceholder = action.split("\\{false}")[0];
-                        truePlaceholder = truePlaceholder.replace("{true}", "");
-                        falsePlaceholder = action.split("\\{false}")[1];
-                    } else {
-                        truePlaceholder = action.replace("{true}", "");
-                    }
-                } else if (action.startsWith("{false}")) {
-                    if (action.contains("{true}")) {
-                        falsePlaceholder = action.split("\\{true}")[0];
-                        falsePlaceholder = falsePlaceholder.replace("{false}", "");
-                        truePlaceholder = action.split("\\{true}")[1];
-                    } else {
-                        falsePlaceholder = action.replace("{false}", "");
-                    }
-                } else {
-                    if (action.contains("{false}")) {
-                        truePlaceholder = action.split("\\{false}")[0];
-                        truePlaceholder = truePlaceholder.replace("{true}", "");
-                        falsePlaceholder = action.split("\\{false}")[1];
-                    } else {
-                        truePlaceholder = action.replace("{true}", "");
-                    }
+            } else if (condition.contains("<=")) {
+                conditionValues = condition.split("<=");
+                try {
+                    type = UtilsHandler.getUtil().getCompare("<=",
+                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                } catch (Exception ex) {
+                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    continue;
                 }
-                if (truePlaceholder == null)
-                    truePlaceholder = "";
-                if (falsePlaceholder == null)
-                    falsePlaceholder = "";
-                if (type) {
-                    input = input.replace(placeholder, truePlaceholder);
-                } else {
-                    input = input.replace(placeholder, falsePlaceholder);
+            } else if (condition.contains(">")) {
+                conditionValues = condition.split(">");
+                try {
+                    type = UtilsHandler.getUtil().getCompare(">",
+                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                } catch (Exception ex) {
+                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    continue;
+                }
+            } else if (condition.contains("<")) {
+                conditionValues = condition.split("<");
+                try {
+                    type = UtilsHandler.getUtil().getCompare("<",
+                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                } catch (Exception ex) {
+                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    continue;
+                }
+            } else if (condition.contains("=")) {
+                conditionValues = condition.split("=");
+                try {
+                    type = UtilsHandler.getUtil().getCompare("=",
+                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
+                } catch (Exception ex) {
+                    type = conditionValues[0].equals(conditionValues[1]);
                 }
             } else {
-                break;
+                input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                continue;
+            }
+            String truePlaceholder = null;
+            String falsePlaceholder = null;
+            if (action.startsWith("{true}")) {
+                if (action.contains("{false}")) {
+                    truePlaceholder = action.split("\\{false}")[0];
+                    truePlaceholder = truePlaceholder.replace("{true}", "");
+                    falsePlaceholder = action.split("\\{false}")[1];
+                } else {
+                    truePlaceholder = action.replace("{true}", "");
+                }
+            } else if (action.startsWith("{false}")) {
+                if (action.contains("{true}")) {
+                    falsePlaceholder = action.split("\\{true}")[0];
+                    falsePlaceholder = falsePlaceholder.replace("{false}", "");
+                    truePlaceholder = action.split("\\{true}")[1];
+                } else {
+                    falsePlaceholder = action.replace("{false}", "");
+                }
+            } else {
+                if (action.contains("{false}")) {
+                    truePlaceholder = action.split("\\{false}")[0];
+                    truePlaceholder = truePlaceholder.replace("{true}", "");
+                    falsePlaceholder = action.split("\\{false}")[1];
+                } else {
+                    truePlaceholder = action.replace("{true}", "");
+                }
+            }
+            if (truePlaceholder == null)
+                truePlaceholder = "";
+            if (falsePlaceholder == null)
+                falsePlaceholder = "";
+            if (type) {
+                input = input.replace(placeholder, truePlaceholder);
+            } else {
+                input = input.replace(placeholder, falsePlaceholder);
             }
         }
         return input;
     }
 
     @Override
-    public String getMessageTranslation(String input) {
+    public String getMsgTrans(String input) {
         return ConfigHandler.getConfig("config.yml").getString("Message.Translation." + input, input);
     }
 
     @Override
-    public String getVanillaTrans(Player player, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaName(player, input, type);
+    public String getVanillaTrans(String pluginName, Player player, String input, String type) {
+        return UtilsHandler.getVanillaUtils().getValinaName(pluginName, player, input, type);
     }
 
     @Override
-    public String getVanillaTrans(String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaNode(null, input, type);
+    public String getVanillaTrans(String pluginName, String local, String input, String type) {
+        return UtilsHandler.getVanillaUtils().getValinaNode(pluginName, local, input, type);
+    }
+
+    @Override
+    public String getVanillaTrans(String pluginName, String input, String type) {
+        return UtilsHandler.getVanillaUtils().getValinaNode(pluginName, null, input, type);
     }
 
     @Override
@@ -671,7 +1029,7 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getMessageTranslation("noTarget");
+            return getMsgTrans("noTarget");
         }
         return stringBuilder.toString();
     }
@@ -689,7 +1047,7 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getMessageTranslation("noTarget");
+            return getMsgTrans("noTarget");
         }
         return stringBuilder.toString();
     }
@@ -707,8 +1065,102 @@ public class LanguageUtils implements LanguageInterface {
             }
         }
         if (stringBuilder.toString().equals("")) {
-            return getMessageTranslation("noTarget");
+            return getMsgTrans("noTarget");
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public void sendHookMsg(String pluginPrefix, String type, List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        StringBuilder message = new StringBuilder("&fHooked " + type + ": [");
+        for (String value : list) {
+            if (type.equals("plugins")) {
+                switch (value) {
+                    case "Vault":
+                        if (UtilsHandler.getDepend().VaultEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "PlayerPoints":
+                        if (UtilsHandler.getDepend().PlayerPointsEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "GemsEconomy":
+                        if (UtilsHandler.getDepend().GemsEconomyEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "LuckPerms":
+                        if (UtilsHandler.getDepend().PlaceHolderAPIEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "PlaceHolderAPI":
+                        if (UtilsHandler.getDepend().DiscordSRVEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "DiscordSRV":
+                        if (UtilsHandler.getDepend().LuckPermsEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "MysqlPlayerDataBridge":
+                        if (UtilsHandler.getDepend().MpdbEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "CMI":
+                        if (UtilsHandler.getDepend().ResidenceEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "MythicMobs":
+                        if (UtilsHandler.getDepend().CMIEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "Residence":
+                        if (UtilsHandler.getDepend().MythicMobsEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "ItemJoin":
+                        if (UtilsHandler.getDepend().ItemJoinEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "AuthMe":
+                        if (UtilsHandler.getDepend().AuthMeEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "PvPManager":
+                        if (UtilsHandler.getDepend().PvPManagerEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "MultiverseCore":
+                        if (UtilsHandler.getDepend().MultiverseCoreEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "Vehicles":
+                        if (UtilsHandler.getDepend().SurvivalMechanicsEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "SurvivalMechanics":
+                        if (UtilsHandler.getDepend().VehiclesEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "MyPet":
+                        if (UtilsHandler.getDepend().MyPetEnabled())
+                            message.append(value).append(", ");
+                        break;
+                    case "MorphTool":
+                        if (UtilsHandler.getDepend().MorphToolEnabled())
+                            message.append(value).append(", ");
+                        break;
+                }
+            } else if (type.equals("Residence flags")) {
+                if (UtilsHandler.getCondition().isRegisteredFlag(value))
+                    message.append(value).append(", ");
+            } else {
+                message.append(value).append(", ");
+            }
+        }
+        if (!message.substring(message.length() - 1).equals("[")) {
+            sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
+        }
     }
 }

@@ -70,7 +70,7 @@ public class TabComplete implements TabCompleter {
             case "configbuilder":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
                     if (length == 1) {
-                        commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderProp().keySet());
+                        commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderGroupProp().keySet());
                     } else if (length == 2) {
                         if (args[1].equalsIgnoreCase("location")) {
                             commands.addAll(ConfigHandler.getConfigPath().getLocProp().keySet());

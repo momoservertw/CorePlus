@@ -11,9 +11,15 @@ Logs:
       Time: true
       New-File: false
       Zip: false
-  ConfigBuilder:
+  GroupConfig:
     Path: "plugins//CorePlus//Logs"
-    Name: "config_builder.yml"
+    Name: "groups.yml"
+    Time: false
+    New-File: false
+    Zip: false
+  CustomConfig:
+    Path: "plugins//CorePlus//Logs"
+    Name: "custom.yml"
     Time: false
     New-File: false
     Zip: false
@@ -25,6 +31,18 @@ Logs:
     Zip: false
   LotteryPlus:
     Path: "plugins//LotteryPlus//Logs"
+    Name: "latest.log"
+    Time: true
+    New-File: false
+    Zip: false
+  ServerPlus:
+    Path: "plugins//ServerPlus//Logs"
+    Name: "latest.log"
+    Time: false
+    New-File: false
+    Zip: false
+  ItemFix:
+    Path: "plugins//ServerPlus//Item-Fix"
     Name: "latest.log"
     Time: true
     New-File: false

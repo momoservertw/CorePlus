@@ -36,3 +36,35 @@ Particles:
     Run:
       Times: 8
       Interval: 20
+  Blood:
+    Type: BLOCK_CRACK
+    Material: REDSTONE_BLOCK
+    Amount: 5
+    Run:
+      Times: 8
+      Interval: 20
+  # REDSTONE, SPELL_MOB, SPELL_MOB_AMBIENT
+  Redstone_Red:
+    Type: REDSTONE
+    Color:
+      Enable: true
+      Type: RED
+      R: 255
+      G: 0
+      B: 0
+    Amount: 5
+    Run:
+      Times: 8
+      Interval: 20
+  Redstone_Dust:
+    Type: BLOCK_CRACK
+    Color:
+      Enable: true
+      Type: RED
+      R: 255
+      G: 0
+      B: 0
+    Amount: 5
+    Run:
+      Times: 8
+      Interval: 20

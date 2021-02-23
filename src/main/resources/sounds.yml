@@ -5,10 +5,6 @@
 Config-Version: 1
 
 Sounds:
-  Announcement:
-    Type: ENTITY_PLAYER_LEVELUP
-  Celebrate:
-    Type: ENTITY_PLAYER_LEVELUP
   Succeed:
     Type: ENTITY_PLAYER_LEVELUP
   Failed:

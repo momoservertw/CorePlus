@@ -19,8 +19,8 @@ public interface CommandInterface {
     /**
      * Executing command list for targets.
      *
-     * @param pluginName      the executing plugin name.
-     * @param players      the target players.
+     * @param pluginName  the executing plugin name.
+     * @param players     the target players.
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
@@ -29,7 +29,7 @@ public interface CommandInterface {
     /**
      * Executing command list.
      *
-     * @param pluginName      the executing plugin name.
+     * @param pluginName  the executing plugin name.
      * @param player      the target player.
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
@@ -39,7 +39,7 @@ public interface CommandInterface {
     /**
      * Executing command list.
      *
-     * @param pluginName      the executing plugin name.
+     * @param pluginName  the executing plugin name.
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
@@ -48,8 +48,8 @@ public interface CommandInterface {
     /**
      * Executing a command for multiple target.
      *
-     * @param pluginName      the executing plugin name.
-     * @param players      the target s.
+     * @param pluginName  the executing plugin name.
+     * @param players     the target s.
      * @param input       the input command.
      * @param placeholder translating placeholders or not.
      */
@@ -58,7 +58,7 @@ public interface CommandInterface {
     /**
      * Executing a command.
      *
-     * @param pluginName      the executing plugin prefix.
+     * @param pluginName  the executing plugin prefix.
      * @param player      the target player.
      * @param input       the input command.
      * @param placeholder translating placeholders or not.
@@ -68,7 +68,7 @@ public interface CommandInterface {
     /**
      * Executing a command.
      *
-     * @param pluginName      the executing plugin name.
+     * @param pluginName  the executing plugin name.
      * @param input       the input command.
      * @param placeholder translating placeholders or not.
      */
@@ -79,7 +79,7 @@ public interface CommandInterface {
      * Executing commands from CorePlus config.yml.
      * Format: "custom: Group, Args"
      *
-     * @param pluginName      the executing plugin name.
+     * @param pluginName  the executing plugin name.
      * @param player      the target player.
      * @param group       the input group name.
      * @param placeholder translating placeholders or not.
@@ -91,7 +91,7 @@ public interface CommandInterface {
      * Executing commands from CorePlus config.yml.
      * Format: "custom: Group, Args"
      *
-     * @param pluginName      the executing plugin name.
+     * @param pluginName  the executing plugin name.
      * @param player      the target player.
      * @param input       the input condition and action.
      * @param placeholder translating placeholders or not.
@@ -103,7 +103,7 @@ public interface CommandInterface {
      * Format: "log: Message"
      *
      * @param pluginName the executing plugin name.
-     * @param input  the input message.
+     * @param input      the input message.
      */
     void dispatchLogCmd(String pluginName, String input);
 
@@ -112,7 +112,7 @@ public interface CommandInterface {
      * Format: "log-custom: Group, Message"
      *
      * @param pluginName the executing plugin name.
-     * @param input  the input group name and message.
+     * @param input      the input group name and message.
      */
     void dispatchLogCustomCmd(String pluginName, String input);
 
@@ -121,8 +121,8 @@ public interface CommandInterface {
      * Format: "console: Command"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input command.
+     * @param player     the target player.
+     * @param input      the input command.
      */
     void dispatchConsoleCmd(String pluginName, Player player, String input);
 
@@ -131,8 +131,8 @@ public interface CommandInterface {
      * Format: "op: Command"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input command.
+     * @param player     the target player.
+     * @param input      the input command.
      */
     void dispatchOpCmd(String pluginName, Player player, String input);
 
@@ -141,8 +141,8 @@ public interface CommandInterface {
      * Format: "player: Command"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input command.
+     * @param player     the target player.
+     * @param input      the input command.
      */
     void dispatchPlayerCmd(String pluginName, Player player, String input);
 
@@ -151,8 +151,8 @@ public interface CommandInterface {
      * Format: "chat-op: Message"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input message.
+     * @param player     the target player.
+     * @param input      the input message.
      */
     void sendChatOpMsg(String pluginName, Player player, String input);
 
@@ -161,8 +161,8 @@ public interface CommandInterface {
      * Format: "bungee: Command"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input command.
+     * @param player     the target player.
+     * @param input      the input command.
      */
     void dispatchBungeeCordCmd(String pluginName, Player player, String input);
 
@@ -171,7 +171,7 @@ public interface CommandInterface {
      * Format: "switch: server player"
      *
      * @param pluginName the executing plugin name.
-     * @param input  the input command.
+     * @param input      the input command.
      */
     void dispatchSwitchCmd(String pluginName, String input);
 
@@ -180,8 +180,8 @@ public interface CommandInterface {
      * Format: "sound: Sound, Volume, Pitch"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the input command.
+     * @param player     the target player.
+     * @param input      the input command.
      */
     void dispatchSoundCmd(String pluginName, Player player, String input);
 
@@ -190,8 +190,8 @@ public interface CommandInterface {
      * Format: "sound-custom: Group"
      *
      * @param pluginName the executing plugin name.
-     * @param player the target player.
-     * @param input  the group name.
+     * @param player     the target player.
+     * @param input      the group name.
      */
     void dispatchSoundCustomCmd(String pluginName, Player player, String input);
 
@@ -200,8 +200,8 @@ public interface CommandInterface {
      * Format: "particle: Particle, Amount, OffsetX, OffsetY, OffsetZ, Speed"
      *
      * @param pluginName the executing plugin name.
-     * @param loc    the target Location.
-     * @param input  the input value.
+     * @param loc        the target Location.
+     * @param input      the input value.
      */
     void dispatchParticleCmd(String pluginName, Location loc, String input);
 
@@ -210,8 +210,8 @@ public interface CommandInterface {
      * Format: "particle-custom: Group"
      *
      * @param pluginName the executing plugin name.
-     * @param loc    the target Location.
-     * @param input  the group name.
+     * @param loc        the target Location.
+     * @param input      the group name.
      */
     void dispatchParticleCustomCmd(String pluginName, Location loc, String input);
 }

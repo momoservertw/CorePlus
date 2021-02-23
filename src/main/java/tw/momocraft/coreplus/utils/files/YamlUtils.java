@@ -1,13 +1,13 @@
 package tw.momocraft.coreplus.utils.files;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class YamlUtils {
@@ -15,40 +15,67 @@ public class YamlUtils {
     private final Map<String, YamlConfiguration> yamlMap = new HashMap<>();
 
     public YamlUtils() {
-        loadFile("discord_message");
+        loadGroup("discord_messages");
 
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fYaml file: " + yamlMap.keySet().toString());
+        sendLoadedMsg();
     }
 
-    private void loadFile(String group) {
+    private void sendLoadedMsg() {
+        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                "&fLoaded YAML files: " + yamlMap.keySet().toString());
+    }
+
+    public boolean load(String group, String filePath) {
+        try {
+            yamlMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private boolean loadGroup(String group) {
         String filePath;
-        String fileName;
         switch (group) {
             case "discord_messages":
-                filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV";
-                fileName = "messages.yml";
+                filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV//messages.yml";
                 break;
             default:
-                return;
+                return false;
         }
-        File file = new File(filePath, fileName);
-        yamlMap.put(group, YamlConfiguration.loadConfiguration(file));
+        return load(group, filePath);
     }
 
-    private void loadFile(String fileName, String filePath) {
-        File file = new File(filePath, fileName);
-        yamlMap.put(fileName, YamlConfiguration.loadConfiguration(file));
+
+    public String getString(String group, String input) {
+        YamlConfiguration config = yamlMap.get(group);
+        if (config == null) {
+            loadGroup(group);
+        }
+        try {
+            return config.getString(input);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
-    public Map<String, YamlConfiguration> getYamlMap() {
-        return yamlMap;
+    public List<String> getStringList(String group, String input) {
+        YamlConfiguration config = yamlMap.get(group);
+        if (config == null) {
+            loadGroup(group);
+        }
+        try {
+            return config.getStringList(input);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
-    public FileConfiguration getConfig(String fileName) {
-        YamlConfiguration yamlConfiguration = yamlMap.get(fileName);
+    public YamlConfiguration getConfig(String group) {
+        YamlConfiguration yamlConfiguration = yamlMap.get(group);
         if (yamlConfiguration == null) {
-            loadFile(fileName);
+            loadGroup(group);
+            return yamlMap.get(group);
         }
         return yamlConfiguration;
     }

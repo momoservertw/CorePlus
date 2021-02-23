@@ -1,9 +1,15 @@
-package tw.momocraft.coreplus.utils;
+package tw.momocraft.coreplus.handlers;
 
 import org.bukkit.Bukkit;
+import tw.momocraft.coreplus.Commands;
+import tw.momocraft.coreplus.CorePlus;
+import tw.momocraft.coreplus.TabComplete;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.listeners.CommandOnline;
+import tw.momocraft.coreplus.utils.MultiverseCoreUtils;
 import tw.momocraft.coreplus.utils.conditions.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.conditions.ResidenceUtils;
 import tw.momocraft.coreplus.utils.economy.GemsEcoUtils;
@@ -11,7 +17,10 @@ import tw.momocraft.coreplus.utils.economy.PlayerPointsUtils;
 import tw.momocraft.coreplus.utils.economy.VaultUtils;
 import tw.momocraft.coreplus.utils.permission.LuckPermsUtils;
 
-public class Dependence implements DependInterface {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DependHandler implements DependInterface {
 
     private VaultUtils vaultApi;
     private PlayerPointsUtils playerPointsApi;
@@ -41,7 +50,19 @@ public class Dependence implements DependInterface {
     private boolean MyPet = false;
     private boolean MorphTool = false;
 
-    public Dependence() {
+    public DependHandler() {
+        setup();
+        registerEvents();
+    }
+
+    private void registerEvents() {
+        CorePlus.getInstance().getCommand("CorePlus").setExecutor(new Commands());
+        CorePlus.getInstance().getCommand("CorePlus").setTabCompleter(new TabComplete());
+
+        CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
+    }
+
+    private void setup() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vault")) {
             Vault = Bukkit.getServer().getPluginManager().getPlugin("Vault") != null;
             if (Vault) {
@@ -123,49 +144,6 @@ public class Dependence implements DependInterface {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool")) {
             MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
         }
-        sendUtilityDepends();
-    }
-
-
-    private void sendUtilityDepends() {
-        String hookMsg = "&fHooked: ["
-                + (VaultEnabled() ? "Vault, " : "")
-                + (PlayerPointsEnabled() ? "PlayerPoints, " : "")
-                + (GemsEconomyEnabled() ? "GemsEconomy, " : "")
-                + (LuckPermsEnabled() ? "LuckPerms, " : "")
-                + (PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
-                + (LangUtilsEnabled() ? "LangUtils, " : "")
-                + (DiscordSRVEnabled() ? "DiscordSRV, " : "")
-                + (MpdbEnabled() ? "MysqlPlayerDataBridge, " : "")
-                + (CMIEnabled() ? "CMI, " : "")
-                + (MythicMobsEnabled() ? "MythicMobs, " : "")
-                + (ResidenceEnabled() ? "Residence, " : "")
-                + (ItemJoinEnabled() ? "ItemJoin, " : "")
-                + (AuthMeEnabled() ? "AuthMe, " : "")
-                + (PvPManagerEnabled() ? "PvPManager, " : "")
-                + (MultiverseCoreEnabled() ? "MultiverseCore, " : "")
-                + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
-                + (VehiclesEnabled() ? "Vehicles, " : "")
-                + (CMIEnabled() ? "CMI, " : "")
-                + (AuthMeEnabled() ? "AuthMe, " : "")
-                + (PvPManagerEnabled() ? "PvPManager, " : "")
-                + (MyPetEnabled() ? "MyPet, " : "")
-                + (MorphToolEnabled() ? "MorphTool, " : "");
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), hookMsg.substring(0, hookMsg.length() - 2) + "]");
-
-        /*
-        if (ResidenceEnabled()) {
-            hookMsg = "&fResidence Flags: [ "
-                    + (FlagPermissions.getPosibleAreaFlags().contains("spawnbypass") ? "spawnbypass, " : "")
-                    + (FlagPermissions.getPosibleAreaFlags().contains("spawnerbypass") ? "spawnerbypass, " : "")
-                    + (FlagPermissions.getPosibleAreaFlags().contains("damagebypass") ? "damagebypass, " : "")
-            ;
-            try {
-                UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + " &f]");
-            } catch (Exception ignored) {
-            }
-        }
-         */
     }
 
     @Override

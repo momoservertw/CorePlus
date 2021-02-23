@@ -2,10 +2,14 @@ package tw.momocraft.coreplus.utils.conditions;
 
 import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
+
+import java.util.Set;
 
 
 public class ItemJoinUtils {
@@ -42,5 +46,17 @@ public class ItemJoinUtils {
 
     public ItemStack getItemStack(Player player, String node) {
         return ij.getItemStack(player, node);
+    }
+
+    public Set<String> getItemNodes() {
+        ConfigurationSection config = UtilsHandler.getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
+        if (config != null) {
+            return config.getKeys(false);
+        }
+        return null;
+    }
+
+    public ConfigurationSection getItemConfig() {
+        return UtilsHandler.getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
     }
 }

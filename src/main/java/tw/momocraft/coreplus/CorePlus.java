@@ -3,9 +3,8 @@ package tw.momocraft.coreplus;
 import org.bukkit.plugin.java.JavaPlugin;
 import tw.momocraft.coreplus.api.*;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.handlers.RegisterHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.MySQLUtils;
+import tw.momocraft.coreplus.utils.files.MySQLUtils;
 import tw.momocraft.coreplus.utils.PlayerUtils;
 import tw.momocraft.coreplus.utils.Updater;
 import tw.momocraft.coreplus.utils.Utils;
@@ -18,7 +17,6 @@ public class CorePlus extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigHandler.generateData(false);
-        RegisterHandler.registerEvents();
         UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Enabled.");
     }
 

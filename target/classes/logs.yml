@@ -29,3 +29,15 @@ Logs:
     Time: true
     New-File: false
     Zip: false
+  ServerPlus:
+    Path: "plugins//ServerPlus//Logs"
+    Name: "latest.log"
+    Time: false
+    New-File: false
+    Zip: false
+  ItemFix:
+    Path: "plugins//ServerPlus//Item-Fix"
+    Name: "latest.log"
+    Time: true
+    New-File: false
+    Zip: false

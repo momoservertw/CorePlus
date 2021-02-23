@@ -15,7 +15,7 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class CommandOnline implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             return;
@@ -35,7 +35,7 @@ public class CommandOnline implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     private void onSyncCompleteEvent(SyncCompleteEvent e) {
         Player player = e.getPlayer();
         String playerName = player.getName();

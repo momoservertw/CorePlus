@@ -46,7 +46,7 @@ public class LocationUtils {
             }
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking location.");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "&7If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         return false;
@@ -140,8 +140,8 @@ public class LocationUtils {
                     }
             }
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "There is an error occurred. Please check the \"Location\" format.");
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), type + ": " + value);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "There is an error occurred. Please check the \"Location\" format.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), type + ": " + value);
         }
         return false;
     }

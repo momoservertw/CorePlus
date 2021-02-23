@@ -3,26 +3,21 @@ package tw.momocraft.coreplus.utils.customcommands;
 import org.bukkit.Sound;
 
 public class SoundMap {
-    private String groupName;
     private Sound type;
-    private long volume;
-    private long pitch;
+    private int volume;
+    private int pitch;
     private int times;
     private int interval;
-
-    public String getGroupName() {
-        return groupName;
-    }
 
     public Sound getType() {
         return type;
     }
 
-    public long getVolume() {
+    public int getVolume() {
         return volume;
     }
 
-    public long getPitch() {
+    public int getPitch() {
         return pitch;
     }
 
@@ -34,19 +29,16 @@ public class SoundMap {
         return interval;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
 
     public void setType(Sound type) {
         this.type = type;
     }
 
-    public void setVolume(long volume) {
+    public void setVolume(int volume) {
         this.volume = volume;
     }
 
-    public void setPitch(long pitch) {
+    public void setPitch(int pitch) {
         this.pitch = pitch;
     }
 

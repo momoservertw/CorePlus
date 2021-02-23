@@ -1,5 +1,7 @@
 package tw.momocraft.coreplus.api.utils;
 
+import tw.momocraft.coreplus.handlers.UtilsHandler;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -28,10 +30,10 @@ public class CopyToUpdateFolder {
         fileName = "RegionPlus-1.1.0.jar";
         targetList.add(new File("C:\\Users\\sayuri\\IdeaProjects\\RegionPlus\\target", fileName));
 
-        copyFiles(path, targetList);
+        start(path, targetList);
     }
 
-    private static void copyFiles(String path, List<File> targetList) {
+    private static void start(String path, List<File> targetList) {
         try {
             for (File file : targetList) {
                 Files.copy(file.toPath(),

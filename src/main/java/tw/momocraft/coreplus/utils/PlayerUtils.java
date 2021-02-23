@@ -151,7 +151,7 @@ public class PlayerUtils implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -189,7 +189,7 @@ public class PlayerUtils implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -227,7 +227,7 @@ public class PlayerUtils implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -267,7 +267,7 @@ public class PlayerUtils implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Can not find price type: " + type);
+        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -280,7 +280,7 @@ public class PlayerUtils implements PlayerInterface {
                         "player_uuid", uuid.toString(), "total_exp"));
                 return exp;
             }
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPrefix(), "Target is in other server: " + uuid);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Target is in other server: " + uuid);
             return 0;
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {

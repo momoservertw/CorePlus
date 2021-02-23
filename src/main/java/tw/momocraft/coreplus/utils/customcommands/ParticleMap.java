@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.utils.customcommands;
 
+import org.bukkit.Material;
 import org.bukkit.Particle;
 
 public class ParticleMap {
@@ -13,6 +14,12 @@ public class ParticleMap {
     private double offsetY;
     private double offsetZ;
     private double extra;
+    private int colorR;
+    private int colorG;
+    private int colorB;
+    private String colorType;
+    private Material material;
+
 
     public String getGroupName() {
         return groupName;
@@ -50,6 +57,25 @@ public class ParticleMap {
         return extra;
     }
 
+    public int getColorR() {
+        return colorR;
+    }
+
+    public int getColorG() {
+        return colorG;
+    }
+
+    public int getColorB() {
+        return colorB;
+    }
+
+    public String getColorType() {
+        return colorType;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
@@ -85,5 +111,25 @@ public class ParticleMap {
 
     public void setExtra(double extra) {
         this.extra = extra;
+    }
+
+    public void setColorR(int colorR) {
+        this.colorR = colorR;
+    }
+
+    public void setColorG(int colorG) {
+        this.colorG = colorG;
+    }
+
+    public void setColorB(int colorB) {
+        this.colorB = colorB;
+    }
+
+    public void setColorType(String colorType) {
+        this.colorType = colorType;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }

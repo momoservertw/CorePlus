@@ -15,14 +15,20 @@ public interface ConfigInterface {
     boolean isMySQL();
 
     /**
-     * @return to get the property of Location settings.
+     * @return to get the property of Location settings in location.yml.
      */
     Map<String, LocationMap> getLocProp();
 
     /**
-     * @return to get the property of Blocks settings.
+     * @return to get the property of Blocks settings in blocks.yml.
      */
     Map<String, BlocksMap> getBlocksProp();
+
+    /**
+     *
+     * @return the group settings in groups.yml.
+     */
+    Map<String, Map<String, List<String>>> getGroupProp();
 
     /**
      * Adding custom group to the list and checking the type is exist.

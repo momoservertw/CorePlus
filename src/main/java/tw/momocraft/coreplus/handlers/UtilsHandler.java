@@ -13,29 +13,32 @@ import tw.momocraft.coreplus.utils.language.VanillaUtils;
 public class UtilsHandler {
 
     public static void setUpFirst() {
+        dependence = new DependHandler();
         languageUtils = new LanguageUtils();
     }
 
+    public static void setUpMid() {
+        fileUtils = new FileUtils();
+        mySQLUtils = new MySQLUtils();
+        jsonUtils = new JsonUtils();
+        yamlUtils = new YamlUtils();
+        propertiesUtils = new PropertiesUtils();
+        vanillaUtils = new VanillaUtils();
+    }
+
     public static void setUpLast() {
-        dependence = new Dependence();
-        customCommands = new CustomCommands();
+        discordUtils = new DiscordUtils();
         utils = new Utils();
         conditionUtils = new ConditionUtils();
         playerUtils = new PlayerUtils();
         entityUtils = new EntityUtils();
+        customCommands = new CustomCommands();
         zipper = new Zipper();
         logger = new Logger();
-        mySQLUtils = new MySQLUtils();
         updater = new Updater();
-        vanillaUtils = new VanillaUtils();
-        discordUtils = new DiscordUtils();
-        fileUtils = new FileUtils();
-        jsonUtils = new JsonUtils();
-        yamlUtils = new YamlUtils();
-        propertyUtils = new PropertyUtils();
     }
 
-    private static Dependence dependence;
+    private static DependHandler dependence;
     private static CustomCommands customCommands;
     private static LanguageUtils languageUtils;
     private static Updater updater;
@@ -51,9 +54,9 @@ public class UtilsHandler {
     private static FileUtils fileUtils;
     private static JsonUtils jsonUtils;
     private static YamlUtils yamlUtils;
-    private static PropertyUtils propertyUtils;
+    private static PropertiesUtils propertiesUtils;
 
-    public static Dependence getDepend() {
+    public static DependHandler getDepend() {
         return dependence;
     }
 
@@ -117,7 +120,7 @@ public class UtilsHandler {
         return yamlUtils;
     }
 
-    public static PropertyUtils getProperty() {
-        return propertyUtils;
+    public static PropertiesUtils getProperty() {
+        return propertiesUtils;
     }
 }

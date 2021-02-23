@@ -1,11 +1,19 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public interface UtilsInterface {
 
@@ -93,42 +101,6 @@ public interface UtilsInterface {
     boolean containIgnoreValue(String value, List<String> list);
 
     /**
-     * Checking the location of block is liquid.
-     *
-     * @param block the checking location of block.
-     * @return if the location is liquid like water or lava.
-     */
-    boolean isLiquid(Block block);
-
-    /**
-     * Checking the location of block is liquid and match the expect value.
-     *
-     * @param block the checking location of block.
-     * @param value the expect value.
-     * @param def   the default return value if the value is null.
-     * @return if the location is liquid like water or lava.
-     */
-    boolean isLiquid(Block block, String value, boolean def);
-
-    /**
-     * Checking the world time is day or not.
-     *
-     * @param time the time of world.
-     * @return the world time is day or not
-     */
-    boolean isDay(double time);
-
-    /**
-     * Checking the world time is day or not and match the expect value.
-     *
-     * @param time  the time of world.
-     * @param value the expect value.
-     * @param def   the default return value if the value is null.
-     * @return the world time is day or not
-     */
-    boolean isDay(double time, String value, boolean def);
-
-    /**
      * Comparing two numbers.
      *
      * @param operator the comparison operator to compare two numbers.
@@ -181,17 +153,15 @@ public interface UtilsInterface {
     boolean getRange(double number, double r, boolean equal);
 
     /**
-     *
-     * @param loc             location.
-     * @param loc2            location2.
+     * @param loc  location.
+     * @param loc2 location2.
      * @return get the two location's distance.
      */
     double getDistanceXZ(Location loc, Location loc2);
 
     /**
-     *
-     * @param loc             location.
-     * @param loc2            location2.
+     * @param loc  location.
+     * @param loc2 location2.
      * @return get the two location's distance.
      */
     double inTheRangeXZY(Location loc, Location loc2);
@@ -212,22 +182,63 @@ public interface UtilsInterface {
      */
     boolean inTheRangeXZ(Location loc, Location loc2, int distanceSquared);
 
+    List<String> getStringListFromUUIDs(List<UUID> input);
+
+    String getStringFromUUIDs(List<UUID> input);
+
+    List<String> getStringListFromPlayers(List<Player> input);
+
+    String getStringFromPlayers(List<Player> input);
+
+    List<String> getStringListDisplayNameFromPlayers(List<Player> input);
+
+    String getStringDisplayNameFromPlayers(List<Player> input);
+
+    List<String> getStringListTypeFromEntities(List<Entity> input);
+
+    String getStringTypeFromEntities(List<Entity> input);
+
+    List<String> getStringListNameFromEntities(List<Entity> input);
+
+    String getStringNameFromEntities(List<Entity> input);
+
+    List<String> getStringListTypeFromItem(List<ItemStack> input);
+
+    String getStringTypeFromItems(List<ItemStack> input);
+
+    List<String> getStringListNameFromItems(List<ItemStack> input);
+
+    String getStringNameFromItems(List<ItemStack> input);
+
+    List<String> getStringListFromBlocks(List<Block> input);
+
+    String getStringFromBlocks(List<Block> input);
+
+    List<String> getStringListFromMaterials(List<Material> input);
+
+    String getStringFromMaterials(List<Material> input);
+
+    String getNearbyString(Location loc, String returnType, String type, String group, int range);
+
+    List<String> getNearbyStringList(Location loc, String returnType, String type, String group, int range);
+
     /**
-     *
-     * @param loc the checking location.
+     * @param loc          the checking location.
      * @param rangeSquared the checking range.
      * @return the player list nearby.
      */
     List<Player> getNearbyPlayersXZY(Location loc, int rangeSquared);
 
     /**
-     *
-     * @param loc the checking location.
+     * @param loc          the checking location.
      * @param rangeSquared the checking range.
      * @return the player list nearby.
      */
     List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared);
 
+    List<Block> getNearbyBlocks(Location loc, int range);
+
+    List<Block> getNearbyBlocks(Location loc, int X, int Y, int Z);
     /**
      * Sorting a map from high to low by the values.
      *
@@ -263,78 +274,12 @@ public interface UtilsInterface {
      * @return the new translated string.
      */
     List<String> translateColorCode(List<String> input);
-    /**
-     * Getting a skull texture value from a skull item.
-     *
-     * @param itemStack the item of skull.
-     * @return the texture value of skull. Returns null if the item isn't skull.
-     */
-    String getSkullValue(ItemStack itemStack);
 
     /**
-     * Checking a ItemJoin's custom item node is menu or not.
-     * Needed to set the menu node in config.yml.
+     * Getting the color object.
      *
-     * @param node the node of custom item.
-     * @return if the custom item is menu.
+     * @param input the name of color
+     * @return the Color object.
      */
-    boolean isMenuNode(String node);
-
-    /**
-     * Checking a item is menu or not.
-     *
-     * @param itemStack the checking item.
-     * @return the item is menu or not.
-     */
-    boolean isMenu(ItemStack itemStack);
-
-    /**
-     * Checking a item is a ItemJoin's custom item or not.
-     *
-     * @param itemStack the checking item.
-     * @return the item is a custom item or not.
-     */
-    boolean isCustomItem(ItemStack itemStack);
-
-    /**
-     * To get the ItemStack of menu which specified for a player.
-     *
-     * @param player the specify item for that player.
-     * @return the specify item.
-     */
-    ItemStack getMenuItemStack(Player player);
-
-    /**
-     * To get the ItemStack which specified for a player.
-     *
-     * @param player the specify item for that player.
-     * @param node the ItemJoin's custom item node.
-     * @return the specify item.
-     */
-    ItemStack getItemJoinItemStack(Player player, String node);
-
-    /**
-     * To get the item node form item itemStack.
-     * Return null is the itemStack are not ItemJoin's item.
-     *
-     * @param itemStack the itemStack to get node.
-     * @return the item node form item itemStack.
-     */
-    String getItemNode(ItemStack itemStack);
-
-    /**
-     * To check if the block type can be use like door, craft table...
-     *
-     * @param blockType the checking block type.
-     * @return if the block type can be use like door, craft table...
-     */
-    boolean isCanUse(String blockType);
-
-    /**
-     * To check if the block type is a container like chest...
-     *
-     * @param blockType the checking block type.
-     * @return if the block type is a container like chest...
-     */
-    boolean isContainer(String blockType);
+    Color getColor(String input);
 }

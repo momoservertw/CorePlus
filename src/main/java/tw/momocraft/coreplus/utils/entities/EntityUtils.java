@@ -11,9 +11,15 @@ public class EntityUtils implements EntityInterface {
         return MythicMobs.inst().getAPIHelper().isMythicMob(entity);
     }
 
-
     @Override
     public boolean isMythicMobName(String name) {
         return MythicMobs.inst().getAPIHelper().getMythicMob(name) == null;
+    }
+
+    @Override
+    public String getMythicMobName(Entity entity) {
+        if (!isMythicMob(entity))
+            return null;
+        return MythicMobs.inst().getAPIHelper().getMythicMobInstance(entity).getType().getInternalName();
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.ConfigBuilder;
+import tw.momocraft.coreplus.utils.files.ConfigBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,9 +143,15 @@ public class Commands implements CommandExecutor {
                 return true;
             case "configbuilder":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
-                    if (length == 2) {
+                    if (length == 3) {
                         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "Creating configuration for " + args[1] + "...");
-                        ConfigBuilder.start(sender, args[1]);
+                        ConfigBuilder.startCustom(sender, args[2]);
+                        return true;
+                    }
+                    // crp configbuilder group
+                    else if (length == 2) {
+                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "Creating configuration for group.yml...");
+                        ConfigBuilder.startGroups(sender);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

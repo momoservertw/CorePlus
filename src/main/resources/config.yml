@@ -39,23 +39,122 @@ General:
       ItemJoin: true
       AuthMe: true
 
-# To create a custom configuration in the path of log.yml "ConfigBuilder".
-# Command: /crp configbuilder <Type>
+# To create a custom configurations.
+# More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder
 Config-Builder:
-  Entity:
-    Format: " - %type%"
-    Ignore:
-      - PLAYER
-  Material:
-    Format: " - %type%"
-    Ignore: []
-  OfflinePlayer-UUID:
-    Format: " - %type%"
-    # Can be UUID or Player name.
-    Ignore: []
-  OfflinePlayer-Name:
-    Format: " - %type%"
-    Ignore: []
+  # To create groups.yml configuration in the path from log.yml "GroupsConfig".
+  # Command: /crp configbuilder groups
+  Groups:
+    Entities:
+      All:
+        # Can be a Group of types or single entity type.
+        List:
+          - Entity
+        Ignore-List: []
+      LivingEntity:
+        List:
+          - LivingEntity
+      Items:
+        List:
+          - Item
+      Monsters:
+        List:
+          - Monster
+          - Flying
+      Normal:
+        List:
+          - Monster
+          - Flying
+        Ignore-List:
+          - Boss
+      Animals:
+        List:
+          - Animals
+      Breedable:
+        List:
+          - Breedable
+      Pets:
+        List:
+          - Tameable
+          - Fox
+          - Golem
+        Ignore-List:
+          - Shulker
+      ChestedHorse:
+        List:
+          - ChestedHorse
+      Useless:
+        List:
+          - Bat
+          - Fish
+          - BAT
+    Materials:
+      All:
+        List:
+          - Entity
+        Ignore-List: []
+      Container:
+        List:
+          - Chest
+          - Furnace
+          - Hopper
+          - BrewingStand
+          - Dispenser
+      Usable:
+        List:
+          - Chest
+          - Furnace
+          - Hopper
+          - BrewingStand
+          - Dispenser
+          - ANVIL
+
+          - Powerable
+          - Jukebox
+          - EnderChest
+          - Bed
+          - CRAFTING_TABLE
+          - SHULKER_BOX{endsWith;}
+      Machines:
+        - Powerable
+        - PistonHead
+        - Piston
+        - Hopper
+        - Comparator
+        - DaylightDetector
+  # To create a custom configuration in the path of log.yml "CustomConfig".
+  # Command: /crp configbuilder custom <Type> <Group>
+  Custom:
+    OfflinePlayer-UUID:
+      Type: OfflinePlayer-UUID
+      Row-line: true
+      Title: "%title%"
+      Format: "  - %value%"
+      # Can be UUID or Player name.
+      Ignore-List: []
+    OfflinePlayer-Name:
+      Type: OfflinePlayer-Name
+      Row: true
+      Title: "%title%"
+      Row-Format: "  - %value%"
+      Format: "  - %value%"
+      Ignore-List: []
+    Example-Entity-Group:
+      Type: entity
+      Row-line: true
+      Title: "%title%"
+      Format: "  - %value%"
+      List:
+        - Boss
+      Ignore-List: []
+    Example-Material-Group:
+      Type: material
+      Row-line: true
+      Title: "%title%"
+      Format: "  - %value%"
+      List:
+        - Chest
+      Ignore-List: []
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "
@@ -89,13 +188,15 @@ Message:
     cmdplayer: "&f/coreplus cmdplayer <player> <command> &8- &7Executes custom command for a player."
     cmdonline: "&f/coreplus cmdonline <player> <expiration> <command> &8- &7Executes the custom command after the player joined the server."
   Translation:
+    console: "Console"
+    noTargets: "No Target"
+    noData: "No Data"
     money: "money"
     points: "points"
     res_points: "points"
     Blocks: "blocks"
     resCreate: "create residence"
     resChangeSize: "change residence size"
-    noTargets: "no one"
     fishing: "fishing"
     usingItem: "using items"
     interactBlock: "interact blocks"

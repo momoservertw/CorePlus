@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus.utils.language;
 
-import com.google.gson.JsonObject;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -10,35 +9,37 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 public class VanillaUtils {
 
 
-    public String getValinaName(Player player, String input, String type) {
+    public String getValinaName(String pluginName, Player player, String input, String type) {
         if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
             return input;
         }
         if (input == null) {
             return "";
         }
-        return getValinaNode(getLocal(player), input, type);
+        return getValinaNode(pluginName, getLocal(player), input, type);
     }
 
-    public String getValinaName(String input, String type) {
+    public String getValinaName(String pluginName, String input, String type) {
         if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
             return input;
         }
         if (input == null) {
             return "";
         }
-        return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
+        return getValinaNode(pluginName, ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
     }
 
 
-    public String getValinaNode(String local, String input, String type) {
+    public String getValinaNode(String pluginName, String local, String input, String type) {
         if (local == null || local.equals("")) {
-            return input;
+            local = ConfigHandler.getConfigPath().getVanillaTransLocal();
+            if (local == null)
+                return input;
         }
         if (type.equals("entity")) {
             try {
                 EntityType entityType = EntityType.valueOf(input);
-                return getLocalLang("entity.minecraft." + input.toLowerCase(), local);
+                return getLocalLang(pluginName, "entity.minecraft." + input.toLowerCase(), local);
             } catch (Exception ex) {
                 return input;
             }
@@ -47,9 +48,9 @@ public class VanillaUtils {
             try {
                 Material material = Material.valueOf(input);
                 if (material.isBlock()) {
-                    return getLocalLang("block.minecraft." + input.toLowerCase(), local);
+                    return getLocalLang(pluginName, "block.minecraft." + input.toLowerCase(), local);
                 }
-                return getLocalLang("item.minecraft." + input.toLowerCase(), local);
+                return getLocalLang(pluginName, "item.minecraft." + input.toLowerCase(), local);
             } catch (Exception ex) {
                 return input;
             }
@@ -67,10 +68,10 @@ public class VanillaUtils {
         }
     }
 
-    private String getLocalLang(String input, String local) {
-        JsonObject jsonObject = UtilsHandler.getJson().getJsonMap().get(local + ".json");
+    private String getLocalLang(String pluginName, String local, String input) {
+        String lang = UtilsHandler.getJson().getValue(pluginName, local, "lang_" + input);
         try {
-            return jsonObject.get(input).toString().replaceAll("\"", "");
+            return lang.replaceAll("\"", "");
         } catch (Exception ex) {
             UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             return input;

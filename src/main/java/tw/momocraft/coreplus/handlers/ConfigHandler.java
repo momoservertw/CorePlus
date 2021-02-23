@@ -23,12 +23,14 @@ public class ConfigHandler {
     private static YamlConfiguration soundsYAML;
     private static YamlConfiguration actionBarsYAML;
     private static YamlConfiguration titleMessagesYAML;
+    private static YamlConfiguration dataYAML;
 
     private static ConfigPath configPath;
 
     public static void generateData(boolean reload) {
         UtilsHandler.setUpFirst();
         genConfigFile("config.yml");
+        genConfigFile("data.yml");
         genConfigFile("groups.yml");
         genConfigFile("commands.yml");
         genConfigFile("logs.yml");
@@ -38,6 +40,7 @@ public class ConfigHandler {
         genConfigFile("sounds.yml");
         genConfigFile("action_bars.yml");
         genConfigFile("title_messages.yml");
+        UtilsHandler.setUpMid();
         setConfigPath(new ConfigPath());
         UtilsHandler.setUpLast();
         if (!reload) {
@@ -107,6 +110,11 @@ public class ConfigHandler {
                     getConfigData(filePath, fileName);
                 }
                 break;
+            case "data.yml":
+                if (dataYAML == null) {
+                    getConfigData(filePath, fileName);
+                }
+                break;
             default:
                 break;
         }
@@ -120,11 +128,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                String pluginName = "";
-                if (!fileName.equals("config.yml")) {
-                    pluginName = ConfigHandler.getPrefix();
-                }
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&cCannot save " + fileName + " to disk!");
+                UtilsHandler.getLang().sendErrorMsg("CorePlus", "&cCannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -188,6 +192,11 @@ public class ConfigHandler {
                     titleMessagesYAML = YamlConfiguration.loadConfiguration(file);
                 }
                 return titleMessagesYAML;
+            case "data.yml":
+                if (saveData) {
+                    dataYAML = YamlConfiguration.loadConfiguration(file);
+                }
+                return dataYAML;
         }
         return null;
     }
@@ -209,6 +218,7 @@ public class ConfigHandler {
             case "particles.yml":
             case "action_bars.yml":
             case "title_messages.yml":
+            case "data.yml":
                 ver = 1;
                 break;
         }

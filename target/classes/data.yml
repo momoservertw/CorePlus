@@ -1,14 +1,47 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/data.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+# Changed this settings need to restart the server.
 MySQL:
-  Enable: false
-  username: root
-  password: ""
-  hostname: localhost
-  port: 3306
-  database:
-    PlayerdataPlus: playerdataplus
-    HotkeyPlus: hotkeyplus
-    ServerPlus: serverplus
-    MySQLPlayerDataBridge:
-      Value: mysqlplayerdatabridge
-      ExpTable: mpdb_experience
-    MyCommand: mycommand
+  Localhost:
+    Enable: false
+    hostname: localhost
+    port: 3306
+    username: root
+    password: ""
+    Groups:
+      MySQLPlayerDataBridge:
+        Enable: false
+        Database: mysqlplayerdatabridge
+        Tables:
+          Experience: mpdb_experience
+      PlayerdataPlus:
+        Enable: false
+        Name: playerdataplus
+      HotkeyPlus:
+        Enable: false
+        Name: hotkeyplus
+      ServerPlus:
+        Enable: false
+        Name: serverplus
+      MyCommand:
+        Enable: false
+        Name: mycommand
+      Example:
+        Enable: false
+        Name: example
+Yaml:
+  Example:
+    Enable: true
+    Path: "//plugins//Example_Plugin//config.yml"
+Json:
+  Example:
+    Enable: true
+    Path: "//plugins//Example_Plugin//config.json"
+Properties:
+  Example:
+    Enable: true
+    Path: "//plugins//Example_Plugin//config.properties"

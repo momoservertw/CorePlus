@@ -47,7 +47,7 @@ public class Updater implements UpdateInterface {
                 break;
             default:
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not check the update: " + plugin);
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "&7Please update CorePlus.");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Please update CorePlus.");
                 return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);

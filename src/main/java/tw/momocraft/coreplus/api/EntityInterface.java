@@ -20,4 +20,13 @@ public interface EntityInterface {
      * @return if the MythicMobs has this name of custom mob.
      */
     boolean isMythicMobName(String name);
+
+    /**
+     * Getting the Entity's MythicMob name.
+     * It will return null if entity is noy MythicMob.
+     *
+     * @param entity the checking entity.
+     * @return the Entity's MythicMob name.
+     */
+    String getMythicMobName(Entity entity);
 }

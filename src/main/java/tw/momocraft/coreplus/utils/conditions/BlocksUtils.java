@@ -32,13 +32,12 @@ public class BlocksUtils {
         return false;
     }
 
-
     private boolean getSearchBlocks(Location loc, BlocksMap blocksMap) {
         List<String> blockTypes = blocksMap.getBlockTypes();
         String mode = blocksMap.getMode();
         if (mode.equals("Sphere")) {
             if (blocksMap.getR() == 0) {
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
                 return false;
             }
             return checkSphere(loc, blocksMap.getR(), blockTypes);
@@ -47,7 +46,7 @@ public class BlocksUtils {
             switch (mode) {
                 case "Cylinder":
                     if (blocksMap.getR() == 0) {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
                         return false;
                     }
                     return checkCylinder(loc, blocksMap.getR(), blocksMap.getY(), blockTypes);
@@ -59,7 +58,7 @@ public class BlocksUtils {
         switch (mode) {
             case "Cylinder":
                 if (blocksMap.getR() == 0) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginPrefix(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "You need to set the value of \"R\" - Blocks: " + blocksMap.getGroupName());
                     return false;
                 }
                 return checkRound(loc, blocksMap.getR(), blocksMap.getH(), blockTypes);
