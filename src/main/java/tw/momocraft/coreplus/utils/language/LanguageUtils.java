@@ -854,29 +854,65 @@ public class LanguageUtils implements LanguageInterface {
     private String transByCustom(String pluginName, String local, String input) {
         String placeholder;
         String newPlaceholder;
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
         while (true) {
-            if (!input.contains("{calculate: "))
+            if (!input.contains("<js>"))
                 break;
-            placeholder = input.substring(0, input.indexOf("{calculate: "));
-            placeholder = placeholder.substring(placeholder.indexOf("}") + 1);
-            ScriptEngineManager mgr = new ScriptEngineManager();
-            ScriptEngine engine = mgr.getEngineByName("JavaScript");
-            try {
-                newPlaceholder = engine.eval(placeholder.replace("{calculate: ", "")).toString();
-                input = input.replace(placeholder, newPlaceholder);
-            } catch (Exception ex) {
-                input = input.replace(placeholder, "ERROR_CALCULATE_PLACEHOLDER");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
+            String originInput = input;
+            String[] split = input.split("<js>");
+            String script;
+            String[] varSplit;
+            back:
+            for (int i = 0; i < split.length; i++) {
+                if (i == 0)
+                    continue;
+                if (split[i].contains("</js>")) {
+                    placeholder = split[i].substring(0, split[i].indexOf("</js>"));
+                    newPlaceholder = "";
+                    if (placeholder.contains("<var>")) {// <var>
+                        script = placeholder.substring(0, placeholder.indexOf("<var>"));
+                        varSplit = placeholder.substring(placeholder.indexOf("<var>") + 5).split(", ");
+                        for (String var : varSplit) {
+                            try {
+                                engine.eval(script);
+                                newPlaceholder += engine.get(var).toString() + ", ";
+                            } catch (Exception ex) {
+                                input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
+                                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
+                                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                                continue back;
+                            }
+                        }
+                        newPlaceholder = newPlaceholder.substring(0, newPlaceholder.length() - 2);
+                        newPlaceholder = newPlaceholder.replace("<var>", "");
+                        input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
+                    } else {
+                        script = placeholder;
+                        try {
+                            newPlaceholder = engine.eval(script).toString();
+                            input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
+                        } catch (Exception ex) {
+                            input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                        }
+                    }
+                    continue;
+                }
+                input = input.replace("<js>" + split[i], "%ERROR%");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         }
+
         String condition;
         String action;
         String[] conditionValues;
         boolean type;
-
         while (true) {
             if (!input.contains("$condition: "))
                 break;
