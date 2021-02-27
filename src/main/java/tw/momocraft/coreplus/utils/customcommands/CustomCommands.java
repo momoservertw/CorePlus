@@ -222,9 +222,10 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, player, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
         if (placeholder) {
-            input = UtilsHandler.getLang().transLayoutPlayer(pluginName, input, player);
+            input = UtilsHandler.getLang().transByPlayer(pluginName,
+                    UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
         }
         switch (input.split(": ")[0]) {
             case "custom":
@@ -329,9 +330,9 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, null, input, langHolder);
         if (placeholder) {
-            input = UtilsHandler.getLang().transByGeneral(pluginName, input);
+            input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
         }
         switch (input.split(": ")[0]) {
             case "custom":
@@ -416,7 +417,7 @@ public class CustomCommands implements CommandInterface {
         String group = input.split(", ")[0];
         LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(group);
         if (logMap == null) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + group + ", " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/logs.yml.");
             return;
         }
@@ -424,7 +425,7 @@ public class CustomCommands implements CommandInterface {
         try {
             UtilsHandler.getLang().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + group + ", " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }

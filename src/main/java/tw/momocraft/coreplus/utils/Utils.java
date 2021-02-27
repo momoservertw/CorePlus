@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import tw.momocraft.coreplus.api.UtilsInterface;
@@ -16,6 +17,28 @@ public class Utils implements UtilsInterface {
     @Override
     public boolean containsIgnoreCase(String string1, String string2) {
         return string1 != null && string2 != null && string1.toLowerCase().contains(string2.toLowerCase());
+    }
+
+    @Override
+    public boolean containsIgnoreCase(List<String> list, String string) {
+        if (string != null && list != null) {
+            for (String s : list) {
+                if (s.equalsIgnoreCase(string))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsIgnoreCase(Set<String> set, String string) {
+        if (string != null && set != null) {
+            for (String s : set) {
+                if (s.equalsIgnoreCase(string))
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -165,263 +188,189 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public List<String> getStringListFromPlayers(List<Player> input) {
-        List<String> list = new ArrayList<>();
-        for (Player player : input) {
-            if (player == null)
+    public List<String> getStringListFromObjects(List<Object> input, String returnType) {
+        List<String> returnList = new ArrayList<>();
+        for (Object value : input) {
+            if (value == null)
                 continue;
-            list.add(player.getName());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringFromPlayers(List<Player> input) {
-        StringBuilder sb = new StringBuilder();
-        for (Player player : input) {
-            if (player == null)
-                continue;
-            sb.append(player.getName()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListDisplayNameFromPlayers(List<Player> input) {
-        List<String> list = new ArrayList<>();
-        for (Player player : input) {
-            if (player == null)
-                continue;
-            try {
-                list.add(player.getDisplayName());
-            } catch (Exception ignored) {
-                list.add(player.getName());
+            if (returnType.equals("type")) {
+                if (value instanceof Material)
+                    returnList.add(((Material) value).name());
+                if (value instanceof EntityType)
+                    returnList.add(((EntityType) value).name());
+                if (value instanceof Block)
+                    returnList.add(((Block) value).getType().name());
+                if (value instanceof UUID)
+                    returnList.add(((UUID) value).toString());
+                if (value instanceof Player)
+                    returnList.add(((Player) value).getName());
+                if (value instanceof Entity)
+                    returnList.add(((Entity) value).getType().name());
+                if (value instanceof ItemStack)
+                    returnList.add(((ItemStack) value).getType().name());
+            } else if (returnType.equals("name")) {
+                if (value instanceof Material)
+                    returnList.add(((Material) value).name());
+                if (value instanceof EntityType)
+                    returnList.add(((EntityType) value).name());
+                if (value instanceof Block)
+                    returnList.add(((Block) value).getType().name());
+                if (value instanceof UUID)
+                    returnList.add(((UUID) value).toString());
+                if (value instanceof Player) {
+                    try {
+                        returnList.add(((Player) value).getDisplayName());
+                    } catch (Exception ex) {
+                        returnList.add(((Player) value).getName());
+                    }
+                }
+                if (value instanceof Entity) {
+                    try {
+                        returnList.add(((Entity) value).getCustomName());
+                    } catch (Exception ex) {
+                        returnList.add(((Entity) value).getType().name());
+                    }
+                }
+                if (value instanceof ItemStack) {
+                    try {
+                        returnList.add(((ItemStack) value).getItemMeta().getDisplayName());
+                    } catch (Exception ex) {
+                        returnList.add(((ItemStack) value).getType().name());
+                    }
+                }
             }
         }
-        return list;
+        return returnList;
     }
 
     @Override
-    public String getStringDisplayNameFromPlayers(List<Player> input) {
+    public String getStringFromObjects(List<Object> input, String returnType) {
         StringBuilder sb = new StringBuilder();
-        for (Player player : input) {
-            if (player == null)
+        for (Object value : input) {
+            if (value == null)
                 continue;
-            try {
-                sb.append(player.getDisplayName()).append(",");
-            } catch (Exception ignored) {
-                sb.append(player.getName()).append(",");
-            }
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListFromUUIDs(List<UUID> input) {
-        List<String> list = new ArrayList<>();
-        for (UUID uuid : input) {
-            if (uuid == null)
-                continue;
-            list.add(uuid.toString());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringFromUUIDs(List<UUID> input) {
-        StringBuilder sb = new StringBuilder();
-        for (UUID uuid : input) {
-            if (uuid == null)
-                continue;
-            sb.append(uuid.toString()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListTypeFromEntities(List<Entity> input) {
-        List<String> list = new ArrayList<>();
-        for (Entity entity : input) {
-            if (entity == null)
-                continue;
-            list.add(entity.getType().name());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringTypeFromEntities(List<Entity> input) {
-        StringBuilder sb = new StringBuilder();
-        for (Entity entity : input) {
-            if (entity == null)
-                continue;
-            sb.append(entity.getType().name()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListNameFromEntities(List<Entity> input) {
-        List<String> list = new ArrayList<>();
-        for (Entity entity : input) {
-            if (entity == null)
-                continue;
-            list.add(entity.getName());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringNameFromEntities(List<Entity> input) {
-        StringBuilder sb = new StringBuilder();
-        for (Entity entity : input) {
-            if (entity == null)
-                continue;
-            sb.append(entity.getName()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListTypeFromItem(List<ItemStack> input) {
-        List<String> list = new ArrayList<>();
-        for (ItemStack itemStack : input) {
-            if (itemStack == null)
-                continue;
-            list.add(itemStack.getType().name());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringTypeFromItems(List<ItemStack> input) {
-        StringBuilder sb = new StringBuilder();
-        for (ItemStack itemStack : input) {
-            if (itemStack == null)
-                continue;
-            sb.append(itemStack.getType()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListNameFromItems(List<ItemStack> input) {
-        List<String> list = new ArrayList<>();
-        for (ItemStack itemStack : input) {
-            if (itemStack == null)
-                continue;
-            try {
-                list.add(itemStack.getItemMeta().getDisplayName());
-            } catch (Exception ignored) {
-                list.add(itemStack.getType().name());
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringNameFromItems(List<ItemStack> input) {
-        StringBuilder sb = new StringBuilder();
-        for (ItemStack itemStack : input) {
-            if (itemStack == null)
-                continue;
-            try {
-                sb.append(itemStack.getItemMeta().getDisplayName()).append(",");
-            } catch (Exception ignored) {
-                sb.append(itemStack.getType()).append(",");
+            if (returnType.equals("type")) {
+                if (value instanceof Material)
+                    sb.append(((Material) value).name()).append(",");
+                if (value instanceof EntityType)
+                    sb.append(((EntityType) value).name()).append(",");
+                if (value instanceof Block)
+                    sb.append(((Block) value).getType().name()).append(",");
+                if (value instanceof UUID)
+                    sb.append(((UUID) value).toString()).append(",");
+                if (value instanceof Player)
+                    sb.append(((Player) value).getName()).append(",");
+                if (value instanceof Entity)
+                    sb.append(((Entity) value).getType().name()).append(",");
+                if (value instanceof ItemStack)
+                    sb.append(((ItemStack) value).getType().name()).append(",");
+            } else if (returnType.equals("name")) {
+                if (value instanceof Material)
+                    sb.append(((Material) value).name()).append(",");
+                if (value instanceof EntityType)
+                    sb.append(((EntityType) value).name()).append(",");
+                if (value instanceof Block)
+                    sb.append(((Block) value).getType().name()).append(",");
+                if (value instanceof UUID)
+                    sb.append(((UUID) value).toString()).append(",");
+                if (value instanceof Player) {
+                    try {
+                        sb.append(((Player) value).getCustomName()).append(",");
+                    } catch (Exception ex) {
+                        sb.append(((Player) value).getName()).append(",");
+                    }
+                }
+                if (value instanceof Entity) {
+                    try {
+                        sb.append(((Entity) value).getCustomName()).append(",");
+                    } catch (Exception ex) {
+                        sb.append(((Entity) value).getType().name()).append(",");
+                    }
+                }
+                if (value instanceof ItemStack) {
+                    try {
+                        sb.append(((ItemStack) value).getItemMeta().getDisplayName()).append(",");
+                    } catch (Exception ex) {
+                        sb.append(((ItemStack) value).getType().name()).append(",");
+                    }
+                }
             }
         }
         return sb.toString();
     }
 
     @Override
-    public List<String> getStringListFromBlocks(List<Block> input) {
-        List<String> list = new ArrayList<>();
-        for (Block block : input) {
-            if (block == null)
-                continue;
-            list.add(block.getType().name());
+    public String getStringFromNearbyType(String pluginName, Location loc, String returnType, String type, String group, int range) {
+        List<String> checkList;
+        try {
+            checkList = ConfigHandler.getConfigPath().getGroupProp().get(type).get(group);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the type name in groups.yml: \"" + type + "\"");
+            return null;
         }
-        return list;
+        if (checkList == null && !group.equals("all")) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the group name in groups.yml: \"" + type + "\"");
+            return null;
+        }
+        return getNearbyStringFromTypes(loc, returnType, type, checkList, range);
     }
 
     @Override
-    public String getStringFromBlocks(List<Block> input) {
-        StringBuilder sb = new StringBuilder();
-        for (Block block : input) {
-            if (block == null)
-                continue;
-            sb.append(block.getType().name()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public List<String> getStringListFromMaterials(List<Material> input) {
-        List<String> list = new ArrayList<>();
-        for (Material material : input) {
-            if (material == null)
-                continue;
-            list.add(material.name());
-        }
-        return list;
-    }
-
-    @Override
-    public String getStringFromMaterials(List<Material> input) {
-        StringBuilder sb = new StringBuilder();
-        for (Material material : input) {
-            if (material == null)
-                continue;
-            sb.append(material.name()).append(",");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public String getNearbyString(Location loc, String returnType, String type, List<String> checkList, int range) {
+    public String getNearbyStringFromTypes(Location loc, String returnType, String type, List<String> checkList, int range) {
         StringBuilder output = new StringBuilder();
-        String target;
+        String value;
+        String typeName;
         switch (type.toLowerCase()) {
             case "entities":
                 for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    if (entity == null)
-                        continue;
+                    typeName = entity.getType().name();
                     if (returnType.equals("type")) {
-                        target = entity.getType().name();
+                        value = typeName;
                     } else if (returnType.equals("name")) {
-                        target = entity.getCustomName();
-                        if (target == null)
-                            target = entity.getType().name();
+                        value = entity.getCustomName();
+                        if (value == null)
+                            value = typeName;
                     } else {
                         UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
                         UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
                         return null;
                     }
-                    if (group.equals("all")) {
-                        output.append(target).append(",");
-                        continue;
-                    }
-                    if (checkList.contains(target))
-                        output.append(target).append(",");
+                    if (checkList == null || checkList.contains(typeName))
+                        output.append(value).append(",");
                 }
                 break;
             case "materials":
-                for (Material material : getNearbyMaterial(loc, range, range, range)) {
-                    target = material.name();
-                    if (checkList.contains(target))
-                        output.append(target).append(",");
+                for (Block block : getNearbyBlocks(loc, range, range, range)) {
+                    typeName = block.getType().name();
+                    if (checkList.contains(typeName))
+                        output.append(typeName).append(",");
                 }
                 break;
             case "mythicmobs":
                 for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    if (UtilsHandler.getEntity().isMythicMob(entity)) {
-                        target = entity.getCustomName();
-                        if (target == null)
-                            target = UtilsHandler.getEntity().getMythicMobName(entity);
-                        if (checkList.contains(target))
-                            output.append(target).append(",");
+                    if (!UtilsHandler.getEntity().isMythicMob(entity)) {
+                        continue;
                     }
+                    typeName = UtilsHandler.getEntity().getMythicMobName(entity);
+                    if (returnType.equals("type")) {
+                        value = typeName;
+                    } else if (returnType.equals("name")) {
+                        value = entity.getCustomName();
+                        if (value == null)
+                            value = typeName;
+                    } else {
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
+                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
+                        return null;
+                    }
+                    if (checkList == null || checkList.contains(typeName))
+                        output.append(value).append(",");
                 }
             default:
                 UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while getting the nearby things.");
@@ -431,11 +380,10 @@ public class Utils implements UtilsInterface {
         return output.toString();
     }
 
-    @Override
-    public List<String> getNearbyStringList(Location loc, String returnType, String type, List<String> input, int range) {
+    public List<String> getNearbyStringListFromTypes(Location loc, String checkType, String returnType, List<String> checkList, int range) {
         List<String> output = new ArrayList<>();
         String target;
-        switch (type.toLowerCase()) {
+        switch (checkType.toLowerCase()) {
             case "entities":
                 for (Entity entity : loc.getNearbyEntities(range, range, range)) {
                     if (entity == null)
@@ -456,8 +404,8 @@ public class Utils implements UtilsInterface {
                 }
                 break;
             case "materials":
-                for (Material material : getNearbyMaterial(loc, range, range, range)) {
-                    target = material.name();
+                for (Block block : getNearbyBlocks(loc, range, range, range)) {
+                    target = block.getType().name();
                     if (checkList.contains(target))
                         output.add(target);
                 }
@@ -473,7 +421,6 @@ public class Utils implements UtilsInterface {
                     }
                 }
                 break;
-            break;
         }
         return output;
     }
@@ -514,21 +461,6 @@ public class Utils implements UtilsInterface {
                 for (int y = -Y; y <= Y; y++) {
                     blockLoc = loc.clone().add(x, y, z);
                     list.add(blockLoc.getBlock());
-                }
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public List<Material> getNearbyMaterial(Location loc, int X, int Y, int Z) {
-        List<Material> list = new ArrayList<>();
-        Location blockLoc;
-        for (int x = -X; x <= X; x++) {
-            for (int z = -Z; z <= Z; z++) {
-                for (int y = -Y; y <= Y; y++) {
-                    blockLoc = loc.clone().add(x, y, z);
-                    list.add(blockLoc.getBlock().getType());
                 }
             }
         }
@@ -631,5 +563,30 @@ public class Utils implements UtilsInterface {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public Set<Class<?>> getAllExtendedOrImplementedClass(Class<?> clazz) {
+        List<Class<?>> res = new ArrayList<>();
+        do {
+            res.add(clazz);
+            // First, add all the interfaces implemented by this class
+            Class<?>[] interfaces = clazz.getInterfaces();
+            if (interfaces.length > 0) {
+                res.addAll(Arrays.asList(interfaces));
+                for (Class<?> interfaze : interfaces) {
+                    res.addAll(getAllExtendedOrImplementedClass(interfaze));
+                }
+            }
+            // Add the super class
+            Class<?> superClass = clazz.getSuperclass();
+            // Interfaces does not have java,lang.Object as superclass, they have null, so break the cycle and return
+            if (superClass == null) {
+                break;
+            }
+            // Now inspect the superclass
+            clazz = superClass;
+        } while (!"java.lang.Object".equals(clazz.getCanonicalName()));
+        return new HashSet<>(res);
     }
 }

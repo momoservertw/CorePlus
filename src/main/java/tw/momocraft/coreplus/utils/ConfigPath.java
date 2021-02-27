@@ -17,10 +17,7 @@ import tw.momocraft.coreplus.utils.customcommands.*;
 import tw.momocraft.coreplus.utils.files.ConfigBuilderMap;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigPath implements ConfigInterface {
     public ConfigPath() {
@@ -59,8 +56,10 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         ConfigBuilder Variables                 //
     //  ============================================== //
-    private final Map<String, ConfigBuilderMap> configBuilderGroupProp = new HashMap<>();
+    private final Map<String, List<ConfigBuilderMap>> configBuilderGroupProp = new HashMap<>();
     private final Map<String, ConfigBuilderMap> configBuilderCustomProp = new HashMap<>();
+    private String configBlockWorld;
+    private int configBlockRadius;
 
     //  ============================================== //
     //         Setup all configuration                 //
@@ -396,30 +395,35 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setConfigBuilder() {
         ConfigurationSection configGroups = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Groups");
+        configBlockWorld = ConfigHandler.getConfig("config.yml").getString("Config-Builder.Settings.Material.Temporary-Block-Data.World", "world");
+        configBlockRadius = ConfigHandler.getConfig("config.yml").getInt("Config-Builder.Settings.Material.Temporary-Block-Data.Radius", 30);
         if (configGroups != null) {
+            List<ConfigBuilderMap> configBuilderMapList;
             ConfigBuilderMap configBuilderMap;
             ConfigurationSection groupConfig;
             for (String type : configGroups.getKeys(false)) {
                 groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Groups." + type);
                 if (groupConfig == null)
                     continue;
+                configBuilderMapList = new ArrayList<>();
                 for (String group : groupConfig.getKeys(false)) {
                     configBuilderMap = new ConfigBuilderMap();
+                    configBuilderMap.setGroup(group);
                     if (type.equals("Entities")) {
                         configBuilderMap.setType("entity");
                     } else if (type.equals("Materials")) {
                         configBuilderMap.setType("material");
                     }
+                    configBuilderMap.setTitle("  " + group + ":");
                     configBuilderMap.setRowLine(true);
-                    configBuilderMap.setTitle(group);
-                    configBuilderMap.setFormat("  - %value%");
-                    configBuilderMap.setGroup(group);
-                    configBuilderMap.setList(
-                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".List"));
-                    configBuilderMap.setIgnoreList(
-                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".Ignore-List"));
-                    configBuilderGroupProp.put(type, configBuilderMap);
+                    configBuilderMap.setValue("    - %value%");
+                    configBuilderMap.setSet(new HashSet<>(
+                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".List")));
+                    configBuilderMap.setIgnoreSet(new HashSet<>(
+                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".Ignore-List")));
+                    configBuilderMapList.add(configBuilderMap);
                 }
+                configBuilderGroupProp.put(type, configBuilderMapList);
             }
         }
         ConfigurationSection configCustom = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Custom");
@@ -431,21 +435,25 @@ public class ConfigPath implements ConfigInterface {
                 groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Custom." + group);
                 if (groupConfig == null)
                     continue;
-                type = ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + "." + ".Type");
+                type = ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Type");
                 if (type == null)
                     continue;
                 configBuilderMap = new ConfigBuilderMap();
-                configBuilderMap.setType(type);
-                configBuilderMap.setRowLine(true);
-                configBuilderMap.setTitle(
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + "." + ".Title", group));
-                configBuilderMap.setFormat(
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + "." + ".Format", "  - %value%"));
                 configBuilderMap.setGroup(group);
-                configBuilderMap.setList(
-                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + "." + ".List"));
-                configBuilderMap.setIgnoreList(
-                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + "." + ".Ignore-List"));
+                configBuilderMap.setType(type);
+                configBuilderMap.setTitle(
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Title", group));
+                configBuilderMap.setRowLine(
+                        ConfigHandler.getConfig("config.yml").getBoolean("Config-Builder.Custom." + group + ".Format.Row-Line", true));
+                configBuilderMap.setSplit(
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Split", ", "));
+                configBuilderMap.setValue(
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Value",
+                                "  - %value%"));
+                configBuilderMap.setSet(new HashSet<>(
+                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + ".List")));
+                configBuilderMap.setIgnoreSet(new HashSet<>(
+                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + ".Ignore-List")));
                 configBuilderCustomProp.put(group, configBuilderMap);
             }
         }
@@ -546,12 +554,20 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         ConfigBuilder Getter                    //
     //  ============================================== //
-    public Map<String, ConfigBuilderMap> getConfigBuilderGroupProp() {
+    public Map<String, List<ConfigBuilderMap>> getConfigBuilderGroupProp() {
         return configBuilderGroupProp;
     }
 
     public Map<String, ConfigBuilderMap> getConfigBuilderCustomProp() {
         return configBuilderCustomProp;
+    }
+
+    public int getConfigBlockRadius() {
+        return configBlockRadius;
+    }
+
+    public String getConfigBlockWorld() {
+        return configBlockWorld;
     }
 
     //  ============================================== //

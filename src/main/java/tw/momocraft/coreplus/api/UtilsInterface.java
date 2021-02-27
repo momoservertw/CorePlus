@@ -2,18 +2,14 @@ package tw.momocraft.coreplus.api;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Set;
 
 public interface UtilsInterface {
 
@@ -25,6 +21,24 @@ public interface UtilsInterface {
      * @return if a string contains another string.
      */
     boolean containsIgnoreCase(String string1, String string2);
+
+    /**
+     * Checking if a string list contains another string with ignore case.
+     *
+     * @param list   the main string list.
+     * @param string the checking string.
+     * @return if a string list contains another string.
+     */
+    boolean containsIgnoreCase(List<String> list, String string);
+
+    /**
+     * Checking if a string set contains another string with ignore case.
+     *
+     * @param set    the main string set.
+     * @param string the checking string.
+     * @return if a string set contains another string.
+     */
+    boolean containsIgnoreCase(Set<String> set, String string);
 
     /**
      * Checking if the string is a number.
@@ -182,45 +196,14 @@ public interface UtilsInterface {
      */
     boolean inTheRangeXZ(Location loc, Location loc2, int distanceSquared);
 
-    List<String> getStringListFromUUIDs(List<UUID> input);
 
-    String getStringFromUUIDs(List<UUID> input);
+    List<String> getStringListFromObjects(List<Object> input, String returnType);
 
-    List<String> getStringListFromPlayers(List<Player> input);
+    String getStringFromObjects(List<Object> input, String returnType);
 
-    String getStringFromPlayers(List<Player> input);
+    String getStringFromNearbyType(String pluginName, Location loc, String returnType, String type, String group, int range);
 
-    List<String> getStringListDisplayNameFromPlayers(List<Player> input);
-
-    String getStringDisplayNameFromPlayers(List<Player> input);
-
-    List<String> getStringListTypeFromEntities(List<Entity> input);
-
-    String getStringTypeFromEntities(List<Entity> input);
-
-    List<String> getStringListNameFromEntities(List<Entity> input);
-
-    String getStringNameFromEntities(List<Entity> input);
-
-    List<String> getStringListTypeFromItem(List<ItemStack> input);
-
-    String getStringTypeFromItems(List<ItemStack> input);
-
-    List<String> getStringListNameFromItems(List<ItemStack> input);
-
-    String getStringNameFromItems(List<ItemStack> input);
-
-    List<String> getStringListFromBlocks(List<Block> input);
-
-    String getStringFromBlocks(List<Block> input);
-
-    List<String> getStringListFromMaterials(List<Material> input);
-
-    String getStringFromMaterials(List<Material> input);
-
-    String getNearbyString(Location loc, String returnType, String type, String group, int range);
-
-    List<String> getNearbyStringList(Location loc, String returnType, String type, String group, int range);
+    String getNearbyStringFromTypes(Location loc, String returnType, String type, List<String> checkList, int range);
 
     /**
      * @param loc          the checking location.
@@ -236,9 +219,11 @@ public interface UtilsInterface {
      */
     List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared);
 
-    List<Block> getNearbyBlocks(Location loc, int range);
+    Collection<Entity> getNearbyEntities(Location loc, int x, int y, int z);
 
     List<Block> getNearbyBlocks(Location loc, int X, int Y, int Z);
+
+
     /**
      * Sorting a map from high to low by the values.
      *
@@ -282,4 +267,13 @@ public interface UtilsInterface {
      * @return the Color object.
      */
     Color getColor(String input);
+
+    /**
+     * Getting the extended or implemented class and super class.
+     *
+     * @param clazz the checking class.
+     * @return the set of extended or implemented class and super class.
+     */
+    Set<Class<?>> getAllExtendedOrImplementedClass(Class<?> clazz);
+
 }

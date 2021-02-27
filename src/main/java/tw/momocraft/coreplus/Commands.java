@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Commands implements CommandExecutor {
 
-
     public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
         int length = args.length;
         if (length == 0) {
@@ -59,7 +58,9 @@ public class Commands implements CommandExecutor {
                     }
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.configbuilder")) {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                                "Message.Commands.configbuilder", sender);
+                                "Message.Commands.configbuilderGroup", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                                "Message.Commands.configbuilderCustom", sender);
                     }
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.cmd")) {
                         UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -143,19 +144,22 @@ public class Commands implements CommandExecutor {
                 return true;
             case "configbuilder":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
-                    if (length == 3) {
-                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "Creating configuration for " + args[1] + "...");
+                    // crp configbuiler custom group
+                    if (length == 3 && args[1].equalsIgnoreCase("custom")) {
+                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&6Creating configuration for group \"" + args[2] + "\"...");
                         ConfigBuilder.startCustom(sender, args[2]);
                         return true;
                     }
                     // crp configbuilder group
-                    else if (length == 2) {
-                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "Creating configuration for group.yml...");
+                    else if (length == 2 && args[1].equalsIgnoreCase("group")) {
+                        UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&6Creating configuration for group.yml...");
                         ConfigBuilder.startGroups(sender);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                            "Message.Commands.configbuilder", sender);
+                            "Message.Commands.configbuilderCustom", sender);
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                            "Message.Commands.configbuilderGroup", sender);
                 } else {
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
@@ -165,7 +169,7 @@ public class Commands implements CommandExecutor {
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
                     // /crp cmdcustom <command>
                     if (length == 2) {
-                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginPrefix(), null, args[1], true);
+                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginName(), null, args[1], true);
                         return true;
                         // /crp cmdcustom [player] <command>
                     } else if (length == 3) {
@@ -177,7 +181,7 @@ public class Commands implements CommandExecutor {
                                     "Message.targetNotFound", sender, placeHolders);
                             return true;
                         }
-                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginPrefix(), player, args[2], true);
+                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginName(), player, args[2], true);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -193,9 +197,9 @@ public class Commands implements CommandExecutor {
                     if (length > 1) {
                         String command = String.join(" ", args).substring(args[0].length() + 1);
                         if (sender instanceof ConsoleCommandSender) {
-                            UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), command, true);
+                            UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), command, true);
                         } else {
-                            UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), (Player) sender, command, true);
+                            UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), (Player) sender, command, true);
                         }
                         return true;
                     }
@@ -219,7 +223,7 @@ public class Commands implements CommandExecutor {
                             return true;
                         }
                         String command = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
-                        UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), player, command, true);
+                        UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), player, command, true);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

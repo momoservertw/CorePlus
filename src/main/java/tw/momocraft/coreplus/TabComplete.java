@@ -70,13 +70,11 @@ public class TabComplete implements TabCompleter {
             case "configbuilder":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
                     if (length == 1) {
-                        commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderGroupProp().keySet());
+                        commands.add("custom");
+                        commands.add("group");
                     } else if (length == 2) {
-                        if (args[1].equalsIgnoreCase("location")) {
-                            commands.addAll(ConfigHandler.getConfigPath().getLocProp().keySet());
-                        } else if (args[1].equalsIgnoreCase("blocks")) {
-                            commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
-                        }
+                        if (args[1].equals("custom"))
+                            commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderCustomProp().keySet());
                     }
                 }
                 break;

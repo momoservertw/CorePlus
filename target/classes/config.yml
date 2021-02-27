@@ -39,23 +39,137 @@ General:
       ItemJoin: true
       AuthMe: true
 
-# To create a custom configuration in the path of log.yml "ConfigBuilder".
-# Command: /crp configbuilder <Type>
+# To create a custom configurations.
+# More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder
 Config-Builder:
-  Entity:
-    Format: " - %type%"
-    Ignore:
-      - PLAYER
-  Material:
-    Format: " - %type%"
-    Ignore: []
-  OfflinePlayer-UUID:
-    Format: " - %type%"
-    # Can be UUID or Player name.
-    Ignore: []
-  OfflinePlayer-Name:
-    Format: " - %type%"
-    Ignore: []
+  Settings:
+    Material:
+      # Creating a temporary block data to build the Material list. Only changed if you get errors.
+      Temporary-Block-Data:
+        World: world
+        Radius: 30
+  # To create groups.yml configuration in the path from log.yml "GroupsConfig".
+  # Command: /crp configbuilder groups
+  Groups:
+    Entities:
+      All:
+        # Can be a Group of types or entity type.
+        List:
+          - all
+        Ignore-List: []
+      LivingEntity:
+        List:
+          - LivingEntity
+      Items:
+        List:
+          - Item
+      Monsters:
+        List:
+          - Monster
+          - Flying
+      Normal:
+        List:
+          - Monster
+          - Flying
+        Ignore-List:
+          - Boss
+      Animals:
+        List:
+          - Animals
+      Breedable:
+        List:
+          - Breedable
+      Pets:
+        List:
+          - Tameable
+          - Fox
+          - Golem
+        Ignore-List:
+          - Shulker
+      ChestedHorse:
+        List:
+          - ChestedHorse
+      Useless:
+        List:
+          - Bat
+          - Fish
+          - BAT
+    Materials:
+      All:
+        List:
+          - all
+        Ignore-List: []
+      Container:
+        List:
+          - Chest
+          - Furnace
+          - Hopper
+          - BrewingStand
+          - Dispenser
+      Usable:
+        List:
+          - Chest
+          - Furnace
+          - Hopper
+          - BrewingStand
+          - Dispenser
+          - ANVIL
+
+          - Powerable
+          - Jukebox
+          - EnderChest
+          - Bed
+          - CRAFTING_TABLE
+          - SHULKER_BOX{endsWith;}
+      Machines:
+        List:
+          - Powerable
+          - PistonHead
+          - Piston
+          - Hopper
+          - Comparator
+          - DaylightDetector
+  # To create a custom configuration in the path of log.yml "CustomConfig".
+  # Command: /crp configbuilder custom <Type> <Group>
+  Custom:
+    OfflinePlayer-UUID:
+      Type: OfflinePlayer-UUID
+      Format:
+        Title: "%title%:"
+        Row-Line: true
+        Value: "  - %value%"
+        #Value: "%value%:"
+        #Split: ", "
+      # Can be UUID or Player name.
+      Ignore-List: []
+    OfflinePlayer-Name:
+      Type: OfflinePlayer-Name
+      Format:
+        Title: "%title%:"
+        Row-Line: true
+        Value: "  - %value%"
+        #Split: ", "
+      Ignore-List: []
+    Example-Entity-Group:
+      Type: entity
+      Format:
+        Title: "%title%:"
+        Row-Line: true
+        Value: "  - %value%"
+        #Split: ", "
+      List:
+        - Boss
+      Ignore-List: []
+    Example-Material-Group:
+      Type: material
+      Format:
+        Title: "%title%:"
+        Row-Line: true
+        Value: "  - %value%"
+        #Split: ", "
+      List:
+        - Chest
+      Ignore-List: []
 
 Message:
   prefix: "&7[&dCorePlus&7]&r "
@@ -84,7 +198,9 @@ Message:
     reload: "&f/coreplus reload &8- &7Reloads config file."
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
     test: "&f/coreplus test <location/blocks> <group> &8- &7Checks if the condition is match."
-    configbuilder: "&f/coreplus configbuilder <group> &8- &7Creates a configuration for that group."
+    configbuilderCustom: "&f/coreplus configbuilder custom <group> &8- &7Creates a configuration for custom group."
+    configbuilderGroup: "&f/coreplus configbuilder group &8- &7Creates a configuration for group.yml."
+    cmdcustom: "&f/coreplus cmdcustom [player] <group> &8- &7Executes custom group command for a player."
     cmd: "&f/coreplus cmd <command> &8- &7Executes custom command."
     cmdplayer: "&f/coreplus cmdplayer <player> <command> &8- &7Executes custom command for a player."
     cmdonline: "&f/coreplus cmdonline <player> <expiration> <command> &8- &7Executes the custom command after the player joined the server."

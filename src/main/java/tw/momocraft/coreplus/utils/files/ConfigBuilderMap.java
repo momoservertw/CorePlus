@@ -1,79 +1,90 @@
 package tw.momocraft.coreplus.utils.files;
 
-import java.util.List;
+import java.util.Set;
 
 public class ConfigBuilderMap {
     /*
       Type: material
-      Row-line: true
-      Title: "%title%"
-      Format: "  - %value%"
-      List:
-        - Chest
+      Format:
+        Title: "%title%"
+        row-line: true
+        split: ", "
+        line: "  - %value%"
+      List: []
       Ignore-List: []
      */
+    private String group;
     private String type;
     private boolean rowLine;
     private String title;
-    private String format;
-    private String group;
-    private List<String> list;
-    private List<String> ignoreList;
+    private String value;
+    private String split;
+    private Set<String> set;
+    private Set<String> ignoreSet;
 
-    public void setRowLine(boolean rowLine) {
-        this.rowLine = rowLine;
-    }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getFormat() {
-        return format;
+    public String getGroup() {
+        return group;
     }
 
     public String getType() {
         return type;
     }
 
-    public String getGroup() {
-        return group;
+    public String getTitle() {
+        return title;
     }
-
-    public List<String> getList() {
-        return list;
-    }
-
-    public List<String> getIgnoreList() {
-        return ignoreList;
-    }
-
 
     public boolean isRowLine() {
         return rowLine;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getSplit() {
+        return split;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    public String getValue() {
+        return value;
+    }
+
+    public Set<String> getSet() {
+        return set;
+    }
+
+    public Set<String> getIgnoreSet() {
+        return ignoreSet;
+    }
+
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setRowLine(boolean rowLine) {
+        this.rowLine = rowLine;
     }
 
-    public void setList(List<String> list) {
-        this.list = list;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setIgnoreList(List<String> ignoreList) {
-        this.ignoreList = ignoreList;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setSplit(String split) {
+        this.split = split;
+    }
+
+    public void setSet(Set<String> set) {
+        this.set = set;
+    }
+
+    public void setIgnoreSet(Set<String> ignoreSet) {
+        this.ignoreSet = ignoreSet;
     }
 }
