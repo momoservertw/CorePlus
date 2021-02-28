@@ -39,7 +39,7 @@ public class VanillaUtils {
         if (type.equals("entity")) {
             try {
                 EntityType entityType = EntityType.valueOf(input);
-                return getLocalLang(pluginName, "entity.minecraft." + input.toLowerCase(), local);
+                return getLocalLang(pluginName, "entity.minecraft." + input.toLowerCase(), input);
             } catch (Exception ex) {
                 return input;
             }
@@ -48,9 +48,9 @@ public class VanillaUtils {
             try {
                 Material material = Material.valueOf(input);
                 if (material.isBlock()) {
-                    return getLocalLang(pluginName, "block.minecraft." + input.toLowerCase(), local);
+                    return getLocalLang(pluginName, "block.minecraft." + input.toLowerCase(), input);
                 }
-                return getLocalLang(pluginName, "item.minecraft." + input.toLowerCase(), local);
+                return getLocalLang(pluginName, "item.minecraft." + input.toLowerCase(), input);
             } catch (Exception ex) {
                 return input;
             }
@@ -73,7 +73,6 @@ public class VanillaUtils {
         try {
             return lang.replaceAll("\"", "");
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             return input;
         }
     }

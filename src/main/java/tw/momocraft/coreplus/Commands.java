@@ -19,14 +19,14 @@ public class Commands implements CommandExecutor {
         if (length == 0) {
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
-                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                         "Message.Commands.title", sender);
-                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
+                UtilsHandler.getLang().sendMsg("", sender,
                         "&f " + CorePlus.getInstance().getDescription().getName()
                                 + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         "Message.Commands.help", sender);
-                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                UtilsHandler.getLang().sendMsg("", sender, "");
             } else {
                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         "Message.noPermission", sender);
@@ -36,46 +36,48 @@ public class Commands implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "help":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
-                    UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
-                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    UtilsHandler.getLang().sendMsg("", sender, "");
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                             "Message.Commands.title", sender);
-                    UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
+                    UtilsHandler.getLang().sendMsg("", sender,
                             "&f " + CorePlus.getInstance().getDescription().getName()
                                     + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                             "Message.Commands.help", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.reload", sender);
                     }
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.version")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.version", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.test")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.test", sender);
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
+                                "Message.Commands.testPlaceholder", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.configbuilder")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.configbuilderGroup", sender);
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.configbuilderCustom", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.cmd")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.cmd", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.cmdcustom")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.cmdcustom", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.cmdplayer")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.cmdplayer", sender);
                     }
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.residence.cmdonline")) {
-                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                                 "Message.Commands.cmdonline", sender);
                     }
                     UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
@@ -110,15 +112,15 @@ public class Commands implements CommandExecutor {
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
                     // /crp test <blocks/location> <group>
                     if (length == 3) {
-                        if (sender instanceof ConsoleCommandSender) {
-                            UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                                    "Message.onlyPlayer", sender);
-                            return true;
-                        }
-                        Player player = (Player) sender;
-                        List<String> group = new ArrayList<>();
-                        group.add(args[2]);
                         if (args[1].equalsIgnoreCase("location")) {
+                            if (sender instanceof ConsoleCommandSender) {
+                                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                                        "Message.onlyPlayer", sender);
+                                return true;
+                            }
+                            Player player = (Player) sender;
+                            List<String> group = new ArrayList<>();
+                            group.add(args[2]);
                             if (UtilsHandler.getCondition().checkLocation(ConfigHandler.getPluginName(), player.getLocation(), group, false)) {
                                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Location: " + args[2] + ")");
                                 return true;
@@ -126,16 +128,37 @@ public class Commands implements CommandExecutor {
                             UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Location: " + args[2] + ")");
                             return true;
                         } else if (args[1].equalsIgnoreCase("blocks")) {
+                            if (sender instanceof ConsoleCommandSender) {
+                                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                                        "Message.onlyPlayer", sender);
+                                return true;
+                            }
+                            Player player = (Player) sender;
+                            List<String> group = new ArrayList<>();
+                            group.add(args[2]);
                             if (UtilsHandler.getCondition().checkBlocks(player.getLocation(), group, false)) {
                                 UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Blocks: " + args[2] + ")");
                                 return true;
                             }
                             UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Blocks: " + args[2] + ")");
                             return true;
+                        } else if (args[1].equalsIgnoreCase("placeholder")) {
+                            if (args[2].equalsIgnoreCase("toggle")) {
+                                UtilsHandler.getCondition().getConditionTest().toggleToggleMode(sender, sender.getName());
+                                return true;
+                            } else if (args[2].equalsIgnoreCase("offlineplayer")) {
+                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
+                                return true;
+                            } else if (args[2].equalsIgnoreCase("player")) {
+                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
+                                return true;
+                            }
                         }
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             "Message.Commands.test", sender);
+                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                            "Message.Commands.testPlaceholder", sender);
                     return true;
                 } else {
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -224,6 +247,7 @@ public class Commands implements CommandExecutor {
                         }
                         String command = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
                         UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), player, command, true);
+                        System.out.println("command" + command);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

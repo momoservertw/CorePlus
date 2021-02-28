@@ -32,33 +32,60 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendChatMsg(String prefix, Player player, String message) {
-        message = addPrefix(prefix, message);
-        player.chat(message);
+    public void sendChatMsg(String prefix, Player player, String input) {
+        input = addPrefix(prefix, input);
+        player.chat(input);
     }
 
     @Override
-    public void sendBroadcastMsg(String prefix, String message) {
-        message = addPrefix(prefix, message);
-        Bukkit.broadcastMessage(message);
+    public void sendBroadcastMsg(String prefix, String input) {
+        input = addPrefix(prefix, input);
+        Bukkit.broadcastMessage(input);
     }
 
     @Override
-    public void sendConsoleMsg(String prefix, String message) {
-        message = addPrefix(prefix, message);
-        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
+    public void sendDiscordMsg(String prefix, String channel, String input) {
+        input = addPrefix(prefix, input);
+        UtilsHandler.getDiscord().sendDiscordMsg(channel, input);
     }
 
     @Override
-    public void sendPlayerMsg(String prefix, Player player, String message) {
-        message = addPrefix(prefix, message);
-        player.sendMessage(message);
+    public void sendDiscordMsg(String prefix, String channel, String input, Player player) {
+        input = addPrefix(prefix, input);
+        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
+        if (message != null) {
+            message = message.replace("%message%", input);
+        } else {
+            message = input;
+        }
+        if (player != null) {
+            message = transLayoutPAPI(ConfigHandler.getPluginName(), input, player);
+            String name = player.getName();
+            String displayName = player.getCustomName();
+            message = message.replace("%username%", name);
+            message = message.replace("%displayname%", displayName != null ? displayName : name);
+        }
+        message = message.replace("%channelname%", channel);
+        UtilsHandler.getDiscord().sendDiscordMsg(input, message);
     }
 
     @Override
-    public void sendMsg(String prefix, CommandSender sender, String message) {
-        message = addPrefix(prefix, message);
-        sender.sendMessage(message);
+    public void sendConsoleMsg(String prefix, String input) {
+        input = addPrefix(prefix, input);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
+    }
+
+    @Override
+    public void sendPlayerMsg(String prefix, Player player, String input) {
+        input = addPrefix(prefix, input);
+        player.sendMessage(input);
+    }
+
+    @Override
+    public void sendMsg(String prefix, CommandSender sender, String input) {
+        input = input.replace("%prefix%", prefix != null ? prefix : "");
+        input = addPrefix(prefix, input);
+        sender.sendMessage(input);
     }
 
     @Override
@@ -89,26 +116,26 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendErrorMsg(String pluginName, String message) {
-        message = "&4[" + pluginName + "_Error] &e" + message;
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
+    public void sendErrorMsg(String pluginName, String input) {
+        input = "&4[" + pluginName + "_Error] &e" + input;
+        input = ChatColor.translateAlternateColorCodes('&', input);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     //////////////////
     @Override
-    public void sendDebugMsg(boolean isDebugging, String pluginName, String message) {
+    public void sendDebugMsg(boolean isDebugging, String pluginName, String input) {
         if (isDebugging) {
-            message = "&7[" + pluginName + "_Debug]&r " + message;
-            message = ChatColor.translateAlternateColorCodes('&', message);
-            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(message);
+            input = "&7[" + pluginName + "_Debug]&r " + input;
+            input = ChatColor.translateAlternateColorCodes('&', input);
+            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
         }
     }
 
     @Override
     public void sendDebugTrace(boolean isDebugging, String pluginName, Exception e) {
         if (isDebugging) {
-            sendErrorMsg(pluginName, "showing debug trace.");
+            sendDebugMsg(true, pluginName, "showing debug trace.");
             e.printStackTrace();
         }
     }
@@ -181,45 +208,15 @@ public class LanguageUtils implements LanguageInterface {
             player = (Player) sender;
         }
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
-        if (langMessage != null && !langMessage.isEmpty())
+        if (langMessage != null)
             input = langMessage;
         input = input.replace("%prefix%", prefix != null ? prefix : "");
-        input = transByPlayer(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
-        input = transLangHolders(pluginName, null, input, langHolder);
+        input = transLangHolders(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+        input = ChatColor.translateAlternateColorCodes('&', input);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines) {
             sender.sendMessage(langLine);
         }
-    }
-
-    @Override
-    public void sendDiscordMsg(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, null, input, langHolder);
-        if (placeholder) {
-            input = transByGeneral(pluginName, null, input);
-        }
-        int index = input.indexOf(", ");
-        UtilsHandler.getDiscord().sendDiscordMsg(input.substring(0, index - 1), input.substring(index + 1));
-    }
-
-    @Override
-    public void sendDiscordMsg(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        input = transLangHolders(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
-        if (placeholder) {
-            input = transByPlayer(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
-        }
-        input = transByPlayer(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
-        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
-        try {
-            message = message.replace("%message%", input);
-            message = UtilsHandler.getLang().transLangHolders(pluginName, null, message, langHolder);
-            message = UtilsHandler.getLang().transByPlayer(pluginName, UtilsHandler.getVanillaUtils().getLocal(player),
-                    message, player, "player");
-        } catch (Exception ex) {
-            message = input;
-        }
-        int index = message.indexOf(", ");
-        UtilsHandler.getDiscord().sendDiscordMsg(message.substring(0, index - 1), message.substring(index + 1));
     }
 
     private String[] initializeRows(String... placeHolder) {
@@ -244,9 +241,9 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String transLangHolders(String pluginName, @Nullable String local, String input, String... langHolder) {
-        langHolder = initializeRows(langHolder);
         if (langHolder.length == 0)
             return input;
+        langHolder = initializeRows(langHolder);
         if (input.contains("%material%")) {
             input = input.replace("%material%", getVanillaTrans(pluginName, local, langHolder[7], "material"));
         } else if (input.contains("%entity%")) {
@@ -314,24 +311,20 @@ public class LanguageUtils implements LanguageInterface {
             return transByGeneral(pluginName, local, input);
         }
         while (true) {
-            // %TARGET_display_name%
-            try {
-                input = input.replace("%" + target + "_display_name%", player.getDisplayName());
-            } catch (Exception ex) {
-                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-            }
             // %TARGET_last_login%
             input = input.replace("%" + target + "_last_login%", String.valueOf(player.getLastLogin()));
+            // %TARGET_display_name%
+            input = input.replace("%" + target + "_display_name%", player.getDisplayName());
             // %money%
             UUID uuid = player.getUniqueId();
             if (UtilsHandler.getDepend().VaultEnabled()) {
-                if (input.contains("%money%")) {
+                if (input.contains("%" + target + "_money%")) {
                     input = input.replace("%money%", String.valueOf(UtilsHandler.getDepend().getVaultApi().getBalance(uuid)));
                 }
             }
             // %points%
             if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                if (input.contains("%points%")) {
+                if (input.contains("%" + target + "_points%")) {
                     input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid)));
                 }
             }
@@ -373,11 +366,12 @@ public class LanguageUtils implements LanguageInterface {
             return transByGeneral(pluginName, local, input);
         while (true) {
             String displayName = entity.getCustomName();
+            String name = entity.getName();
             String type = entity.getType().name();
             // %TARGET%
-            input = input.replace("%" + target + "%", displayName != null ? displayName : type);
+            input = input.replace("%" + target + "%", displayName != null ? displayName : name);
             // %TARGET_display_name%
-            input = input.replace("%" + target + "_display_name%", displayName != null ? displayName : type);
+            input = input.replace("%" + target + "_display_name%", displayName != null ? displayName : name);
             // %TARGET_has_custom_name%
             input = input.replace("%" + target + "_has_custom_name%", displayName != null ? "true" : "false");
             // %TARGET_type%
@@ -574,33 +568,37 @@ public class LanguageUtils implements LanguageInterface {
             // %TARGET_loc_x%, %TARGET_loc_y%, %TARGET_loc_z%
             // %TARGET_loc_x_NUMBER%, %TARGET_loc_y_NUMBER%, %TARGET_loc_z_NUMBER%
             if (input.contains("%" + target + "_loc")) {
-                try {
-                    String loc_x = String.valueOf(loc.getBlockX());
-                    String loc_y = String.valueOf(loc.getBlockY());
-                    String loc_z = String.valueOf(loc.getBlockZ());
-                    String[] arr = input.split("%");
-                    for (int i = 0; i < arr.length; i++) {
+                String loc_x = String.valueOf(loc.getBlockX());
+                String loc_y = String.valueOf(loc.getBlockY());
+                String loc_z = String.valueOf(loc.getBlockZ());
+                String[] arr = input.split("%");
+                int offset;
+                for (int i = 0; i < arr.length; i++) {
+                    try {
                         if (arr[i].endsWith("_loc_x")) {
                             if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", loc_x + Integer.parseInt(arr[i + 1]));
+                                offset = Integer.parseInt(loc_x) + Integer.parseInt(arr[i + 1]);
+                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         } else if (arr[i].endsWith("_loc_y")) {
                             if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", loc_y + Integer.parseInt(arr[i + 1]));
+                                offset = Integer.parseInt(loc_y) + Integer.parseInt(arr[i + 1]);
+                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         } else if (arr[i].endsWith("_loc_z")) {
                             if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
-                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", loc_z + Integer.parseInt(arr[i + 1]));
+                                offset = Integer.parseInt(loc_z) + Integer.parseInt(arr[i + 1]);
+                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         }
+                    } catch (Exception ex) {
+                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
-                    input = input.replace("%" + target + "_loc%", loc_x + ", " + loc_y + ", " + loc_z);
-                    input = input.replace("%" + target + "_loc_x%", loc_x);
-                    input = input.replace("%" + target + "_loc_y%", loc_y);
-                    input = input.replace("%" + target + "_loc_z%", loc_z);
-                } catch (Exception ex) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                 }
+                input = input.replace("%" + target + "_loc%", loc_x + ", " + loc_y + ", " + loc_z);
+                input = input.replace("%" + target + "_loc_x%", loc_x);
+                input = input.replace("%" + target + "_loc_y%", loc_y);
+                input = input.replace("%" + target + "_loc_z%", loc_z);
             }
             // %TARGET_cave%
             if (input.contains("%" + target + "_cave%")) {
@@ -640,15 +638,15 @@ public class LanguageUtils implements LanguageInterface {
             }
             // %TARGET_world_time%
             if (input.contains("%" + target + "_world_time%"))
-                input = input.replace("%" + target + "_loc_time%", String.valueOf(world.getTime()));
+                input = input.replace("%" + target + "_world_time%", String.valueOf(world.getTime()));
 
-            // %TARGET_biomed%
+            // %TARGET_biome%
             if (input.contains("%" + target + "_biome%"))
-                input = input.replace("%" + target + "_solid%", String.valueOf(block.isSolid()));
+                input = input.replace("%" + target + "_biome%", block.getBiome().name());
 
             // %TARGET_light%
-            if (input.contains("%" + target + "_light_light%"))
-                input = input.replace("%" + target + "_solid%", String.valueOf(block.getLightLevel()));
+            if (input.contains("%" + target + "_light%"))
+                input = input.replace("%" + target + "_light%", String.valueOf(block.getLightLevel()));
 
             // %TARGET_liquid%
             if (input.contains("%" + target + "_liquid%"))
@@ -656,11 +654,11 @@ public class LanguageUtils implements LanguageInterface {
 
             // %TARGET_solid%
             if (input.contains("%" + target + "_solid%"))
-                input = input.replace("%" + target + "_solid%", String.valueOf(block.isSolid()));
+                input = input.replace("%" + target + "_solid%", String.valueOf(block.getType().isSolid()));
 
             // %TARGET_cave%
             if (input.contains("%" + target + "_cave%"))
-                input = input.replace("%" + target + "_solid%", String.valueOf(UtilsHandler.getCondition().isInCave(loc)));
+                input = input.replace("%" + target + "_cave%", String.valueOf(UtilsHandler.getCondition().isInCave(loc)));
 
             // %TARGET_residence%
             if (input.contains("%" + target + "_residence%")) {
@@ -669,7 +667,7 @@ public class LanguageUtils implements LanguageInterface {
             }
             // %TARGET_in_residence%
             if (input.contains("%" + target + "_in_residence%"))
-                input = input.replace("%" + target + "_residence%",
+                input = input.replace("%" + target + "_in_residence%",
                         String.valueOf(UtilsHandler.getCondition().isInResidence(loc)));
             // %TARGET_nearby%type%name/type%group%radius%
             // arr[0]=Target_nearby, arr[1]=Type, arr[2]=Name/Type, arr[3]=Group, arr[4]=Radius
@@ -846,6 +844,80 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String transByCustom(String pluginName, String local, String input) {
+        if (input.contains("%str_")) {
+            String[] arr = input.split("%");
+            StringBuilder stringBuilder;
+            for (int i = 0; i < arr.length; i++) {
+                try {
+                    switch (arr[i].toLowerCase()) {
+                        case "str_replace":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%",
+                                    arr[i + 1].replace(arr[i + 2], arr[i + 3]));
+                            break;
+                        case "str_endswith":
+                            break;
+                        case "str_startswith":
+                            break;
+                        case "str_matches":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                    String.valueOf(arr[i + 1].matches(arr[i + 2])));
+                            break;
+                        case "str_tolowercase":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
+                                    arr[i + 1].toLowerCase());
+                            break;
+                        case "str_touppercase":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
+                                    arr[i + 1].toUpperCase());
+                            break;
+                        case "str_length":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
+                                    String.valueOf(arr[i + 1].length()));
+                            break;
+                        case "str_indexof":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
+                                    String.valueOf(input.indexOf(arr[i + 1])));
+                            break;
+                        case "str_lastindexof":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
+                                    String.valueOf(input.lastIndexOf(arr[i + 1])));
+                            break;
+                        case "str_equalsignorecase":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                    String.valueOf(arr[i + 1].equalsIgnoreCase(arr[i + 2])));
+                            break;
+                        case "str_contains":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                    String.valueOf(arr[i + 1].contains(arr[i + 2])));
+                            break;
+                        case "str_charat%":
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                    String.valueOf(arr[i + 1].charAt(Integer.parseInt(arr[i + 2]))));
+                            break;
+                        case "str_substring":
+                            if (arr.length >= i + 2 && arr[i + 2].matches("[0-9]$")) {
+                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                        input.substring(Integer.parseInt(arr[i + 1]), Integer.parseInt(arr[i + 2])));
+                            } else {
+                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                        input.substring(Integer.parseInt(arr[i + 1])));
+                            }
+                            break;
+                        case "str_split":
+                            stringBuilder = new StringBuilder();
+                            for (String s : arr[i + 1].split(arr[i + 2])) {
+                                stringBuilder.append(s);
+                            }
+                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
+                                    stringBuilder.toString());
+                            break;
+                    }
+
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                }
+            }
+        }
         String placeholder;
         String newPlaceholder;
         // JavaScript placeholder.
@@ -865,11 +937,11 @@ public class LanguageUtils implements LanguageInterface {
                     newPlaceholder = "";
                     if (placeholder.contains("<var>")) {// <var>
                         script = placeholder.substring(0, placeholder.indexOf("<var>"));
-                        varSplit = placeholder.substring(placeholder.indexOf("<var>") + 5).split(", ");
+                        varSplit = placeholder.substring(placeholder.indexOf("<var>") + 5).split(",");
                         for (String var : varSplit) {
                             try {
                                 engine.eval(script);
-                                newPlaceholder += engine.get(var).toString() + ", ";
+                                newPlaceholder += engine.get(var).toString() + ",";
                             } catch (Exception ex) {
                                 input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
                                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");

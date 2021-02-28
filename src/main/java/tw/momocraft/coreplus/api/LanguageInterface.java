@@ -19,44 +19,62 @@ public interface LanguageInterface {
     /**
      * Sending broadcast message to the server.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param message the value of message.
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
      */
-    void sendBroadcastMsg(String prefix, String message);
+    void sendBroadcastMsg(String prefix, String input);
+
+    /**
+     * Sending Discord message to the server.
+     * Need: DiscordSRV
+     *
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
+     */
+    void sendDiscordMsg(String prefix, String channel, String input);
+
+    /**
+     * Sending Discord message to the server.
+     * Need: DiscordSRV
+     *
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
+     */
+    void sendDiscordMsg(String prefix, String channel, String input, Player player);
 
     /**
      * Printing the message in console.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param message the value of message.
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
      */
-    void sendConsoleMsg(String prefix, String message);
+    void sendConsoleMsg(String prefix, String input);
 
     /**
      * Sending debug message in console.
      *
-     * @param debugging check or not.
-     * @param prefix    the executing plugin prefix.
-     * @param message   the value of message.
+     * @param debugging  check or not.
+     * @param pluginName the executing plugin name.
+     * @param input      the value of message.
      */
-    void sendDebugMsg(boolean debugging, String prefix, String message);
+    void sendDebugMsg(boolean debugging, String pluginName, String input);
 
     /**
      * Sending error message in console.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param message the value of message.
+     * @param pluginName the executing plugin prefix.
+     * @param input      the value of message.
      */
-    void sendErrorMsg(String prefix, String message);
+    void sendErrorMsg(String pluginName, String input);
 
     /**
      * Sending exception message in console.
      *
-     * @param debugging check or not.
-     * @param prefix    the executing plugin prefix.
-     * @param e         the type of exception.
+     * @param debugging  check or not.
+     * @param pluginName the executing plugin prefix.
+     * @param ex         the type of exception.
      */
-    void sendDebugTrace(boolean debugging, String prefix, Exception e);
+    void sendDebugTrace(boolean debugging, String pluginName, Exception ex);
 
     /**
      * Sending message to a player.
@@ -147,7 +165,6 @@ public interface LanguageInterface {
      */
     String[] newString();
 
-
     /**
      * Sending a message from configuration.
      *
@@ -157,27 +174,6 @@ public interface LanguageInterface {
      * @param langHolder   the translation of placeholders. It could be empty.
      */
     void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... langHolder);
-
-    /**
-     * Sending a message from configuration.
-     *
-     * @param pluginName  the executing plugin name.
-     * @param input       the input message.
-     * @param placeholder translating placeholders or not.
-     * @param langHolder  the translation of placeholders. It could be empty.
-     */
-    void sendDiscordMsg(String pluginName, String input, boolean placeholder, String... langHolder);
-
-    /**
-     * Sending a message from configuration.
-     *
-     * @param pluginName  the executing plugin name.
-     * @param player      the target player.
-     * @param input       the input message.
-     * @param placeholder translating placeholders or not.
-     * @param langHolder  the translation of placeholders. It could be empty.
-     */
-    void sendDiscordMsg(String pluginName, Player player, String input, boolean placeholder, String... langHolder);
 
     /**
      * Getting the translation of placeholder.
@@ -250,7 +246,7 @@ public interface LanguageInterface {
      * @param local         the target's local language.
      * @param input         the input string.
      * @param offlinePlayer the target player.
-     * @param target         the target type: player, target
+     * @param target        the target type: player, target
      * @return a new string with translated offline player placeholders.
      */
     String transByOfflinePlayer(String pluginName, @Nullable String local, String input, OfflinePlayer offlinePlayer, String target);
@@ -263,7 +259,7 @@ public interface LanguageInterface {
      * @param local      the target's local language.
      * @param input      the input string.
      * @param block      the target block.
-     * @param target         the target type: block, target
+     * @param target     the target type: block, target
      * @return a new string with translated block placeholders.
      */
     String transByBlock(String pluginName, @Nullable String local, String input, Block block, String target);
@@ -276,7 +272,7 @@ public interface LanguageInterface {
      * @param local      the target's local language.
      * @param input      the input string.
      * @param itemStack  the target item.
-     * @param target         the target type: item, target
+     * @param target     the target type: item, target
      * @return a new string with translated block placeholders.
      */
     String transByItem(String pluginName, @Nullable String local, String input, ItemStack itemStack, String target);

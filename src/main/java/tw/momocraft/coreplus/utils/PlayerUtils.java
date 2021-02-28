@@ -33,23 +33,16 @@ public class PlayerUtils implements PlayerInterface {
 
     @Override
     public OfflinePlayer getOfflinePlayer(String playerName) {
-        Collection<?> playersOnlineNew;
         OfflinePlayer[] playersOnlineOld;
         try {
-            if (Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
-                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                for (Object objPlayer : playersOnlineNew) {
-                    Player player = ((Player) objPlayer);
-                    if (player.getName().equalsIgnoreCase(playerName)) {
-                        return player;
-                    }
-                }
-            } else {
-                playersOnlineOld = ((OfflinePlayer[]) Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                for (OfflinePlayer player : playersOnlineOld) {
-                    if (player.getName().equalsIgnoreCase(playerName)) {
-                        return player;
-                    }
+            Player player = Bukkit.getPlayer(playerName);
+            if (player != null) {
+                return Bukkit.getOfflinePlayer(player.getUniqueId());
+            }
+            playersOnlineOld = ((OfflinePlayer[]) Bukkit.class.getMethod("getOfflinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+            for (OfflinePlayer offlinePlayer : playersOnlineOld) {
+                if (offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(playerName)) {
+                    return offlinePlayer;
                 }
             }
         } catch (Exception ex) {

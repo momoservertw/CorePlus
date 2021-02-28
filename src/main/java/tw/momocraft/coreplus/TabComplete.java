@@ -9,10 +9,7 @@ import org.bukkit.util.StringUtil;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class TabComplete implements TabCompleter {
 
@@ -20,10 +17,8 @@ public class TabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> completions = new ArrayList<>();
         final List<String> commands = new ArrayList<>();
-        Collection<?> playersOnlineNew;
-        Player[] playersOnlineOld;
         int length = args.length;
-        if (length == 0) {
+        if (length == 1) {
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
                 commands.add("help");
             }
@@ -51,103 +46,186 @@ public class TabComplete implements TabCompleter {
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
                 commands.add("cmdonline");
             }
-        }
-        switch (args[0]) {
-            case "test":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
-                    if (length == 1) {
-                        commands.add("location");
-                        commands.add("blocks");
-                    } else if (length == 2) {
-                        if (args[1].equalsIgnoreCase("location")) {
-                            commands.addAll(ConfigHandler.getConfigPath().getLocProp().keySet());
-                        } else if (args[1].equalsIgnoreCase("blocks")) {
-                            commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
+        } else {
+            Collection<?> playersOnlineNew;
+            Player[] playersOnlineOld;
+            switch (args[0].toLowerCase()) {
+                case "test":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
+                        if (length == 2) {
+                            commands.add("location");
+                            commands.add("blocks");
+                            commands.add("placeholder");
+                        } else if (length == 3) {
+                            if (args[1].equalsIgnoreCase("location")) {
+                                commands.addAll(ConfigHandler.getConfigPath().getLocProp().keySet());
+                            } else if (args[1].equalsIgnoreCase("blocks")) {
+                                commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
+                            } else if (args[1].equalsIgnoreCase("placeholder")) {
+                                commands.add("toggle");
+                                commands.add("offlineplayer");
+                                commands.add("player");
+                            }
                         }
                     }
-                }
-                break;
-            case "configbuilder":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
-                    if (length == 1) {
-                        commands.add("custom");
-                        commands.add("group");
-                    } else if (length == 2) {
-                        if (args[1].equals("custom"))
-                            commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderCustomProp().keySet());
+                    break;
+                case "configbuilder":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
+                        if (length == 2) {
+                            commands.add("custom");
+                            commands.add("group");
+                        } else if (length == 3) {
+                            if (args[1].equals("custom"))
+                                commands.addAll(ConfigHandler.getConfigPath().getConfigBuilderCustomProp().keySet());
+                        }
                     }
-                }
-                break;
-            case "cmdcustom":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
-                    if (length == 1) {
-                        commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
+                    break;
+                case "cmdcustom":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
+                        if (length == 2) {
+                            commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
+                        }
                     }
-                }
-                break;
-            case "cmd":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd")) {
-                    try {
-                        if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                for (Object objPlayer : playersOnlineNew) {
-                                    commands.add(((Player) objPlayer).getName());
+                    break;
+                case "cmd":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd")) {
+                        if (length == 2) {
+                            commands.add("custom: ");
+                            commands.add("condition: ");
+                            commands.add("print:  ");
+                            commands.add("log:");
+                            commands.add("log-custom:  ");
+                            commands.add("broadcast:");
+                            commands.add("discord: ");
+                            commands.add("discord-chat: ");
+                            commands.add("bungee: ");
+                            commands.add("switch: ");
+                            commands.add("console: ");
+                            commands.add("bungee: ");
+                            commands.add("op: ");
+                            commands.add("player: ");
+                            commands.add("chat-op: ");
+                            commands.add("chat: ");
+                            commands.add("message: ");
+                            commands.add("action-bar: ");
+                            commands.add("title: ");
+                            commands.add("sound-custom: ");
+                            commands.add("particle: ");
+                            commands.add("particle-custom: ");
+                        } else {
+                            try {
+                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                        for (Object objPlayer : playersOnlineNew) {
+                                            commands.add(((Player) objPlayer).getName());
+                                        }
+                                    }
+                                } else {
+                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                    for (Player player : playersOnlineOld) {
+                                        commands.add(player.getName());
+                                    }
                                 }
+                            } catch (Exception ex) {
+                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                            }
+                        }
+                    }
+                    break;
+                case "cmdplayer":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
+                        if (length == 2) {
+                            try {
+                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                        for (Object objPlayer : playersOnlineNew) {
+                                            commands.add(((Player) objPlayer).getName());
+                                        }
+                                    }
+                                } else {
+                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                    for (Player player : playersOnlineOld) {
+                                        commands.add(player.getName());
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                             }
                         } else {
-                            playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                            for (Player player : playersOnlineOld) {
-                                commands.add(player.getName());
-                            }
+                            commands.add("custom: ");
+                            commands.add("condition: ");
+                            commands.add("print:  ");
+                            commands.add("log:");
+                            commands.add("log-custom:  ");
+                            commands.add("broadcast:");
+                            commands.add("discord: ");
+                            commands.add("discord-chat: ");
+                            commands.add("bungee: ");
+                            commands.add("switch: ");
+                            commands.add("console: ");
+                            commands.add("bungee: ");
+                            commands.add("op: ");
+                            commands.add("player: ");
+                            commands.add("chat-op: ");
+                            commands.add("chat: ");
+                            commands.add("message: ");
+                            commands.add("action-bar: ");
+                            commands.add("title: ");
+                            commands.add("sound-custom: ");
+                            commands.add("particle: ");
+                            commands.add("particle-custom: ");
                         }
-                    } catch (Exception ex) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
-                }
-                break;
-            case "cmdplayer":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
-                    try {
-                        if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                for (Object objPlayer : playersOnlineNew) {
-                                    commands.add(((Player) objPlayer).getName());
+                    break;
+                case "cmdonline":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
+                        if (length == 2) {
+                            try {
+                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                        for (Object objPlayer : playersOnlineNew) {
+                                            commands.add(((Player) objPlayer).getName());
+                                        }
+                                    }
+                                } else {
+                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                                    for (Player player : playersOnlineOld) {
+                                        commands.add(player.getName());
+                                    }
                                 }
+                            } catch (Exception ex) {
+                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                             }
                         } else {
-                            playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                            for (Player player : playersOnlineOld) {
-                                commands.add(player.getName());
-                            }
+                            commands.add("custom: ");
+                            commands.add("condition: ");
+                            commands.add("print:  ");
+                            commands.add("log:");
+                            commands.add("log-custom:  ");
+                            commands.add("broadcast:");
+                            commands.add("discord: ");
+                            commands.add("discord-chat: ");
+                            commands.add("bungee: ");
+                            commands.add("switch: ");
+                            commands.add("console: ");
+                            commands.add("bungee: ");
+                            commands.add("op: ");
+                            commands.add("player: ");
+                            commands.add("chat-op: ");
+                            commands.add("chat: ");
+                            commands.add("message: ");
+                            commands.add("action-bar: ");
+                            commands.add("title: ");
+                            commands.add("sound-custom: ");
+                            commands.add("particle: ");
+                            commands.add("particle-custom: ");
                         }
-                    } catch (Exception ex) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                     }
-                }
-                break;
-            case "cmdonline":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
-                    try {
-                        if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                for (Object objPlayer : playersOnlineNew) {
-                                    commands.add(((Player) objPlayer).getName());
-                                }
-                            }
-                        } else {
-                            playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                            for (Player player : playersOnlineOld) {
-                                commands.add(player.getName());
-                            }
-                        }
-                    } catch (Exception ex) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-                    }
-                }
-                break;
+                    break;
+            }
         }
         StringUtil.copyPartialMatches(args[(args.length - 1)], commands, completions);
         Collections.sort(completions);

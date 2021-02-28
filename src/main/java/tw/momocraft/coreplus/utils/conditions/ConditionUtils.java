@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import tw.momocraft.coreplus.api.ConditionInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.listeners.ConditionTest;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -21,18 +22,12 @@ public class ConditionUtils implements ConditionInterface {
 
     private static LocationUtils locationUtils;
     private static BlocksUtils blocksUtils;
+    private static ConditionTest conditionTest;
 
     public ConditionUtils() {
-        setLocationUtils(new LocationUtils());
-        setBlockUtils(new BlocksUtils());
-    }
-
-    public static void setLocationUtils(LocationUtils loc) {
-        locationUtils = loc;
-    }
-
-    public static void setBlockUtils(BlocksUtils blocks) {
-        blocksUtils = blocks;
+        locationUtils = new LocationUtils();
+        blocksUtils = new BlocksUtils();
+        conditionTest = new ConditionTest();
     }
 
     @Override
@@ -43,6 +38,10 @@ public class ConditionUtils implements ConditionInterface {
     @Override
     public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
         return blocksUtils.checkBlocks(loc, blocksList, def);
+    }
+
+    public ConditionTest getConditionTest() {
+        return conditionTest;
     }
 
     @Override

@@ -227,6 +227,7 @@ public class CustomCommands implements CommandInterface {
             input = UtilsHandler.getLang().transByPlayer(pluginName,
                     UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
         }
+        String[] spilt;
         switch (input.split(": ")[0]) {
             case "custom":
                 input = input.replace("custom: ", "");
@@ -238,7 +239,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "print":
                 input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg(pluginName, input);
+                UtilsHandler.getLang().sendConsoleMsg("", input);
                 return;
             case "log":
                 input = input.replace("log: ", "");
@@ -252,13 +253,15 @@ public class CustomCommands implements CommandInterface {
                 input = input.replace("broadcast: ", "");
                 UtilsHandler.getLang().sendBroadcastMsg("", input);
                 return;
-            case "discord":
-                input = input.replace("discord: ", "");
-                UtilsHandler.getLang().sendDiscordMsg(pluginName, player, input, placeholder, langHolder);
-                return;
             case "discord-chat":
                 input = input.replace("discord-chat: ", "");
-                UtilsHandler.getLang().sendDiscordMsg(pluginName, player, input, placeholder, langHolder);
+                spilt = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1], player);
+                return;
+            case "discord":
+                input = input.replace("discord: ", "");
+                spilt = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1]);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -334,6 +337,7 @@ public class CustomCommands implements CommandInterface {
         if (placeholder) {
             input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
         }
+        String[] spilt;
         switch (input.split(": ")[0]) {
             case "custom":
                 input = input.replace("custom: ", "");
@@ -345,7 +349,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "print":
                 input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg(pluginName, input);
+                UtilsHandler.getLang().sendConsoleMsg("", input);
                 return;
             case "log":
                 input = input.replace("log: ", "");
@@ -361,7 +365,8 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "discord":
                 input = input.replace("discord: ", "");
-                UtilsHandler.getLang().sendDiscordMsg(pluginName, null, input, placeholder, langHolder);
+                spilt = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1]);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -374,6 +379,7 @@ public class CustomCommands implements CommandInterface {
             case "op":
             case "player":
             case "chat":
+            case "discord-chat":
             case "message":
             case "sound":
             case "sound-custom":
@@ -381,7 +387,6 @@ public class CustomCommands implements CommandInterface {
             case "particle-custom":
             case "actionbar":
             case "title":
-            case "discord-chat":
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"" + input + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the execute target.");
                 return;

@@ -4,11 +4,9 @@ import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.Commands;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.TabComplete;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.listeners.CommandOnline;
+import tw.momocraft.coreplus.listeners.ConditionTest;
 import tw.momocraft.coreplus.utils.MultiverseCoreUtils;
 import tw.momocraft.coreplus.utils.conditions.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.conditions.ResidenceUtils;
@@ -16,9 +14,6 @@ import tw.momocraft.coreplus.utils.economy.GemsEcoUtils;
 import tw.momocraft.coreplus.utils.economy.PlayerPointsUtils;
 import tw.momocraft.coreplus.utils.economy.VaultUtils;
 import tw.momocraft.coreplus.utils.permission.LuckPermsUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DependHandler implements DependInterface {
 
@@ -60,6 +55,7 @@ public class DependHandler implements DependInterface {
         CorePlus.getInstance().getCommand("CorePlus").setTabCompleter(new TabComplete());
 
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
+        CorePlus.getInstance().getServer().getPluginManager().registerEvents(new ConditionTest(), CorePlus.getInstance());
     }
 
     private void setup() {
