@@ -30,6 +30,48 @@ public class ConditionUtils implements ConditionInterface {
         conditionTest = new ConditionTest();
     }
 
+    /**
+     * Checking the condition is matched.
+     * Format:
+     * <if>Value1...Value2</if>
+     * <if>Value1...Value2<or>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
+     *
+     * @param input the input condition string.
+     * @return if the condition is matched.
+     */
+    @Override
+    public boolean checkCondition(String input) {
+        String[] conditionArray = input.split("<or>");
+        String[] arr;
+
+        back:
+        for (String conditions : conditionArray) {
+            if (conditions.contains("<and>")) {
+                for (String condition : conditions.split("<and>")) {
+                    arr = condition.split("[><=]+");
+                    if (!UtilsHandler.getUtil().getCompareAndEquals(arr[1], arr[2], arr[3])) {
+                        continue back;
+                    }
+                }
+                return true;
+            } else {
+                arr = conditions.split("[><=]+");
+                if (!UtilsHandler.getUtil().getCompareAndEquals(arr[1], arr[2], arr[3])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void executeAction(String input) {
+
+    }
+
     @Override
     public boolean checkLocation(String pluginName, Location loc, List<String> locList, boolean def) {
         return locationUtils.checkLocation(pluginName, loc, locList, def);

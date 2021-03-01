@@ -11,6 +11,22 @@ import java.util.Set;
 public interface ConditionInterface {
 
     /**
+     * Checking the condition is matched.
+     * Format:
+     *   <if>Value1...Value2</if>
+     *   <if>Value1...Value2<or>Value1...Value2</if>
+     *   <if>Value1...Value2<and>Value1...Value2</if>
+     *   <if>Value1...Value2<and>Value1...Value2</if>
+     *   <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
+     *
+     * @param input the input condition string.
+     * @return if the condition is matched.
+     */
+    boolean checkCondition(String input);
+
+    void executeAction(String input);
+
+    /**
      * Checking a location.
      *
      * @param pluginName the sending plugin name.

@@ -125,6 +125,21 @@ public class Utils implements UtilsInterface {
         return false;
     }
 
+    public boolean getCompareAndEquals(String s1, String s2, String s3) {
+        if (s1.matches("[0-9]+") && s3.matches("[0-9]+")) {
+            if (s2.matches("^[><=]+$")) {
+                return getCompare(s2, Integer.parseInt(s1), Integer.parseInt(s3));
+            } else if (s2.matches("^[!][><=]+$")) {
+                return !getCompare(s2, Integer.parseInt(s1), Integer.parseInt(s3));
+            }
+        } else {
+            if (s2.matches("[=]+")) {
+                return s1.equals(s3);
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean getRange(double number, double r1, double r2, boolean equal) {
         if (number == r1 || number == r2)

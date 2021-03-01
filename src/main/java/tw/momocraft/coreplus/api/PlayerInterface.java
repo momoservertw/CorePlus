@@ -27,6 +27,13 @@ public interface PlayerInterface {
     OfflinePlayer getOfflinePlayer(String playerName);
 
     /**
+     * Getting online player names.
+     *
+     * @return online player names.
+     */
+    List<String> getOnlinePlayerNames();
+
+    /**
      * Getting the last login time(milliseconds) of player.
      *
      * @param playerName the name of player.

@@ -51,6 +51,30 @@ public class PlayerUtils implements PlayerInterface {
         return null;
     }
 
+    public List<String> getOnlinePlayerNames() {
+        Collection<?> playersOnlineNew;
+        Player[] playersOnlineOld;
+        List<String> playerList = new ArrayList<>();
+        try {
+            if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
+                    playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                    for (Object objPlayer : playersOnlineNew) {
+                        playerList.add(((Player) objPlayer).getName());
+                    }
+                }
+            } else {
+                playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
+                for (Player player : playersOnlineOld) {
+                    playerList.add(player.getName());
+                }
+            }
+        } catch (Exception e) {
+            UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+        }
+        return playerList;
+    }
+
     @Override
     public double getLastLogin(String playerName) {
         OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);

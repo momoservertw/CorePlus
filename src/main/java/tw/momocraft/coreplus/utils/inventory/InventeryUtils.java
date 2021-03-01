@@ -7,7 +7,7 @@ public class InventeryUtils {
 
     private ItemStack getSlotItem(Player player, String slot) {
         // Inventory
-        if (slot.matches("^[0-9]*$")) {
+        if (slot.matches("[0-9]+")) {
             return player.getInventory().getItem(Integer.parseInt(slot));
         }
         switch (slot) {
@@ -36,7 +36,7 @@ public class InventeryUtils {
 
     private static void cleanslot(Player player, String slot) {
         // Inventory
-        if (slot.matches("^[0-9]*$")) {
+        if (slot.matches("[0-9]+")) {
             player.getInventory().setItem(Integer.parseInt(slot), null);
         }
         switch (slot) {

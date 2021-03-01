@@ -263,11 +263,10 @@ public class ConfigBuilder {
                                 UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, output.toString()));
             }
         } else {
-            String spilt = configBuilderMap.getSplit();
             for (String value : valueSet) {
-                output.append(split.replace("%value%", value)).append(spilt);
+                output.append(split.replace("%value%", value)).append(split);
             }
-            output.substring(0, output.length() - spilt.length());
+            output.substring(0, output.length() - split.length());
             UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
                     logGrop + ", " +
                             UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, output.toString()));

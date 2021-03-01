@@ -227,7 +227,7 @@ public class CustomCommands implements CommandInterface {
             input = UtilsHandler.getLang().transByPlayer(pluginName,
                     UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
         }
-        String[] spilt;
+        String[] split;
         switch (input.split(": ")[0]) {
             case "custom":
                 input = input.replace("custom: ", "");
@@ -255,13 +255,13 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "discord-chat":
                 input = input.replace("discord-chat: ", "");
-                spilt = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1], player);
+                split = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1], player);
                 return;
             case "discord":
                 input = input.replace("discord: ", "");
-                spilt = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1]);
+                split = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");
@@ -337,7 +337,7 @@ public class CustomCommands implements CommandInterface {
         if (placeholder) {
             input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
         }
-        String[] spilt;
+        String[] split;
         switch (input.split(": ")[0]) {
             case "custom":
                 input = input.replace("custom: ", "");
@@ -365,8 +365,8 @@ public class CustomCommands implements CommandInterface {
                 return;
             case "discord":
                 input = input.replace("discord: ", "");
-                spilt = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", spilt[0], spilt[1]);
+                split = input.split(", ");
+                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
                 return;
             case "bungee":
                 input = input.replace("bungee: ", "");

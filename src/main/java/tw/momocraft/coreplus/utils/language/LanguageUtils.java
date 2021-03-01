@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.language;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -335,7 +336,13 @@ public class LanguageUtils implements LanguageInterface {
             // Translate PlaceHolderAPI placeholders.
             if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
                 try {
-                    input = PlaceholderAPI.setPlaceholders(player, input);
+                    if (StringUtils.countMatches(input, "%") % 2 == 1) {
+                        input = input + "$%";
+                        input = PlaceholderAPI.setPlaceholders(player, input);
+                        input = input.substring(0, input.length() - 2);
+                    } else {
+                        input = PlaceholderAPI.setPlaceholders(player, input);
+                    }
                 } catch (NoSuchFieldError e) {
                     UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
                             "Error has occurred when setting the PlaceHolder " + e.getMessage() +
@@ -434,7 +441,13 @@ public class LanguageUtils implements LanguageInterface {
             // Translate PlaceHolderAPI's placeholders.
             if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
                 try {
-                    input = PlaceholderAPI.setPlaceholders(offlinePlayer, input);
+                    if (StringUtils.countMatches(input, "%") % 2 == 1) {
+                        input = input + "$%";
+                        input = PlaceholderAPI.setPlaceholders(offlinePlayer, input);
+                        input = input.substring(0, input.length() - 2);
+                    } else {
+                        input = PlaceholderAPI.setPlaceholders(offlinePlayer, input);
+                    }
                 } catch (NoSuchFieldError e) {
                     UtilsHandler.getLang().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
                             "Error has occurred when setting the PlaceHolder " + e.getMessage() +
@@ -576,17 +589,17 @@ public class LanguageUtils implements LanguageInterface {
                 for (int i = 0; i < arr.length; i++) {
                     try {
                         if (arr[i].endsWith("_loc_x")) {
-                            if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                            if (arr[i + 1].matches("-?[0-9]*(\\.[0-9]+)?")) {
                                 offset = Integer.parseInt(loc_x) + Integer.parseInt(arr[i + 1]);
                                 input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         } else if (arr[i].endsWith("_loc_y")) {
-                            if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                            if (arr[i + 1].matches("-?[0-9]*(\\.[0-9]+)?")) {
                                 offset = Integer.parseInt(loc_y) + Integer.parseInt(arr[i + 1]);
                                 input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         } else if (arr[i].endsWith("_loc_z")) {
-                            if (arr[i + 1].matches("^-?[0-9]\\d*(\\.\\d+)?$")) {
+                            if (arr[i + 1].matches("-?[0-9]*(\\.[0-9]+)?")) {
                                 offset = Integer.parseInt(loc_z) + Integer.parseInt(arr[i + 1]);
                                 input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
@@ -832,7 +845,13 @@ public class LanguageUtils implements LanguageInterface {
     public String transLayoutPAPI(String pluginName, String input, Player player) {
         if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
             try {
-                return PlaceholderAPI.setPlaceholders(player, input);
+                if (StringUtils.countMatches(input, "%") % 2 == 1) {
+                    input = input + "$%";
+                    input = PlaceholderAPI.setPlaceholders(player, input);
+                    return input.substring(0, input.length() - 2);
+                } else {
+                    return PlaceholderAPI.setPlaceholders(player, input);
+                }
             } catch (NoSuchFieldError e) {
                 UtilsHandler.getLang().sendDebugMsg(true, pluginName,
                         "Error has occurred when setting the PlaceHolder " + e.getMessage() +
@@ -844,82 +863,113 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String transByCustom(String pluginName, String local, String input) {
+        String placeholder;
+        String newPlaceholder;
         if (input.contains("%str_")) {
-            String[] arr = input.split("%");
+            String[] arr = input.split("%", -1);
             StringBuilder stringBuilder;
             for (int i = 0; i < arr.length; i++) {
                 try {
                     switch (arr[i].toLowerCase()) {
                         case "str_replace":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%",
-                                    arr[i + 1].replace(arr[i + 2], arr[i + 3]));
+                            // %str_replace%Momocraft%craft%{e}%
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%";
+                            newPlaceholder = arr[i + 1].replace(arr[i + 2], arr[i + 3]);
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_endswith":
+                            // %str_endswith%Momocraft%aft%
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].endsWith(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_startswith":
+                            // %str_startswith%Momocraft%Momo%4%
+                            if (arr.length >= i + 3 && arr[i + 3].matches("[0-9]+")) {
+                                placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%";
+                                newPlaceholder = String.valueOf(arr[i + 1].startsWith(arr[i + 2], Integer.parseInt(arr[i + 3])));
+                            } else {
+                                // %str_startswith%Momocraft%Momo%
+                                placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                                newPlaceholder = String.valueOf(arr[i + 1].startsWith(arr[i + 2]));
+                            }
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_matches":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                    String.valueOf(arr[i + 1].matches(arr[i + 2])));
+                            // %str_matches%Momocraft%[a-zA-Z]+%
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].matches(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_tolowercase":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
-                                    arr[i + 1].toLowerCase());
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%";
+                            newPlaceholder = arr[i + 1].toLowerCase();
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_touppercase":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
-                                    arr[i + 1].toUpperCase());
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%";
+                            newPlaceholder = arr[i + 1].toUpperCase();
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_length":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
-                                    String.valueOf(arr[i + 1].length()));
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].length());
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_indexof":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
-                                    String.valueOf(input.indexOf(arr[i + 1])));
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].indexOf(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_lastindexof":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%",
-                                    String.valueOf(input.lastIndexOf(arr[i + 1])));
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].lastIndexOf(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_equalsignorecase":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                    String.valueOf(arr[i + 1].equalsIgnoreCase(arr[i + 2])));
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].equalsIgnoreCase(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_contains":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                    String.valueOf(arr[i + 1].contains(arr[i + 2])));
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].contains(arr[i + 2]));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
-                        case "str_charat%":
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                    String.valueOf(arr[i + 1].charAt(Integer.parseInt(arr[i + 2]))));
+                        case "str_charat":
+                            // %str_charAt%Momocraft%3%
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            newPlaceholder = String.valueOf(arr[i + 1].charAt(Integer.parseInt(arr[i + 2])));
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_substring":
-                            if (arr.length >= i + 2 && arr[i + 2].matches("[0-9]$")) {
-                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                        input.substring(Integer.parseInt(arr[i + 1]), Integer.parseInt(arr[i + 2])));
+                            // %str_substring%Momocraft%4%10%
+                            if (arr.length >= i + 3 && arr[i + 3].matches("[0-9]+")) {
+                                placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%" + arr[i + 3] + "%";
+                                newPlaceholder = arr[i + 1].substring(Integer.parseInt(arr[i + 2]), Integer.parseInt(arr[i + 3]));
                             } else {
-                                input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                        input.substring(Integer.parseInt(arr[i + 1])));
+                                // %str_substring%Momocraft%4%
+                                placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                                newPlaceholder = arr[i + 1].substring(Integer.parseInt(arr[i + 2]));
                             }
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                         case "str_split":
                             stringBuilder = new StringBuilder();
-                            for (String s : arr[i + 1].split(arr[i + 2])) {
+                            // %str_split%1+2+3%+%
+                            placeholder = "%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%";
+                            for (String s : arr[i + 1].split(arr[i + 2], -1)) {
                                 stringBuilder.append(s);
                             }
-                            input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] + "%",
-                                    stringBuilder.toString());
+                            newPlaceholder = stringBuilder.toString();
+                            input = input.replace(placeholder, newPlaceholder);
                             break;
                     }
-
                 } catch (Exception ex) {
                     UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
                 }
             }
         }
-        String placeholder;
-        String newPlaceholder;
         // JavaScript placeholder.
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
@@ -950,7 +1000,7 @@ public class LanguageUtils implements LanguageInterface {
                                 continue back;
                             }
                         }
-                        newPlaceholder = newPlaceholder.substring(0, newPlaceholder.length() - 2);
+                        newPlaceholder = newPlaceholder.substring(0, newPlaceholder.length() - 1);
                         newPlaceholder = newPlaceholder.replace("<var>", "");
                         input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
                     } else {
@@ -973,15 +1023,44 @@ public class LanguageUtils implements LanguageInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
             }
         }
-
         // Condition placeholders.
         String condition;
         String action;
         String[] conditionValues;
         boolean type;
-        while (input.contains("%if%")) {
-            placeholder = input.substring(input.indexOf("$condition: ") - 1);
-            placeholder = placeholder.substring(0, placeholder.indexOf("$") + 1);
+        // <if>value1...value2<and>value3...value4<or>value5...value6</if>
+        while (input.contains("<if>")) {
+            String originInput = input;
+            String[] split = input.split("<if>");
+            String script;
+            for (int i = 0; i < split.length; i++) {
+                if (i == 0)
+                    continue;
+                if (split[i].contains("</js>")) {
+                    placeholder = split[i].substring(0, split[i].indexOf("</if>"));
+                    newPlaceholder = "";
+                    script = placeholder;
+                    try {
+                        newPlaceholder = engine.eval(script).toString();
+                        input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
+                    } catch (Exception ex) {
+                        input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    }
+                    continue;
+                }
+                input = input.replace("<js>" + split[i], "%ERROR%");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+            }
+        }
+
+        while (input.contains("<if>")) {
+            placeholder = input.substring(input.indexOf("<if>") - 1);
+            placeholder = placeholder.substring(0, placeholder.indexOf("%") + 1);
             condition = placeholder.substring(0, placeholder.lastIndexOf(", ") - 1);
             action = placeholder.substring(placeholder.lastIndexOf(", ") + 1);
             if (condition.contains(">=")) {

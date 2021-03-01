@@ -40,5 +40,6 @@ tw\momocraft\coreplus\utils\language\Logger.class
 tw\momocraft\coreplus\utils\conditions\BlocksUtils.class
 tw\momocraft\coreplus\utils\customcommands\SoundUtils.class
 tw\momocraft\coreplus\utils\files\ConfigBuilderMap.class
+tw\momocraft\coreplus\listeners\CommandOnlineMPDB.class
 tw\momocraft\coreplus\utils\conditions\BlocksMap.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$1.class

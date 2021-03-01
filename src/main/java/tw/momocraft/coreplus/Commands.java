@@ -110,9 +110,9 @@ public class Commands implements CommandExecutor {
                 return true;
             case "test":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
-                    // /crp test <blocks/location> <group>
-                    if (length == 3) {
-                        if (args[1].equalsIgnoreCase("location")) {
+                    if (args[1].equalsIgnoreCase("location")) {
+                        // /crp test <blocks/location> <group>
+                        if (length == 3) {
                             if (sender instanceof ConsoleCommandSender) {
                                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                                         "Message.onlyPlayer", sender);
@@ -127,7 +127,10 @@ public class Commands implements CommandExecutor {
                             }
                             UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Location: " + args[2] + ")");
                             return true;
-                        } else if (args[1].equalsIgnoreCase("blocks")) {
+                        }
+                    } else if (args[1].equalsIgnoreCase("blocks")) {
+                        // /crp test <blocks/location> <group>
+                        if (length == 3) {
                             if (sender instanceof ConsoleCommandSender) {
                                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                                         "Message.onlyPlayer", sender);
@@ -142,15 +145,29 @@ public class Commands implements CommandExecutor {
                             }
                             UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Blocks: " + args[2] + ")");
                             return true;
-                        } else if (args[1].equalsIgnoreCase("placeholder")) {
+                        }
+                    } else if (args[1].equalsIgnoreCase("placeholder")) {
+                        if (length == 4) {
+                            // crp test placeholder <player/offlineplayer> <player>
+                            if (args[2].equalsIgnoreCase("offlineplayer")) {
+                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[3]);
+                                return true;
+                                // crp test placeholder <player/offlineplayer> <player>
+                            } else if (args[2].equalsIgnoreCase("player")) {
+                                Player player = UtilsHandler.getPlayer().getPlayerString(args[1]);
+                                if (player == null) {
+                                    String[] placeHolders = UtilsHandler.getLang().newString();
+                                    placeHolders[1] = args[3]; // %targetplayer%
+                                    UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                                            "Message.targetNotFound", sender, placeHolders);
+                                    return true;
+                                }
+                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
+                                return true;
+                            }
+                        } else if (length == 3) {
                             if (args[2].equalsIgnoreCase("toggle")) {
                                 UtilsHandler.getCondition().getConditionTest().toggleToggleMode(sender, sender.getName());
-                                return true;
-                            } else if (args[2].equalsIgnoreCase("offlineplayer")) {
-                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
-                                return true;
-                            } else if (args[2].equalsIgnoreCase("player")) {
-                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
                                 return true;
                             }
                         }
@@ -289,8 +306,12 @@ public class Commands implements CommandExecutor {
                 }
                 return true;
         }
-        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                "Message.unknownCommand", sender);
+        UtilsHandler.getLang().
+
+                sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.
+
+                                getPrefix(),
+                        "Message.unknownCommand", sender);
         return true;
     }
 }

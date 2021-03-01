@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -9,7 +8,10 @@ import org.bukkit.util.StringUtil;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class TabComplete implements TabCompleter {
 
@@ -66,6 +68,10 @@ public class TabComplete implements TabCompleter {
                                 commands.add("offlineplayer");
                                 commands.add("player");
                             }
+                        } else if (length == 4) {
+                            if (args[1].equalsIgnoreCase("placeholder")) {
+                                commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
+                            }
                         }
                     }
                     break;
@@ -113,46 +119,14 @@ public class TabComplete implements TabCompleter {
                             commands.add("particle: ");
                             commands.add("particle-custom: ");
                         } else {
-                            try {
-                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                        for (Object objPlayer : playersOnlineNew) {
-                                            commands.add(((Player) objPlayer).getName());
-                                        }
-                                    }
-                                } else {
-                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                    for (Player player : playersOnlineOld) {
-                                        commands.add(player.getName());
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-                            }
+                            commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                         }
                     }
                     break;
                 case "cmdplayer":
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
                         if (length == 2) {
-                            try {
-                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                        for (Object objPlayer : playersOnlineNew) {
-                                            commands.add(((Player) objPlayer).getName());
-                                        }
-                                    }
-                                } else {
-                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                    for (Player player : playersOnlineOld) {
-                                        commands.add(player.getName());
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-                            }
+                            commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                         } else {
                             commands.add("custom: ");
                             commands.add("condition: ");
@@ -182,23 +156,7 @@ public class TabComplete implements TabCompleter {
                 case "cmdonline":
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
                         if (length == 2) {
-                            try {
-                                if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                    if (Bukkit.class.getMethod("getOnlinePlayers").getReturnType() == Collection.class) {
-                                        playersOnlineNew = ((Collection<?>) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                        for (Object objPlayer : playersOnlineNew) {
-                                            commands.add(((Player) objPlayer).getName());
-                                        }
-                                    }
-                                } else {
-                                    playersOnlineOld = ((Player[]) Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).invoke(null, new Object[0]));
-                                    for (Player player : playersOnlineOld) {
-                                        commands.add(player.getName());
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
-                            }
+                            commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                         } else {
                             commands.add("custom: ");
                             commands.add("condition: ");

@@ -55,6 +55,9 @@ public class DependHandler implements DependInterface {
         CorePlus.getInstance().getCommand("CorePlus").setTabCompleter(new TabComplete());
 
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
+        if (MpdbEnabled()) {
+            CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
+        }
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new ConditionTest(), CorePlus.getInstance());
     }
 

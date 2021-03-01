@@ -45,51 +45,51 @@ public class LocationMap {
         if (valueLen == 1) {
             if (typeLen == 1) {
                 if (type.matches("[XYZRS]")) {
-                    return values[0].matches("-?[0-9]\\d*$");
+                    return values[0].matches("-?[0-9]+");
                 }
             } else if (typeLen == 2) {
                 if (type.matches("[!][XYZRS]")) {
-                    return values[0].matches("-?[0-9]\\d*$");
-                } else if (type.matches("[XYZ][XYZ]")) {
-                    return values[0].matches("-?[0-9]\\d*$");
+                    return values[0].matches("-?[0-9]+");
+                } else if (type.matches("[XYZ]{1,2}")) {
+                    return values[0].matches("-?[0-9]+");
                 }
             }
         } else if (valueLen == 2) {
             if (typeLen == 1) {
                 if (type.matches("[XYZ]")) {
                     if (values[0].length() == 1 && values[0].matches("[><=]") ||
-                            values[0].length() == 2 && values[0].matches("[><=][><=]")) {
-                        return values[1].matches("-?[0-9]\\d*$");
+                            values[0].length() == 2 && values[0].matches("[><=]{1,2}")) {
+                        return values[1].matches("-?[0-9]+");
                     }
                 }
             } else if (typeLen == 2) {
                 if (type.matches("[!][XYZ]")) {
                     if (values[0].length() == 1 && values[0].matches("[><=]") || values[0].length() == 2 &&
-                            values[0].matches("[><=][><=]")) {
-                        return values[1].matches("-?[0-9]\\d*$");
+                            values[0].matches("[><=]{1,2}")) {
+                        return values[1].matches("-?[0-9]+");
                     }
                 }
             }
         } else if (valueLen == 3) {
             if (typeLen == 1) {
                 if (type.matches("[RS]")) {
-                    return values[0].matches("-?[0-9]\\d*$") && values[1].matches("-?[0-9]\\d*$") &&
-                            values[2].matches("-?[0-9]\\d*$");
+                    return values[0].matches("-?[0-9]+") && values[1].matches("-?[0-9]+") &&
+                            values[2].matches("-?[0-9]+");
                 } else if (type.matches("[XYZ]")) {
-                    if (values[0].matches("-?[0-9]\\d*$") && values[2].matches("-?[0-9]\\d*$")) {
+                    if (values[0].matches("-?[0-9]+") && values[2].matches("-?[0-9]+")) {
                         return values[1].equals("~");
                     }
                 }
             } else if (typeLen == 2) {
                 if (type.matches("[!][RS]")) {
-                    return values[0].matches("-?[0-9]\\d*$") && values[1].matches("-?[0-9]\\d*$") &&
-                            values[2].matches("-?[0-9]\\d*$");
-                } else if (type.matches("[XYZ][XYZ]")) {
-                    if (values[0].matches("-?[0-9]\\d*$") && values[2].matches("-?[0-9]\\d*$")) {
+                    return values[0].matches("-?[0-9]+") && values[1].matches("-?[0-9]+") &&
+                            values[2].matches("-?[0-9]+");
+                } else if (type.matches("[XYZ]{1,2}")) {
+                    if (values[0].matches("-?[0-9]+") && values[2].matches("-?[0-9]+")) {
                         return values[1].equals("~");
                     }
                 } else if (type.matches("[!][XYZ]")) {
-                    if (values[0].matches("-?[0-9]\\d*$") && values[2].matches("-?[0-9]\\d*$")) {
+                    if (values[0].matches("-?[0-9]+") && values[2].matches("-?[0-9]+")) {
                         return values[1].equals("~");
                     }
                 }
@@ -97,13 +97,13 @@ public class LocationMap {
         } else if (valueLen == 4) {
             if (typeLen == 1) {
                 if (type.matches("[RS]")) {
-                    return values[0].matches("-?[0-9]\\d*$") && values[1].matches("-?[0-9]\\d*$") &&
-                            values[2].matches("-?[0-9]\\d*$") && values[3].matches("-?[0-9]\\d*$");
+                    return values[0].matches("-?[0-9]+") && values[1].matches("-?[0-9]+") &&
+                            values[2].matches("-?[0-9]+") && values[3].matches("-?[0-9]+");
                 }
             } else if (typeLen == 2) {
                 if (type.matches("[!][RS]")) {
-                    return values[0].matches("-?[0-9]\\d*$") && values[1].matches("-?[0-9]\\d*$") &&
-                            values[2].matches("-?[0-9]\\d*$") && values[3].matches("-?[0-9]\\d*$");
+                    return values[0].matches("-?[0-9]+") && values[1].matches("-?[0-9]+") &&
+                            values[2].matches("-?[0-9]+") && values[3].matches("-?[0-9]+");
                 }
             }
         }
