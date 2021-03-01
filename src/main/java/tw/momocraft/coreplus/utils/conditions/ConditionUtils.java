@@ -46,21 +46,106 @@ public class ConditionUtils implements ConditionInterface {
     public boolean checkCondition(String input) {
         String[] conditionArray = input.split("<or>");
         String[] arr;
-
         back:
         for (String conditions : conditionArray) {
             if (conditions.contains("<and>")) {
                 for (String condition : conditions.split("<and>")) {
-                    arr = condition.split("[><=]+");
-                    if (!UtilsHandler.getUtil().getCompareAndEquals(arr[1], arr[2], arr[3])) {
+                    if (condition.contains(">")) {
+                        arr = condition.split(">");
+                        if (arr[0].endsWith("!")) {
+                            if (!UtilsHandler.getUtil().getCompareAndEquals(">", arr[0].substring(0, arr.length - 1), arr[1]))
+                                continue back;
+                        } else {
+                            if (UtilsHandler.getUtil().getCompareAndEquals(">", arr[0], arr[1]))
+                                continue back;
+                        }
+                    } else if (condition.contains("<")) {
+                        arr = condition.split("<");
+                        if (arr[0].endsWith("!")) {
+                            if (!UtilsHandler.getUtil().getCompareAndEquals("<", arr[0].substring(0, arr.length - 1), arr[1]))
+                                continue back;
+                        } else {
+                            if (UtilsHandler.getUtil().getCompareAndEquals("<", arr[0], arr[1]))
+                                continue back;
+                        }
+                    } else if (condition.contains(">=")) {
+                        arr = condition.split(">=");
+                        if (arr[0].endsWith("!")) {
+                            if (!UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0].substring(0, arr.length - 1), arr[1]))
+                                continue back;
+                        } else {
+                            if (UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0], arr[1]))
+                                continue back;
+                        }
+                    } else if (condition.contains("<=")) {
+                        arr = condition.split("<=");
+                        if (arr[0].endsWith("!")) {
+                            if (!UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0].substring(0, arr.length - 1), arr[1]))
+                                continue back;
+                        } else {
+                            if (UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0], arr[1]))
+                                continue back;
+                        }
+                    } else if (condition.contains("=")) {
+                        arr = condition.split("=");
+                        if (arr[0].endsWith("!")) {
+                            if (!UtilsHandler.getUtil().getCompareAndEquals("=", arr[0].substring(0, arr.length - 1), arr[1]))
+                                continue back;
+                        } else {
+                            if (UtilsHandler.getUtil().getCompareAndEquals("=", arr[0], arr[1]))
+                                continue back;
+                        }
+                    } else {
                         continue back;
                     }
                 }
                 return true;
             } else {
-                arr = conditions.split("[><=]+");
-                if (!UtilsHandler.getUtil().getCompareAndEquals(arr[1], arr[2], arr[3])) {
-                    return true;
+                if (conditions.contains(">")) {
+                    arr = conditions.split(">");
+                    if (arr[0].endsWith("!")) {
+                        if (!UtilsHandler.getUtil().getCompareAndEquals(">", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (UtilsHandler.getUtil().getCompareAndEquals(">", arr[0], arr[1]))
+                            return true;
+                    }
+                } else if (conditions.contains("<")) {
+                    arr = conditions.split("<");
+                    if (arr[0].endsWith("!")) {
+                        if (!UtilsHandler.getUtil().getCompareAndEquals("<", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (UtilsHandler.getUtil().getCompareAndEquals("<", arr[0], arr[1]))
+                            return true;
+                    }
+                } else if (conditions.contains(">=")) {
+                    arr = conditions.split(">=");
+                    if (arr[0].endsWith("!")) {
+                        if (!UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0], arr[1]))
+                            return true;
+                    }
+                } else if (conditions.contains("<=")) {
+                    arr = conditions.split("<=");
+                    if (arr[0].endsWith("!")) {
+                        if (!UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0], arr[1]))
+                            return true;
+                    }
+                } else if (conditions.contains("=")) {
+                    arr = conditions.split("=");
+                    if (arr[0].endsWith("!")) {
+                        if (!UtilsHandler.getUtil().getCompareAndEquals("=", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (UtilsHandler.getUtil().getCompareAndEquals("=", arr[0], arr[1]))
+                            return true;
+                    }
                 }
             }
         }

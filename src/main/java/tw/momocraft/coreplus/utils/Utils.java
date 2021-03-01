@@ -125,16 +125,16 @@ public class Utils implements UtilsInterface {
         return false;
     }
 
-    public boolean getCompareAndEquals(String s1, String s2, String s3) {
-        if (s1.matches("[0-9]+") && s3.matches("[0-9]+")) {
-            if (s2.matches("^[><=]+$")) {
-                return getCompare(s2, Integer.parseInt(s1), Integer.parseInt(s3));
-            } else if (s2.matches("^[!][><=]+$")) {
-                return !getCompare(s2, Integer.parseInt(s1), Integer.parseInt(s3));
+    public boolean getCompareAndEquals(String operator, String value1, String value2) {
+        if (value1.matches("[0-9]+") && value2.matches("[0-9]+")) {
+            if (operator.matches("[><=]+")) {
+                return getCompare(operator, Integer.parseInt(value1), Integer.parseInt(value2));
+            } else if (operator.matches("[!][><=]+")) {
+                return !getCompare(operator, Integer.parseInt(value1), Integer.parseInt(value2));
             }
         } else {
-            if (s2.matches("[=]+")) {
-                return s1.equals(s3);
+            if (operator.matches("[=]+")) {
+                return value1.equals(value2);
             }
         }
         return false;

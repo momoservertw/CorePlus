@@ -165,11 +165,6 @@ public class Commands implements CommandExecutor {
                                 UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
                                 return true;
                             }
-                        } else if (length == 3) {
-                            if (args[2].equalsIgnoreCase("toggle")) {
-                                UtilsHandler.getCondition().getConditionTest().toggleToggleMode(sender, sender.getName());
-                                return true;
-                            }
                         }
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -264,7 +259,6 @@ public class Commands implements CommandExecutor {
                         }
                         String command = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
                         UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginName(), player, command, true);
-                        System.out.println("command" + command);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

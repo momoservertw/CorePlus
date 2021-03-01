@@ -604,8 +604,7 @@ public class LanguageUtils implements LanguageInterface {
                                 input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%", String.valueOf(offset));
                             }
                         }
-                    } catch (Exception ex) {
-                        UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                    } catch (Exception ignored) {
                     }
                 }
                 input = input.replace("%" + target + "_loc%", loc_x + ", " + loc_y + ", " + loc_z);
@@ -863,8 +862,17 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String transByCustom(String pluginName, String local, String input) {
+        // The target placeholder.
         String placeholder;
+        // The replaced placeholder.
         String newPlaceholder;
+        // The placeholder without prefix and suffix.
+        String placeholderValue;
+        // The string for sending error messages.
+        String originInput = input;
+
+        String[] split;
+        String[] splitValues;
         if (input.contains("%str_")) {
             String[] arr = input.split("%", -1);
             StringBuilder stringBuilder;
@@ -974,10 +982,7 @@ public class LanguageUtils implements LanguageInterface {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         while (input.contains("<js>")) {
-            String originInput = input;
-            String[] split = input.split("<js>");
-            String script;
-            String[] varSplit;
+            split = input.split("<js>");
             back:
             for (int i = 0; i < split.length; i++) {
                 if (i == 0)
@@ -986,12 +991,12 @@ public class LanguageUtils implements LanguageInterface {
                     placeholder = split[i].substring(0, split[i].indexOf("</js>"));
                     newPlaceholder = "";
                     if (placeholder.contains("<var>")) {// <var>
-                        script = placeholder.substring(0, placeholder.indexOf("<var>"));
-                        varSplit = placeholder.substring(placeholder.indexOf("<var>") + 5).split(",");
-                        for (String var : varSplit) {
+                        placeholderValue = placeholder.substring(0, placeholder.indexOf("<var>"));
+                        splitValues = placeholder.substring(placeholder.indexOf("<var>") + 5).split(",");
+                        for (String var : splitValues) {
                             try {
-                                engine.eval(script);
-                                newPlaceholder += engine.get(var).toString() + ",";
+                                engine.eval(placeholderValue);
+                                newPlaceholder += engine.get(var).toString() + ", ";
                             } catch (Exception ex) {
                                 input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
                                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
@@ -1004,9 +1009,9 @@ public class LanguageUtils implements LanguageInterface {
                         newPlaceholder = newPlaceholder.replace("<var>", "");
                         input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
                     } else {
-                        script = placeholder;
+                        placeholderValue = placeholder;
                         try {
-                            newPlaceholder = engine.eval(script).toString();
+                            newPlaceholder = engine.eval(placeholderValue).toString();
                             input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
                         } catch (Exception ex) {
                             input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
@@ -1017,154 +1022,37 @@ public class LanguageUtils implements LanguageInterface {
                     }
                     continue;
                 }
-                input = input.replace("<js>" + split[i], "%ERROR%");
+                input = input.replace("<if>" + split[i], "%ERROR%");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
             }
         }
         // Condition placeholders.
-        String condition;
-        String action;
-        String[] conditionValues;
-        boolean type;
         // <if>value1...value2<and>value3...value4<or>value5...value6</if>
         while (input.contains("<if>")) {
-            String originInput = input;
-            String[] split = input.split("<if>");
-            String script;
+            split = input.split("<if>");
             for (int i = 0; i < split.length; i++) {
                 if (i == 0)
                     continue;
-                if (split[i].contains("</js>")) {
+                if (split[i].contains("</if>")) {
                     placeholder = split[i].substring(0, split[i].indexOf("</if>"));
-                    newPlaceholder = "";
-                    script = placeholder;
                     try {
-                        newPlaceholder = engine.eval(script).toString();
-                        input = input.replace("<js>" + placeholder + "</js>", newPlaceholder);
+                        newPlaceholder = String.valueOf(UtilsHandler.getCondition().checkCondition(placeholder));
+                        input = input.replace("<if>" + placeholder + "</if>", newPlaceholder);
                     } catch (Exception ex) {
-                        input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
+                        ex.printStackTrace();
+                        input = input.replace("<if>" + placeholder, "%ERROR%");
                         UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "\"");
                         UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
                     }
                     continue;
                 }
-                input = input.replace("<js>" + split[i], "%ERROR%");
+                input = input.replace("<if>" + split[i], "%ERROR%");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-            }
-        }
-
-        while (input.contains("<if>")) {
-            placeholder = input.substring(input.indexOf("<if>") - 1);
-            placeholder = placeholder.substring(0, placeholder.indexOf("%") + 1);
-            condition = placeholder.substring(0, placeholder.lastIndexOf(", ") - 1);
-            action = placeholder.substring(placeholder.lastIndexOf(", ") + 1);
-            if (condition.contains(">=")) {
-                conditionValues = condition.split(">=");
-                try {
-                    type = UtilsHandler.getUtil().getCompare(">=",
-                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                } catch (Exception ex) {
-                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                    continue;
-                }
-            } else if (condition.contains("<=")) {
-                conditionValues = condition.split("<=");
-                try {
-                    type = UtilsHandler.getUtil().getCompare("<=",
-                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                } catch (Exception ex) {
-                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                    continue;
-                }
-            } else if (condition.contains(">")) {
-                conditionValues = condition.split(">");
-                try {
-                    type = UtilsHandler.getUtil().getCompare(">",
-                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                } catch (Exception ex) {
-                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                    continue;
-                }
-            } else if (condition.contains("<")) {
-                conditionValues = condition.split("<");
-                try {
-                    type = UtilsHandler.getUtil().getCompare("<",
-                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                } catch (Exception ex) {
-                    input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
-                    continue;
-                }
-            } else if (condition.contains("=")) {
-                conditionValues = condition.split("=");
-                try {
-                    type = UtilsHandler.getUtil().getCompare("=",
-                            Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
-                } catch (Exception ex) {
-                    type = conditionValues[0].equals(conditionValues[1]);
-                }
-            } else {
-                input = input.replace(placeholder, "ERROR_CONDITION_PLACEHOLDER");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of placeholder: \"" + placeholder + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                continue;
-            }
-            String truePlaceholder = null;
-            String falsePlaceholder = null;
-            if (action.startsWith("{true}")) {
-                if (action.contains("{false}")) {
-                    truePlaceholder = action.split("\\{false}")[0];
-                    truePlaceholder = truePlaceholder.replace("{true}", "");
-                    falsePlaceholder = action.split("\\{false}")[1];
-                } else {
-                    truePlaceholder = action.replace("{true}", "");
-                }
-            } else if (action.startsWith("{false}")) {
-                if (action.contains("{true}")) {
-                    falsePlaceholder = action.split("\\{true}")[0];
-                    falsePlaceholder = falsePlaceholder.replace("{false}", "");
-                    truePlaceholder = action.split("\\{true}")[1];
-                } else {
-                    falsePlaceholder = action.replace("{false}", "");
-                }
-            } else {
-                if (action.contains("{false}")) {
-                    truePlaceholder = action.split("\\{false}")[0];
-                    truePlaceholder = truePlaceholder.replace("{true}", "");
-                    falsePlaceholder = action.split("\\{false}")[1];
-                } else {
-                    truePlaceholder = action.replace("{true}", "");
-                }
-            }
-            if (truePlaceholder == null)
-                truePlaceholder = "";
-            if (falsePlaceholder == null)
-                falsePlaceholder = "";
-            if (type) {
-                input = input.replace(placeholder, truePlaceholder);
-            } else {
-                input = input.replace(placeholder, falsePlaceholder);
             }
         }
         return input;

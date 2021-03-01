@@ -20,24 +20,7 @@ import java.util.List;
 
 public class ConditionTest implements Listener {
 
-    public final List<String> toggleMode = new ArrayList<>();
-
-    public void toggleToggleMode(CommandSender sender, String playerName) {
-        if (toggleMode.contains(playerName)) {
-            toggleMode.remove(playerName);
-            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&fDisabled the placeholder debug mode.");
-        } else {
-            toggleMode.add(playerName);
-            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&aEnabled the placeholder debug mode.");
-        }
-    }
-
     public void cmdOfflinePlayer(CommandSender sender, String playerName) {
-        if (!toggleMode.contains(sender.getName())) {
-            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&fYou need to turn on the placeholder debug mode:");
-            UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "&f/crp test placeholder toggle");
-            return;
-        }
         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
                 "&6Starting to show the \"OfflinePlayerr\" placeholders...");
         OfflinePlayer offlinePlayer = UtilsHandler.getPlayer().getOfflinePlayer(playerName);
@@ -67,7 +50,14 @@ public class ConditionTest implements Listener {
         for (String placeholder : getJS()) {
             input = UtilsHandler.getLang().transByOfflinePlayer(ConfigHandler.getPluginName(),
                     null, placeholder, offlinePlayer, "player");
-            input = "player - condition 【 " + placeholder + " 】【 " + input + "llll 】";
+            input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", sender, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+        }
+        for (String placeholder : getCondition()) {
+            input = UtilsHandler.getLang().transByOfflinePlayer(ConfigHandler.getPluginName(),
+                    null, placeholder, offlinePlayer, "player");
+            input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getLang().sendMsg("", sender, input);
             UtilsHandler.getLang().sendConsoleMsg("", input);
         }
@@ -75,9 +65,9 @@ public class ConditionTest implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteractEvent(PlayerInteractEvent e) {
-        if (!toggleMode.contains(e.getPlayer().getName()))
-            return;
         Player player = e.getPlayer();
+        if (!ConfigHandler.isDebugging() || !player.isOp())
+            return;
         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), player,
                 "&6Starting to show the \"Blocks\" placeholders...");
         Block target = e.getClickedBlock();
@@ -137,13 +127,26 @@ public class ConditionTest implements Listener {
             UtilsHandler.getLang().sendMsg("", player, input);
             UtilsHandler.getLang().sendConsoleMsg("", input);
         }
+        for (String placeholder : getCondition()) {
+            input = UtilsHandler.getLang().transByPlayer(ConfigHandler.getPluginName(),
+                    local, placeholder, player, "player");
+            input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+
+            input = UtilsHandler.getLang().transByBlock(ConfigHandler.getPluginName(),
+                    local, placeholder, target, "target");
+            input = "blocks - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent e) {
-        if (!toggleMode.contains(e.getPlayer().getName()))
-            return;
         Player player = e.getPlayer();
+        if (!ConfigHandler.isDebugging() || !player.isOp())
+            return;
         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), player,
                 "&6Starting to show the \"Entity\" placeholders...");
         Entity target = e.getRightClicked();
@@ -203,12 +206,25 @@ public class ConditionTest implements Listener {
             UtilsHandler.getLang().sendMsg("", player, input);
             UtilsHandler.getLang().sendConsoleMsg("", input);
         }
+        for (String placeholder : getCondition()) {
+            input = UtilsHandler.getLang().transByPlayer(ConfigHandler.getPluginName(),
+                    local, placeholder, player, "player");
+            input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+
+            input = UtilsHandler.getLang().transByEntity(ConfigHandler.getPluginName(),
+                    local, placeholder, target, "target", false);
+            input = "entity - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player player = (Player) e.getView().getPlayer();
-        if (!toggleMode.contains(player.getName()))
+        if (!ConfigHandler.isDebugging() || !player.isOp())
             return;
         UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), player,
                 "&6Starting to show the \"Item\" placeholders...");
@@ -257,6 +273,19 @@ public class ConditionTest implements Listener {
             UtilsHandler.getLang().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
+            input = UtilsHandler.getLang().transByPlayer(ConfigHandler.getPluginName(),
+                    local, placeholder, player, "player");
+            input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+
+            input = UtilsHandler.getLang().transByItem(ConfigHandler.getPluginName(),
+                    local, placeholder, target, "target");
+            input = "item - condition 【 " + placeholder + " 】【 " + input + " 】";
+            UtilsHandler.getLang().sendMsg("", player, input);
+            UtilsHandler.getLang().sendConsoleMsg("", input);
+        }
+        for (String placeholder : getCondition()) {
             input = UtilsHandler.getLang().transByPlayer(ConfigHandler.getPluginName(),
                     local, placeholder, player, "player");
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
@@ -333,18 +362,17 @@ public class ConditionTest implements Listener {
         list.add("%str_startsWith%Momocraft%omo%");
         list.add("%str_startsWith%Momocraft%omo%1%");
         list.add("%str_matches%Momocraft%[a-zA-Z]+%");
-        list.add("%str_toLowerCase%Momocraft%"); //
-        list.add("%str_toUpperCase%Momocraft%"); //
+        list.add("%str_toLowerCase%Momocraft%");
+        list.add("%str_toUpperCase%Momocraft%");
         list.add("%str_length%Momocraft%");
         list.add("%str_indexOf%Momocraft%M%");
         list.add("%str_lastIndexOf%Momocraft%t%");
         list.add("%str_equalsIgnoreCase%Momocraft%momocraft%");
         list.add("%str_contains%Momocraft%craf%");
-        list.add("%str_charAt%Momocraft%3%"); //
+        list.add("%str_charAt%Momocraft%3%");
         list.add("%str_substring%Momocraft%4%");
         list.add("%str_substring%Momocraft%4%%str_length%Momocraft%%"); //
         list.add("%str_split%1,2,3%,%");
-        list.add("%str_split%1,2,3%,%1%"); //
         return list;
     }
 
@@ -353,6 +381,14 @@ public class ConditionTest implements Listener {
         list.add("<js>(11/(9+1)*10)%10</js>");
         list.add("<js>var input='abcdefg';" + "var output ='' ;" + "for (i = 0; i <= input.length; i++) { " + " output = input.charAt(i) + output" + "}<var>output</js>");
         list.add("<js>var input='abcdefg';" + "var output ='' ;" + "for (i = 0; i <= input.length; i++) { " + " output = input.charAt(i) + output" + "}<var>input,output</js>");
+        return list;
+    }
+
+    private List<String> getCondition() {
+        List<String> list = new ArrayList<>();
+        list.add("<if>TEST=TEST</if>");
+        list.add("<if>TEST=TEST2<and>TEST=TEST</if>");
+        list.add("<if>TEST=TEST2<and>TEST=TEST<or>TEST=TEST</if>");
         return list;
     }
 }
