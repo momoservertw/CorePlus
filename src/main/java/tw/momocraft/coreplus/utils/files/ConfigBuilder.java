@@ -22,10 +22,10 @@ public class ConfigBuilder {
             for (ConfigBuilderMap configBuilderMap : map.get(type)) {
                 switch (type.toLowerCase()) {
                     case "entities":
-                        createEntity("groups", configBuilderMap);
+                        createEntity("GroupConfig", configBuilderMap);
                         continue;
                     case "materials":
-                        createMaterial("groups", configBuilderMap);
+                        createMaterial("GroupConfig", configBuilderMap);
                         continue;
                     /*
                 case "mythicmobs":
@@ -52,10 +52,10 @@ public class ConfigBuilder {
         }
         switch (configBuilderMap.getType().toLowerCase()) {
             case "entity":
-                createEntity("custom", configBuilderMap);
+                createEntity("CustomConfig", configBuilderMap);
                 break;
             case "material":
-                createMaterial("custom", configBuilderMap);
+                createMaterial("CustomConfig", configBuilderMap);
                 break;
                     /*
                 case "mythicmobs":
@@ -71,12 +71,7 @@ public class ConfigBuilder {
                 "&aSucceed to create custom group \"" + group + "\" in CorePlus/Logs");
     }
 
-    private static void createEntity(String fileType, ConfigBuilderMap configBuilderMap) {
-        if (fileType.equals("groups")) {
-            fileType = "GroupConfig";
-        } else {
-            fileType = "CustomConfig";
-        }
+    private static void createEntity(String logGroup, ConfigBuilderMap configBuilderMap) {
         Set<String> set = configBuilderMap.getSet();
         if (set == null) {
             return;
@@ -97,46 +92,63 @@ public class ConfigBuilder {
                 continue;
             entityType = value.name();
             for (String type : ignoreSet) {
-                if (type.equalsIgnoreCase(entityType)) {
+                // org.bukkit.entity.TYPE
+                if (type.equals(entityType)) {
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(
-                        getClassesStringList(UtilsHandler.getUtil().getAllExtendedOrImplementedClass(value.getEntityClass())),
-                        "org.bukkit.entity." + type)) {
+                // org.bukkit.entity.TYPE
+                if (getClassesStringList(UtilsHandler.getUtil().getAllExtendedOrImplementedClass(value.getEntityClass()))
+                        .contains("org.bukkit.entity." + type)) {
                     continue back;
+                }
+                // endsWith_zombie
+                if (type.contains("endsWith_")) {
+                    if (entityType.endsWith(type.replace("endsWith_", ""))) {
+                        continue back;
+                    }
+                }
+                // startsWith_zombie
+                if (type.contains("startsWith_")) {
+                    if (entityType.startsWith(type.replace("startsWith_", ""))) {
+                        continue back;
+                    }
                 }
             }
             for (String type : set) {
-                if (type.equalsIgnoreCase(entityType)) {
+                // org.bukkit.entity.TYPE
+                if (type.equals(entityType)) {
                     valueSet.add(value.name());
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(
-                        getClassesStringList(UtilsHandler.getUtil().getAllExtendedOrImplementedClass(value.getEntityClass())),
-                        "org.bukkit.entity." + type)) {
+                // org.bukkit.entity.TYPE
+                if (getClassesStringList(UtilsHandler.getUtil().getAllExtendedOrImplementedClass(value.getEntityClass()))
+                        .contains("org.bukkit.entity." + type)) {
                     valueSet.add(value.name());
                     continue back;
+                }
+                // endsWith_zombie
+                if (type.contains("endsWith_")) {
+                    if (entityType.endsWith(type.replace("endsWith_", ""))) {
+                        valueSet.add(value.name());
+                        continue back;
+                    }
+                }
+                // startsWith_zombie
+                if (type.contains("startsWith_")) {
+                    if (entityType.startsWith(type.replace("startsWith_", ""))) {
+                        valueSet.add(value.name());
+                        continue back;
+                    }
                 }
             }
         }
-        createLog(fileType, configBuilderMap, valueSet);
+        createLog(logGroup, configBuilderMap, valueSet);
     }
 
     private static void createMaterial(String logGroup, ConfigBuilderMap configBuilderMap) {
-        if (logGroup.equals("groups")) {
-            logGroup = "GroupConfig";
-        } else {
-            logGroup = "CustomConfig";
-        }
         Set<String> set = configBuilderMap.getSet();
         if (set == null) {
             return;
-        }
-        if (set.contains("all")) {
-            set.clear();
-            for (Material value : Material.values()) {
-                set.add(value.name());
-            }
         }
         Set<String> ignoreSet = configBuilderMap.getIgnoreSet();
         Block block = null;
@@ -155,75 +167,144 @@ public class ConfigBuilder {
                 }
             }
             if (!block.getType().equals(Material.AIR)) {
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while creating Material configuration.");
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Please change the world or radius in config.yml Config-Builder settings.");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                        "An error occurred while creating Material configuration.");
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                        "Please change the world or radius in config.yml Config-Builder settings.");
                 return;
             }
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while creating Material configuration.");
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Please change the world or radius in config.yml Config-Builder settings.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "An error occurred while creating Material configuration.");
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "Please change the world or radius in config.yml Config-Builder settings.");
             return;
         }
         Set<String> valueSet = new HashSet<>();
         String materialType;
         BlockData blockData;
         Set<Class<?>> classSet;
+        List<String> classSetStringList;
         back:
         for (Material value : Material.values()) {
             materialType = value.name();
             try {
                 block.setType(value);
             } catch (Exception ex) {
-                if (UtilsHandler.getUtil().containsIgnoreCase(ignoreSet, materialType)) {
+                if (ignoreSet.contains(materialType) || ignoreSet.contains("items")) {
+                    continue;
+                }
+                if (set.contains("all") || set.contains("items")) {
                     valueSet.add(materialType);
                     continue;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(set, materialType)) {
+                if (set.contains(materialType)) {
                     valueSet.add(materialType);
                     continue;
                 }
                 continue;
             }
+            if (ignoreSet.contains("blocks")) {
+                continue;
+            }
             blockData = block.getBlockData();
             classSet = UtilsHandler.getUtil().getAllExtendedOrImplementedClass(blockData.getClass());
             classSet.addAll(UtilsHandler.getUtil().getAllExtendedOrImplementedClass(block.getState().getClass()));
+            classSetStringList = getClassesStringList(classSet);
             for (String type : ignoreSet) {
-                if (type.equalsIgnoreCase(materialType)) {
+                // org.bukkit.block.TYPE
+                if (type.equals(materialType)) {
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        "org.bukkit.block." + type)) {
+                // org.bukkit.block.TYPE
+                if (classSetStringList.contains("org.bukkit.block." + type)) {
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        // org.bukkit.block.data.Powerable
-                        "org.bukkit.block.data." + type)) {
+                // org.bukkit.block.data.Powerable
+                if (classSetStringList.contains("org.bukkit.block.data." + type)) {
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        "org.bukkit.block.data.type." + type)) {
+                // org.bukkit.block.data.type.chest
+                if (classSetStringList.contains("org.bukkit.block.data.type." + type)) {
                     continue back;
+                }
+                // org.bukkit.block.data.*
+                if (type.equals("inherited") && // org.bukkit.block.data.BlockData
+                        UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                    continue back;
+                }
+                // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
+                if (type.equals("not_inherited") &&
+                        !UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                    continue back;
+                }
+                // endsWith_logs
+                if (type.contains("endsWith_")) {
+                    if (materialType.endsWith(type.replace("endsWith_", ""))) {
+                        continue back;
+                    }
+                }
+                // startsWith_stone
+                if (type.contains("startsWith_")) {
+                    if (materialType.startsWith(type.replace("startsWith_", ""))) {
+                        valueSet.add(value.name());
+                        continue back;
+                    }
                 }
             }
+            if (set.contains("all")) {
+                valueSet.add(value.name());
+                continue;
+            } else if (set.contains("blocks")) {
+                valueSet.add(materialType);
+                continue;
+            }
             for (String type : set) {
-                if (type.equalsIgnoreCase(materialType)) {
+                // org.bukkit.block.TYPE
+                if (type.equals(materialType)) {
                     valueSet.add(value.name());
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        "org.bukkit.block." + type)) {
+                // org.bukkit.block.data.Type
+                if (classSetStringList.contains("org.bukkit.block." + type)) {
                     valueSet.add(value.name());
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        "org.bukkit.block.data." + type)) {
+                // org.bukkit.block.data.Powerable
+                if (classSetStringList.contains("org.bukkit.block.data." + type)) {
                     valueSet.add(value.name());
                     continue back;
                 }
-                if (UtilsHandler.getUtil().containsIgnoreCase(getClassesStringList(classSet),
-                        "org.bukkit.block.data.type." + type)) {
+                // org.bukkit.block.data.type.chest
+                if (classSetStringList.contains("org.bukkit.block.data.type." + type)) {
                     valueSet.add(value.name());
                     continue back;
+                }
+                // org.bukkit.block.data.*
+                if (type.equals("inherited") &&
+                        UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                    valueSet.add(value.name());
+                    continue back;
+                }
+                // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
+                if (type.equals("not_inherited") &&
+                        !UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                    valueSet.add(value.name());
+                    continue back;
+                }
+                // endsWith_logs
+                if (type.contains("endsWith_")) {
+                    if (materialType.endsWith(type.replace("endsWith_", ""))) {
+                        valueSet.add(value.name());
+                        continue back;
+                    }
+                }
+                // startsWith_stone
+                if (type.contains("startsWith_")) {
+                    if (materialType.startsWith(type.replace("startsWith_", ""))) {
+                        valueSet.add(value.name());
+                        continue back;
+                    }
                 }
             }
         }
@@ -239,16 +320,17 @@ public class ConfigBuilder {
         return list;
     }
 
-    private static void createLog(String logGrop, ConfigBuilderMap configBuilderMap, Set<String> valueSet) {
+    private static void createLog(String logGroup, ConfigBuilderMap configBuilderMap, Set<String> valueSet) {
         String title = configBuilderMap.getTitle().replace("%title%", configBuilderMap.getGroup());
         if (valueSet.isEmpty()) {
             UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
-                    UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title));
+                    logGroup + ", " +
+                            UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title) + " []");
             return;
         }
         UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
-        logGrop + ", " +
-                UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title));
+                logGroup + ", " +
+                        UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title));
         StringBuilder output = new StringBuilder();
         String line = configBuilderMap.getValue();
         String split = configBuilderMap.getSplit();
@@ -259,8 +341,9 @@ public class ConfigBuilder {
             for (String value : sortedList) {
                 output = new StringBuilder(line.replace("%value%", value));
                 UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
-                        logGrop + ", " +
-                                UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, output.toString()));
+                        logGroup + ", " +
+                                UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(),
+                                        null, output.toString()));
             }
         } else {
             for (String value : valueSet) {
@@ -268,8 +351,9 @@ public class ConfigBuilder {
             }
             output.substring(0, output.length() - split.length());
             UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
-                    logGrop + ", " +
-                            UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, output.toString()));
+                    logGroup + ", " +
+                            UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(),
+                                    null, output.toString()));
         }
     }
 

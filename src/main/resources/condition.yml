@@ -1,0 +1,14 @@
+# ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/coreplus.86532/
+#  Wiki: https://github.com/momoservertw/CorePlus/wiki/blocks.yml
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+Config-Version: 1
+
+#
+Conditions:
+  ServerLobby:
+    - "%server_name%=lobby"
+  NormalWorlds:
+    - "%player_location%NormalWorlds%"
+  InWitherRose:
+    - "%player_blocks%NormalWorlds%"

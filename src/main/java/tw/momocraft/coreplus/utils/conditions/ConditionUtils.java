@@ -163,8 +163,18 @@ public class ConditionUtils implements ConditionInterface {
     }
 
     @Override
+    public boolean checkLocation(String pluginName, Location loc, String group, boolean def) {
+        return locationUtils.checkLocation(pluginName, loc, group, def);
+    }
+
+    @Override
     public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
         return blocksUtils.checkBlocks(loc, blocksList, def);
+    }
+
+    @Override
+    public boolean checkBlocks(Location loc, String group, boolean def) {
+        return blocksUtils.checkBlocks(loc, group, def);
     }
 
     public ConditionTest getConditionTest() {

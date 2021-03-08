@@ -129,6 +129,140 @@ Config-Builder:
           - Hopper
           - Comparator
           - DaylightDetector
+      NormalBlocks:
+        List:
+          - STONE
+          - WATER
+          - ANDESITE
+          - DIORITE
+          - GRANITE
+          - DIRT
+          - COAL_ORE
+          - GRASS_BLOCK
+          - IRON_ORE
+          - LAVA
+          - SAND
+          - KELP_PLANT
+          - OAK_LEAVES
+          - SANDSTONE
+          - RED_SAND
+          - RED_SANDSTONE
+          - REDSTONE_ORE
+          - SNOW
+          - BIRCH_LEAVES
+          - TALL_SEAGRASS
+          - SPRUCE_LEAVES
+          - GOLD_ORE
+          - SEAGRASS
+          - DARK_OAK_LEAVES
+          - GRASS
+          - KELP
+          - ICE
+          - LAPIS_ORE
+          - Packed Ice
+          #- Oak Planks
+          - BUBBLE_COLUMN
+          - DIAMOND_ORE
+          - OBSIDIAN
+          - OAK_LOG
+          - DARK_OAK_LOG
+          #- Oak Fence
+          - BIRCH_LOG
+          - INFESTED_STONE
+          - VINE
+          - SPRUCE_LOG
+          - CLAY
+          - SNOW_BLOCK
+          - RAIL
+          - COBBLESTONE
+          - COBWEB
+          - ACACIA_LEAVES
+          - TALL_GRASS
+          - STONE_BRICK
+          - MOSSY_COBBLESTONE
+          - RED_MUSHROOM_BLOCK
+          - POPPY
+          - MOSSY_STONE_BRICKS
+          - LARGE_FERN
+          - JUNGLE_LEAVES
+          - GRASS_PATH
+          - DANDELION
+          - EMERALD_ORE
+          - CRACKED_STONE_BRICKS
+          - LILY_PAD
+          - FERN
+          - BROWN_MUSHROOM_BLOCK
+          - ACACIA_LOG
+          - JJUNGLE_LOG
+          - PRISMARINE_BRICKS
+          - PRISMARINE
+          - MUSHROOM_STEM
+          - ROSE_BUSH
+          - BLUE_ICE
+          - SUNFLOWER
+          - AZURE_BLUET
+          - OXEYE_DAISY
+          - LILAC
+          - SUGAR_CANE_BLOCK
+          - PEONY
+          - INFESTED_STONE_BRICKS
+          - CORNFLOWER
+          - LILY_OF_THE_VALLEY
+          - PINK_TULIP
+          - RED_TULIP
+          - ORANGE_TULIP
+          - WHITE_TULIP
+          - ALLIUM
+          - FARMLAND
+          - BROWN_MUSHROOM
+          - CACTUS
+          - SWEET_BERRY_BUSH
+          - POLISHED_GRANITE
+          - BLUE_ORCHID
+          - PUMPKIN
+          - DARK_PRISMARINE
+          - SEA_LANTERN
+          - TERRACOTTA
+          - YELLOW_TERRACOTTA
+          - ORANGE_TERRACOTTA
+          - MELON
+          - WHITE_TERRACOTTA
+          - LIGHT_BLUE_TERRACOTTA
+          - BLUE_TERRACOTTA
+
+          - NETHERRACK
+          - BASALT
+          - BLACKSTONE
+          - SOUL_SAND
+          - SOUL_SOIL
+          - MAGMA_BLOCK
+          - GRAVEL
+          - NETHER_QUARTZ_ORE
+          - NETHER_WART_BLOCK
+          - NETHER_GOLD_ORE
+          - NETHER_BRICK
+          - CRIMSON_NYLIUM
+          - WARPED_WART_BLOCK
+          - WARPED_NYLIUM
+          - CRIMSON_STEM
+          - POLISHED_BLACKSTONE
+          - WARPED_STEM
+          - CHISELED_POLISHED_BLACKSTONE
+          - GLOWSTONE
+          - SHROOMLIGHT
+          - ANCIENT_DEBRIS
+          - BONE_BLOCK
+          - POLISHED_BASALT
+          - CHISELED_POLISHED_BLACKSTONE
+
+          - END_STONE
+          - PURPUR_BLOCK
+          - PURPUR_STAIRS
+          - PURPUR_PILLAR
+          - END_STONE_BRICKS
+          - MAGENTA_STAINED_GLASS_PANE
+          - PURPUR_SLAB
+          - END_ROD
   # To create a custom configuration in the path of log.yml "CustomConfig".
   # Command: /crp configbuilder custom <Type> <Group>
   Custom:

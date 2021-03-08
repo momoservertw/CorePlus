@@ -64,7 +64,6 @@ public class TabComplete implements TabCompleter {
                             } else if (args[1].equalsIgnoreCase("blocks")) {
                                 commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
                             } else if (args[1].equalsIgnoreCase("placeholder")) {
-                                commands.add("toggle");
                                 commands.add("offlineplayer");
                                 commands.add("player");
                             }

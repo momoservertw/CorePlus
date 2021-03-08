@@ -312,6 +312,8 @@ public class LanguageUtils implements LanguageInterface {
             return transByGeneral(pluginName, local, input);
         }
         while (true) {
+            // %TARGET_condition%CONDITION%
+
             // %TARGET_last_login%
             input = input.replace("%" + target + "_last_login%", String.valueOf(player.getLastLogin()));
             // %TARGET_display_name%
@@ -642,7 +644,7 @@ public class LanguageUtils implements LanguageInterface {
                             blockLoc = loc.clone().add(x, y, z);
                             if (Material.CAVE_AIR.equals(blockLoc.getBlock().getType())) {
                                 input = input.replace("%" + target + "_loc_cave%", "true");
-                                continue back;
+                                break back;
                             }
                         }
                     }
@@ -651,27 +653,21 @@ public class LanguageUtils implements LanguageInterface {
             // %TARGET_world_time%
             if (input.contains("%" + target + "_world_time%"))
                 input = input.replace("%" + target + "_world_time%", String.valueOf(world.getTime()));
-
             // %TARGET_biome%
             if (input.contains("%" + target + "_biome%"))
                 input = input.replace("%" + target + "_biome%", block.getBiome().name());
-
             // %TARGET_light%
             if (input.contains("%" + target + "_light%"))
                 input = input.replace("%" + target + "_light%", String.valueOf(block.getLightLevel()));
-
             // %TARGET_liquid%
             if (input.contains("%" + target + "_liquid%"))
                 input = input.replace("%" + target + "_liquid%", String.valueOf(block.isLiquid()));
-
             // %TARGET_solid%
             if (input.contains("%" + target + "_solid%"))
                 input = input.replace("%" + target + "_solid%", String.valueOf(block.getType().isSolid()));
-
             // %TARGET_cave%
             if (input.contains("%" + target + "_cave%"))
                 input = input.replace("%" + target + "_cave%", String.valueOf(UtilsHandler.getCondition().isInCave(loc)));
-
             // %TARGET_residence%
             if (input.contains("%" + target + "_residence%")) {
                 String residenceName = UtilsHandler.getCondition().getResidenceName(loc);
@@ -681,6 +677,38 @@ public class LanguageUtils implements LanguageInterface {
             if (input.contains("%" + target + "_in_residence%"))
                 input = input.replace("%" + target + "_in_residence%",
                         String.valueOf(UtilsHandler.getCondition().isInResidence(loc)));
+            // %TARGET_location%LOCATION%
+            if (input.contains("%" + target + "_location%")) {
+                try {
+                    String[] arr = input.split("%");
+                    for (int i = 0; i < arr.length; i++) {
+                        if (arr[i].equals("%" + target + "_location%"))
+                            input = input.replace("%" + target + "_location%" + arr[i + 1] + "%",
+                                    String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPluginName(), loc, arr[i + 1], false)));
+                    }
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_location%LOCATION%\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+                }
+            }
+            // %TARGET_blocks%BLOCKS%
+            if (input.contains("%" + target + "_blocks%")) {
+                try {
+                    String[] arr = input.split("%");
+                    for (int i = 0; i < arr.length; i++) {
+                        if (arr[i].equals("%" + target + "_blocks%"))
+                            input = input.replace("%" + target + "_blocks%" + arr[i + 1] + "%",
+                                    String.valueOf(UtilsHandler.getCondition().checkBlocks(loc, arr[i + 1], false)));
+                    }
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_blocks%BLOCKS%\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+                }
+            }
             // %TARGET_nearby%type%name/type%group%radius%
             // arr[0]=Target_nearby, arr[1]=Type, arr[2]=Name/Type, arr[3]=Group, arr[4]=Radius
             if (input.contains("%" + target + "_nearby%")) {

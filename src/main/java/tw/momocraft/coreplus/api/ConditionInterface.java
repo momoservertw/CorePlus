@@ -13,11 +13,11 @@ public interface ConditionInterface {
     /**
      * Checking the condition is matched.
      * Format:
-     *   <if>Value1...Value2</if>
-     *   <if>Value1...Value2<or>Value1...Value2</if>
-     *   <if>Value1...Value2<and>Value1...Value2</if>
-     *   <if>Value1...Value2<and>Value1...Value2</if>
-     *   <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
+     * <if>Value1...Value2</if>
+     * <if>Value1...Value2<or>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2</if>
+     * <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
      *
      * @param input the input condition string.
      * @return if the condition is matched.
@@ -37,6 +37,18 @@ public interface ConditionInterface {
      */
     boolean checkLocation(String pluginName, Location loc, List<String> locList, boolean def);
 
+
+    /**
+     * Checking a location.
+     *
+     * @param pluginName the sending plugin name.
+     * @param loc        the checking location.
+     * @param group      the group name of Location settings.
+     * @param def        the return value when the locMaps is empty or null.
+     * @return if match the Location.
+     */
+    boolean checkLocation(String pluginName, Location loc, String group, boolean def);
+
     /**
      * Checking the location is nearby certain blocks.
      *
@@ -46,6 +58,16 @@ public interface ConditionInterface {
      * @return nearby certain blocks.
      */
     boolean checkBlocks(Location loc, List<String> blocksList, boolean def);
+
+    /**
+     * Checking the location is nearby certain blocks.
+     *
+     * @param loc   the checking location.
+     * @param group the group name of Blocks settings.
+     * @param def   the return value when the blockMaps is empty or null.
+     * @return nearby certain blocks.
+     */
+    boolean checkBlocks(Location loc, String group, boolean def);
 
     /**
      * Register the residence flag.

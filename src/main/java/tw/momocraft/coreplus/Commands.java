@@ -18,13 +18,13 @@ public class Commands implements CommandExecutor {
         int length = args.length;
         if (length == 0) {
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
-                UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                UtilsHandler.getLang().sendMsg("", sender, "");
                 UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                         "Message.Commands.title", sender);
                 UtilsHandler.getLang().sendMsg("", sender,
                         "&f " + CorePlus.getInstance().getDescription().getName()
                                 + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), "",
                         "Message.Commands.help", sender);
                 UtilsHandler.getLang().sendMsg("", sender, "");
             } else {
@@ -98,10 +98,10 @@ public class Commands implements CommandExecutor {
                 return true;
             case "version":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.version")) {
-                    UtilsHandler.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
+                    UtilsHandler.getLang().sendMsg("", sender,
                             "&f " + CorePlus.getInstance().getDescription().getName()
                                     + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    UtilsHandler.getUpdate().check(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), sender,
+                    UtilsHandler.getUpdate().check(ConfigHandler.getPluginName(), "", sender,
                             CorePlus.getInstance().getName(), CorePlus.getInstance().getDescription().getVersion(), true);
                 } else {
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -300,12 +300,8 @@ public class Commands implements CommandExecutor {
                 }
                 return true;
         }
-        UtilsHandler.getLang().
-
-                sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.
-
-                                getPrefix(),
-                        "Message.unknownCommand", sender);
+        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                "Message.unknownCommand", sender);
         return true;
     }
 }

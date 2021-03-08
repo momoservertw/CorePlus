@@ -9,40 +9,40 @@ import java.util.Map;
 
 public class LocationUtils {
 
-
-    /**
-     * @param loc     location.
-     * @param locMaps the checking location maps.
-     * @return if the location is one of locMaps.
-     */
     public boolean checkLocation(String pluginName, Location loc, List<String> locMaps, boolean def) {
-        if (locMaps == null || locMaps.isEmpty()) {
+        if (locMaps == null || locMaps.isEmpty())
             return def;
-        }
         try {
-            String worldName = loc.getWorld().getName();
-            Map<String, String> cord;
-            LocationMap locMap;
-            back:
             for (String group : locMaps) {
-                if (group.equals(worldName)) {
+                if (checkLocation(pluginName, loc, group, def))
                     return true;
-                }
-                locMap = ConfigHandler.getConfigPath().getLocProp().get(group);
-                if (locMap == null) {
-                    continue;
-                }
-                if (locMap.getWorlds() == null || locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {
-                    cord = locMap.getCord();
-                    if (cord != null) {
-                        for (String key : cord.keySet()) {
-                            if (!isCord(loc, key, cord.get(key))) {
-                                continue back;
-                            }
-                        }
+            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking location.");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+        }
+        return false;
+    }
+
+    public boolean checkLocation(String pluginName, Location loc, String group, boolean def) {
+        if (group == null)
+            return def;
+        try {
+            if (group.equals(loc.getWorld().getName()))
+                return true;
+            LocationMap locMap = ConfigHandler.getConfigPath().getLocProp().get(group);
+            if (locMap == null)
+                return false;
+            if (locMap.getWorlds() == null || locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {
+                Map<String, String> cord = locMap.getCord();
+                if (cord != null) {
+                    for (String key : cord.keySet()) {
+                        if (!isCord(loc, key, cord.get(key)))
+                            return false;
                     }
-                    return true;
                 }
+                return true;
             }
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking location.");

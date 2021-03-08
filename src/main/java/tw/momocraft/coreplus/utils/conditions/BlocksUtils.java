@@ -12,24 +12,25 @@ public class BlocksUtils {
         if (blocksList == null || blocksList.isEmpty()) {
             return def;
         }
-        List<String> ignoreList;
-        BlocksMap blocksMap;
         for (String group : blocksList) {
-            blocksMap = ConfigHandler.getConfigPath().getBlocksProp().get(group);
-            if (blocksMap == null) {
-                continue;
-            }
-            ignoreList = blocksMap.getIgnoreList();
-            if (ignoreList != null && !ignoreList.isEmpty()) {
-                if (checkBlocks(loc, ignoreList, def)) {
-                    continue;
-                }
-            }
-            if (getSearchBlocks(loc, blocksMap)) {
+            if (checkBlocks(loc, group, def))
                 return true;
-            }
         }
         return false;
+    }
+
+    public boolean checkBlocks(Location loc, String group, boolean def) {
+        if (group == null)
+            return def;
+        BlocksMap blocksMap = ConfigHandler.getConfigPath().getBlocksProp().get(group);
+        if (blocksMap == null)
+            return false;
+        List<String> ignoreList = blocksMap.getIgnoreList();
+        if (ignoreList != null && !ignoreList.isEmpty()) {
+            if (checkBlocks(loc, ignoreList, def))
+                return false;
+        }
+        return getSearchBlocks(loc, blocksMap);
     }
 
     private boolean getSearchBlocks(Location loc, BlocksMap blocksMap) {

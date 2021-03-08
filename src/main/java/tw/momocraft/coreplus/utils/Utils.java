@@ -20,6 +20,40 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
+    public boolean matchString(List<String> list, String regex) {
+        if (regex != null && list != null) {
+            for (String s : list) {
+                if (s.matches(regex)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsString(List<String> list, String string) {
+        if (string != null && list != null) {
+            for (String s : list) {
+                if (s.contains(string))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsStringIgnoreCase(List<String> list, String string) {
+        if (string != null && list != null) {
+            for (String s : list) {
+                if (containsIgnoreCase(s, string))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean containsIgnoreCase(List<String> list, String string) {
         if (string != null && list != null) {
             for (String s : list) {

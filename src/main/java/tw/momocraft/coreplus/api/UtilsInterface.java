@@ -23,6 +23,33 @@ public interface UtilsInterface {
     boolean containsIgnoreCase(String string1, String string2);
 
     /**
+     * Checking if the string in the list matches some words.
+     *
+     * @param list the target list.
+     * @param string the checking string.
+     * @return if the string in the list matches some words.
+     */
+    boolean matchString(List<String> list, String string);
+
+    /**
+     * Checking if the string in the list contains some words.
+     *
+     * @param list the target list.
+     * @param string the checking string.
+     * @return if the string in the list contains some words.
+     */
+    boolean containsString(List<String> list, String string);
+
+    /**
+     * Checking if the string in the list contains some words by ignore case.
+     *
+     * @param list the target list.
+     * @param string the checking string.
+     * @return if the string in the list contains some words by ignore case.
+     */
+    boolean containsStringIgnoreCase(List<String> list, String string);
+
+    /**
      * Checking if a string list contains another string with ignore case.
      *
      * @param list   the main string list.
