@@ -333,7 +333,7 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, null, input, langHolder);
+        input = UtilsHandler.getLang().transLangHolders(pluginName, "", input, langHolder);
         if (placeholder) {
             input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
         }
@@ -657,7 +657,7 @@ public class CustomCommands implements CommandInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 return;
             }
-            SoundUtils.sendSound(pluginName, player, player.getLocation(), soundMap);
+            SoundUtils.sendSound(player, player.getLocation(), soundMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
@@ -677,7 +677,7 @@ public class CustomCommands implements CommandInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/sound.yml.");
                 return;
             }
-            SoundUtils.sendSound(pluginName, player, loc, soundMap);
+            SoundUtils.sendSound(player, loc, soundMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound-custom: " + group + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
@@ -742,7 +742,7 @@ public class CustomCommands implements CommandInterface {
                     particleMap.setColorB(Integer.parseInt(arg.replace("-b:", "")));
                 }
             }
-            ParticleUtils.spawnParticle(pluginName, loc, particleMap);
+            ParticleUtils.spawnParticle(loc, particleMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
@@ -761,10 +761,8 @@ public class CustomCommands implements CommandInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/particle.yml.");
                 return;
             }
-            ParticleUtils.spawnParticle(pluginName, loc, particleMap);
-
-        } catch (
-                Exception ex) {
+            ParticleUtils.spawnParticle(loc, particleMap);
+        } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle-custom: " + group + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);

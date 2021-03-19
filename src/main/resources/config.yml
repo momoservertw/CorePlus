@@ -67,7 +67,7 @@ Config-Builder:
         List:
           - Monster
           - Flying
-      Normal:
+      NormalMobs:
         List:
           - Monster
           - Flying
@@ -324,7 +324,7 @@ Message:
   noShopItem: "&cYou can not buy this block."
   buySuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% &8- &a%pricetype%: %balance%"
   buyTargetSuccess: "&aSuccess buy &e%item% x%amount% &afor %price% %pricetype% for %targetplayer% &8- &a%pricetype%: %balance%"
-  runcmdOther: "&eExecuted command for %targetplayer%: %command%"
+  runcmdOther: "&eExecuted command for %targetplayer%: %value%"
   runcmdCustomOther: "&eExecuted custom command for %targetplayer%: %group%"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
@@ -341,12 +341,13 @@ Message:
     cmdonline: "&f/coreplus cmdonline <player> <expiration> <command> &8- &7Executes the custom command after the player joined the server."
   Translation:
     console: "Console"
+    empty: "empty"
     noTargets: "No Target"
     noData: "No Data"
     money: "money"
     points: "points"
     res_points: "points"
-    Blocks: "blocks"
+    blocks: "blocks"
     resCreate: "create residence"
     resChangeSize: "change residence size"
     fishing: "fishing"

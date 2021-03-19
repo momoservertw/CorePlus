@@ -7,6 +7,7 @@ C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\listeners\ConditionTest.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\ConfigInterface.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\entities\EntityUtils.java
+C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\EffectUtils.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\listeners\CommandOnline.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\files\MySQLUtils.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\conditions\LocationUtils.java
@@ -41,6 +42,7 @@ C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\UpdateInterface.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\UtilsInterface.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\customcommands\SoundUtils.java
+C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\EffectInterface.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\PlayerUtils.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\api\CorePlusAPI.java
 C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\Commands.java

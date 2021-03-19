@@ -29,7 +29,8 @@ public class LocationUtils {
         if (group == null)
             return def;
         try {
-            if (group.equals(loc.getWorld().getName()))
+            String worldName = loc.getWorld().getName();
+            if (group.equals(worldName))
                 return true;
             LocationMap locMap = ConfigHandler.getConfigPath().getLocProp().get(group);
             if (locMap == null)

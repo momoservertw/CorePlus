@@ -11,6 +11,13 @@ import java.util.UUID;
 public interface PlayerInterface {
 
     /**
+     *
+     * @param sender the target sender.
+     * @return the target player. It will return "null" if sender is not player.
+     */
+    Player getPlayer(CommandSender sender);
+
+    /**
      * Getting player from a name.
      *
      * @param playerName the name of this player

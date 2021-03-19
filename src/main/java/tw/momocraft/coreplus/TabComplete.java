@@ -3,13 +3,11 @@ package tw.momocraft.coreplus;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,36 +19,25 @@ public class TabComplete implements TabCompleter {
         final List<String> commands = new ArrayList<>();
         int length = args.length;
         if (length == 1) {
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use"))
                 commands.add("help");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload"))
                 commands.add("reload");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.version")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.version"))
                 commands.add("version");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test"))
                 commands.add("test");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder"))
                 commands.add("configbuilder");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom"))
                 commands.add("cmdcustom");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd"))
                 commands.add("cmd");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer"))
                 commands.add("cmdplayer");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline"))
                 commands.add("cmdonline");
-            }
         } else {
-            Collection<?> playersOnlineNew;
-            Player[] playersOnlineOld;
             switch (args[0].toLowerCase()) {
                 case "test":
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {

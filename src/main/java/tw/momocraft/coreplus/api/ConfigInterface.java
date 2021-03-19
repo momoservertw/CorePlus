@@ -15,6 +15,12 @@ public interface ConfigInterface {
     boolean isMySQL();
 
     /**
+     *
+     * @return the conditions settings in condition.yml
+     */
+    Map<String, List<String>> getConditionProp();
+
+    /**
      * @return to get the property of Location settings in location.yml.
      */
     Map<String, LocationMap> getLocProp();

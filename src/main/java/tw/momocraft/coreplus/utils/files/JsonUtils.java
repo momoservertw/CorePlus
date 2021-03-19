@@ -33,7 +33,7 @@ public class JsonUtils {
                 "&fLoaded Json files: " + jsonMap.keySet().toString());
     }
 
-    public boolean load(String pluginName, String group, String filePath) {
+    public boolean load(String group, String filePath) {
         File file = new File(filePath);
         try {
             Gson gson = new Gson();
@@ -41,13 +41,13 @@ public class JsonUtils {
             jsonMap.put(group, json);
             return true;
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Cannot load the Json file: " + filePath);
-            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot load the Json file: " + filePath);
+            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             return false;
         }
     }
 
-    private void loadGroup(String pluginName, String group) {
+    private void loadGroup(String group) {
         String filePath;
         switch (group) {
             case "example":
@@ -56,7 +56,7 @@ public class JsonUtils {
             default:
                 return;
         }
-        load(pluginName, group, filePath);
+        load(group, filePath);
     }
 
     private void loadLang() {
@@ -72,15 +72,15 @@ public class JsonUtils {
                 continue;
             }
             langName = fileName.replace(".json", "");
-            load(ConfigHandler.getPluginName(), "lang_" + langName, filePath + "//" + langName);
+            load("lang_" + langName, filePath + "//" + langName);
             langList.add(fileName);
         }
     }
 
-    public String getValue(String pluginName, String group, String input) {
+    public String getValue(String group, String input) {
         try {
             if (jsonMap.containsKey(group)) {
-                loadGroup(pluginName, group);
+                loadGroup(group);
             }
             return jsonMap.get(group).get(input).toString();
         } catch (Exception ex) {

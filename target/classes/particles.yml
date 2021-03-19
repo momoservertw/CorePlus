@@ -5,16 +5,6 @@
 Config-Version: 1
 
 Particles:
-  Example:
-    Type: FLAME
-    Offset:
-      X: 1
-      Y: 1
-      Z: 1
-    Speed: 1
-    Run:
-      Times: 5
-      Interval: 20
   Barrier:
     Type: BARRIER
     Amount: 1

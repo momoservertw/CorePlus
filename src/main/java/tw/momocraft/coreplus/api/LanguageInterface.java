@@ -19,36 +19,129 @@ public interface LanguageInterface {
     /**
      * Sending broadcast message to the server.
      *
-     * @param prefix the executing plugin prefix.
-     * @param input  the value of message.
+     * @param prefix     the executing plugin prefix.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendBroadcastMsg(String prefix, String input);
+    void sendBroadcastMsg(String prefix, String input, String... langHolder);
 
     /**
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
-     * @param prefix the executing plugin prefix.
-     * @param input  the value of message.
+     * @param prefix     the executing plugin prefix.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendDiscordMsg(String prefix, String channel, String input);
+    void sendDiscordMsg(String prefix, String channel, String input, String... langHolder);
 
     /**
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
-     * @param prefix the executing plugin prefix.
-     * @param input  the value of message.
+     * @param prefix     the executing plugin prefix.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendDiscordMsg(String prefix, String channel, String input, Player player);
+    void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder);
+
+    /**
+     * Sending message to a player or console.
+     *
+     * @param prefix     the executing plugin prefix.
+     * @param sender     the executing sender.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendMsg(String prefix, CommandSender sender, String input, String... langHolder);
 
     /**
      * Printing the message in console.
      *
-     * @param prefix the executing plugin prefix.
-     * @param input  the value of message.
+     * @param prefix     the executing plugin prefix.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendConsoleMsg(String prefix, String input);
+    void sendConsoleMsg(String prefix, String input, String... langHolder);
+
+    /**
+     * Sending message to a player.
+     *
+     * @param prefix     the executing plugin prefix.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendPlayerMsg(String prefix, Player player, String input, String... langHolder);
+
+    /**
+     * Sending message as player.
+     *
+     * @param prefix     the executing plugin prefix.
+     * @param player     the executing player.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendChatMsg(String prefix, Player player, String input, String... langHolder);
+
+    /**
+     * Sending message to a player or console.
+     *
+     * @param player     the executing player.
+     * @param input      the value of message.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendActionBarMsg(Player player, String input, String... langHolder);
+
+    /**
+     * @param player     the executing player.
+     * @param input      the input message.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendTitleMsg(Player player, String input, String... langHolder);
+
+    /**
+     * @param player        the executing player.
+     * @param inputTitle    the title message.
+     * @param inputSubtitle the subtitle message.
+     * @param langHolder    the translation of placeholders. It could be empty.
+     */
+    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder);
+
+    /**
+     * @param player        the executing player.
+     * @param inputTitle    the title message.
+     * @param inputSubtitle the subtitle message.
+     * @param fadeIn        the time in ticks for titles to fade in.
+     * @param stay          the  time in ticks for titles to stay.
+     * @param fadeOut       the time in ticks for titles to fade out.
+     * @param langHolder    the translation of placeholders. It could be empty.
+     */
+    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder);
+
+    /**
+     * Sending the information of feature in console to debug.
+     *
+     * @param prefix  the executing plugin prefix.
+     * @param feature the name of feature.
+     * @param target  the checking target or type.
+     * @param check   the checking things.
+     * @param action  the feature's action like succeed, failed, return...
+     * @param ste     the class and the line of code of this feature.
+     */
+    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste);
+
+    /**
+     * Sending the information of feature in console to debug.
+     *
+     * @param prefix  the executing plugin prefix.
+     * @param feature the name of feature.
+     * @param target  the checking target or type.
+     * @param check   the checking things.
+     * @param action  the feature's action like succeed, failed, return...
+     * @param detail  more information.
+     * @param ste     the class and the line of code of this feature.
+     */
+    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste);
 
     /**
      * Sending debug message in console.
@@ -77,88 +170,6 @@ public interface LanguageInterface {
     void sendDebugTrace(boolean debugging, String pluginName, Exception ex);
 
     /**
-     * Sending message to a player.
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param message the value of message.
-     */
-    void sendPlayerMsg(String prefix, Player player, String message);
-
-    /**
-     * Sending message as player.
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param player  the executing player.
-     * @param message the value of message.
-     */
-    void sendChatMsg(String prefix, Player player, String message);
-
-    /**
-     * Sending message to a player or console.
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param sender  the executing sender.
-     * @param message the value of message.
-     */
-    void sendMsg(String prefix, CommandSender sender, String message);
-
-    /**
-     * Sending message to a player or console.
-     *
-     * @param player  the executing player.
-     * @param message the value of message.
-     */
-    void sendActionBarMsg(Player player, String message);
-
-    /**
-     * @param player  the executing player.
-     * @param message the input message.
-     */
-    void sendTitleMsg(Player player, String message);
-
-    /**
-     * @param player   the executing player.
-     * @param title    the title message.
-     * @param subtitle the subtitle message.
-     */
-    void sendTitleMsg(Player player, String title, String subtitle);
-
-    /**
-     * @param player   the executing player.
-     * @param title    the title message.
-     * @param subtitle the subtitle message.
-     * @param fadeIn   the time in ticks for titles to fade in.
-     * @param stay     the  time in ticks for titles to stay.
-     * @param fadeOut  the time in ticks for titles to fade out.
-     */
-    void sendTitleMsg(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut);
-
-    /**
-     * Sending the information of feature in console to debug.
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param feature the name of feature.
-     * @param target  the checking target or type.
-     * @param check   the checking things.
-     * @param action  the feature's action like succeed, failed, return...
-     * @param ste     the class and the line of code of this feature.
-     */
-    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste);
-
-    /**
-     * Sending the information of feature in console to debug.
-     *
-     * @param prefix  the executing plugin prefix.
-     * @param feature the name of feature.
-     * @param target  the checking target or type.
-     * @param check   the checking things.
-     * @param action  the feature's action like succeed, failed, return...
-     * @param detail  more information.
-     * @param ste     the class and the line of code of this feature.
-     */
-    void sendFeatureMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste);
-
-    /**
      * Creating a array for translation the placeholder of message.
      *
      * @return a array for translation the placeholder of message..
@@ -176,23 +187,27 @@ public interface LanguageInterface {
     void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... langHolder);
 
     /**
-     * Getting the translation of placeholder.
+     * Translating the placeholders before output.
      *
-     * @param input the placeholder
-     * @return the translated placeholder.
+     * @param prefix     the sending plugin prefix.
+     * @param player     the target player.
+     * @param input      the input string.
+     * @param langHolder the translation of placeholders. It could be empty.
+     * @return a new string which translated language placeholders.
      */
-    String getMsgTrans(String input);
+    String transLangHolders(String prefix, Player player, String input, String... langHolder);
 
     /**
      * Translating the placeholders before output.
      *
-     * @param pluginName the sending plugin name.
+     * @param prefix     the sending plugin prefix.
      * @param local      the target's local language.
      * @param input      the input string.
-     * @param langHolder the custom placeholder.
+     * @param langHolder the translation of placeholders. It could be empty.
      * @return a new string which translated language placeholders.
      */
-    String transLangHolders(String pluginName, @Nullable String local, String input, String... langHolder);
+    String transLangHolders(String prefix, String local, String input, String... langHolder);
+
 
     /**
      * @param pluginName the sending plugin name.
@@ -201,7 +216,7 @@ public interface LanguageInterface {
      * @param playerName the target player name.
      * @return a new string with translated player placeholders.
      */
-    String transByPlayerName(String pluginName, @Nullable String local, String input, String playerName);
+    String transByPlayerName(String pluginName, String local, String input, String playerName);
 
     /**
      * @param pluginName the sending plugin name.
@@ -335,6 +350,14 @@ public interface LanguageInterface {
      * @return a new string with translated placeholders.
      */
     String transByCustom(String pluginName, @Nullable String local, String input);
+
+    /**
+     * Getting the translation of placeholder.
+     *
+     * @param input the placeholder
+     * @return the translated placeholder.
+     */
+    String getMsgTrans(String input);
 
     /**
      * Translating vanilla name for player.

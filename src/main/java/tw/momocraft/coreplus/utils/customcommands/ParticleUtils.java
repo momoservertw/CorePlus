@@ -11,8 +11,21 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class ParticleUtils {
 
+    public static void spawnParticle(String pluginName, Location loc, String type) {
+        ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(type);
+        if (particleMap == null) {
+            try {
+                loc.getWorld().spawnParticle(Particle.valueOf(type), loc, 1);
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the particle type: \"" + type + "\"");
+                UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            }
+            return;
+        }
+        spawnParticle(loc, particleMap);
+    }
 
-    public static void spawnParticle(String pluginName, Location loc, ParticleMap particleMap) {
+    public static void spawnParticle(Location loc, ParticleMap particleMap) {
         Particle particle = particleMap.getType();
         int amount = particleMap.getAmount();
         int times = particleMap.getTimes();

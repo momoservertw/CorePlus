@@ -67,7 +67,7 @@ Message:
   noShopItem: "&c你無法購買此方塊"
   buySuccess: "&a成功購買 &e%item% &7x%amount% &a價格： %price% %pricetype% &8- &a%pricetype%: %balance%"
   buyTargetSuccess: "&a已讓 %targetplayer% 成功購買 &e%item% x%amount% &a價格 %price% %pricetype% &8- &a%pricetype%: %balance%"
-  runcmdOther: "&e以為 %targetplayer% 執行指令: %command%"
+  runcmdOther: "&e以為 %targetplayer% 執行指令: %value%"
   runcmdCustomOther: "&e以為 %targetplayer% 執行自訂指令: %group%"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"

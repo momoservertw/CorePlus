@@ -30,18 +30,15 @@ public class ConditionUtils implements ConditionInterface {
         conditionTest = new ConditionTest();
     }
 
-    /**
-     * Checking the condition is matched.
-     * Format:
-     * <if>Value1...Value2</if>
-     * <if>Value1...Value2<or>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
-     *
-     * @param input the input condition string.
-     * @return if the condition is matched.
-     */
+    @Override
+    public boolean checkCondition(List<String> input) {
+        for (String condition : input) {
+            if (!checkCondition(condition))
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean checkCondition(String input) {
         String[] conditionArray = input.split("<or>");

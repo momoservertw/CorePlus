@@ -19,6 +19,13 @@ import java.util.*;
 public class PlayerUtils implements PlayerInterface {
 
     @Override
+    public Player getPlayer(CommandSender sender) {
+        if (sender instanceof Player)
+            return (Player) sender;
+        return null;
+    }
+
+    @Override
     public Player getPlayerString(String playerName) {
         Player args = null;
         try {

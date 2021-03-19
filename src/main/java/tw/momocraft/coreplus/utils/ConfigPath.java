@@ -46,6 +46,7 @@ public class ConfigPath implements ConfigInterface {
     private final Map<String, Map<String, List<String>>> groupProp = new HashMap<>();
     private final Map<String, List<String>> cmdProp = new HashMap<>();
     private final Map<String, LogMap> logProp = new HashMap<>();
+    private final Map<String, List<String>> conditionProp = new HashMap<>();
     private final Map<String, LocationMap> locProp = new HashMap<>();
     private final Map<String, BlocksMap> blockProp = new HashMap<>();
     private final Map<String, ActionBarMap> actionProp = new HashMap<>();
@@ -70,6 +71,7 @@ public class ConfigPath implements ConfigInterface {
         setGroups();
         setCommands();
         setLogs();
+        setCondition();
         setLocation();
         setBlocks();
         setActionBars();
@@ -145,11 +147,11 @@ public class ConfigPath implements ConfigInterface {
     //         commands.yml Setter                     //
     //  ============================================== //
     private void setCommands() {
-        ConfigurationSection cmdConfig = ConfigHandler.getConfig("commands.yml").getConfigurationSection("Custom-Commands");
-        if (cmdConfig == null) {
+        ConfigurationSection config = ConfigHandler.getConfig("commands.yml").getConfigurationSection("Custom-Commands");
+        if (config == null) {
             return;
         }
-        for (String group : cmdConfig.getKeys(false)) {
+        for (String group : config.getKeys(false)) {
             cmdProp.put(group, ConfigHandler.getConfig("commands.yml").getStringList("Custom-Commands." + group));
         }
     }
@@ -189,14 +191,14 @@ public class ConfigPath implements ConfigInterface {
     //         logs.yml Setter                         //
     //  ============================================== //
     private void setLogs() {
-        ConfigurationSection logConfig = ConfigHandler.getConfig("logs.yml").getConfigurationSection("Logs");
-        if (logConfig == null) {
+        ConfigurationSection config = ConfigHandler.getConfig("logs.yml").getConfigurationSection("Logs");
+        if (config == null) {
             return;
         }
         LogMap logMap;
         String path;
         String name;
-        for (String group : logConfig.getKeys(false)) {
+        for (String group : config.getKeys(false)) {
             if (ConfigHandler.getConfig("logs.yml").getConfigurationSection("Logs." + group) == null) {
                 continue;
             }
@@ -217,6 +219,19 @@ public class ConfigPath implements ConfigInterface {
             logMap.setNewFile(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + group + ".New-File", false));
             logMap.setZip(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + group + ".Zip", false));
             logProp.put(group, logMap);
+        }
+    }
+
+    //  ============================================== //
+    //         condition.yml Setter                    //
+    //  ============================================== //
+    private void setCondition() {
+        ConfigurationSection config = ConfigHandler.getConfig("condition.yml").getConfigurationSection("Conditions");
+        if (config == null) {
+            return;
+        }
+        for (String group : config.getKeys(false)) {
+            conditionProp.put(group, ConfigHandler.getConfig("condition.yml").getStringList("Conditions." + group));
         }
     }
 
@@ -491,7 +506,6 @@ public class ConfigPath implements ConfigInterface {
         return mySQLMySQLPlayerDataBridgeExp;
     }
 
-
     public boolean isVanillaTrans() {
         return VanillaTrans;
     }
@@ -534,6 +548,11 @@ public class ConfigPath implements ConfigInterface {
 
     public Map<String, ParticleMap> getParticleProp() {
         return particleProp;
+    }
+
+    @Override
+    public Map<String, List<String>> getConditionProp() {
+        return conditionProp;
     }
 
     @Override

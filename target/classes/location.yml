@@ -5,31 +5,31 @@
 Config-Version: 1
 
 Location:
-  Normal-Worlds:
+  NormalWorlds:
     Worlds:
       - world
-  Nether-Worlds:
+  NetherWorlds:
     Worlds:
       - world_nether
   End-Worlds:
     Worlds:
       - world_the_end
-  End-Central-Island:
+  EndCentralIsland:
     Worlds:
       - world_the_end
     Area:
       S: 150
-  End-Outer-Island:
+  EndOuterIsland:
     Worlds:
       - world_the_end
     Area:
       "!S": 150
-  Bedrock-World:
+  BedrockWorld:
     Worlds:
       - world
     Area:
       Y: ">= 5"
-  Bedrock-Nether:
+  BedrockNether:
     Worlds:
       - world_nether
     Area:
@@ -39,7 +39,7 @@ Location:
       - world
     Area:
       S: 10000
-  Visitor-Worlds:
+  VisitorWorlds:
     Worlds:
       - world
     Area:

@@ -16,7 +16,6 @@ import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
-import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
@@ -25,34 +24,22 @@ import java.util.*;
 
 public class LanguageUtils implements LanguageInterface {
 
-    private String addPrefix(String prefix, String input) {
-        if (prefix == null)
-            prefix = "";
-        input = prefix + input;
-        return ChatColor.translateAlternateColorCodes('&', input);
-    }
 
     @Override
-    public void sendChatMsg(String prefix, Player player, String input) {
-        input = addPrefix(prefix, input);
-        player.chat(input);
-    }
-
-    @Override
-    public void sendBroadcastMsg(String prefix, String input) {
-        input = addPrefix(prefix, input);
+    public void sendBroadcastMsg(String prefix, String input, String... langHolder) {
+        input = transLangHolders(prefix, "", input, langHolder);
         Bukkit.broadcastMessage(input);
     }
 
     @Override
-    public void sendDiscordMsg(String prefix, String channel, String input) {
-        input = addPrefix(prefix, input);
+    public void sendDiscordMsg(String prefix, String channel, String input, String... langHolder) {
+        input = transLangHolders(prefix, "", input, langHolder);
         UtilsHandler.getDiscord().sendDiscordMsg(channel, input);
     }
 
     @Override
-    public void sendDiscordMsg(String prefix, String channel, String input, Player player) {
-        input = addPrefix(prefix, input);
+    public void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder) {
+        input = transLangHolders(prefix, "", input, langHolder);
         String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         if (message != null) {
             message = message.replace("%message%", input);
@@ -60,7 +47,6 @@ public class LanguageUtils implements LanguageInterface {
             message = input;
         }
         if (player != null) {
-            message = transLayoutPAPI(ConfigHandler.getPluginName(), input, player);
             String name = player.getName();
             String displayName = player.getCustomName();
             message = message.replace("%username%", name);
@@ -71,49 +57,51 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendConsoleMsg(String prefix, String input) {
-        input = addPrefix(prefix, input);
-        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
-    }
-
-    @Override
-    public void sendPlayerMsg(String prefix, Player player, String input) {
-        input = addPrefix(prefix, input);
-        player.sendMessage(input);
-    }
-
-    @Override
-    public void sendMsg(String prefix, CommandSender sender, String input) {
-        input = input.replace("%prefix%", prefix != null ? prefix : "");
-        input = addPrefix(prefix, input);
+    public void sendMsg(String prefix, CommandSender sender, String input, String... langHolder) {
+        input = transLangHolders(prefix, UtilsHandler.getPlayer().getPlayer(sender), input, langHolder);
         sender.sendMessage(input);
     }
 
     @Override
-    public void sendActionBarMsg(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        player.sendActionBar(TextComponent.fromLegacyText(message));
+    public void sendConsoleMsg(String prefix, String input, String... langHolder) {
+        input = transLangHolders(prefix, "", input, langHolder);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        String[] args = message.split("/n");
-        player.sendTitle(args[0], args[1], 10, 70, 20);
+    public void sendPlayerMsg(String prefix, Player player, String input, String... langHolder) {
+        input = transLangHolders(prefix, player, input, langHolder);
+        player.sendMessage(input);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String title, String subtitle) {
-        title = ChatColor.translateAlternateColorCodes('&', title);
-        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-        player.sendTitle(title, subtitle, 10, 70, 20);
+    public void sendChatMsg(String prefix, Player player, String input, String... langHolder) {
+        input = transLangHolders(prefix, "", input, langHolder);
+        player.chat(input);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        title = ChatColor.translateAlternateColorCodes('&', title);
-        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+    public void sendActionBarMsg(Player player, String input, String... langHolder) {
+        input = transLangHolders(null, player, input, langHolder);
+        player.sendActionBar(TextComponent.fromLegacyText(input));
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String input, String... langHolder) {
+        String[] args = input.split("/n");
+        sendTitleMsg(player, args[0], args[1], langHolder);
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder) {
+        sendTitleMsg(player, inputTitle, inputSubtitle, 10, 70, 20, langHolder);
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder) {
+        inputTitle = transLangHolders(null, player, inputTitle, langHolder);
+        inputSubtitle = transLangHolders(null, player, inputSubtitle, langHolder);
+        player.sendTitle(inputTitle, inputSubtitle, fadeIn, stay, fadeOut);
     }
 
     @Override
@@ -123,7 +111,6 @@ public class LanguageUtils implements LanguageInterface {
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
-    //////////////////
     @Override
     public void sendDebugMsg(boolean isDebugging, String pluginName, String input) {
         if (isDebugging) {
@@ -134,18 +121,17 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendDebugTrace(boolean isDebugging, String pluginName, Exception e) {
+    public void sendDebugTrace(boolean isDebugging, String pluginName, Exception ex) {
         if (isDebugging) {
             sendDebugMsg(true, pluginName, "showing debug trace.");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void sendFeatureMsg(boolean isDebugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
-        if (!isDebugging) {
+        if (!isDebugging)
             return;
-        }
         switch (action) {
             case "cancel":
             case "remove":
@@ -172,10 +158,9 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendFeatureMsg(boolean debugging, String pluign, String feature, String target, String check, String action, StackTraceElement ste) {
-        if (!debugging) {
+    public void sendFeatureMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste) {
+        if (!debugging)
             return;
-        }
         switch (action) {
             case "cancel":
             case "remove":
@@ -195,29 +180,30 @@ public class LanguageUtils implements LanguageInterface {
             default:
                 break;
         }
-        sendDebugMsg(true, pluign, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &f" + action
+        sendDebugMsg(true, pluginName, "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &f" + action
                 + " &8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
 
     @Override
     public void sendLangMsg(String pluginName, String prefix, String input, CommandSender sender, String... langHolder) {
-        if (input == null || input.equals("")) {
+        if (input == null || input.equals(""))
             return;
-        }
-        Player player = null;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        }
+        if (sender == null)
+            sender = Bukkit.getConsoleSender();
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
         if (langMessage != null)
             input = langMessage;
-        input = input.replace("%prefix%", prefix != null ? prefix : "");
-        input = transLangHolders(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+        input = transLangHolders(prefix, UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
         input = ChatColor.translateAlternateColorCodes('&', input);
         String[] langLines = input.split("\\n");
-        for (String langLine : langLines) {
+        for (String langLine : langLines)
             sender.sendMessage(langLine);
-        }
+    }
+
+
+    @Override
+    public String[] newString() {
+        return new String[30];
     }
 
     private String[] initializeRows(String... placeHolder) {
@@ -227,35 +213,44 @@ public class LanguageUtils implements LanguageInterface {
             return langHolder;
         } else {
             for (int i = 0; i < placeHolder.length; i++) {
-                if (placeHolder[i] == null) {
+                if (placeHolder[i] == null)
                     placeHolder[i] = "null";
-                }
             }
             return placeHolder;
         }
     }
 
     @Override
-    public String[] newString() {
-        return new String[30];
+    public String transLangHolders(String prefix, Player player, String input, String... langHolder) {
+        return transLangHolders(prefix, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
     }
 
     @Override
-    public String transLangHolders(String pluginName, @Nullable String local, String input, String... langHolder) {
+    public String transLangHolders(String prefix, String local, String input, String... langHolder) {
+        if (input == null)
+            return "";
+        if (prefix == null)
+            prefix = "";
+        input = prefix + input;
+        input = ChatColor.translateAlternateColorCodes('&', input);
         if (langHolder.length == 0)
             return input;
+        String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
+        if (langMessage != null)
+            input = langMessage;
         langHolder = initializeRows(langHolder);
+        input = input.replace("%prefix%", prefix);
         if (input.contains("%material%")) {
-            input = input.replace("%material%", getVanillaTrans(pluginName, local, langHolder[7], "material"));
+            input = input.replace("%material%", getVanillaTrans(local, langHolder[7], "material"));
         } else if (input.contains("%entity%")) {
-            input = input.replace("%entity%", getVanillaTrans(pluginName, local, langHolder[8], "entity"));
+            input = input.replace("%entity%", getVanillaTrans(local, langHolder[8], "entity"));
         }
         return input
                 .replace("%player%", langHolder[0])
                 .replace("%target_player%", langHolder[1])
                 .replace("%plugin%", langHolder[2])
                 .replace("%prefix%", langHolder[3])
-                .replace("%command%", langHolder[4])
+                .replace("%value%", langHolder[4])
                 .replace("%group%", langHolder[5])
                 .replace("%amount%", langHolder[6])
                 .replace("%material%", langHolder[7])
@@ -312,8 +307,6 @@ public class LanguageUtils implements LanguageInterface {
             return transByGeneral(pluginName, local, input);
         }
         while (true) {
-            // %TARGET_condition%CONDITION%
-
             // %TARGET_last_login%
             input = input.replace("%" + target + "_last_login%", String.valueOf(player.getLastLogin()));
             // %TARGET_display_name%
@@ -327,9 +320,8 @@ public class LanguageUtils implements LanguageInterface {
             }
             // %points%
             if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                if (input.contains("%" + target + "_points%")) {
+                if (input.contains("%" + target + "_points%"))
                     input = input.replace("%points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid)));
-                }
             }
             // %TARGET_sneaking%
             input = input.replace("%" + target + "_sneaking%", String.valueOf(player.isSneaking()));
@@ -360,9 +352,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -398,9 +389,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -461,9 +451,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -483,9 +472,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -525,9 +513,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -564,9 +551,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -631,9 +617,8 @@ public class LanguageUtils implements LanguageInterface {
                 }
             }
             // %TARGET_loc_material%
-            if (input.contains("%" + target + "_loc_material%")) {
+            if (input.contains("%" + target + "_loc_material%"))
                 input = input.replace("%" + target + "_material%", block.getType().name());
-            }
             // %TARGET_loc_cave%
             if (input.contains("%" + target + "_loc_cave%")) {
                 Location blockLoc;
@@ -730,9 +715,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -819,9 +803,8 @@ public class LanguageUtils implements LanguageInterface {
                 List<Player> playerList = new ArrayList(Bukkit.getOnlinePlayers());
                 String[] arr = input.split("%");
                 for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("random_player_except")) {
+                    if (arr[i].equals("random_player_except"))
                         placeholderList.add((arr[i + 1]));
-                    }
                 }
                 String[] playerArr;
                 Player randomPlayer;
@@ -861,9 +844,8 @@ public class LanguageUtils implements LanguageInterface {
             // Custom
             String originInput = input;
             input = transByCustom(pluginName, local, input);
-            if (input.equals(originInput)) {
+            if (input.equals(originInput))
                 break;
-            }
         }
         return input;
     }
@@ -1083,6 +1065,23 @@ public class LanguageUtils implements LanguageInterface {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
             }
         }
+        // %TARGET_condition%CONDITION%
+        if (input.contains("%condition%")) {
+            try {
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i].equals("%condition%"))
+                        input = input.replace("%condition%" + arr[i + 1] + "%",
+                                String.valueOf(UtilsHandler.getCondition().checkCondition(
+                                        ConfigHandler.getConfigPath().getConditionProp().get(arr[i + 1]))));
+                }
+            } catch (Exception ex) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format: \"\"%condition%CONDITION%\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+            }
+        }
         return input;
     }
 
@@ -1093,17 +1092,17 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public String getVanillaTrans(String pluginName, Player player, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaName(pluginName, player, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaName(player, input, type);
     }
 
     @Override
     public String getVanillaTrans(String pluginName, String local, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaNode(pluginName, local, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaNode(local, input, type);
     }
 
     @Override
     public String getVanillaTrans(String pluginName, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaNode(pluginName, null, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaNode(null, input, type);
     }
 
     @Override
@@ -1119,13 +1118,11 @@ public class LanguageUtils implements LanguageInterface {
         for (int i = 0; i < size; i++) {
             player = players.get(i);
             stringBuilder.append(player.getName());
-            if (i != size - 1) {
+            if (i != size - 1)
                 stringBuilder.append(player.getName()).append(", ");
-            }
         }
-        if (stringBuilder.toString().equals("")) {
+        if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        }
         return stringBuilder.toString();
     }
 
@@ -1137,13 +1134,11 @@ public class LanguageUtils implements LanguageInterface {
         for (int i = 0; i < size; i++) {
             block = blocks.get(i);
             stringBuilder.append(block.getType().name());
-            if (i != size - 1) {
+            if (i != size - 1)
                 stringBuilder.append(block.getType().name()).append(", ");
-            }
         }
-        if (stringBuilder.toString().equals("")) {
+        if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        }
         return stringBuilder.toString();
     }
 
@@ -1155,13 +1150,11 @@ public class LanguageUtils implements LanguageInterface {
         for (int i = 0; i < size; i++) {
             entity = entities.get(i);
             stringBuilder.append(entity.getType().name());
-            if (i != size - 1) {
+            if (i != size - 1)
                 stringBuilder.append(entity.getType().name()).append(", ");
-            }
         }
-        if (stringBuilder.toString().equals("")) {
+        if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        }
         return stringBuilder.toString();
     }
 
@@ -1254,8 +1247,7 @@ public class LanguageUtils implements LanguageInterface {
                 message.append(value).append(", ");
             }
         }
-        if (!message.substring(message.length() - 1).equals("[")) {
+        if (!message.substring(message.length() - 1).equals("["))
             sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
-        }
     }
 }

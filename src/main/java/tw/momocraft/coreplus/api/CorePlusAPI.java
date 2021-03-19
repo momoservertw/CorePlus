@@ -4,47 +4,51 @@ import tw.momocraft.coreplus.CorePlus;
 
 public class CorePlusAPI {
 
-    public static CommandInterface getCommandManager() {
+    public static EffectInterface getEffect() {
+        return CorePlus.getInstance().getEffectAPI();
+    }
+
+    public static CommandInterface getCommand() {
         return CorePlus.getInstance().getCommandManager();
     }
 
-    public static ConditionInterface getConditionManager() {
+    public static ConditionInterface getCondition() {
         return CorePlus.getInstance().getConditionManager();
     }
 
-    public static ConfigInterface getConfigManager() {
+    public static ConfigInterface getConfig() {
         return CorePlus.getInstance().getConfigManager();
     }
 
-    public static DependInterface getDependManager() {
+    public static DependInterface getDepend() {
         return CorePlus.getInstance().getDependManager();
     }
 
-    public static EntityInterface getEntityManager() {
+    public static EntityInterface getEntity() {
         return CorePlus.getInstance().getEntityManager();
     }
 
-    public static FileInterface getFileManager() {
+    public static FileInterface getFile() {
         return CorePlus.getInstance().getFileManager();
     }
 
-    public static LanguageInterface getLangManager() {
+    public static LanguageInterface getLang() {
         return CorePlus.getInstance().getLangManager();
     }
 
-    public static PlayerInterface getPlayerManager() {
+    public static PlayerInterface getPlayer() {
         return CorePlus.getInstance().getPlayerManager();
     }
 
-    public static UpdateInterface getUpdateManager() {
+    public static UpdateInterface getUpdate() {
         return CorePlus.getInstance().getUpdateManager();
     }
 
-    public static UtilsInterface getUtilsManager() {
+    public static UtilsInterface getUtils() {
         return CorePlus.getInstance().getUtilsManager();
     }
 
-    public static MySQLInterface getMySQLManager() {
+    public static MySQLInterface getMySQL() {
         return CorePlus.getInstance().getMySQLManager();
     }
 }

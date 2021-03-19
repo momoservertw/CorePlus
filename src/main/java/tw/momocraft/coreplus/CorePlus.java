@@ -4,11 +4,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tw.momocraft.coreplus.api.*;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.files.MySQLUtils;
+import tw.momocraft.coreplus.utils.EffectUtils;
 import tw.momocraft.coreplus.utils.PlayerUtils;
 import tw.momocraft.coreplus.utils.Updater;
 import tw.momocraft.coreplus.utils.Utils;
 import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
+import tw.momocraft.coreplus.utils.files.MySQLUtils;
 
 public class CorePlus extends JavaPlugin {
     private static CorePlus instance;
@@ -33,6 +34,14 @@ public class CorePlus extends JavaPlugin {
     //  ============================================== //
     //         API                                     //
     //  ============================================== //
+    private EffectInterface effectAPI = null;
+
+    public EffectInterface getEffectAPI() {
+        if (effectAPI == null)
+            effectAPI = new EffectUtils();
+        return effectAPI;
+    }
+
     private CommandInterface commandAPI = null;
 
     public CommandInterface getCommandManager() {

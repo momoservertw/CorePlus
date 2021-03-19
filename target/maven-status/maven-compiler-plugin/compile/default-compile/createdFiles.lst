@@ -3,6 +3,7 @@ tw\momocraft\coreplus\utils\conditions\ItemJoinUtils.class
 tw\momocraft\coreplus\utils\customcommands\ParticleUtils.class
 tw\momocraft\coreplus\api\FileInterface.class
 tw\momocraft\coreplus\utils\customcommands\ParticleUtils$1.class
+tw\momocraft\coreplus\api\EffectInterface.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands.class
 tw\momocraft\coreplus\api\MySQLInterface.class
 tw\momocraft\coreplus\utils\customcommands\SoundUtils$1.class
@@ -25,6 +26,7 @@ tw\momocraft\coreplus\utils\inventory\InventeryUtils.class
 tw\momocraft\coreplus\api\UtilsInterface.class
 tw\momocraft\coreplus\utils\PlayerUtils.class
 tw\momocraft\coreplus\api\UpdateInterface.class
+tw\momocraft\coreplus\utils\EffectUtils.class
 tw\momocraft\coreplus\utils\files\ConfigBuilder.class
 tw\momocraft\coreplus\utils\customcommands\BungeePlayerUtils.class
 tw\momocraft\coreplus\utils\customcommands\CustomCommands$2.class

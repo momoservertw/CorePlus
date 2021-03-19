@@ -17,6 +17,7 @@ public class ConfigHandler {
 
     private static YamlConfiguration commandsYAML;
     private static YamlConfiguration logsYAML;
+    private static YamlConfiguration conditionYAML;
     private static YamlConfiguration locationYAML;
     private static YamlConfiguration blocksYAML;
     private static YamlConfiguration particlesYAML;
@@ -36,6 +37,7 @@ public class ConfigHandler {
         genConfigFile("logs.yml");
         genConfigFile("location.yml");
         genConfigFile("blocks.yml");
+        genConfigFile("condition.yml");
         genConfigFile("particles.yml");
         genConfigFile("sounds.yml");
         genConfigFile("action_bars.yml");
@@ -55,65 +57,57 @@ public class ConfigHandler {
         File file;
         switch (fileName) {
             case "config.yml":
-                if (configYAML == null) {
+                if (configYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "spigot.yml":
                 filePath = Bukkit.getServer().getWorldContainer();
-                if (spigotYAML == null) {
+                if (spigotYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "groups.yml":
-                if (groupsYAML == null) {
+                if (groupsYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "commands.yml":
-                if (commandsYAML == null) {
+                if (commandsYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "logs.yml":
-                if (logsYAML == null) {
+                if (logsYAML == null)
                     getConfigData(filePath, fileName);
-                }
+                break;
+            case "condition.yml":
+                if (conditionYAML == null)
+                    getConfigData(filePath, fileName);
                 break;
             case "location.yml":
-                if (locationYAML == null) {
+                if (locationYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "blocks.yml":
-                if (blocksYAML == null) {
+                if (blocksYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "particles.yml":
-                if (particlesYAML == null) {
+                if (particlesYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "sounds.yml":
-                if (soundsYAML == null) {
+                if (soundsYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "action_bars.yml":
-                if (actionBarsYAML == null) {
+                if (actionBarsYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "title_messages.yml":
-                if (titleMessagesYAML == null) {
+                if (titleMessagesYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             case "data.yml":
-                if (dataYAML == null) {
+                if (dataYAML == null)
                     getConfigData(filePath, fileName);
-                }
                 break;
             default:
                 break;
@@ -128,7 +122,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg("CorePlus", "&cCannot save " + fileName + " to disk!");
+                UtilsHandler.getLang().sendErrorMsg(getPluginName(), "Cannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -138,64 +132,56 @@ public class ConfigHandler {
     private static YamlConfiguration getPath(String fileName, File file, boolean saveData) {
         switch (fileName) {
             case "config.yml":
-                if (saveData) {
+                if (saveData)
                     configYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return configYAML;
             case "spigot.yml":
-                if (saveData) {
+                if (saveData)
                     spigotYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return spigotYAML;
             case "groups.yml":
-                if (saveData) {
+                if (saveData)
                     groupsYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return groupsYAML;
             case "commands.yml":
-                if (saveData) {
+                if (saveData)
                     commandsYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return commandsYAML;
             case "logs.yml":
-                if (saveData) {
+                if (saveData)
                     logsYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return logsYAML;
+            case "condition.yml":
+                if (saveData)
+                    conditionYAML = YamlConfiguration.loadConfiguration(file);
+                return locationYAML;
             case "location.yml":
-                if (saveData) {
+                if (saveData)
                     locationYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return locationYAML;
             case "blocks.yml":
-                if (saveData) {
+                if (saveData)
                     blocksYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return blocksYAML;
             case "particles.yml":
-                if (saveData) {
+                if (saveData)
                     particlesYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return particlesYAML;
             case "sounds.yml":
-                if (saveData) {
+                if (saveData)
                     soundsYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return soundsYAML;
             case "action_bars.yml":
-                if (saveData) {
+                if (saveData)
                     actionBarsYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return actionBarsYAML;
             case "title_messages.yml":
-                if (saveData) {
+                if (saveData)
                     titleMessagesYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return titleMessagesYAML;
             case "data.yml":
-                if (saveData) {
+                if (saveData)
                     dataYAML = YamlConfiguration.loadConfiguration(file);
-                }
                 return dataYAML;
         }
         return null;
@@ -212,6 +198,7 @@ public class ConfigHandler {
             case "groups.yml":
             case "commands.yml":
             case "logs.yml":
+            case "condition.yml":
             case "location.yml":
             case "blocks.yml":
             case "sounds.yml":

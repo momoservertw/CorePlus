@@ -21,7 +21,7 @@ public class FileUtils implements FileInterface {
 
     @Override
     public boolean loadJsonFile(String pluginName, String group, String filePath) {
-        return UtilsHandler.getJson().load(pluginName, group, filePath);
+        return UtilsHandler.getJson().load(group, filePath);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FileUtils implements FileInterface {
 
     @Override
     public String getJsonValue(String pluginName, String group, String input) {
-        return UtilsHandler.getJson().getValue(pluginName, group, input);
+        return UtilsHandler.getJson().getValue(group, input);
     }
 
     @Override

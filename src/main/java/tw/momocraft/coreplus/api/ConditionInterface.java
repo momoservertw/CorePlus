@@ -9,20 +9,34 @@ import java.util.List;
 import java.util.Set;
 
 public interface ConditionInterface {
+    /**
+     * Checking the condition is matched.
+     * Format:
+     * Value1...Value2
+     * Value1...Value2<or>Value1...Value2
+     * Value1...Value2<and>Value1...Value2
+     * Value1...Value2<and>Value1...Value2
+     * Value1...Value2<and>Value1...Value2<or>Value1...Value2
+     *
+     * @param input the input condition string list.
+     * @return if the condition is matched.
+     */
+    boolean checkCondition(List<String> input);
 
     /**
      * Checking the condition is matched.
      * Format:
-     * <if>Value1...Value2</if>
-     * <if>Value1...Value2<or>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2</if>
-     * <if>Value1...Value2<and>Value1...Value2<or>Value1...Value2</if>
+     * Value1...Value2
+     * Value1...Value2<or>Value1...Value2
+     * Value1...Value2<and>Value1...Value2
+     * Value1...Value2<and>Value1...Value2
+     * Value1...Value2<and>Value1...Value2<or>Value1...Value2
      *
      * @param input the input condition string.
      * @return if the condition is matched.
      */
     boolean checkCondition(String input);
+
 
     void executeAction(String input);
 

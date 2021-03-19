@@ -89,6 +89,9 @@ public class Commands implements CommandExecutor {
             case "reload":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload")) {
                     ConfigHandler.generateData(true);
+                    if (sender instanceof Player)
+                        UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                                "Message.configReload", null);
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             "Message.configReload", sender);
                 } else {
