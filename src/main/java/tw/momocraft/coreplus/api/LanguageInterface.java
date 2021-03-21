@@ -9,7 +9,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
@@ -208,6 +207,14 @@ public interface LanguageInterface {
      */
     String transLangHolders(String prefix, String local, String input, String... langHolder);
 
+    /**
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @param playerName the target player name.
+     * @return a new string with translated player placeholders.
+     */
+    List<String> transByPlayerName(String pluginName, String local, List<String> input, String playerName);
 
     /**
      * @param pluginName the sending plugin name.
@@ -221,11 +228,32 @@ public interface LanguageInterface {
     /**
      * @param pluginName the sending plugin name.
      * @param local      the target's local language.
+     * @param input      the input string list.
+     * @param uuid       the target player uuid.
+     * @return a new string with translated player placeholders.
+     */
+    List<String> transByPlayerUUID(String pluginName, String local, List<String> input, UUID uuid);
+
+    /**
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
      * @param input      the input string.
      * @param uuid       the target player uuid.
      * @return a new string with translated player placeholders.
      */
-    String transByPlayerUUID(String pluginName, @Nullable String local, String input, UUID uuid);
+    String transByPlayerUUID(String pluginName, String local, String input, UUID uuid);
+
+    /**
+     * Translating the player placeholders.
+     * Player -> Entity -> General(PlaceHolderAPI) -> PlaceHolderAPI -> Custom
+     *
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @param player     the target player.
+     * @return a new string with translated player placeholders.
+     */
+    List<String> transByPlayer(String pluginName, String local, List<String> input, Player player, String target);
 
     /**
      * Translating the player placeholders.
@@ -237,7 +265,21 @@ public interface LanguageInterface {
      * @param player     the target player.
      * @return a new string with translated player placeholders.
      */
-    String transByPlayer(String pluginName, @Nullable String local, String input, Player player, String target);
+    String transByPlayer(String pluginName, String local, String input, Player player, String target);
+
+    /**
+     * Translating the entity placeholders.
+     * Entity -> Location ->  General(Placeholder) -> Custom
+     *
+     * @param pluginName     the sending plugin name.
+     * @param local          the target's local language.
+     * @param input          the input string list.
+     * @param entity         the target entity.
+     * @param target         the target type: entity, player, target
+     * @param isTransGeneral is translated the General placeholders.
+     * @return a new string with translated entity placeholders.
+     */
+    List<String> transByEntity(String pluginName, String local, List<String> input, Entity entity, String target, boolean isTransGeneral);
 
     /**
      * Translating the entity placeholders.
@@ -251,7 +293,7 @@ public interface LanguageInterface {
      * @param isTransGeneral is translated the General placeholders.
      * @return a new string with translated entity placeholders.
      */
-    String transByEntity(String pluginName, @Nullable String local, String input, Entity entity, String target, boolean isTransGeneral);
+    String transByEntity(String pluginName, String local, String input, Entity entity, String target, boolean isTransGeneral);
 
     /**
      * Translating the offline player placeholders.
@@ -259,12 +301,38 @@ public interface LanguageInterface {
      *
      * @param pluginName    the sending plugin name.
      * @param local         the target's local language.
-     * @param input         the input string.
+     * @param input         the input string list.
      * @param offlinePlayer the target player.
      * @param target        the target type: player, target
      * @return a new string with translated offline player placeholders.
      */
-    String transByOfflinePlayer(String pluginName, @Nullable String local, String input, OfflinePlayer offlinePlayer, String target);
+    List<String> transByOfflinePlayer(String pluginName, String local, List<String> input, OfflinePlayer offlinePlayer, String target);
+
+    /**
+     * Translating the offline player placeholders.
+     * OfflinePlayer -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName    the sending plugin name.
+     * @param local         the target's local language.
+     * @param input         the input string list.
+     * @param offlinePlayer the target player.
+     * @param target        the target type: player, target
+     * @return a new string with translated offline player placeholders.
+     */
+    String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer offlinePlayer, String target);
+
+    /**
+     * Translating the block placeholders.
+     * Block -> Location -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @param block      the target block.
+     * @param target     the target type: block, target
+     * @return a new string with translated block placeholders.
+     */
+    List<String> transByBlock(String pluginName, String local, List<String> input, Block block, String target);
 
     /**
      * Translating the block placeholders.
@@ -277,7 +345,20 @@ public interface LanguageInterface {
      * @param target     the target type: block, target
      * @return a new string with translated block placeholders.
      */
-    String transByBlock(String pluginName, @Nullable String local, String input, Block block, String target);
+    String transByBlock(String pluginName, String local, String input, Block block, String target);
+
+    /**
+     * Translating the item placeholders.
+     * Item -> Material -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @param itemStack  the target item.
+     * @param target     the target type: item, target
+     * @return a new string with translated block placeholders.
+     */
+    List<String> transByItem(String pluginName, String local, List<String> input, ItemStack itemStack, String target);
 
     /**
      * Translating the item placeholders.
@@ -290,7 +371,21 @@ public interface LanguageInterface {
      * @param target     the target type: item, target
      * @return a new string with translated block placeholders.
      */
-    String transByItem(String pluginName, @Nullable String local, String input, ItemStack itemStack, String target);
+    String transByItem(String pluginName, String local, String input, ItemStack itemStack, String target);
+
+    /**
+     * Translating the material placeholders.
+     * Material -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName     the sending plugin name.
+     * @param local          the target's local language.
+     * @param input          the input string list.
+     * @param material       the target material.
+     * @param target         the target type: block, target
+     * @param isTransGeneral is translated the General placeholders.
+     * @return a new string with translated block placeholders.
+     */
+    List<String> transByMaterial(String pluginName, String local, List<String> input, Material material, String target, boolean isTransGeneral);
 
     /**
      * Translating the material placeholders.
@@ -304,7 +399,21 @@ public interface LanguageInterface {
      * @param isTransGeneral is translated the General placeholders.
      * @return a new string with translated block placeholders.
      */
-    String transByMaterial(String pluginName, @Nullable String local, String input, Material material, String target, boolean isTransGeneral);
+    String transByMaterial(String pluginName, String local, String input, Material material, String target, boolean isTransGeneral);
+
+    /**
+     * Translating the location placeholders.
+     * Location -> General(PlaceHolderAPI) -> Custom
+     *
+     * @param pluginName     the sending plugin name.
+     * @param local          the target's local language.
+     * @param input          the input string list.
+     * @param loc            the target location.
+     * @param target         the target type: player, entity, block, target
+     * @param isTransGeneral is translated the General placeholders.
+     * @return a new string with translated block placeholders.
+     */
+    List<String> transByLocation(String pluginName, String local, List<String> input, Location loc, String target, boolean isTransGeneral);
 
     /**
      * Translating the location placeholders.
@@ -318,7 +427,18 @@ public interface LanguageInterface {
      * @param isTransGeneral is translated the General placeholders.
      * @return a new string with translated block placeholders.
      */
-    String transByLocation(String pluginName, @Nullable String local, String input, Location loc, String target, boolean isTransGeneral);
+    String transByLocation(String pluginName, String local, String input, Location loc, String target, boolean isTransGeneral);
+
+    /**
+     * Translating the general placeholders.
+     * General -> PlaceHolderAPI -> Custom
+     *
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @return a new string with translated placeholders.
+     */
+    List<String> transByGeneral(String pluginName, String local, List<String> input);
 
     /**
      * Translating the general placeholders.
@@ -329,7 +449,17 @@ public interface LanguageInterface {
      * @param input      the input string.
      * @return a new string with translated placeholders.
      */
-    String transByGeneral(String pluginName, @Nullable String local, String input);
+    String transByGeneral(String pluginName, String local, String input);
+
+    /**
+     * Translating the general placeholders.
+     *
+     * @param pluginName the sending plugin name.
+     * @param input      the input string list.
+     * @param player     the target player can be null.
+     * @return a new string with translated placeholders.
+     */
+    List<String> transLayoutPAPI(String pluginName, List<String> input, Player player);
 
     /**
      * Translating the general placeholders.
@@ -339,7 +469,17 @@ public interface LanguageInterface {
      * @param player     the target player can be null.
      * @return a new string with translated placeholders.
      */
-    String transLayoutPAPI(String pluginName, String input, @Nullable Player player);
+    String transLayoutPAPI(String pluginName, String input, Player player);
+
+    /**
+     * Translating the custom placeholders.
+     *
+     * @param pluginName the sending plugin name.
+     * @param local      the target's local language.
+     * @param input      the input string list.
+     * @return a new string with translated placeholders.
+     */
+    List<String> transByCustom(String pluginName, String local, List<String> input);
 
     /**
      * Translating the custom placeholders.
@@ -349,7 +489,7 @@ public interface LanguageInterface {
      * @param input      the input string.
      * @return a new string with translated placeholders.
      */
-    String transByCustom(String pluginName, @Nullable String local, String input);
+    String transByCustom(String pluginName, String local, String input);
 
     /**
      * Getting the translation of placeholder.

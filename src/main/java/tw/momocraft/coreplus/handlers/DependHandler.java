@@ -55,94 +55,74 @@ public class DependHandler implements DependInterface {
         CorePlus.getInstance().getCommand("CorePlus").setTabCompleter(new TabComplete());
 
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
-        if (MpdbEnabled()) {
+        if (MpdbEnabled())
             CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
-        }
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new ConditionTest(), CorePlus.getInstance());
     }
 
     private void setup() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vault")) {
             Vault = Bukkit.getServer().getPluginManager().getPlugin("Vault") != null;
-            if (Vault) {
+            if (Vault)
                 setVaultApi();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlayerPoints")) {
             PlayerPoints = Bukkit.getServer().getPluginManager().getPlugin("PlayerPoints") != null;
-            if (PlayerPoints) {
+            if (PlayerPoints)
                 setPlayerPointsApi();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.GemsEconomy")) {
             GemsEconomy = Bukkit.getServer().getPluginManager().getPlugin("GemsEconomy") != null;
-            if (GemsEconomy) {
+            if (GemsEconomy)
                 setGemsEconomyApi();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.LuckPerms")) {
             LuckPerms = Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null;
-            if (LuckPerms) {
+            if (LuckPerms)
                 setLuckPermsApi();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.ItemJoin")) {
             ItemJoin = Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null;
-            if (ItemJoin) {
+            if (ItemJoin)
                 setItemJoinUtils();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence")) {
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
-            if (Residence) {
+            if (Residence)
                 setResidenceUtils();
-            }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MultiverseCore")) {
             MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
-            if (MultiverseCore) {
+            if (MultiverseCore)
                 setMultiverseCoreUtils();
-            }
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlaceHolderAPI")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlaceHolderAPI"))
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.LangUtils")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.LangUtils"))
             LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.DiscordSRV")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.DiscordSRV"))
             DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MysqlPlayerDataBridge")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MysqlPlayerDataBridge"))
             MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence"))
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.CMI")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.CMI"))
             CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MythicMobs")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MythicMobs"))
             MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
-        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.AuthMe")) {
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PvPManager")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PvPManager"))
             PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.SurvivalMechanics")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.SurvivalMechanics"))
             SurvivalMechanics = Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vehicles")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vehicles"))
             Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MyPet")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MyPet"))
             MyPet = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool"))
             MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
-        }
     }
 
     @Override

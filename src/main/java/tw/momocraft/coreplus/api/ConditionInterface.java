@@ -301,4 +301,20 @@ public interface ConditionInterface {
      * @return the location is in cave or not.
      */
     boolean isInCave(Location loc);
+
+    /**
+     * Checking the location is in outside or not.
+     *
+     * @param loc the checking location.
+     * @return the location is in outside or not.
+     */
+    boolean isInOutside(Location loc);
+
+    /**
+     * Checking the location is on the ground or not.
+     *
+     * @param loc the checking location.
+     * @return the location is on the ground or not.
+     */
+    boolean isOnGround(Location loc);
 }

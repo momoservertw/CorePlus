@@ -11,7 +11,6 @@ import java.util.UUID;
 public interface PlayerInterface {
 
     /**
-     *
      * @param sender the target sender.
      * @return the target player. It will return "null" if sender is not player.
      */
@@ -39,6 +38,22 @@ public interface PlayerInterface {
      * @return online player names.
      */
     List<String> getOnlinePlayerNames();
+
+    /**
+     * Getting the player local language.
+     *
+     * @param player the target player.
+     * @return the player local language.
+     */
+    String getPlayerLocal(Player player);
+
+    /**
+     * Getting the sender local language.
+     *
+     * @param sender the target sender.
+     * @return the sender local language.
+     */
+    String getPlayerLocal(CommandSender sender);
 
     /**
      * Getting the last login time(milliseconds) of player.

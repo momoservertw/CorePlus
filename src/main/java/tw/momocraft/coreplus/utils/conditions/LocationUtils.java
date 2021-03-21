@@ -13,10 +13,9 @@ public class LocationUtils {
         if (locMaps == null || locMaps.isEmpty())
             return def;
         try {
-            for (String group : locMaps) {
+            for (String group : locMaps)
                 if (checkLocation(pluginName, loc, group, def))
                     return true;
-            }
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking location.");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
@@ -38,10 +37,9 @@ public class LocationUtils {
             if (locMap.getWorlds() == null || locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {
                 Map<String, String> cord = locMap.getCord();
                 if (cord != null) {
-                    for (String key : cord.keySet()) {
+                    for (String key : cord.keySet())
                         if (!isCord(loc, key, cord.get(key)))
                             return false;
-                    }
                 }
                 return true;
             }

@@ -98,19 +98,6 @@ public class ConfigPath implements ConfigInterface {
         CorePlusAPI.getLangManager().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", list);
 
          */
-
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded group.yml: ");
-        for (String group : groupProp.keySet()) {
-            UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), group + ": " + groupProp.get(group).keySet());
-        }
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded commands.yml: " + cmdProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded logs.yml: " + logProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded location.yml: " + locProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded blocks.yml: " + blockProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded particles.yml: " + particleProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded sounds.yml: " + soundProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded action_bars.yml: " + actionProp.keySet());
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "Loaded title_messages.yml: " + titleProp.keySet());
     }
 
     //  ============================================== //
@@ -183,7 +170,7 @@ public class ConfigPath implements ConfigInterface {
                 }
                 groupMap.put(group, groupList);
             }
-            groupProp.put(type.toLowerCase(), groupMap);
+            groupProp.put(type, groupMap);
         }
     }
 
@@ -593,62 +580,76 @@ public class ConfigPath implements ConfigInterface {
     //         Others                                  //
     //  ============================================== //
     @Override
-    public List<String> getTypeList(String pluginName, List<String> types, String listType) {
-        List<String> list = new ArrayList<>();
+    public List<String> getTypeList(String pluginName, List<String> inputList, String inputType) {
+        if (inputList == null || inputList.isEmpty() || inputType == null)
+            return null;
+        List<String> outputList = new ArrayList<>();
         List<String> customList;
-        for (String type : types) {
+        Map<String, List<String>> customGroup;
+        for (String type : inputList) {
             try {
-                switch (listType) {
+                // Add vanilla type.
+                switch (inputType) {
                     case "Entities":
-                        list.add(EntityType.valueOf(type).name());
-                        break;
+                        outputList.add(EntityType.valueOf(type).name());
+                        continue;
                     case "Materials":
-                        list.add(Material.valueOf(type).name());
-                        break;
+                        outputList.add(Material.valueOf(type).name());
+                        continue;
                     case "Sound":
-                        list.add(Sound.valueOf(type).name());
+                        outputList.add(Sound.valueOf(type).name());
                         continue;
                     case "Particle":
-                        list.add(Particle.valueOf(type).name());
+                        outputList.add(Particle.valueOf(type).name());
+                        continue;
                 }
-            } catch (Exception ex) {
-                customList = groupProp.get(listType).get(type);
-                if (customList == null || customList.isEmpty()) {
-                    continue;
-                }
-                // Add Custom Group.
-                for (String customType : customList) {
-                    try {
-                        switch (listType) {
-                            case "Entities":
-                                list.add(EntityType.valueOf(customType).name());
-                                continue;
-                            case "Materials":
-                                list.add(Material.valueOf(customType).name());
-                                continue;
-                            case "Sound":
-                                list.add(Sound.valueOf(customType).name());
-                                continue;
-                            case "Particle":
-                                list.add(Particle.valueOf(customType).name());
-                                continue;
-                            case "MythicMobs":
-                                if (UtilsHandler.getDepend().MythicMobsEnabled()) {
-                                    if (UtilsHandler.getEntity().isMythicMobName(type)) {
-                                        list.add(type);
-                                        continue;
-                                    }
-                                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + listType + ": " + type);
+            } catch (Exception ignored) {
+            }
+            // Add custom group type.
+            customGroup = groupProp.get(inputType);
+            // Not find the input type of list.
+            if (customGroup == null) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName,
+                        "Unknown list type: \"" + inputType + ", " + type + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName,
+                        "Please check if CorePlus is updated to the latest version.");
+                return null;
+            }
+            // Getting the list of that custom group.
+            customList = customGroup.get(type);
+            if (customList == null || customList.isEmpty())
+                continue;
+            // Add value to output list.
+            for (String customType : customList) {
+                try {
+                    switch (inputType) {
+                        case "Entities":
+                            outputList.add(EntityType.valueOf(customType).name());
+                            continue;
+                        case "Materials":
+                            outputList.add(Material.valueOf(customType).name());
+                            continue;
+                        case "Sound":
+                            outputList.add(Sound.valueOf(customType).name());
+                            continue;
+                        case "Particle":
+                            outputList.add(Particle.valueOf(customType).name());
+                            continue;
+                        case "MythicMobs":
+                            if (UtilsHandler.getDepend().MythicMobsEnabled()) {
+                                if (UtilsHandler.getEntity().isMythicMobName(customType)) {
+                                    outputList.add(customType);
+                                    continue;
                                 }
-                                break;
-                        }
-                    } catch (Exception ignored) {
-                        UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + listType + ": " + type);
+                                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + customType);
+                            }
                     }
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + type);
                 }
             }
         }
-        return list;
+        return outputList;
     }
 
     @Override

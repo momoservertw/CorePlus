@@ -9,13 +9,11 @@ import java.util.List;
 public class BlocksUtils {
 
     public boolean checkBlocks(Location loc, List<String> blocksList, boolean def) {
-        if (blocksList == null || blocksList.isEmpty()) {
+        if (blocksList == null || blocksList.isEmpty())
             return def;
-        }
-        for (String group : blocksList) {
+        for (String group : blocksList)
             if (checkBlocks(loc, group, def))
                 return true;
-        }
         return false;
     }
 
@@ -75,9 +73,8 @@ public class BlocksUtils {
             for (int z = -Z; z <= Z; z++) {
                 for (int y = -Y; y <= Y; y++) {
                     blockLoc = loc.clone().add(x, y, z);
-                    if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                    if (blockTypes.contains(blockLoc.getBlock().getType().name()))
                         return true;
-                    }
                 }
             }
         }
@@ -92,9 +89,8 @@ public class BlocksUtils {
                 for (int y = -R; y <= R; y++) {
                     blockLoc = loc.clone().add(x, y, z);
                     if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
-                        if ((x * x + z * z + y * y) <= range) {
+                        if ((x * x + z * z + y * y) <= range)
                             return true;
-                        }
                     }
                 }
             }
@@ -110,9 +106,8 @@ public class BlocksUtils {
                 if (x * x + z * z <= range) {
                     for (int y = -H; y <= H; y++) {
                         blockLoc = loc.clone().add(x, y, z);
-                        if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                        if (blockTypes.contains(blockLoc.getBlock().getType().name()))
                             return true;
-                        }
                     }
                 }
             }
@@ -125,9 +120,8 @@ public class BlocksUtils {
         for (int x = -X; x <= X; x++) {
             for (int z = -Z; z <= Z; z++) {
                 blockLoc = loc.clone().add(x, H, z);
-                if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                if (blockTypes.contains(blockLoc.getBlock().getType().name()))
                     return true;
-                }
             }
         }
         return false;
@@ -140,9 +134,8 @@ public class BlocksUtils {
             for (int z = -R; z <= R; z++) {
                 if (x * x + z * z <= range) {
                     blockLoc = loc.clone().add(x, H, z);
-                    if (blockTypes.contains(blockLoc.getBlock().getType().name())) {
+                    if (blockTypes.contains(blockLoc.getBlock().getType().name()))
                         return true;
-                    }
                 }
             }
         }

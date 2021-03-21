@@ -2,9 +2,11 @@ package tw.momocraft.coreplus.utils.conditions;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -32,6 +34,8 @@ public class ConditionUtils implements ConditionInterface {
 
     @Override
     public boolean checkCondition(List<String> input) {
+        if (input == null || input.isEmpty())
+            return true;
         for (String condition : input) {
             if (!checkCondition(condition))
                 return false;
@@ -41,6 +45,8 @@ public class ConditionUtils implements ConditionInterface {
 
     @Override
     public boolean checkCondition(String input) {
+        if (input == null || input.isEmpty())
+            return true;
         String[] conditionArray = input.split("<or>");
         String[] arr;
         back:
@@ -322,21 +328,16 @@ public class ConditionUtils implements ConditionInterface {
 
     @Override
     public boolean isCanUse(String blockType) {
-        if (blockType.endsWith("PRESSURE_PLATE")) {
+        if (blockType.endsWith("PRESSURE_PLATE"))
             return true;
-        }
-        if (blockType.equals("TRIPWIRE")) {
+        if (blockType.equals("TRIPWIRE"))
             return true;
-        }
-        if (blockType.endsWith("DOOR")) {
+        if (blockType.endsWith("DOOR"))
             return true;
-        }
-        if (blockType.endsWith("FENCE_GATE")) {
+        if (blockType.endsWith("FENCE_GATE"))
             return true;
-        }
-        if (blockType.endsWith("BUTTON")) {
+        if (blockType.endsWith("BUTTON"))
             return true;
-        }
         switch (blockType) {
             // Crafting
             case "CRAFTING_TABLE":
@@ -433,5 +434,15 @@ public class ConditionUtils implements ConditionInterface {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isInOutside(Location loc) {
+        return loc.getY() >= loc.getWorld().getHighestBlockAt(loc).getLocation().getY();
+    }
+
+    @Override
+    public boolean isOnGround(Location loc) {
+        return loc.getBlock().getRelative(BlockFace.DOWN, 1).isSolid();
     }
 }

@@ -83,6 +83,16 @@ public class PlayerUtils implements PlayerInterface {
     }
 
     @Override
+    public String getPlayerLocal(Player player) {
+        return UtilsHandler.getVanillaUtils().getLocal(player);
+    }
+
+    @Override
+    public String getPlayerLocal(CommandSender sender) {
+        return UtilsHandler.getVanillaUtils().getLocal(sender);
+    }
+
+    @Override
     public double getLastLogin(String playerName) {
         OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
         double lastLogin = 0;

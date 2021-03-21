@@ -222,11 +222,10 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
-        if (placeholder) {
+        input = UtilsHandler.getLang().transLangHolders(null, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+        if (placeholder)
             input = UtilsHandler.getLang().transByPlayer(pluginName,
                     UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
-        }
         String[] split;
         switch (input.split(": ")[0]) {
             case "custom":
@@ -333,10 +332,9 @@ public class CustomCommands implements CommandInterface {
      * @param placeholder translating placeholders.
      */
     private void selectCmdType(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(pluginName, "", input, langHolder);
-        if (placeholder) {
+        input = UtilsHandler.getLang().transLangHolders(null, "", input, langHolder);
+        if (placeholder)
             input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
-        }
         String[] split;
         switch (input.split(": ")[0]) {
             case "custom":
@@ -392,6 +390,7 @@ public class CustomCommands implements CommandInterface {
                 return;
             default:
                 UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Please check if CorePlus is updated to the latest version.");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
         }
     }
