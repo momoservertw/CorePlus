@@ -4,13 +4,19 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import javafx.util.Pair;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CommandInterface;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.language.TranslateMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -446,7 +452,7 @@ public class CustomCommands implements CommandInterface {
         if (condition.contains(">=")) {
             conditionValues = condition.split(">=");
             try {
-                type = UtilsHandler.getUtil().getCompare(">=",
+                type = UtilsHandler.getUtil().checkCompare(">=",
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
@@ -456,7 +462,7 @@ public class CustomCommands implements CommandInterface {
         } else if (condition.contains("<=")) {
             conditionValues = condition.split("<=");
             try {
-                type = UtilsHandler.getUtil().getCompare("<=",
+                type = UtilsHandler.getUtil().checkCompare("<=",
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
@@ -466,7 +472,7 @@ public class CustomCommands implements CommandInterface {
         } else if (condition.contains(">")) {
             conditionValues = condition.split(">");
             try {
-                type = UtilsHandler.getUtil().getCompare(">",
+                type = UtilsHandler.getUtil().checkCompare(">",
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
@@ -476,7 +482,7 @@ public class CustomCommands implements CommandInterface {
         } else if (condition.contains("<")) {
             conditionValues = condition.split("<");
             try {
-                type = UtilsHandler.getUtil().getCompare("<",
+                type = UtilsHandler.getUtil().checkCompare("<",
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"condition: " + input + "\"");
@@ -486,7 +492,7 @@ public class CustomCommands implements CommandInterface {
         } else if (condition.contains("=")) {
             conditionValues = condition.split("=");
             try {
-                type = UtilsHandler.getUtil().getCompare("=",
+                type = UtilsHandler.getUtil().checkCompare("=",
                         Double.parseDouble(conditionValues[0]), Double.parseDouble(conditionValues[1]));
             } catch (Exception ex) {
                 type = conditionValues[0].equals(conditionValues[1]);

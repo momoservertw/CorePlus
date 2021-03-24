@@ -14,12 +14,13 @@ import tw.momocraft.coreplus.utils.language.VanillaUtils;
 
 public class UtilsHandler {
 
-    public static void setUpFirst() {
-        dependence = new DependHandler();
+    public static void setUpFirst(boolean reload) {
+        if (!reload)
+            dependence = new DependHandler();
         languageUtils = new LanguageUtils();
     }
 
-    public static void setUpMid() {
+    public static void setUpMid(boolean reload) {
         fileUtils = new FileUtils();
         mySQLUtils = new MySQLUtils();
         jsonUtils = new JsonUtils();
@@ -28,7 +29,7 @@ public class UtilsHandler {
         vanillaUtils = new VanillaUtils();
     }
 
-    public static void setUpLast() {
+    public static void setUpLast(boolean reload) {
         discordUtils = new DiscordUtils();
         utils = new Utils();
         conditionUtils = new ConditionUtils();

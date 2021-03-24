@@ -17,6 +17,7 @@ import tw.momocraft.coreplus.utils.permission.LuckPermsUtils;
 
 public class DependHandler implements DependInterface {
 
+    private boolean paper;
     private VaultUtils vaultApi;
     private PlayerPointsUtils playerPointsApi;
     private GemsEcoUtils gemsEcoApi;
@@ -61,6 +62,10 @@ public class DependHandler implements DependInterface {
     }
 
     private void setup() {
+        try {
+            paper = Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData") != null;
+        } catch (ClassNotFoundException ignored) {
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Vault")) {
             Vault = Bukkit.getServer().getPluginManager().getPlugin("Vault") != null;
             if (Vault)
@@ -110,9 +115,8 @@ public class DependHandler implements DependInterface {
             CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MythicMobs"))
             MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.AuthMe")) {
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.AuthMe"))
             AuthMe = Bukkit.getServer().getPluginManager().getPlugin("AuthMe") != null;
-        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PvPManager"))
             PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.SurvivalMechanics"))
@@ -123,6 +127,11 @@ public class DependHandler implements DependInterface {
             MyPet = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool"))
             MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
+    }
+
+    @Override
+    public boolean isPaper() {
+        return paper;
     }
 
     @Override

@@ -2,6 +2,8 @@ package tw.momocraft.coreplus.api;
 
 public interface DependInterface {
 
+    boolean isPaper();
+
     boolean VaultEnabled();
 
     boolean VaultEconEnabled();

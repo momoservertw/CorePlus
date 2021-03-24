@@ -43,17 +43,6 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public boolean containsStringIgnoreCase(List<String> list, String string) {
-        if (string != null && list != null) {
-            for (String s : list) {
-                if (containsIgnoreCase(s, string))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public boolean containsIgnoreCase(List<String> list, String string) {
         if (string != null && list != null) {
             for (String s : list) {
@@ -76,7 +65,7 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public boolean isInt(String s) {
+    public boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException e) {
@@ -86,9 +75,12 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public int getRandom(int lower, int higher) {
+    public int getRandom(int value1, int value2) {
         Random random = new Random();
-        return random.nextInt((higher - lower) + 1) + lower;
+        if (value2 > value1) {
+            return random.nextInt((value2 - value1) + 1) + value1;
+        }
+        return random.nextInt((value1 - value2) + 1) + value2;
     }
 
     @Override
@@ -103,44 +95,192 @@ public class Utils implements UtilsInterface {
 
     @Override
     public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList, boolean def) {
-        if (ignoreList != null && ignoreList.contains(value)) {
+        if (ignoreList != null && ignoreList.contains(value))
             return false;
-        }
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty())
             return def;
-        }
         return list.contains(value);
     }
 
     @Override
     public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList) {
-        if (ignoreList != null && ignoreList.contains(value)) {
+        if (ignoreList != null && ignoreList.contains(value))
             return false;
-        }
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty())
             return true;
-        }
         return list.contains(value);
     }
 
     @Override
     public boolean containIgnoreValue(String value, List<String> list, boolean def) {
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty())
             return def;
-        }
         return list.contains(value);
     }
 
     @Override
     public boolean containIgnoreValue(String value, List<String> list) {
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty())
             return true;
-        }
         return list.contains(value);
     }
 
     @Override
-    public boolean getCompare(String operator, double number1, double number2) {
+    public boolean checkValues(String pluginName, String value1, String value2) {
+        boolean opposite = false;
+        if (value2.startsWith("!")) {
+            opposite = true;
+            value2 = value2.substring(1);
+        }
+        try {
+            if (value2.startsWith(">")) {
+                value2 = value2.substring(1);
+                if (value2.startsWith("=")) {
+                    value2 = value2.substring(1);
+                    if (opposite) {
+                        if (!checkCompareAndEquals(pluginName, ">=", value1, value2))
+                            return true;
+                    } else {
+                        if (checkCompareAndEquals(pluginName, ">=", value1, value2))
+                            return true;
+                    }
+                }
+                if (opposite) {
+                    if (!checkCompareAndEquals(pluginName, ">", value1, value2))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, ">", value1, value2))
+                        return true;
+                }
+            } else if (value2.startsWith("<")) {
+                value2 = value2.substring(1);
+                if (value2.startsWith("=")) {
+                    value2 = value2.substring(1);
+                    if (opposite) {
+                        if (!checkCompareAndEquals(pluginName, "<=", value1, value2))
+                            return true;
+                    } else {
+                        if (checkCompareAndEquals(pluginName, "<=", value1, value2))
+                            return true;
+                    }
+                }
+                if (opposite) {
+                    if (!checkCompareAndEquals(pluginName, "<", value1, value2))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, "<", value1, value2))
+                        return true;
+                }
+            } else if (value2.startsWith("=")) {
+                value2 = value2.substring(1);
+                if (!value2.contains("~")) {
+                    if (opposite) {
+                        if (!checkCompareAndEquals(pluginName, "=", value1, value2))
+                            return true;
+                    } else {
+                        if (checkCompareAndEquals(pluginName, "=", value1, value2))
+                            return true;
+                    }
+                } else {
+                    String[] split = value2.split("~");
+                    if (opposite) {
+                        if (!inRange(Double.parseDouble(value1),
+                                Double.parseDouble(split[0]), Double.parseDouble(split[1]), false))
+                            return true;
+                    } else {
+                        if (inRange(Double.parseDouble(value1),
+                                Double.parseDouble(split[0]), Double.parseDouble(split[1]), false))
+                            return true;
+                    }
+                }
+            } else {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+                return false;
+            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkValues(String pluginName, String input) {
+        try {
+            String[] arr;
+            if (input.contains(">")) {
+                arr = input.split(">");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, ">", arr[0].substring(0, arr.length - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, ">", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains("<")) {
+                arr = input.split("<");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, "<", arr[0].substring(0, arr.length - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, "<", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains(">=")) {
+                arr = input.split(">=");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, ">=", arr[0].substring(0, arr.length - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, ">=", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains("<=")) {
+                arr = input.split("<=");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, "<=", arr[0].substring(0, arr.length - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, "<=", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains("=")) {
+                arr = input.split("=");
+                if (!arr[1].contains("~")) {
+                    if (arr[0].endsWith("!")) {
+                        if (!checkCompareAndEquals(pluginName, "=", arr[0].substring(0, arr.length - 1), arr[1]))
+                            return true;
+                    } else {
+                        if (checkCompareAndEquals(pluginName, "=", arr[0], arr[1]))
+                            return true;
+                    }
+                } else {
+                    String[] split = arr[1].split("~");
+                    if (arr[0].endsWith("!")) {
+                        if (!inRange(Double.parseDouble(arr[0].substring(0, arr.length - 1)),
+                                Double.parseDouble(split[0]), Double.parseDouble(split[1]), false))
+                            return true;
+                    } else {
+                        if (inRange(Double.parseDouble(arr[0]),
+                                Double.parseDouble(split[0]), Double.parseDouble(split[1]), false))
+                            return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkCompare(String operator, double number1, double number2) {
         switch (operator) {
             case ">":
                 return number1 > number2;
@@ -159,46 +299,64 @@ public class Utils implements UtilsInterface {
         return false;
     }
 
-    public boolean getCompareAndEquals(String operator, String value1, String value2) {
-        if (value1.matches("[0-9]+") && value2.matches("[0-9]+")) {
+    @Override
+    public boolean checkCompareAndEquals(String pluginName, String operator, String value1, String value2) {
+        try {
             if (operator.matches("[><=]+")) {
-                return getCompare(operator, Integer.parseInt(value1), Integer.parseInt(value2));
+                return checkCompare(operator, Double.parseDouble(value1), Double.parseDouble(value2));
             } else if (operator.matches("[!][><=]+")) {
-                return !getCompare(operator, Integer.parseInt(value1), Integer.parseInt(value2));
+                return !checkCompare(operator, Double.parseDouble(value1), Double.parseDouble(value2));
             }
-        } else {
-            if (operator.matches("[=]+")) {
-                return value1.equals(value2);
-            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + operator + value2 + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+        }
+        if (operator.matches("[=]+")) {
+            return value1.equals(value2);
         }
         return false;
     }
 
     @Override
-    public boolean getRange(double number, double r1, double r2, boolean equal) {
+    public boolean inRange(double number, double r1, double r2, boolean equal) {
         if (number == r1 || number == r2)
             return equal;
         return r1 < number && number < r2 || r2 < number && number < r1;
     }
 
     @Override
-    public boolean getRange(int number, int r1, int r2, boolean equal) {
+    public boolean inRange(int number, int r1, int r2, boolean equal) {
         if (number == r1 || number == r2)
             return equal;
         return r1 < number && number < r2 || r2 < number && number < r1;
     }
 
     @Override
-    public boolean getRange(int number, int r, boolean equal) {
+    public boolean inRange(double number, double r, boolean equal) {
         if (number == r || number == -r)
             return equal;
         return -r < number && number < r || r < number && number < -r;
     }
 
     @Override
-    public boolean getRange(double number, double r, boolean equal) {
+    public boolean inRange(int number, int r, boolean equal) {
         if (number == r || number == -r)
             return equal;
+        return -r < number && number < r || r < number && number < -r;
+    }
+
+    @Override
+    public boolean inRange(double number, double r) {
+        if (number == r || number == -r)
+            return true;
+        return -r < number && number < r || r < number && number < -r;
+    }
+
+    @Override
+    public boolean inRange(int number, int r) {
+        if (number == r || number == -r)
+            return true;
         return -r < number && number < r || r < number && number < -r;
     }
 
@@ -237,12 +395,12 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public List<String> getStringListFromObjects(List<Object> input, String returnType) {
+    public List<String> getStringListFromObjects(List<Object> input, String type) {
         List<String> returnList = new ArrayList<>();
         for (Object value : input) {
             if (value == null)
                 continue;
-            if (returnType.equals("type")) {
+            if (type.equals("type")) {
                 if (value instanceof Material)
                     returnList.add(((Material) value).name());
                 if (value instanceof EntityType)
@@ -257,7 +415,7 @@ public class Utils implements UtilsInterface {
                     returnList.add(((Entity) value).getType().name());
                 if (value instanceof ItemStack)
                     returnList.add(((ItemStack) value).getType().name());
-            } else if (returnType.equals("name")) {
+            } else if (type.equals("name")) {
                 if (value instanceof Material)
                     returnList.add(((Material) value).name());
                 if (value instanceof EntityType)
@@ -293,12 +451,12 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public String getStringFromObjects(List<Object> input, String returnType) {
+    public String getStringFromObjects(List<Object> input, String type) {
         StringBuilder sb = new StringBuilder();
         for (Object value : input) {
             if (value == null)
                 continue;
-            if (returnType.equals("type")) {
+            if (type.equals("type")) {
                 if (value instanceof Material)
                     sb.append(((Material) value).name()).append(",");
                 if (value instanceof EntityType)
@@ -313,7 +471,7 @@ public class Utils implements UtilsInterface {
                     sb.append(((Entity) value).getType().name()).append(",");
                 if (value instanceof ItemStack)
                     sb.append(((ItemStack) value).getType().name()).append(",");
-            } else if (returnType.equals("name")) {
+            } else if (type.equals("name")) {
                 if (value instanceof Material)
                     sb.append(((Material) value).name()).append(",");
                 if (value instanceof EntityType)
@@ -349,90 +507,41 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public String getStringFromNearbyType(String pluginName, Location loc, String returnType, String type, String group, int range) {
-        List<String> checkList;
+    public String getStringFromNearbyType(String pluginName, Location loc, String targetType, String returnType, String group, int range) {
+        List<String> list;
         try {
-            checkList = ConfigHandler.getConfigPath().getGroupProp().get(type).get(group);
+            list = ConfigHandler.getConfigPath().getGroupProp().get(returnType).get(group);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName,
                     "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName,
-                    "Can not find the type name in groups.yml: \"" + type + "\"");
+                    "Can not find the type name in groups.yml: \"" + returnType + "\"");
             return null;
         }
-        if (checkList == null && !group.equals("all")) {
+        if (list == null && !group.equals("all")) {
             UtilsHandler.getLang().sendErrorMsg(pluginName,
                     "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName,
-                    "Can not find the group name in groups.yml: \"" + type + "\"");
+                    "Can not find the group name in groups.yml: \"" + returnType + "\"");
             return null;
         }
-        return getNearbyStringFromTypes(loc, returnType, type, checkList, range);
+        return getNearbyStringFromTypes(loc, targetType, returnType, list, range);
     }
 
     @Override
-    public String getNearbyStringFromTypes(Location loc, String returnType, String type, List<String> checkList, int range) {
+    public String getNearbyStringFromTypes(Location loc, String targetType, String returnType, List<String> input, int range) {
         StringBuilder output = new StringBuilder();
-        String value;
-        String typeName;
-        switch (type.toLowerCase()) {
-            case "entities":
-                for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    typeName = entity.getType().name();
-                    if (returnType.equals("type")) {
-                        value = typeName;
-                    } else if (returnType.equals("name")) {
-                        value = entity.getCustomName();
-                        if (value == null)
-                            value = typeName;
-                    } else {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
-                        return null;
-                    }
-                    if (checkList == null || checkList.contains(typeName))
-                        output.append(value).append(",");
-                }
-                break;
-            case "materials":
-                for (Block block : getNearbyBlocks(loc, range, range, range)) {
-                    typeName = block.getType().name();
-                    if (checkList.contains(typeName))
-                        output.append(typeName).append(",");
-                }
-                break;
-            case "mythicmobs":
-                for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    if (!UtilsHandler.getEntity().isMythicMob(entity)) {
-                        continue;
-                    }
-                    typeName = UtilsHandler.getEntity().getMythicMobName(entity);
-                    if (returnType.equals("type")) {
-                        value = typeName;
-                    } else if (returnType.equals("name")) {
-                        value = entity.getCustomName();
-                        if (value == null)
-                            value = typeName;
-                    } else {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
-                        return null;
-                    }
-                    if (checkList == null || checkList.contains(typeName))
-                        output.append(value).append(",");
-                }
-            default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while getting the nearby things.");
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find the type of \"" + type + "\" in CorePlus/groups.yml.");
-                return null;
+        for (String string : getNearbyStringListFromTypes(loc, targetType, returnType, input, range)) {
+            output.append(string).append(", ");
         }
         return output.toString();
     }
 
-    public List<String> getNearbyStringListFromTypes(Location loc, String checkType, String returnType, List<String> checkList, int range) {
+    @Override
+    public List<String> getNearbyStringListFromTypes(Location loc, String targetType, String returnType, List<String> input, int range) {
         List<String> output = new ArrayList<>();
         String target;
-        switch (checkType.toLowerCase()) {
+        switch (targetType.toLowerCase()) {
             case "entities":
                 for (Entity entity : loc.getNearbyEntities(range, range, range)) {
                     if (entity == null)
@@ -448,14 +557,14 @@ public class Utils implements UtilsInterface {
                         UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
                         return null;
                     }
-                    if (checkList.contains(target))
+                    if (input.contains(target))
                         output.add(target);
                 }
                 break;
             case "materials":
                 for (Block block : getNearbyBlocks(loc, range, range, range)) {
                     target = block.getType().name();
-                    if (checkList.contains(target))
+                    if (input.contains(target))
                         output.add(target);
                 }
                 break;
@@ -465,7 +574,7 @@ public class Utils implements UtilsInterface {
                         target = entity.getCustomName();
                         if (target == null)
                             target = UtilsHandler.getEntity().getMythicMobName(entity);
-                        if (checkList.contains(target))
+                        if (input.contains(target))
                             output.add(target);
                     }
                 }
@@ -521,8 +630,8 @@ public class Utils implements UtilsInterface {
      * High -> Low
      *
      * @param map the input map.
-     * @param <K>
-     * @param <V>
+     * @param <K> the input key.
+     * @param <V> the input value.
      * @return the sorted map.
      */
     @Override
@@ -542,8 +651,8 @@ public class Utils implements UtilsInterface {
      * Low -> High
      *
      * @param map the input map.
-     * @param <K>
-     * @param <V>
+     * @param <K> the input key.
+     * @param <V> the input value.
      * @return the sorted map.
      */
     @Override

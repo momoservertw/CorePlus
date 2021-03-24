@@ -61,17 +61,17 @@ public class LocationUtils {
                     // R: 1000
                     switch (type) {
                         case "X":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockX(), Integer.parseInt(values[0]));
                         case "Y":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockY(), Integer.parseInt(values[0]));
                         case "Z":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                         case "!X":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockX(), Integer.parseInt(values[0]));
                         case "!Y":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockY(), Integer.parseInt(values[0]));
                         case "!Z":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockZ(), Integer.parseInt(values[0]));
                         case "R":
                             return getRound(loc, Integer.parseInt(values[0]));
                         case "!R":
@@ -86,17 +86,17 @@ public class LocationUtils {
                     // X: ">= 1000"
                     switch (type) {
                         case "X":
-                            return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                            return UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                         case "Y":
-                            return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                            return UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                         case "Z":
-                            return UtilsHandler.getUtil().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                            return UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                         case "!X":
-                            return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
+                            return !UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockX(), Integer.parseInt(values[1]));
                         case "!Y":
-                            return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
+                            return !UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockY(), Integer.parseInt(values[1]));
                         case "!Z":
-                            return !UtilsHandler.getUtil().getCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
+                            return !UtilsHandler.getUtil().checkCompare(values[0], loc.getBlockZ(), Integer.parseInt(values[1]));
                     }
                     break;
                 case 3:
@@ -104,17 +104,17 @@ public class LocationUtils {
                     // R: "1000 0 0"
                     switch (type) {
                         case "X":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "Y":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "Z":
-                            return UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return UtilsHandler.getUtil().inRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "!X":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockX(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "!Y":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockY(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "!Z":
-                            return !UtilsHandler.getUtil().getRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
+                            return !UtilsHandler.getUtil().inRange(loc.getBlockZ(), Integer.parseInt(values[0]), Integer.parseInt(values[2]), true);
                         case "R":
                             return getRound(loc, Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                         case "!R":

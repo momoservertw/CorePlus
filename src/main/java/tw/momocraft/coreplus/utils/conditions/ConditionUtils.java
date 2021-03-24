@@ -2,7 +2,6 @@ package tw.momocraft.coreplus.utils.conditions;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -33,124 +32,33 @@ public class ConditionUtils implements ConditionInterface {
     }
 
     @Override
-    public boolean checkCondition(List<String> input) {
+    public boolean checkCondition(String pluginName, List<String> input) {
         if (input == null || input.isEmpty())
             return true;
         for (String condition : input) {
-            if (!checkCondition(condition))
+            if (!checkCondition(pluginName, condition))
                 return false;
         }
         return true;
     }
 
     @Override
-    public boolean checkCondition(String input) {
+    public boolean checkCondition(String pluginName, String input) {
         if (input == null || input.isEmpty())
             return true;
         String[] conditionArray = input.split("<or>");
-        String[] arr;
         back:
         for (String conditions : conditionArray) {
             if (conditions.contains("<and>")) {
                 for (String condition : conditions.split("<and>")) {
-                    if (condition.contains(">")) {
-                        arr = condition.split(">");
-                        if (arr[0].endsWith("!")) {
-                            if (!UtilsHandler.getUtil().getCompareAndEquals(">", arr[0].substring(0, arr.length - 1), arr[1]))
-                                continue back;
-                        } else {
-                            if (UtilsHandler.getUtil().getCompareAndEquals(">", arr[0], arr[1]))
-                                continue back;
-                        }
-                    } else if (condition.contains("<")) {
-                        arr = condition.split("<");
-                        if (arr[0].endsWith("!")) {
-                            if (!UtilsHandler.getUtil().getCompareAndEquals("<", arr[0].substring(0, arr.length - 1), arr[1]))
-                                continue back;
-                        } else {
-                            if (UtilsHandler.getUtil().getCompareAndEquals("<", arr[0], arr[1]))
-                                continue back;
-                        }
-                    } else if (condition.contains(">=")) {
-                        arr = condition.split(">=");
-                        if (arr[0].endsWith("!")) {
-                            if (!UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0].substring(0, arr.length - 1), arr[1]))
-                                continue back;
-                        } else {
-                            if (UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0], arr[1]))
-                                continue back;
-                        }
-                    } else if (condition.contains("<=")) {
-                        arr = condition.split("<=");
-                        if (arr[0].endsWith("!")) {
-                            if (!UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0].substring(0, arr.length - 1), arr[1]))
-                                continue back;
-                        } else {
-                            if (UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0], arr[1]))
-                                continue back;
-                        }
-                    } else if (condition.contains("=")) {
-                        arr = condition.split("=");
-                        if (arr[0].endsWith("!")) {
-                            if (!UtilsHandler.getUtil().getCompareAndEquals("=", arr[0].substring(0, arr.length - 1), arr[1]))
-                                continue back;
-                        } else {
-                            if (UtilsHandler.getUtil().getCompareAndEquals("=", arr[0], arr[1]))
-                                continue back;
-                        }
-                    } else {
+                    if (!UtilsHandler.getUtil().checkValues(pluginName, condition))
                         continue back;
-                    }
                 }
-                return true;
             } else {
-                if (conditions.contains(">")) {
-                    arr = conditions.split(">");
-                    if (arr[0].endsWith("!")) {
-                        if (!UtilsHandler.getUtil().getCompareAndEquals(">", arr[0].substring(0, arr.length - 1), arr[1]))
-                            return true;
-                    } else {
-                        if (UtilsHandler.getUtil().getCompareAndEquals(">", arr[0], arr[1]))
-                            return true;
-                    }
-                } else if (conditions.contains("<")) {
-                    arr = conditions.split("<");
-                    if (arr[0].endsWith("!")) {
-                        if (!UtilsHandler.getUtil().getCompareAndEquals("<", arr[0].substring(0, arr.length - 1), arr[1]))
-                            return true;
-                    } else {
-                        if (UtilsHandler.getUtil().getCompareAndEquals("<", arr[0], arr[1]))
-                            return true;
-                    }
-                } else if (conditions.contains(">=")) {
-                    arr = conditions.split(">=");
-                    if (arr[0].endsWith("!")) {
-                        if (!UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0].substring(0, arr.length - 1), arr[1]))
-                            return true;
-                    } else {
-                        if (UtilsHandler.getUtil().getCompareAndEquals(">=", arr[0], arr[1]))
-                            return true;
-                    }
-                } else if (conditions.contains("<=")) {
-                    arr = conditions.split("<=");
-                    if (arr[0].endsWith("!")) {
-                        if (!UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0].substring(0, arr.length - 1), arr[1]))
-                            return true;
-                    } else {
-                        if (UtilsHandler.getUtil().getCompareAndEquals("<=", arr[0], arr[1]))
-                            return true;
-                    }
-                } else if (conditions.contains("=")) {
-                    arr = conditions.split("=");
-                    if (arr[0].endsWith("!")) {
-                        if (!UtilsHandler.getUtil().getCompareAndEquals("=", arr[0].substring(0, arr.length - 1), arr[1]))
-                            return true;
-                    } else {
-                        if (UtilsHandler.getUtil().getCompareAndEquals("=", arr[0], arr[1]))
-                            return true;
-                    }
-                }
+                if (!UtilsHandler.getUtil().checkValues(pluginName, conditions))
+                    continue;
             }
+            return true;
         }
         return false;
     }

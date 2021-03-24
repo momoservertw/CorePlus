@@ -29,7 +29,7 @@ public class ConfigHandler {
     private static ConfigPath configPath;
 
     public static void generateData(boolean reload) {
-        UtilsHandler.setUpFirst();
+        UtilsHandler.setUpFirst(reload);
         genConfigFile("config.yml");
         genConfigFile("data.yml");
         genConfigFile("groups.yml");
@@ -42,9 +42,9 @@ public class ConfigHandler {
         genConfigFile("sounds.yml");
         genConfigFile("action_bars.yml");
         genConfigFile("title_messages.yml");
-        UtilsHandler.setUpMid();
+        UtilsHandler.setUpMid(reload);
         setConfigPath(new ConfigPath());
-        UtilsHandler.setUpLast();
+        UtilsHandler.setUpLast(reload);
         if (!reload) {
             UtilsHandler.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),

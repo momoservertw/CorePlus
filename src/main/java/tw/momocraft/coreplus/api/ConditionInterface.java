@@ -18,10 +18,11 @@ public interface ConditionInterface {
      * Value1...Value2<and>Value1...Value2
      * Value1...Value2<and>Value1...Value2<or>Value1...Value2
      *
+     * @param pluginName the sending plugin name.
      * @param input the input condition string list.
      * @return if the condition is matched.
      */
-    boolean checkCondition(List<String> input);
+    boolean checkCondition(String pluginName, List<String> input);
 
     /**
      * Checking the condition is matched.
@@ -32,11 +33,11 @@ public interface ConditionInterface {
      * Value1...Value2<and>Value1...Value2
      * Value1...Value2<and>Value1...Value2<or>Value1...Value2
      *
+     * @param pluginName the sending plugin name.
      * @param input the input condition string.
      * @return if the condition is matched.
      */
-    boolean checkCondition(String input);
-
+    boolean checkCondition(String pluginName, String input);
 
     void executeAction(String input);
 

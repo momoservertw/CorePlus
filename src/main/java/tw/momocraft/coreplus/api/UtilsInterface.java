@@ -25,7 +25,7 @@ public interface UtilsInterface {
     /**
      * Checking if the string in the list matches some words.
      *
-     * @param list the target list.
+     * @param list   the target list.
      * @param string the checking string.
      * @return if the string in the list matches some words.
      */
@@ -34,20 +34,11 @@ public interface UtilsInterface {
     /**
      * Checking if the string in the list contains some words.
      *
-     * @param list the target list.
+     * @param list   the target list.
      * @param string the checking string.
      * @return if the string in the list contains some words.
      */
     boolean containsString(List<String> list, String string);
-
-    /**
-     * Checking if the string in the list contains some words by ignore case.
-     *
-     * @param list the target list.
-     * @param string the checking string.
-     * @return if the string in the list contains some words by ignore case.
-     */
-    boolean containsStringIgnoreCase(List<String> list, String string);
 
     /**
      * Checking if a string list contains another string with ignore case.
@@ -73,7 +64,7 @@ public interface UtilsInterface {
      * @param s the checking string.
      * @return if the string is a number.
      */
-    boolean isInt(String s);
+    boolean isInteger(String s);
 
     /**
      * Getting a random number from the low number to higher number.
@@ -142,6 +133,25 @@ public interface UtilsInterface {
     boolean containIgnoreValue(String value, List<String> list);
 
     /**
+     * the input is match the condition.
+     *
+     * @param pluginName the sending plugin name.
+     * @param input      the checking string.
+     * @return if the input is match the condition.
+     */
+    boolean checkValues(String pluginName, String input);
+
+    /**
+     * the input is match the condition.
+     *
+     * @param pluginName the sending plugin name.
+     * @param value1      the first checking value.
+     * @param value2      the second checking value with operator.
+     * @return if the input is match the condition.
+     */
+    boolean checkValues(String pluginName, String value1, String value2);
+
+    /**
      * Comparing two numbers.
      *
      * @param operator the comparison operator to compare two numbers.
@@ -149,7 +159,18 @@ public interface UtilsInterface {
      * @param number2  second number.
      * @return if the comparing is succeed or not.
      */
-    boolean getCompare(String operator, double number1, double number2);
+    boolean checkCompare(String operator, double number1, double number2);
+
+    /**
+     * Comparing two numbers or strings.
+     *
+     * @param pluginName the sending plugin name.
+     * @param operator the comparison operator to compare two numbers.
+     * @param value1   the first value.
+     * @param value2   the second value.
+     * @return if the comparing is succeed or not.
+     */
+    boolean checkCompareAndEquals(String pluginName, String operator, String value1, String value2);
 
     /**
      * Checking a number is inside the range.
@@ -160,7 +181,7 @@ public interface UtilsInterface {
      * @param equal  the return value if the number is equal the range.
      * @return if the check number is inside the range.
      */
-    boolean getRange(double number, double r1, double r2, boolean equal);
+    boolean inRange(double number, double r1, double r2, boolean equal);
 
     /**
      * Checking a number is inside the range.
@@ -171,7 +192,7 @@ public interface UtilsInterface {
      * @param equal  the return value if the number is equal the range.
      * @return if the check number is inside the range.
      */
-    boolean getRange(int number, int r1, int r2, boolean equal);
+    boolean inRange(int number, int r1, int r2, boolean equal);
 
     /**
      * Checking a number is inside the range.
@@ -181,7 +202,7 @@ public interface UtilsInterface {
      * @param equal  the return value if the number is equal the range.
      * @return if the check number is inside the range.
      */
-    boolean getRange(int number, int r, boolean equal);
+    boolean inRange(int number, int r, boolean equal);
 
     /**
      * Checking a number is inside the range.
@@ -191,7 +212,25 @@ public interface UtilsInterface {
      * @param equal  the return value if the number is equal the range.
      * @return if the check number is inside the range.
      */
-    boolean getRange(double number, double r, boolean equal);
+    boolean inRange(double number, double r, boolean equal);
+
+    /**
+     * Checking a number is inside the range.
+     *
+     * @param number the checking number
+     * @param r      the side of range.
+     * @return if the check number is inside the range.
+     */
+    boolean inRange(double number, double r);
+
+    /**
+     * Checking a number is inside the range.
+     *
+     * @param number the checking number
+     * @param r      the side of range.
+     * @return if the check number is inside the range.
+     */
+    boolean inRange(int number, int r);
 
     /**
      * @param loc  location.
@@ -223,14 +262,58 @@ public interface UtilsInterface {
      */
     boolean inTheRangeXZ(Location loc, Location loc2, int distanceSquared);
 
+    /**
+     * Getting the string list from object list.
+     *
+     * @param input the input list.
+     * @param type  the type of this object list.
+     * @return the string list from object list.
+     */
+    List<String> getStringListFromObjects(List<Object> input, String type);
 
-    List<String> getStringListFromObjects(List<Object> input, String returnType);
+    /**
+     * Getting the string list from object list.
+     *
+     * @param input the input list.
+     * @param type  the type of this object list.
+     * @return the string list from object list.
+     */
+    String getStringFromObjects(List<Object> input, String type);
 
-    String getStringFromObjects(List<Object> input, String returnType);
+    /**
+     * @param pluginName the sending plugin name.
+     * @param loc        the checking location.
+     * @param targetType the searching target type.
+     * @param returnType the return name or type.
+     * @param group      the group from the group.
+     * @param range      the searching range.
+     * @return the
+     */
+    String getStringFromNearbyType(String pluginName, Location loc, String targetType, String returnType, String group, int range);
 
-    String getStringFromNearbyType(String pluginName, Location loc, String returnType, String type, String group, int range);
+    /**
+     * Getting the string list of targets.
+     *
+     * @param loc        the checking location.
+     * @param targetType the searching target type.
+     * @param returnType the return name or type.
+     * @param input      the searching target type list.
+     * @param range      the searching range.
+     * @return the string list of targets.
+     */
+    String getNearbyStringFromTypes(Location loc, String targetType, String returnType, List<String> input, int range);
 
-    String getNearbyStringFromTypes(Location loc, String returnType, String type, List<String> checkList, int range);
+    /**
+     * Getting the string list of targets.
+     *
+     * @param loc        the checking location.
+     * @param targetType the searching target type.
+     * @param returnType the return name or type.
+     * @param input      the searching target type list.
+     * @param range      the searching range.
+     * @return the string list of targets.
+     */
+    List<String> getNearbyStringListFromTypes(Location loc, String targetType, String returnType, List<String> input, int range);
 
     /**
      * @param loc          the checking location.
