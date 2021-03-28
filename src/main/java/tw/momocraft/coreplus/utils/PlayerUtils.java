@@ -309,10 +309,14 @@ public class PlayerUtils implements PlayerInterface {
     public float getExp(String pluginName, UUID uuid, int amount) {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             if (getOnlineStatus(uuid).equals("offline")) {
-                float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
-                        ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
-                        "player_uuid", uuid.toString(), "total_exp"));
-                return exp;
+                try {
+                    return Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                            ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience"),
+                            "player_uuid", uuid.toString(), "total_exp"));
+                } catch (Exception ex) {
+                    UtilsHandler.getLang().sendErrorMsg(pluginName,
+                            "Can not get the Experience from");
+                }
             }
             UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Target is in other server: " + uuid);
             return 0;
@@ -335,7 +339,7 @@ public class PlayerUtils implements PlayerInterface {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             if (getOnlineStatus(uuid).equals("offline")) {
                 UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
-                        ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                        ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
                         "player_uuid", uuid.toString(), "total_exp", String.valueOf(amount));
                 return;
             }
@@ -354,11 +358,11 @@ public class PlayerUtils implements PlayerInterface {
     public void giveExp(String pluginName, UUID uuid, int amount) {
         if (getOnlineStatus(uuid).equals("offline")) {
             float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
-                    ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                    ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
                     "player_uuid", uuid.toString(), "total_exp"));
             exp += amount;
             UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
-                    ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridgeExp(),
+                    ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
                     "player_uuid", uuid.toString(), "total_exp", String.valueOf(exp));
             return;
         }

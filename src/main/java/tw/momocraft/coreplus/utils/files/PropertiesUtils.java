@@ -16,7 +16,8 @@ public class PropertiesUtils {
     private final Map<String, Properties> propertiesMap = new HashMap<>();
 
     public PropertiesUtils() {
-        loadGroup(ConfigHandler.getPluginName(), "server");
+        loadCustom();
+        loadGroup("server");
 
         sendLoadedMsg();
     }
@@ -26,7 +27,7 @@ public class PropertiesUtils {
                 "&fLoaded Properties files: " + propertiesMap.keySet().toString());
     }
 
-    private boolean loadGroup(String pluginName, String group) {
+    private boolean loadGroup(String group) {
         String filePath;
         switch (group) {
             case "server":
@@ -38,9 +39,17 @@ public class PropertiesUtils {
                     break;
                      */
             default:
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                        "Cannot load the properties file: " + group);
                 return false;
         }
-        return load(pluginName, group, filePath);
+        return load(ConfigHandler.getPluginName(), group, filePath);
+    }
+
+    private void loadCustom() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        for (String groupName : prop.keySet())
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
     }
 
     public boolean load(String pluginName, String group, String filePath) {
@@ -52,7 +61,8 @@ public class PropertiesUtils {
             inputStream.close();
             return true;
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Cannot load the properties file: " + group);
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Cannot load the properties file: " + group);
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             return false;
         }
@@ -60,11 +70,12 @@ public class PropertiesUtils {
 
     public String getValue(String pluginName, String group, String input) {
         try {
-            if (propertiesMap.get(group) == null) {
-                loadGroup(pluginName, group);
-            }
             return propertiesMap.get(group).getProperty(input);
         } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while getting the value of \"" + input + "\".");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the Properties group of \"" + group + "\".");
             return null;
         }
     }

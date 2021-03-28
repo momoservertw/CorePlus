@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MySQLUtils implements MySQLInterface {
-    final String hostname = ConfigHandler.getConfig("data.yml").getString("MySQL.hostname");
-    final int port = ConfigHandler.getConfig("data.yml").getInt("MySQL.port");
-    final String username = ConfigHandler.getConfig("data.yml").getString("MySQL.username");
-    final String password = ConfigHandler.getConfig("data.yml").getString("MySQL.password");
 
     static Connection PlayerdataPlus;
     static Connection HotkeyPlus;
@@ -32,32 +28,43 @@ public class MySQLUtils implements MySQLInterface {
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             return false;
         }
-        String database;
+        MySQLMap mySQLMap;
         try {
             switch (databaseType) {
                 case "PlayerdataPlus":
-                    database = ConfigHandler.getConfigPath().getMySQLPlayerdataPlus();
-                    PlayerdataPlus = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                    mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("PlayerdataPlus");
+                    PlayerdataPlus = DriverManager.getConnection("jdbc:mysql://" +
+                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                            mySQLMap.getUsername(), mySQLMap.getPassword());
                     UtilsHandler.getLang().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
                     break;
                 case "HotkeyPlus":
-                    database = ConfigHandler.getConfigPath().getMySQLHotkeyPlus();
-                    HotkeyPlus = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                    mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("PlayerdataPlus");
+                    HotkeyPlus = DriverManager.getConnection("jdbc:mysql://" +
+                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                            mySQLMap.getUsername(), mySQLMap.getPassword());
                     UtilsHandler.getLang().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
                     break;
                 case "ServerPlus":
-                    database = ConfigHandler.getConfigPath().getMySQLServerPlus();
-                    ServerPlus = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                    mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("PlayerdataPlus");
+                    ServerPlus = DriverManager.getConnection("jdbc:mysql://" +
+                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                            mySQLMap.getUsername(), mySQLMap.getPassword());
                     UtilsHandler.getLang().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
                     break;
                 case "MySQLPlayerDataBridge":
-                    database = ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridge();
-                    MySQLPlayerDataBridge = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                    mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("PlayerdataPlus");
+                    MySQLPlayerDataBridge = DriverManager.getConnection("jdbc:mysql://" +
+                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                            mySQLMap.getUsername(), mySQLMap.getPassword());
                     UtilsHandler.getLang().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
+
                     break;
                 case "MyCommand":
-                    database = ConfigHandler.getConfigPath().getMySQLMySQLPlayerDataBridge();
-                    MyCommand = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                    mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("PlayerdataPlus");
+                    MyCommand = DriverManager.getConnection("jdbc:mysql://" +
+                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                            mySQLMap.getUsername(), mySQLMap.getPassword());
                     UtilsHandler.getLang().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
                     break;
                 default:

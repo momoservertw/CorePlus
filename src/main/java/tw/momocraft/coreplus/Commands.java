@@ -207,7 +207,7 @@ public class Commands implements CommandExecutor {
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
                     // /crp cmdcustom <command>
                     if (length == 2) {
-                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginName(), null, args[1], true);
+                        UtilsHandler.getCustomCommands().dispatchGroupCmd(ConfigHandler.getPluginName(), null, args[1], true);
                         return true;
                         // /crp cmdcustom [player] <command>
                     } else if (length == 3) {
@@ -219,7 +219,7 @@ public class Commands implements CommandExecutor {
                                     "Message.targetNotFound", sender, placeHolders);
                             return true;
                         }
-                        UtilsHandler.getCustomCommands().dispatchCustomCmd(ConfigHandler.getPluginName(), player, args[2], true);
+                        UtilsHandler.getCustomCommands().dispatchGroupCmd(ConfigHandler.getPluginName(), player, args[2], true);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -292,7 +292,7 @@ public class Commands implements CommandExecutor {
                                     command, true);
                             return true;
                         }
-                        UtilsHandler.getCustomCommands().addWaiting(args[1], waitingTime, command);
+                        UtilsHandler.getCustomCommands().addOnlineCommand(args[1], waitingTime, command);
                         return true;
                     }
                     UtilsHandler.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

@@ -15,6 +15,7 @@ public class YamlUtils {
     private final Map<String, YamlConfiguration> yamlMap = new HashMap<>();
 
     public YamlUtils() {
+        loadCustom();
         loadGroup("discord_messages");
 
         sendLoadedMsg();
@@ -25,13 +26,10 @@ public class YamlUtils {
                 "&fLoaded YAML files: " + yamlMap.keySet().toString());
     }
 
-    public boolean load(String group, String filePath) {
-        try {
-            yamlMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+    private void loadCustom() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        for (String groupName : prop.keySet())
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
     }
 
     private boolean loadGroup(String group) {
@@ -41,32 +39,45 @@ public class YamlUtils {
                 filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV//messages.yml";
                 break;
             default:
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                        "Cannot load the YAML file: " + group);
                 return false;
         }
-        return load(group, filePath);
+        return load(ConfigHandler.getPluginName(), group, filePath);
+    }
+
+    public boolean load(String pluginName, String group, String filePath) {
+        try {
+            yamlMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
+            return true;
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Cannot load the YAML file: " + filePath);
+            return false;
+        }
     }
 
 
-    public String getString(String group, String input) {
-        YamlConfiguration config = yamlMap.get(group);
-        if (config == null) {
-            loadGroup(group);
-        }
+    public String getString(String pluginName, String group, String input) {
         try {
-            return config.getString(input);
+            return yamlMap.get(group).getString(input);
         } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while getting the value of \"" + input + "\".");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the YAML group of \"" + group + "\".");
             return null;
         }
     }
 
-    public List<String> getStringList(String group, String input) {
-        YamlConfiguration config = yamlMap.get(group);
-        if (config == null) {
-            loadGroup(group);
-        }
+    public List<String> getStringList(String pluginName, String group, String input) {
         try {
-            return config.getStringList(input);
+            return yamlMap.get(group).getStringList(input);
         } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while getting the value of \"" + input + "\".");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the YAML group of \"" + group + "\".");
             return null;
         }
     }

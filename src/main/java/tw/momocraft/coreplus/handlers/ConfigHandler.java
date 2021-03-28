@@ -45,11 +45,13 @@ public class ConfigHandler {
         UtilsHandler.setUpMid(reload);
         setConfigPath(new ConfigPath());
         UtilsHandler.setUpLast(reload);
-        if (!reload) {
+        /*
+       if (!reload) {
             UtilsHandler.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),
                     CorePlus.getInstance().getDescription().getVersion(), true);
         }
+        */
     }
 
     public static FileConfiguration getConfig(String fileName) {

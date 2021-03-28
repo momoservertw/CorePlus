@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -18,7 +17,7 @@ public class CommandOnlineMPDB implements Listener {
     private void onSyncCompleteEvent(SyncCompleteEvent e) {
         Player player = e.getPlayer();
         String playerName = player.getName();
-        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCustomCommands().getWaitingTable();
+        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCustomCommands().getOnlineCmdTable();
         if (!waitingTable.rowKeySet().contains(playerName)) {
             return;
         }

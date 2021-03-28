@@ -17,7 +17,7 @@ public class ConfigBuilder {
     public static void startGroups(CommandSender sender) {
         Map<String, List<ConfigBuilderMap>> map = ConfigHandler.getConfigPath().getConfigBuilderGroupProp();
         for (String type : map.keySet()) {
-            UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
+            UtilsHandler.getCustomCommands().dispatchLogGroupCmd(ConfigHandler.getPluginName(),
                     "GroupConfig, " + type + ":");
             for (ConfigBuilderMap configBuilderMap : map.get(type)) {
                 switch (type.toLowerCase()) {
@@ -323,12 +323,12 @@ public class ConfigBuilder {
     private static void createLog(String logGroup, ConfigBuilderMap configBuilderMap, Set<String> valueSet) {
         String title = configBuilderMap.getTitle().replace("%title%", configBuilderMap.getGroup());
         if (valueSet.isEmpty()) {
-            UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
+            UtilsHandler.getCustomCommands().dispatchLogGroupCmd(ConfigHandler.getPluginName(),
                     logGroup + ", " +
                             UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title) + " []");
             return;
         }
-        UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
+        UtilsHandler.getCustomCommands().dispatchLogGroupCmd(ConfigHandler.getPluginName(),
                 logGroup + ", " +
                         UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(), null, title));
         StringBuilder output = new StringBuilder();
@@ -340,7 +340,7 @@ public class ConfigBuilder {
         if (configBuilderMap.isRowLine()) {
             for (String value : sortedList) {
                 output = new StringBuilder(line.replace("%value%", value));
-                UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
+                UtilsHandler.getCustomCommands().dispatchLogGroupCmd(ConfigHandler.getPluginName(),
                         logGroup + ", " +
                                 UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(),
                                         null, output.toString()));
@@ -350,7 +350,7 @@ public class ConfigBuilder {
                 output.append(split.replace("%value%", value)).append(split);
             }
             output.substring(0, output.length() - split.length());
-            UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPluginName(),
+            UtilsHandler.getCustomCommands().dispatchLogGroupCmd(ConfigHandler.getPluginName(),
                     logGroup + ", " +
                             UtilsHandler.getLang().transByGeneral(ConfigHandler.getPluginName(),
                                     null, output.toString()));

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.language;
+package tw.momocraft.coreplus.utils.files;
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;

@@ -9,7 +9,7 @@ import tw.momocraft.coreplus.utils.entities.EntityUtils;
 import tw.momocraft.coreplus.utils.files.*;
 import tw.momocraft.coreplus.utils.language.DiscordUtils;
 import tw.momocraft.coreplus.utils.language.LanguageUtils;
-import tw.momocraft.coreplus.utils.language.Logger;
+import tw.momocraft.coreplus.utils.files.Logger;
 import tw.momocraft.coreplus.utils.language.VanillaUtils;
 
 public class UtilsHandler {

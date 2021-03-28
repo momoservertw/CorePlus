@@ -15,6 +15,7 @@ import tw.momocraft.coreplus.utils.conditions.BlocksMap;
 import tw.momocraft.coreplus.utils.conditions.LocationMap;
 import tw.momocraft.coreplus.utils.customcommands.*;
 import tw.momocraft.coreplus.utils.files.ConfigBuilderMap;
+import tw.momocraft.coreplus.utils.files.MySQLMap;
 
 import java.io.File;
 import java.util.*;
@@ -29,16 +30,9 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private boolean pvp;
 
-    private boolean mySQL;
-    private String mySQLPlayerdataPlus;
-    private String mySQLHotkeyPlus;
-    private String mySQLServerPlus;
-    private String mySQLMySQLPlayerDataBridge;
-    private String mySQLMySQLPlayerDataBridgeExp;
-
-    private boolean VanillaTrans;
-    private String VanillaTransLocal;
-    private boolean VanillaTransForce;
+    private boolean vanillaTrans;
+    private String vanillaTransLocal;
+    private boolean vanillaTransForce;
     private String menuItemJoin;
     private String menuType;
     private String menuName;
@@ -53,6 +47,18 @@ public class ConfigPath implements ConfigInterface {
     private final Map<String, TitleMessageMap> titleProp = new HashMap<>();
     private final Map<String, ParticleMap> particleProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
+
+    //  ============================================== //
+    //         ConfigBuilder Variables                 //
+    //  ============================================== //
+    private boolean dataMySQL;
+    private boolean dataYMAL;
+    private boolean dataJson;
+    private boolean dataProperties;
+    private final Map<String, MySQLMap> mySQLProp = new HashMap<>();
+    private final Map<String, String> YMALProp = new HashMap<>();
+    private final Map<String, String> jsonProp = new HashMap<>();
+    private final Map<String, String> propProp = new HashMap<>();
 
     //  ============================================== //
     //         ConfigBuilder Variables                 //
@@ -106,9 +112,9 @@ public class ConfigPath implements ConfigInterface {
     private void setGeneral() {
         pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
 
-        VanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
-        VanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
-        VanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translation.Force.Local");
+        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
+        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
+        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translation.Force.Local");
         menuItemJoin = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
@@ -119,15 +125,99 @@ public class ConfigPath implements ConfigInterface {
     //         Data.yml Setter                         //
     //  ============================================== //
     private void setData() {
-        mySQL = ConfigHandler.getConfig("data.yml").getBoolean("MySQL.Enable");
-        if (!mySQL) {
-            return;
+        ConfigurationSection dataConfig;
+        ConfigurationSection subDataConfig;
+        Map<String, String> map;
+        dataMySQL = ConfigHandler.getConfig("data.yml").getBoolean("MySQL.Enable");
+        if (dataMySQL) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("MySQL");
+            if (dataConfig != null) {
+                MySQLMap mySQLMap;
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean(
+                            "MySQL." + groupName + ".Enable", true))
+                        continue;
+                    mySQLMap = new MySQLMap();
+                    mySQLMap.setGroupName(groupName);
+                    mySQLMap.setHostName(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".hostname"));
+                    mySQLMap.setPort(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".port"));
+                    mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".database"));
+                    mySQLMap.setUsername(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".username"));
+                    mySQLMap.setPassword(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".password"));
+                    subDataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
+                            "MySQL." + groupName + ".Tables");
+                    if (subDataConfig != null) {
+                        map = new HashMap<>();
+                        for (String subGroupName : subDataConfig.getKeys(false)) {
+                            map.put(subGroupName, ConfigHandler.getConfig("data.yml").getString(
+                                    "MySQL." + groupName + ".Tables." + subGroupName));
+                        }
+                        mySQLMap.setTables(map);
+                    }
+                    subDataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
+                            "MySQL." + groupName + ".Groups");
+                    if (subDataConfig != null) {
+                        for (String subGroupName : subDataConfig.getKeys(false)) {
+                            if (!ConfigHandler.getConfig("data.yml").getBoolean(
+                                    "MySQL." + groupName + "." + subGroupName + ".Enable", true))
+                                continue;
+                            mySQLMap.setGroupName(subGroupName);
+                            mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
+                                    "MySQL." + groupName + ".Groups." + subGroupName + ".database"));
+                            mySQLProp.put(subGroupName, mySQLMap);
+                        }
+                    } else {
+                        mySQLProp.put(groupName, mySQLMap);
+                    }
+                }
+            }
         }
-        mySQLPlayerdataPlus = ConfigHandler.getConfig("data.yml").getString("MySQL.database.PlayerdataPlus");
-        mySQLHotkeyPlus = ConfigHandler.getConfig("data.yml").getString("MySQL.database.HotkeyPlus");
-        mySQLServerPlus = ConfigHandler.getConfig("data.yml").getString("MySQL.database.ServerPlus");
-        mySQLMySQLPlayerDataBridge = ConfigHandler.getConfig("data.yml").getString("MySQL.database.MySQLPlayerDataBridge.Value");
-        mySQLMySQLPlayerDataBridgeExp = ConfigHandler.getConfig("data.yml").getString("MySQL.database.MySQLPlayerDataBridge.ExpTable");
+        dataYMAL = ConfigHandler.getConfig("data.yml").getBoolean("Yaml.Enable");
+        if (dataYMAL) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Yaml");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml." + groupName + ".Enable", true))
+                        continue;
+                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml." + groupName + ".Path"));
+                }
+            }
+        }
+        dataJson = ConfigHandler.getConfig("data.yml").getBoolean("Json.Enable");
+        if (dataJson) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Json");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Json." + groupName + ".Enable", true))
+                        continue;
+                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Json." + groupName + ".Path"));
+                }
+            }
+        }
+        dataProperties = ConfigHandler.getConfig("data.yml").getBoolean("Properties.Enable");
+        if (dataProperties) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Properties");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties." + groupName + ".Enable", true))
+                        continue;
+                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties." + groupName + ".Path"));
+                }
+            }
+        }
     }
 
     //  ============================================== //
@@ -468,41 +558,16 @@ public class ConfigPath implements ConfigInterface {
         return pvp;
     }
 
-    @Override
-    public boolean isMySQL() {
-        return mySQL;
-    }
-
-    public String getMySQLPlayerdataPlus() {
-        return mySQLPlayerdataPlus;
-    }
-
-    public String getMySQLHotkeyPlus() {
-        return mySQLHotkeyPlus;
-    }
-
-    public String getMySQLServerPlus() {
-        return mySQLServerPlus;
-    }
-
-    public String getMySQLMySQLPlayerDataBridge() {
-        return mySQLMySQLPlayerDataBridge;
-    }
-
-    public String getMySQLMySQLPlayerDataBridgeExp() {
-        return mySQLMySQLPlayerDataBridgeExp;
-    }
-
     public boolean isVanillaTrans() {
-        return VanillaTrans;
+        return vanillaTrans;
     }
 
     public String getVanillaTransLocal() {
-        return VanillaTransLocal;
+        return vanillaTransLocal;
     }
 
     public boolean isVanillaTransForce() {
-        return VanillaTransForce;
+        return vanillaTransForce;
     }
 
     public String getMenuItemJoin() {
@@ -555,6 +620,43 @@ public class ConfigPath implements ConfigInterface {
     @Override
     public Map<String, Map<String, List<String>>> getGroupProp() {
         return groupProp;
+    }
+
+
+    //  ============================================== //
+    //         Data Getter                             //
+    //  ============================================== //
+    @Override
+    public boolean isDataMySQL() {
+        return dataMySQL;
+    }
+
+    public boolean isDataYMAL() {
+        return dataYMAL;
+    }
+
+    public boolean isDataJson() {
+        return dataJson;
+    }
+
+    public boolean isDataProperties() {
+        return dataProperties;
+    }
+
+    public Map<String, MySQLMap> getMySQLProp() {
+        return mySQLProp;
+    }
+
+    public Map<String, String> getYMALProp() {
+        return YMALProp;
+    }
+
+    public Map<String, String> getJsonProp() {
+        return jsonProp;
+    }
+
+    public Map<String, String> getPropProp() {
+        return propProp;
     }
 
     //  ============================================== //

@@ -5,6 +5,7 @@ import com.google.common.collect.Table;
 import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -25,21 +26,21 @@ import java.util.List;
 public class CustomCommands implements CommandInterface {
 
     // Table<PlayerName, Pair<sendTime, expiration>, Command>
-    private final Table<String, Pair<Long, Integer>, String> waitingTable = HashBasedTable.create();
+    private final Table<String, Pair<Long, Integer>, String> onlineCmdTable = HashBasedTable.create();
 
-    public Table<String, Pair<Long, Integer>, String> getWaitingTable() {
-        return waitingTable;
+    public Table<String, Pair<Long, Integer>, String> getOnlineCmdTable() {
+        return onlineCmdTable;
     }
 
     @Override
-    public void addWaiting(String playerName, int expiration, String command) {
+    public void addOnlineCommand(String playerName, int expiration, String command) {
         Pair<Long, Integer> waitingPair = new Pair<>(System.currentTimeMillis(), expiration * 1000);
-        waitingTable.put(playerName, waitingPair, command);
+        onlineCmdTable.put(playerName, waitingPair, command);
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-                    waitingTable.remove(playerName, waitingPair);
+                    onlineCmdTable.remove(playerName, waitingPair);
                     UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                             "Online command - Player: " + playerName + ", Expiration: " + expiration + ", Command: " + command);
                 } catch (Exception ignored) {
@@ -49,7 +50,125 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void executeCmdList(String pluginName, List<Player> players, List<String> input, boolean placeholder, String... langHolder) {
+    public void sendCmd(CommandSender sender, Object target, List<String> input) {
+        if (input == null || input.isEmpty())
+            return;
+        // Sender: %player_Placeholder%
+        TranslateMap translateMap = UtilsHandler.getLang().getTranslateMap(null, sender, "player");
+        // Target: %target_Placeholder%, %object_Placeholder%
+        if (target != null) {
+            translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target");
+            if (target instanceof Player)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "player");
+            if (target instanceof Entity)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "entity");
+            if (target instanceof EntityType)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "entitytype");
+            if (target instanceof Block)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "block");
+            if (target instanceof ItemStack)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "item");
+            if (target instanceof Material)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "material");
+            if (target instanceof Location)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "location");
+        }
+        executeCmd(ConfigHandler.getPluginName(),
+                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
+                        translateMap, input), false);
+    }
+
+    @Override
+    public void sendCmd(CommandSender sender, Object target, Object trigger, List<String> input) {
+        if (input == null || input.isEmpty())
+            return;
+        // Sender: %player_Placeholder%
+        TranslateMap translateMap = UtilsHandler.getLang().getTranslateMap(null, sender, "player");
+        // Target: %target_Placeholder%, %object_Placeholder%
+        if (target != null) {
+            translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target");
+            if (target instanceof Player)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "player");
+            if (target instanceof Entity)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "entity");
+            if (target instanceof EntityType)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "entitytype");
+            if (target instanceof Block)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "block");
+            if (target instanceof ItemStack)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "item");
+            if (target instanceof Material)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "material");
+            if (target instanceof Location)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "location");
+        }
+        // Trigger: %trigger_Placeholder%, %object_Placeholder%
+        if (target != null) {
+            translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "trigger");
+            if (target instanceof Player)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "player");
+            if (target instanceof Entity)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "entity");
+            if (target instanceof EntityType)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "entitytype");
+            if (target instanceof Block)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "block");
+            if (target instanceof ItemStack)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "item");
+            if (target instanceof Material)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "material");
+            if (target instanceof Location)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "location");
+        }
+        CorePlusAPI.getCmd().executeCmd(ConfigHandler.getPluginName(),
+                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
+                        translateMap, input), false);
+    }
+
+    @Override
+    public void sendCmd(CommandSender sender, List<Object> targets, List<String> input) {
+        if (input == null || input.isEmpty())
+            return;
+        // Sender
+        TranslateMap translateMap = UtilsHandler.getLang().getTranslateMap(null, sender, "player");
+        // Targets
+        Object target;
+        for (int i = 1; i < targets.size(); i++) {
+            target = targets.get(i);
+            if (target != null)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target_" + i);
+        }
+        executeCmd(ConfigHandler.getPluginName(),
+                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
+                        translateMap, input), false);
+    }
+
+    @Override
+    public void sendCmd(CommandSender sender, List<Object> targets, List<Object> triggers, List<String> input) {
+        if (input == null || input.isEmpty())
+            return;
+        // Sender
+        TranslateMap translateMap = UtilsHandler.getLang().getTranslateMap(null, sender, "player");
+        // Targets
+        Object target;
+        for (int i = 1; i < targets.size(); i++) {
+            target = targets.get(i);
+            if (target != null)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target_" + i);
+        }
+        // Targets
+        for (int i = 1; i < targets.size(); i++) {
+            target = triggers.get(i);
+            if (target != null)
+                translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "trigger_" + i);
+        }
+        executeCmd(ConfigHandler.getPluginName(),
+                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
+                        translateMap, input), false);
+    }
+
+    @Override
+    public void executeCmd(String pluginName, List<Player> players, List<String> input, boolean placeholder, String... langHolder) {
         if (input == null)
             return;
         if (!input.isEmpty()) {
@@ -67,11 +186,11 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void executeCmdList(String pluginName, Player player, List<String> input, boolean placeholder, String... langHolder) {
+    public void executeCmd(String pluginName, Player player, List<String> input, boolean placeholder, String... langHolder) {
         if (input == null)
             return;
         if (player == null || player instanceof ConsoleCommandSender) {
-            executeCmdList(pluginName, input, placeholder);
+            executeCmd(pluginName, input, placeholder);
             return;
         }
         String cmd;
@@ -102,7 +221,7 @@ public class CustomCommands implements CommandInterface {
                 @Override
                 public void run() {
                     // To restart the method again after delay.
-                    executeCmdList(pluginName, player, newCommandList, placeholder, langHolder);
+                    executeCmd(pluginName, player, newCommandList, placeholder, langHolder);
                 }
             }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
             return;
@@ -110,7 +229,7 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void executeCmdList(String pluginName, List<String> input, boolean placeholder, String... langHolder) {
+    public void executeCmd(String pluginName, List<String> input, boolean placeholder, String... langHolder) {
         if (input == null)
             return;
         String cmd;
@@ -140,7 +259,7 @@ public class CustomCommands implements CommandInterface {
                 @Override
                 public void run() {
                     // To restart the method again after delay.
-                    executeCmdList(pluginName, newCommandList, placeholder, langHolder);
+                    executeCmd(pluginName, newCommandList, placeholder, langHolder);
                 }
             }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
             return;
@@ -170,7 +289,7 @@ public class CustomCommands implements CommandInterface {
             return;
         }
         if (input.contains("{n}")) {
-            executeCmdList(pluginName, player, Arrays.asList(input.split("\\{n}")), true, langHolder);
+            executeCmd(pluginName, player, Arrays.asList(input.split("\\{n}")), true, langHolder);
             return;
         }
         selectCmdType(pluginName, player, input, placeholder, langHolder);
@@ -181,14 +300,14 @@ public class CustomCommands implements CommandInterface {
         if (input == null)
             return;
         if (input.contains("{n}")) {
-            executeCmdList(pluginName, Arrays.asList(input.split("\\{n}")), placeholder, langHolder);
+            executeCmd(pluginName, Arrays.asList(input.split("\\{n}")), placeholder, langHolder);
             return;
         }
         selectCmdType(pluginName, input, placeholder, langHolder);
     }
 
     @Override
-    public void dispatchCustomCmd(String pluginName, Player player, String group, boolean placeholder, String... langHolder) {
+    public void dispatchGroupCmd(String pluginName, Player player, String group, boolean placeholder, String... langHolder) {
         if (group == null)
             return;
         String[] placeHolderArr = group.split(", ");
@@ -216,188 +335,192 @@ public class CustomCommands implements CommandInterface {
             }
             newCommands.add(command);
         }
-        executeCmdList(pluginName, player, newCommands, placeholder, langHolder);
+        executeCmd(pluginName, player, newCommands, placeholder, langHolder);
     }
 
-    /**
-     * Selecting the type of command for a player.
-     *
-     * @param pluginName  the sending plugin name
-     * @param player      the target player.
-     * @param input       the input command.
-     * @param placeholder translating placeholders.
-     */
     private void selectCmdType(String pluginName, Player player, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(null, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+        input = UtilsHandler.getLang().transLang(null, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
         if (placeholder)
-            input = UtilsHandler.getLang().transByPlayer(pluginName,
-                    UtilsHandler.getVanillaUtils().getLocal(player), input, player, "player");
+            input = UtilsHandler.getLang().transHolder(pluginName, player,
+                    UtilsHandler.getLang().getTranslateMap(null, player, "player"), input);
         String[] split;
-        switch (input.split(": ")[0]) {
-            case "custom":
-                input = input.replace("custom: ", "");
-                dispatchCustomCmd(pluginName, player, input, placeholder);
-                return;
-            case "condition":
-                input = input.replace("condition: ", "");
-                dispatchConditionCmd(pluginName, player, input, placeholder);
-                return;
-            case "print":
-                input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg("", input);
-                return;
-            case "log":
-                input = input.replace("log: ", "");
-                dispatchLogCmd(pluginName, input);
-                return;
-            case "log-custom":
-                input = input.replace("log-custom: ", "");
-                dispatchLogCustomCmd(pluginName, input);
-                return;
-            case "broadcast":
-                input = input.replace("broadcast: ", "");
-                UtilsHandler.getLang().sendBroadcastMsg("", input);
-                return;
-            case "discord-chat":
-                input = input.replace("discord-chat: ", "");
-                split = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1], player);
-                return;
-            case "discord":
-                input = input.replace("discord: ", "");
-                split = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
-                return;
-            case "bungee":
-                input = input.replace("bungee: ", "");
-                dispatchBungeeCordCmd(pluginName, player, input);
-                return;
-            case "switch":
-                input = input.replace("switch: ", "");
-                dispatchSwitchCmd(pluginName, input);
-                return;
-            case "console":
-                input = input.replace("console: ", "");
-                dispatchConsoleCmd(pluginName, player, input);
-                return;
-            case "op":
-                input = input.replace("op: ", "");
-                dispatchOpCmd(pluginName, player, input);
-                return;
-            case "player":
-                input = input.replace("player: ", "");
-                dispatchPlayerCmd(pluginName, player, input);
-                return;
-            case "chat-op":
-                input = input.replace("chat-op: ", "");
-                sendChatOpMsg("", player, input);
-                return;
-            case "chat":
-                input = input.replace("chat: ", "");
-                UtilsHandler.getLang().sendChatMsg("", player, input);
-                return;
-            case "message":
-                input = input.replace("message: ", "");
-                UtilsHandler.getLang().sendPlayerMsg("", player, input);
-                return;
-            case "action-bar":
-                input = input.replace("action-bar: ", "");
-                UtilsHandler.getLang().sendActionBarMsg(player, input);
-                return;
-            case "title":
-                input = input.replace("title: ", "");
-                UtilsHandler.getLang().sendTitleMsg(player, input);
-                return;
-            case "sound":
-                input = input.replace("sound: ", "");
-                dispatchSoundCmd(pluginName, player, input);
-                return;
-            case "sound-custom":
-                input = input.replace("sound-custom: ", "");
-                dispatchSoundCustomCmd(pluginName, player, input);
-                return;
-            case "particle":
-                input = input.replace("particle: ", "");
-                dispatchParticleCmd(pluginName, player.getLocation(), input);
-                return;
-            case "particle-custom":
-                input = input.replace("particle-custom: ", "");
-                dispatchParticleCustomCmd(pluginName, player.getLocation(), input);
-                return;
-            default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+        try {
+
+            switch (input.split(": ")[0]) {
+                case "custom":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchGroupCmd(pluginName, player, input, placeholder);
+                    return;
+                case "condition":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchConditionCmd(pluginName, player, input, placeholder);
+                    return;
+                case "print":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    UtilsHandler.getLang().sendConsoleMsg("", input);
+                    return;
+                case "log":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchLogCmd(pluginName, input);
+                    return;
+                case "log-group":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchLogGroupCmd(pluginName, input);
+                    return;
+                case "broadcast":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    UtilsHandler.getLang().sendBroadcastMsg("", input);
+                    return;
+                case "discord-chat":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    split = input.split(", ");
+                    UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1], player);
+                    return;
+                case "discord":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    split = input.split(", ");
+                    UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
+                    return;
+                case "bungee":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchBungeeCmd(pluginName, player, input);
+                    return;
+                case "switch":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchSwitchCmd(pluginName, input);
+                    return;
+                case "console":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchConsoleCmd(pluginName, player, input);
+                    return;
+                case "op":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchOpCmd(pluginName, player, input);
+                    return;
+                case "player":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchPlayerCmd(pluginName, player, input);
+                    return;
+                case "chat-op":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    sendChatOpMsg("", player, input);
+                    return;
+                case "chat":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    UtilsHandler.getLang().sendChatMsg("", player, input);
+                    return;
+                case "message":
+                    input = input.replace("message: ", "");
+                    UtilsHandler.getLang().sendPlayerMsg("", player, input);
+                    return;
+                case "action-bar":
+                    input = input.replace("action-bar: ", "");
+                    UtilsHandler.getLang().sendActionBarMsg(player, input);
+                    return;
+                case "title":
+                    input = input.replace("title: ", "");
+                    UtilsHandler.getLang().sendTitleMsg(player, input);
+                    return;
+                case "sound":
+                    input = input.replace("sound: ", "");
+                    dispatchSoundCmd(pluginName, player, input);
+                    return;
+                case "sound-group":
+                    input = input.replace("sound-group: ", "");
+                    dispatchSoundGroupCmd(pluginName, player, input);
+                    return;
+                case "particle":
+                    input = input.replace("particle: ", "");
+                    dispatchParticleCmd(pluginName, player.getLocation(), input);
+                    return;
+                case "particle-group":
+                    input = input.replace("particle-group: ", "");
+                    dispatchParticleGroupCmd(pluginName, player.getLocation(), input);
+                    return;
+                default:
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                            "Unknown command type: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName,
+                            "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "Unknown command type: \"" + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
     }
 
-    /**
-     * Selecting the type of command.
-     *
-     * @param pluginName  the sending plugin name
-     * @param input       the input command.
-     * @param placeholder translating placeholders.
-     */
     private void selectCmdType(String pluginName, String input, boolean placeholder, String... langHolder) {
-        input = UtilsHandler.getLang().transLangHolders(null, "", input, langHolder);
+        input = UtilsHandler.getLang().transLang(null, "", input, langHolder);
         if (placeholder)
             input = UtilsHandler.getLang().transByGeneral(pluginName, null, input);
         String[] split;
-        switch (input.split(": ")[0]) {
-            case "custom":
-                input = input.replace("custom: ", "");
-                dispatchCustomCmd(pluginName, null, input, placeholder);
-                return;
-            case "condition":
-                input = input.replace("condition: ", "");
-                dispatchConditionCmd(pluginName, null, input, placeholder);
-                return;
-            case "print":
-                input = input.replace("print: ", "");
-                UtilsHandler.getLang().sendConsoleMsg("", input);
-                return;
-            case "log":
-                input = input.replace("log: ", "");
-                dispatchLogCmd(pluginName, input);
-                return;
-            case "log-custom":
-                input = input.replace("log-custom: ", "");
-                dispatchLogCustomCmd(pluginName, input);
-                return;
-            case "broadcast":
-                input = input.replace("broadcast: ", "");
-                UtilsHandler.getLang().sendBroadcastMsg("", input);
-                return;
-            case "discord":
-                input = input.replace("discord: ", "");
-                split = input.split(", ");
-                UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
-                return;
-            case "bungee":
-                input = input.replace("bungee: ", "");
-                dispatchBungeeCordCmd(pluginName, null, input);
-                return;
-            case "console":
-                input = input.replace("console: ", "");
-                dispatchConsoleCmd(pluginName, null, input);
-                return;
-            case "op":
-            case "player":
-            case "chat":
-            case "discord-chat":
-            case "message":
-            case "sound":
-            case "sound-custom":
-            case "particle":
-            case "particle-custom":
-            case "actionbar":
-            case "title":
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the execute target.");
-                return;
-            default:
-                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Please check if CorePlus is updated to the latest version.");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+        try {
+            switch (input.split(": ")[0]) {
+                case "custom":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchGroupCmd(pluginName, null, input, placeholder);
+                    return;
+                case "condition":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchConditionCmd(pluginName, null, input, placeholder);
+                    return;
+                case "print":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    UtilsHandler.getLang().sendConsoleMsg("", input);
+                    return;
+                case "log":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchLogCmd(pluginName, input);
+                    return;
+                case "log-group":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchLogGroupCmd(pluginName, input);
+                    return;
+                case "broadcast":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    UtilsHandler.getLang().sendBroadcastMsg("", input);
+                    return;
+                case "discord":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    split = input.split(", ");
+                    UtilsHandler.getLang().sendDiscordMsg("", split[0], split[1]);
+                    return;
+                case "bungee":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchBungeeCmd(pluginName, null, input);
+                    return;
+                case "console":
+                    input = input.substring(input.indexOf(": ") + 1);
+                    dispatchConsoleCmd(pluginName, null, input);
+                    return;
+                case "op":
+                case "player":
+                case "chat":
+                case "discord-chat":
+                case "message":
+                case "sound":
+                case "sound-group":
+                case "particle":
+                case "particle-group":
+                case "actionbar":
+                case "title":
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the execute target.");
+                    return;
+                default:
+                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Please check if CorePlus is updated to the latest version.");
+                    UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            }
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "Unknown command type: \"" + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
     }
 
@@ -421,7 +544,7 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void dispatchLogCustomCmd(String pluginName, String input) {
+    public void dispatchLogGroupCmd(String pluginName, String input) {
         if (input == null)
             return;
         String group = input.split(", ")[0];
@@ -615,7 +738,7 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void dispatchBungeeCordCmd(String pluginName, Player player, String input) {
+    public void dispatchBungeeCmd(String pluginName, Player player, String input) {
         if (input == null)
             return;
         BungeeCordUtils.ExecuteCommand(pluginName, player, input);
@@ -671,7 +794,7 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void dispatchSoundCustomCmd(String pluginName, Player player, String group) {
+    public void dispatchSoundGroupCmd(String pluginName, Player player, String group) {
         if (group == null)
             return;
         try {
@@ -756,7 +879,7 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void dispatchParticleCustomCmd(String pluginName, Location loc, String group) {
+    public void dispatchParticleGroupCmd(String pluginName, Location loc, String group) {
         try {
             if (group == null)
                 return;

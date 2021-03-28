@@ -2,7 +2,6 @@ package tw.momocraft.coreplus.utils.files;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
@@ -16,24 +15,68 @@ import java.util.Map;
 
 public class JsonUtils {
 
-    private final List<String> langList = new ArrayList<>();
     private final Map<String, JsonObject> jsonMap = new HashMap<>();
 
     public JsonUtils() {
         loadLang();
-        //loadGroup(ConfigHandler.getPluginName(), "");
+        loadCustom();
+        //loadGroup("");
 
         sendLoadedMsg();
     }
 
     private void sendLoadedMsg() {
+        List<String> langList = new ArrayList<>();
+        List<String> jsonList = new ArrayList<>();
+        for (String fileName : jsonMap.keySet()) {
+            if (fileName.startsWith("lang_"))
+                langList.add(fileName);
+            else
+                jsonList.add(fileName);
+        }
         UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
                 "&fLoaded Language files: " + langList.toString());
         UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fLoaded Json files: " + jsonMap.keySet().toString());
+                "&fLoaded Json files: " + jsonList.toString());
     }
 
-    public boolean load(String group, String filePath) {
+    private void loadLang() {
+        String filePath = CorePlus.getInstance().getDataFolder().getPath() + "\\Vanilla-Translation";
+        File file = new File(filePath);
+        String[] fileList = file.list();
+        if (fileList == null)
+            return;
+        String langName;
+        for (String fileName : fileList) {
+            if (!fileName.endsWith(".json"))
+                continue;
+            langName = fileName.replace(".json", "");
+            load(ConfigHandler.getPluginName(), "lang_" + langName, filePath + "\\" + langName + ".json");
+        }
+    }
+
+    private void loadCustom() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getJsonProp();
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+        }
+    }
+
+    private boolean loadGroup(String group) {
+        String filePath;
+        switch (group) {
+            case "example":
+                filePath = CorePlus.getInstance().getDataFolder().getPath();
+                break;
+            default:
+                UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(),
+                        "Cannot load the Json file: " + group);
+                return false;
+        }
+        return load(ConfigHandler.getPluginName(), group, filePath);
+    }
+
+    public boolean load(String pluginName, String group, String filePath) {
         File file = new File(filePath);
         try {
             Gson gson = new Gson();
@@ -41,49 +84,21 @@ public class JsonUtils {
             jsonMap.put(group, json);
             return true;
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot load the Json file: " + filePath);
-            UtilsHandler.getLang().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Cannot load the Json file: " + filePath);
+            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
             return false;
         }
     }
 
-    private void loadGroup(String group) {
-        String filePath;
-        switch (group) {
-            case "example":
-                filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//ExamplePlugin//example.json";
-                break;
-            default:
-                return;
-        }
-        load(group, filePath);
-    }
-
-    private void loadLang() {
-        String filePath = CorePlus.getInstance().getDataFolder().getPath() + "\\Vanilla-Translation";
-        File file = new File(filePath);
-        String[] fileList = file.list();
-        if (fileList == null) {
-            return;
-        }
-        String langName;
-        for (String fileName : fileList) {
-            if (!fileName.endsWith(".json")) {
-                continue;
-            }
-            langName = fileName.replace(".json", "");
-            load("lang_" + langName, filePath + "//" + langName);
-            langList.add(fileName);
-        }
-    }
-
-    public String getValue(String group, String input) {
+    public String getValue(String pluginName, String group, String input) {
         try {
-            if (jsonMap.containsKey(group)) {
-                loadGroup(group);
-            }
             return jsonMap.get(group).get(input).toString();
         } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "An error occurred while getting the value of \"" + input + "\".");
+            UtilsHandler.getLang().sendErrorMsg(pluginName,
+                    "Can not find the Json group of \"" + group + "\".");
             return null;
         }
     }

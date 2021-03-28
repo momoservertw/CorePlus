@@ -1,6 +1,7 @@
 package tw.momocraft.coreplus.api;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,7 +15,21 @@ public interface CommandInterface {
      * @param waitingTime the waiting seconds.
      * @param command     the dispatch command.
      */
-    void addWaiting(String playerName, int waitingTime, String command);
+    void addOnlineCommand(String playerName, int waitingTime, String command);
+
+    /**
+     *
+     * @param sender the command sender.
+     * @param target the target object.
+     * @param input the input list.
+     */
+    void sendCmd(CommandSender sender, Object target, List<String> input);
+
+    void sendCmd(CommandSender sender, Object target, Object trigger, List<String> input);
+
+    void sendCmd(CommandSender sender, List<Object> targets, List<String> input);
+
+    void sendCmd(CommandSender sender, List<Object> targets, List<Object> triggers, List<String> input);
 
     /**
      * Executing command list for targets.
@@ -24,7 +39,7 @@ public interface CommandInterface {
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmdList(String pluginName, List<Player> players, List<String> input, boolean placeholder, String... langHolder);
+    void executeCmd(String pluginName, List<Player> players, List<String> input, boolean placeholder, String... langHolder);
 
     /**
      * Executing command list.
@@ -34,7 +49,7 @@ public interface CommandInterface {
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmdList(String pluginName, Player player, List<String> input, boolean placeholder, String... langHolder);
+    void executeCmd(String pluginName, Player player, List<String> input, boolean placeholder, String... langHolder);
 
     /**
      * Executing command list.
@@ -43,7 +58,7 @@ public interface CommandInterface {
      * @param input       the input command list.
      * @param placeholder translating placeholders or not.
      */
-    void executeCmdList(String pluginName, List<String> input, boolean placeholder, String... langHolder);
+    void executeCmd(String pluginName, List<String> input, boolean placeholder, String... langHolder);
 
     /**
      * Executing a command for multiple target.
@@ -84,7 +99,7 @@ public interface CommandInterface {
      * @param group       the input group name.
      * @param placeholder translating placeholders or not.
      */
-    void dispatchCustomCmd(String pluginName, Player player, String group, boolean placeholder, String... langHolder);
+    void dispatchGroupCmd(String pluginName, Player player, String group, boolean placeholder, String... langHolder);
 
     /**
      * Executing custom command.
@@ -114,7 +129,7 @@ public interface CommandInterface {
      * @param pluginName the executing plugin name.
      * @param input      the input group name and message.
      */
-    void dispatchLogCustomCmd(String pluginName, String input);
+    void dispatchLogGroupCmd(String pluginName, String input);
 
     /**
      * Executing a console command.
@@ -164,7 +179,7 @@ public interface CommandInterface {
      * @param player     the target player.
      * @param input      the input command.
      */
-    void dispatchBungeeCordCmd(String pluginName, Player player, String input);
+    void dispatchBungeeCmd(String pluginName, Player player, String input);
 
     /**
      * Sending player to another server.
@@ -193,7 +208,7 @@ public interface CommandInterface {
      * @param player     the target player.
      * @param input      the group name.
      */
-    void dispatchSoundCustomCmd(String pluginName, Player player, String input);
+    void dispatchSoundGroupCmd(String pluginName, Player player, String input);
 
     /**
      * Showing a particle at a location.
@@ -213,5 +228,5 @@ public interface CommandInterface {
      * @param loc        the target Location.
      * @param input      the group name.
      */
-    void dispatchParticleCustomCmd(String pluginName, Location loc, String input);
+    void dispatchParticleGroupCmd(String pluginName, Location loc, String input);
 }

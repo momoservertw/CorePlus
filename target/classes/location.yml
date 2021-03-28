@@ -11,7 +11,7 @@ Location:
   NetherWorlds:
     Worlds:
       - world_nether
-  End-Worlds:
+  EndWorlds:
     Worlds:
       - world_the_end
   EndCentralIsland:

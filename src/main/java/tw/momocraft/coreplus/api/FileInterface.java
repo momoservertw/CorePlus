@@ -58,20 +58,22 @@ public interface FileInterface {
     /**
      * Getting the value from the group file.
      *
+     * @param pluginName the sending plugin name.
      * @param group the file's group name.
      * @param input the searching option.
      * @return the value from the group file.
      */
-    String getYamlString(String group, String input);
+    String getYamlString(String pluginName, String group, String input);
 
     /**
      * Getting the value list from the group file.
      *
+     * @param pluginName the sending plugin name.
      * @param group the file's group name.
      * @param input the searching option.
      * @return the value list from the group file.
      */
-    List<String> getYamlStringList(String group, String input);
+    List<String> getYamlStringList(String pluginName, String group, String input);
 
     /**
      * Getting the value in a Json file.

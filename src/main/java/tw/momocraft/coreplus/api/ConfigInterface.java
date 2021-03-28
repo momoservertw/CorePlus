@@ -12,7 +12,7 @@ public interface ConfigInterface {
     /**
      * @return if mySQL feature enabled.
      */
-    boolean isMySQL();
+    boolean isDataMySQL();
 
     /**
      *

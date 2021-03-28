@@ -1,4 +1,3 @@
-tw\momocraft\coreplus\listeners\CommandOnline.class
 tw\momocraft\coreplus\utils\conditions\ItemJoinUtils.class
 tw\momocraft\coreplus\utils\customcommands\ParticleUtils.class
 tw\momocraft\coreplus\api\FileInterface.class
@@ -9,15 +8,13 @@ tw\momocraft\coreplus\utils\language\TranslateMap.class
 tw\momocraft\coreplus\api\MySQLInterface.class
 tw\momocraft\coreplus\utils\customcommands\SoundUtils$1.class
 tw\momocraft\coreplus\utils\language\DiscordUtils.class
-tw\momocraft\coreplus\utils\files\YamlUtils.class
+tw\momocraft\coreplus\utils\files\MySQLMap.class
 tw\momocraft\coreplus\utils\Updater.class
-tw\momocraft\coreplus\utils\files\JsonUtils.class
-tw\momocraft\coreplus\utils\economy\PriceMap.class
-tw\momocraft\coreplus\utils\Utils.class
 tw\momocraft\coreplus\utils\language\VanillaUtils.class
 tw\momocraft\coreplus\utils\files\PropertiesUtils.class
 tw\momocraft\coreplus\utils\language\LanguageUtils.class
 tw\momocraft\coreplus\utils\MultiverseCoreUtils.class
+tw\momocraft\coreplus\utils\files\Logger.class
 tw\momocraft\coreplus\api\LanguageInterface.class
 tw\momocraft\coreplus\utils\files\MySQLUtils.class
 tw\momocraft\coreplus\utils\files\FileUtils.class
@@ -25,7 +22,6 @@ tw\momocraft\coreplus\utils\entities\EntityUtils.class
 tw\momocraft\coreplus\api\ConditionInterface.class
 tw\momocraft\coreplus\utils\inventory\InventeryUtils.class
 tw\momocraft\coreplus\api\UtilsInterface.class
-tw\momocraft\coreplus\utils\PlayerUtils.class
 tw\momocraft\coreplus\api\UpdateInterface.class
 tw\momocraft\coreplus\utils\EffectUtils.class
 tw\momocraft\coreplus\utils\files\ConfigBuilder.class
@@ -35,11 +31,9 @@ tw\momocraft\coreplus\utils\customcommands\CustomCommands$3.class
 tw\momocraft\coreplus\listeners\ConditionTest.class
 tw\momocraft\coreplus\utils\files\Zipper.class
 tw\momocraft\coreplus\utils\conditions\LocationUtils.class
-tw\momocraft\coreplus\utils\customcommands\BungeeCordUtils.class
 tw\momocraft\coreplus\api\EntityInterface.class
 tw\momocraft\coreplus\utils\conditions\ConditionUtils.class
 tw\momocraft\coreplus\TabComplete.class
-tw\momocraft\coreplus\utils\language\Logger.class
 tw\momocraft\coreplus\utils\conditions\BlocksUtils.class
 tw\momocraft\coreplus\utils\customcommands\SoundUtils.class
 tw\momocraft\coreplus\utils\files\ConfigBuilderMap.class

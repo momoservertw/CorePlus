@@ -362,9 +362,8 @@ public class Utils implements UtilsInterface {
 
     @Override
     public double getDistanceXZ(Location loc, Location loc2) {
-        if (loc.getWorld() != loc2.getWorld()) {
+        if (loc.getWorld() != loc2.getWorld())
             return 0;
-        }
         return Math.abs(loc.getX() * loc.getZ() - loc2.getX() * loc2.getZ());
     }
 

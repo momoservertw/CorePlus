@@ -25,7 +25,7 @@ import java.util.*;
 
 public class LanguageUtils implements LanguageInterface {
 
-    private String addPrefix(String prefix, String input) {
+    private String setPrefixAndColor(String prefix, String input) {
         if (prefix == null)
             prefix = "";
         input = prefix + input;
@@ -35,19 +35,19 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendBroadcastMsg(String prefix, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         Bukkit.broadcastMessage(input);
     }
 
     @Override
     public void sendDiscordMsg(String prefix, String channel, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         UtilsHandler.getDiscord().sendDiscordMsg(channel, input);
     }
 
     @Override
     public void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         if (message != null) {
             message = message.replace("%message%", input);
@@ -66,25 +66,25 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendMsg(String prefix, CommandSender sender, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         sender.sendMessage(input);
     }
 
     @Override
     public void sendConsoleMsg(String prefix, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     @Override
     public void sendPlayerMsg(String prefix, Player player, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         player.sendMessage(input);
     }
 
     @Override
     public void sendChatMsg(String prefix, Player player, String input, String... langHolder) {
-        input = addPrefix(prefix, input);
+        input = setPrefixAndColor(prefix, input);
         player.chat(input);
     }
 
@@ -137,7 +137,7 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendFeatureMsg(boolean isDebugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
+    public void sendDetailMsg(boolean isDebugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
         if (!isDebugging)
             return;
         switch (action) {
@@ -146,6 +146,7 @@ public class LanguageUtils implements LanguageInterface {
             case "kill":
             case "damage":
             case "fail":
+            case "failed":
             case "warning":
             case "deny":
                 action = "&c" + action;
@@ -155,11 +156,15 @@ public class LanguageUtils implements LanguageInterface {
             case "change":
                 action = "&e" + action;
                 break;
+            case "none":
+                action = "&7" + action;
+                break;
             case "return":
             case "success":
+            case "succeed":
             case "accept":
-                action = "&a" + action;
             default:
+                action = "&a" + action;
                 break;
         }
         sendDebugMsg(true, pluginName,
@@ -169,7 +174,7 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public void sendFeatureMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste) {
+    public void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste) {
         if (!debugging)
             return;
         switch (action) {
@@ -186,11 +191,14 @@ public class LanguageUtils implements LanguageInterface {
             case "change":
                 action = "&e" + action;
                 break;
+            case "none":
+                action = "&7" + action;
+                break;
             case "return":
             case "success":
             case "accept":
-                action = "&a" + action;
             default:
+                action = "&a" + action;
                 break;
         }
         sendDebugMsg(true, pluginName,
@@ -208,7 +216,7 @@ public class LanguageUtils implements LanguageInterface {
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
         if (langMessage != null)
             input = langMessage;
-        input = transLangHolders(prefix, UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
+        input = transLang(prefix, UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
         input = ChatColor.translateAlternateColorCodes('&', input);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines)
@@ -227,21 +235,20 @@ public class LanguageUtils implements LanguageInterface {
             Arrays.fill(langHolder, "null");
             return langHolder;
         } else {
-            for (int i = 0; i < placeHolder.length; i++) {
+            for (int i = 0; i < placeHolder.length; i++)
                 if (placeHolder[i] == null)
                     placeHolder[i] = "null";
-            }
             return placeHolder;
         }
     }
 
     @Override
-    public String transLangHolders(String prefix, Player player, String input, String... langHolder) {
-        return transLangHolders(prefix, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+    public String transLang(String prefix, Player player, String input, String... langHolder) {
+        return transLang(prefix, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
     }
 
     @Override
-    public String transLangHolders(String prefix, String local, String input, String... langHolder) {
+    public String transLang(String prefix, String local, String input, String... langHolder) {
         if (input == null)
             return "";
         if (prefix == null)
@@ -253,11 +260,10 @@ public class LanguageUtils implements LanguageInterface {
         if (langMessage != null)
             input = langMessage;
         langHolder = initializeRows(langHolder);
-        if (input.contains("%material%")) {
+        if (input.contains("%material%"))
             input = input.replace("%material%", getVanillaTrans(local, langHolder[7], "material"));
-        } else if (input.contains("%entity%")) {
+        else if (input.contains("%entity%"))
             input = input.replace("%entity%", getVanillaTrans(local, langHolder[8], "entity"));
-        }
         return input
                 .replace("%player%", langHolder[0])
                 .replace("%target_player%", langHolder[1])
@@ -289,8 +295,10 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public List<String> transPlaceHolders(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
+    public List<String> transHolder(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
+        if (translateMap == null)
+            return transByGeneral(pluginName, local, input);
         List<String> output;
         // Player
         if (translateMap.getPlayerMap() != null)
@@ -396,7 +404,7 @@ public class LanguageUtils implements LanguageInterface {
     }
 
     @Override
-    public String transPlaceHolders(String pluginName, Player player, TranslateMap translateMap, String input) {
+    public String transHolder(String pluginName, Player player, TranslateMap translateMap, String input) {
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
         String output;
         // Player
@@ -520,11 +528,12 @@ public class LanguageUtils implements LanguageInterface {
             translateMap.putMaterial((Material) object, name);
         if (object instanceof Location)
             translateMap.putLocation((Location) object, name);
+        if (translateMap.equals(new TranslateMap()))
+            return null;
         return translateMap;
     }
 
-    @Override
-    public List<String> transByPlayerName(String pluginName, String local, List<String> input, String target, String prefixName) {
+    private List<String> transByPlayerName(String pluginName, String local, List<String> input, String target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -533,8 +542,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByPlayerName(String pluginName, String local, String input, String target, String prefixName) {
+    private String transByPlayerName(String pluginName, String local, String input, String target, String prefixName) {
         Player player = Bukkit.getPlayer(target);
         if (player != null)
             return transByPlayer(pluginName, local, input, player, prefixName);
@@ -544,8 +552,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByPlayerUUID(String pluginName, String local, List<String> input, UUID target, String prefixName) {
+    private List<String> transByPlayerUUID(String pluginName, String local, List<String> input, UUID target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -554,8 +561,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByPlayerUUID(String pluginName, String local, String input, UUID target, String prefixName) {
+    private String transByPlayerUUID(String pluginName, String local, String input, UUID target, String prefixName) {
         Player player = Bukkit.getPlayer(target);
         if (player != null)
             return transByPlayer(pluginName, local, input, player, prefixName);
@@ -563,8 +569,7 @@ public class LanguageUtils implements LanguageInterface {
         return transByOfflinePlayer(pluginName, local, input, offlinePlayer, prefixName);
     }
 
-    @Override
-    public List<String> transByPlayer(String pluginName, String local, List<String> input, Player target, String prefixName) {
+    private List<String> transByPlayer(String pluginName, String local, List<String> input, Player target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -573,8 +578,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByPlayer(String pluginName, String local, String input, Player target, String prefixName) {
+    private String transByPlayer(String pluginName, String local, String input, Player target, String prefixName) {
         if (input == null)
             return "";
         if (target == null) {
@@ -638,8 +642,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByEntity(String pluginName, String local, List<String> input, Entity target, String prefixName) {
+    private List<String> transByEntity(String pluginName, String local, List<String> input, Entity target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -648,8 +651,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByEntity(String pluginName, String local, String input, Entity target, String prefixName) {
+    private String transByEntity(String pluginName, String local, String input, Entity target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -672,8 +674,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByEntityType(String pluginName, String local, List<String> input, EntityType target, String prefixName) {
+    private List<String> transByEntityType(String pluginName, String local, List<String> input, EntityType target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -682,8 +683,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByEntityType(String pluginName, String local, String input, EntityType target, String prefixName) {
+    private String transByEntityType(String pluginName, String local, String input, EntityType target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -710,8 +710,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByOfflinePlayer(String pluginName, String local, List<String> input, OfflinePlayer target, String prefixName) {
+    private List<String> transByOfflinePlayer(String pluginName, String local, List<String> input, OfflinePlayer target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -720,8 +719,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer target, String prefixName) {
+    private String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -773,8 +771,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByBlock(String pluginName, String local, List<String> input, Block target, String prefixName) {
+    private List<String> transByBlock(String pluginName, String local, List<String> input, Block target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -783,7 +780,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    public String transByBlock(String pluginName, String local, String input, Block target, String prefixName) {
+    private String transByBlock(String pluginName, String local, String input, Block target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -795,8 +792,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByItemStack(String pluginName, String local, List<String> input, ItemStack target, String prefixName) {
+    private List<String> transByItemStack(String pluginName, String local, List<String> input, ItemStack target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -805,7 +801,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    public String transByItemStack(String pluginName, String local, String input, ItemStack target, String prefixName) {
+    private String transByItemStack(String pluginName, String local, String input, ItemStack target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -837,8 +833,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByMaterial(String pluginName, String local, List<String> input, Material target, String prefixName) {
+    private List<String> transByMaterial(String pluginName, String local, List<String> input, Material target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -847,8 +842,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByMaterial(String pluginName, String local, String input, Material target, String prefixName) {
+    private String transByMaterial(String pluginName, String local, String input, Material target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -875,8 +869,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
-    @Override
-    public List<String> transByLocation(String pluginName, String local, List<String> input, Location target, String prefixName) {
+    private List<String> transByLocation(String pluginName, String local, List<String> input, Location target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -885,8 +878,7 @@ public class LanguageUtils implements LanguageInterface {
         return list;
     }
 
-    @Override
-    public String transByLocation(String pluginName, String local, String input, Location target, String prefixName) {
+    private String transByLocation(String pluginName, String local, String input, Location target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -1049,6 +1041,7 @@ public class LanguageUtils implements LanguageInterface {
         return input;
     }
 
+
     @Override
     public List<String> transByGeneral(String pluginName, String local, List<String> input) {
         if (input == null || input.isEmpty())
@@ -1058,6 +1051,7 @@ public class LanguageUtils implements LanguageInterface {
             list.add(transByGeneral(pluginName, local, value));
         return list;
     }
+
 
     @Override
     public String transByGeneral(String pluginName, String local, String input) {

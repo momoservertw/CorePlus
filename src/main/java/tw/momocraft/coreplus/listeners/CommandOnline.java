@@ -2,13 +2,11 @@ package tw.momocraft.coreplus.listeners;
 
 import com.google.common.collect.Table;
 import javafx.util.Pair;
-import net.craftersland.data.bridge.api.events.SyncCompleteEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -22,7 +20,7 @@ public class CommandOnline implements Listener {
         }
         Player player = e.getPlayer();
         String playerName = player.getName();
-        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCustomCommands().getWaitingTable();
+        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCustomCommands().getOnlineCmdTable();
         if (!waitingTable.rowKeySet().contains(playerName)) {
             return;
         }

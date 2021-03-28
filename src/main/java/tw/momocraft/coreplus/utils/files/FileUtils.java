@@ -16,12 +16,12 @@ public class FileUtils implements FileInterface {
 
     @Override
     public boolean loadYamlFile(String pluginName, String group, String filePath) {
-        return UtilsHandler.getYaml().load(group, filePath);
+        return UtilsHandler.getYaml().load(pluginName, group, filePath);
     }
 
     @Override
     public boolean loadJsonFile(String pluginName, String group, String filePath) {
-        return UtilsHandler.getJson().load(group, filePath);
+        return UtilsHandler.getJson().load(pluginName, group, filePath);
     }
 
     @Override
@@ -30,13 +30,13 @@ public class FileUtils implements FileInterface {
     }
 
     @Override
-    public String getYamlString(String group, String input) {
-        return UtilsHandler.getYaml().getString(group, input);
+    public String getYamlString(String pluginName, String group, String input) {
+        return UtilsHandler.getYaml().getString(pluginName, group, input);
     }
 
     @Override
-    public List<String> getYamlStringList(String group, String input) {
-        return UtilsHandler.getYaml().getStringList(group, input);
+    public List<String> getYamlStringList(String pluginName, String group, String input) {
+        return UtilsHandler.getYaml().getStringList(pluginName, group, input);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FileUtils implements FileInterface {
 
     @Override
     public String getJsonValue(String pluginName, String group, String input) {
-        return UtilsHandler.getJson().getValue(group, input);
+        return UtilsHandler.getJson().getValue(pluginName, group, input);
     }
 
     @Override

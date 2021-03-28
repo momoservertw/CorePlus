@@ -4,8 +4,9 @@
 # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 1
 
-# Changed this settings need to restart the server.
+# Changed MySQL settings need to restart the server.
 MySQL:
+  Enable: false
   Localhost:
     Enable: false
     hostname: localhost
@@ -20,28 +21,32 @@ MySQL:
           Experience: mpdb_experience
       PlayerdataPlus:
         Enable: false
-        Name: playerdataplus
+        Database: playerdataplus
       HotkeyPlus:
         Enable: false
-        Name: hotkeyplus
+        Database: hotkeyplus
       ServerPlus:
         Enable: false
-        Name: serverplus
+        Database: serverplus
       MyCommand:
         Enable: false
-        Name: mycommand
+        Database: mycommand
       Example:
         Enable: false
-        Name: example
+        Database: example
+
 Yaml:
+  Enable: false
   Example:
-    Enable: true
+    Enable: false
     Path: "//plugins//Example_Plugin//config.yml"
 Json:
+  Enable: false
   Example:
-    Enable: true
+    Enable: false
     Path: "//plugins//Example_Plugin//config.json"
 Properties:
+  Enable: false
   Example:
-    Enable: true
+    Enable: false
     Path: "//plugins//Example_Plugin//config.properties"

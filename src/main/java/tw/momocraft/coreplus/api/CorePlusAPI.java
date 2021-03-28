@@ -8,11 +8,11 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getEffectAPI();
     }
 
-    public static CommandInterface getCommand() {
+    public static CommandInterface getCmd() {
         return CorePlus.getInstance().getCommandManager();
     }
 
-    public static ConditionInterface getCondition() {
+    public static ConditionInterface getCond() {
         return CorePlus.getInstance().getConditionManager();
     }
 
@@ -24,7 +24,7 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getDependManager();
     }
 
-    public static EntityInterface getEntity() {
+    public static EntityInterface getEnt() {
         return CorePlus.getInstance().getEntityManager();
     }
 
