@@ -44,7 +44,7 @@ public class ConfigPath implements ConfigInterface {
     private final Map<String, LocationMap> locProp = new HashMap<>();
     private final Map<String, BlocksMap> blockProp = new HashMap<>();
     private final Map<String, ActionBarMap> actionProp = new HashMap<>();
-    private final Map<String, TitleMessageMap> titleProp = new HashMap<>();
+    private final Map<String, TitleMsgMap> titleProp = new HashMap<>();
     private final Map<String, ParticleMap> particleProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
 
@@ -467,12 +467,12 @@ public class ConfigPath implements ConfigInterface {
     private void setTitleMessages() {
         ConfigurationSection particleConfig = ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages");
         if (particleConfig != null) {
-            TitleMessageMap titleMessageMap;
+            TitleMsgMap titleMessageMap;
             for (String group : particleConfig.getKeys(false)) {
                 if (ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages." + group) == null) {
                     continue;
                 }
-                titleMessageMap = new TitleMessageMap();
+                titleMessageMap = new TitleMsgMap();
                 titleMessageMap.setGroupName(group);
                 titleMessageMap.setStay(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + group + ".Stay", 70));
                 titleMessageMap.setFadeIn(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + group + ".FadeIn", 10));
@@ -592,6 +592,18 @@ public class ConfigPath implements ConfigInterface {
 
     public Map<String, LogMap> getLogProp() {
         return logProp;
+    }
+
+    public Map<String, BlocksMap> getBlockProp() {
+        return blockProp;
+    }
+
+    public Map<String, ActionBarMap> getActionProp() {
+        return actionProp;
+    }
+
+    public Map<String, TitleMsgMap> getTitleProp() {
+        return titleProp;
     }
 
     public Map<String, SoundMap> getSoundProp() {

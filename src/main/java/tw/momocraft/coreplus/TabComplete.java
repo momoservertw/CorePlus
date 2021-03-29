@@ -86,7 +86,7 @@ public class TabComplete implements TabCompleter {
                             commands.add("condition: ");
                             commands.add("print:  ");
                             commands.add("log:");
-                            commands.add("log-custom:  ");
+                            commands.add("log-group:  ");
                             commands.add("broadcast:");
                             commands.add("discord: ");
                             commands.add("discord-chat: ");
@@ -101,9 +101,9 @@ public class TabComplete implements TabCompleter {
                             commands.add("message: ");
                             commands.add("action-bar: ");
                             commands.add("title: ");
-                            commands.add("sound-custom: ");
+                            commands.add("sound-group: ");
                             commands.add("particle: ");
-                            commands.add("particle-custom: ");
+                            commands.add("particle-group: ");
                         } else {
                             commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                         }
@@ -118,7 +118,7 @@ public class TabComplete implements TabCompleter {
                             commands.add("condition: ");
                             commands.add("print:  ");
                             commands.add("log:");
-                            commands.add("log-custom:  ");
+                            commands.add("log-group:  ");
                             commands.add("broadcast:");
                             commands.add("discord: ");
                             commands.add("discord-chat: ");
@@ -133,9 +133,9 @@ public class TabComplete implements TabCompleter {
                             commands.add("message: ");
                             commands.add("action-bar: ");
                             commands.add("title: ");
-                            commands.add("sound-custom: ");
+                            commands.add("sound-group: ");
                             commands.add("particle: ");
-                            commands.add("particle-custom: ");
+                            commands.add("particle-group: ");
                         }
                     }
                     break;
@@ -148,7 +148,7 @@ public class TabComplete implements TabCompleter {
                             commands.add("condition: ");
                             commands.add("print:  ");
                             commands.add("log:");
-                            commands.add("log-custom:  ");
+                            commands.add("log-group:  ");
                             commands.add("broadcast:");
                             commands.add("discord: ");
                             commands.add("discord-chat: ");
@@ -163,9 +163,9 @@ public class TabComplete implements TabCompleter {
                             commands.add("message: ");
                             commands.add("action-bar: ");
                             commands.add("title: ");
-                            commands.add("sound-custom: ");
+                            commands.add("sound-group: ");
                             commands.add("particle: ");
-                            commands.add("particle-custom: ");
+                            commands.add("particle-group: ");
                         }
                     }
                     break;

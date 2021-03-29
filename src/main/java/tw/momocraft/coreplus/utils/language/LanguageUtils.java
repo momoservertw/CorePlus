@@ -16,6 +16,7 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.LanguageInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.customcommands.TitleMsgMap;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -96,13 +97,19 @@ public class LanguageUtils implements LanguageInterface {
 
     @Override
     public void sendTitleMsg(Player player, String input, String... langHolder) {
-        String[] args = input.split("/n");
+        String[] args = input.split("\\n");
         sendTitleMsg(player, args[0], args[1], 10, 70, 20, langHolder);
     }
 
     @Override
     public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder) {
         sendTitleMsg(player, inputTitle, inputSubtitle, 10, 70, 20, langHolder);
+    }
+
+    @Override
+    public void sendTitleMsg(Player player, String input, TitleMsgMap titleMsgMap, String... langHolder) {
+        String[] args = input.split("\\n");
+        sendTitleMsg(player, args[0], args[1], titleMsgMap.getFadeIn(), titleMsgMap.getStay(), titleMsgMap.getFadeOut(), langHolder);
     }
 
     @Override

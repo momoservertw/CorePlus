@@ -338,10 +338,12 @@ public class PlayerUtils implements PlayerInterface {
     public void setExp(String pluginName, UUID uuid, int amount) {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             if (getOnlineStatus(uuid).equals("offline")) {
-                UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
-                        ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
-                        "player_uuid", uuid.toString(), "total_exp", String.valueOf(amount));
-                return;
+                if (UtilsHandler.getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
+                    String tableName = ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience");
+                    UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                            tableName, "player_uuid", uuid.toString(), "total_exp", String.valueOf(amount));
+                    return;
+                }
             }
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {
@@ -357,14 +359,15 @@ public class PlayerUtils implements PlayerInterface {
     @Override
     public void giveExp(String pluginName, UUID uuid, int amount) {
         if (getOnlineStatus(uuid).equals("offline")) {
-            float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
-                    ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
-                    "player_uuid", uuid.toString(), "total_exp"));
-            exp += amount;
-            UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
-                    ConfigHandler.getConfigPath().getDataMySQLMySQLPlayerDataBridgeExp(),
-                    "player_uuid", uuid.toString(), "total_exp", String.valueOf(exp));
-            return;
+            if (UtilsHandler.getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
+                String tableName = ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience");
+                float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                        tableName, "player_uuid", uuid.toString(), "total_exp"));
+                exp += amount;
+                UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                        tableName, "player_uuid", uuid.toString(), "total_exp", String.valueOf(exp));
+                return;
+            }
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {
             CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);

@@ -9,7 +9,7 @@ import tw.momocraft.coreplus.utils.entities.EntityUtils;
 import tw.momocraft.coreplus.utils.files.*;
 import tw.momocraft.coreplus.utils.language.DiscordUtils;
 import tw.momocraft.coreplus.utils.language.LanguageUtils;
-import tw.momocraft.coreplus.utils.files.Logger;
+import tw.momocraft.coreplus.utils.files.LogUtils;
 import tw.momocraft.coreplus.utils.language.VanillaUtils;
 
 public class UtilsHandler {
@@ -37,7 +37,7 @@ public class UtilsHandler {
         entityUtils = new EntityUtils();
         customCommands = new CustomCommands();
         zipper = new Zipper();
-        logger = new Logger();
+        logger = new LogUtils();
         updater = new Updater();
     }
 
@@ -47,7 +47,7 @@ public class UtilsHandler {
     private static Updater updater;
     private static Utils utils;
     private static Zipper zipper;
-    private static Logger logger;
+    private static LogUtils logger;
     private static ConditionUtils conditionUtils;
     private static PlayerUtils playerUtils;
     private static EntityUtils entityUtils;
@@ -83,7 +83,7 @@ public class UtilsHandler {
         return zipper;
     }
 
-    public static Logger getLogger() {
+    public static LogUtils getLogger() {
         return logger;
     }
 

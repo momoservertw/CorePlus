@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CommandInterface;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.language.TranslateMap;
@@ -120,9 +119,9 @@ public class CustomCommands implements CommandInterface {
             if (target instanceof Location)
                 translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, trigger, "location");
         }
-        CorePlusAPI.getCmd().executeCmd(ConfigHandler.getPluginName(),
-                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
-                        translateMap, input), false);
+        input = UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(),
+                sender instanceof Player ? (Player) sender : null, translateMap, input);
+        executeCmd(ConfigHandler.getPluginName(), input, false);
     }
 
     @Override
@@ -138,9 +137,9 @@ public class CustomCommands implements CommandInterface {
             if (target != null)
                 translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target_" + i);
         }
-        executeCmd(ConfigHandler.getPluginName(),
-                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
-                        translateMap, input), false);
+        input = UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(),
+                sender instanceof Player ? (Player) sender : null, translateMap, input);
+        executeCmd(ConfigHandler.getPluginName(), input, false);
     }
 
     @Override
@@ -156,15 +155,15 @@ public class CustomCommands implements CommandInterface {
             if (target != null)
                 translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "target_" + i);
         }
-        // Targets
+        // Triggers
         for (int i = 1; i < targets.size(); i++) {
             target = triggers.get(i);
             if (target != null)
                 translateMap = UtilsHandler.getLang().getTranslateMap(translateMap, target, "trigger_" + i);
         }
-        executeCmd(ConfigHandler.getPluginName(),
-                UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(), sender != null ? (Player) sender : null,
-                        translateMap, input), false);
+        input = UtilsHandler.getLang().transHolder(ConfigHandler.getPluginName(),
+                sender instanceof Player ? (Player) sender : null, translateMap, input);
+        executeCmd(ConfigHandler.getPluginName(), input, false);
     }
 
     @Override
@@ -550,7 +549,7 @@ public class CustomCommands implements CommandInterface {
         String group = input.split(", ")[0];
         LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(group);
         if (logMap == null) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/logs.yml.");
             return;
         }
@@ -558,7 +557,7 @@ public class CustomCommands implements CommandInterface {
         try {
             UtilsHandler.getLang().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-custom: " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
         }
@@ -693,6 +692,7 @@ public class CustomCommands implements CommandInterface {
         }
     }
 
+    @Override
     public void dispatchOpCmd(String pluginName, Player player, String input) {
         if (input == null)
             return;
@@ -748,11 +748,67 @@ public class CustomCommands implements CommandInterface {
     public void dispatchSwitchCmd(String pluginName, String input) {
         if (input == null)
             return;
-        String[] inputSplit = input.split(" ");
+        String[] inputSplit = input.split("\\s+");
         Player player = Bukkit.getPlayer(inputSplit[1]);
         if (player == null)
             return;
         BungeeCordUtils.SwitchServers(pluginName, player, inputSplit[0]);
+    }
+
+    @Override
+    public void dispatchTitleMsgCmd(String pluginName, Player player, String input) {
+        if (input == null)
+            return;
+        try {
+            TitleMsgMap titleMsgMap = new TitleMsgMap();
+            // title: <title>\n<subtitle> -i:FadeIn, -o:FadeOut -s:Stay
+            String[] args = input.split("\\s+");
+            for (String arg : args) {
+                arg = arg.toUpperCase();
+                if (arg.startsWith("-I:")) {
+                    titleMsgMap.setFadeIn(Integer.parseInt(arg.replace("-I:", "")));
+                    input = input.replace("-I:" + arg, "");
+                    continue;
+                }
+                if (arg.startsWith("-O:")) {
+                    titleMsgMap.setFadeOut(Integer.parseInt(arg.replace("-O:", "")));
+                    input = input.replace("-O:" + arg, "");
+                    continue;
+                }
+                if (arg.startsWith("-S:")) {
+                    titleMsgMap.setStay(Integer.parseInt(arg.replace("-S:", "")));
+                    input = input.replace("-S:" + arg, "");
+                }
+            }
+            UtilsHandler.getLang().sendTitleMsg(player, input, titleMsgMap);
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"title: " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
+    @Override
+    public void dispatchTitleMsgGroupCmd(String pluginName, Player player, String input) {
+        if (input == null)
+            return;
+        String groupName = input.substring(0, input.indexOf(" ") + 1);
+        String[] split = input.substring(input.indexOf(" ")).split(", ");
+        try {
+            TitleMsgMap titleMsgMap = ConfigHandler.getConfigPath().getTitleProp().get(groupName);
+            if (titleMsgMap == null) {
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"title-group: " + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + groupName + "\" in CorePlus/title_messages.yml.");
+                return;
+            }
+            // String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut
+            UtilsHandler.getLang().sendTitleMsg(player, split[0], split[1],
+                    titleMsgMap.getFadeIn(), titleMsgMap.getStay(), titleMsgMap.getFadeOut());
+        } catch (Exception ex) {
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"title-group: " + input + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+            UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+        }
     }
 
     @Override
@@ -764,20 +820,21 @@ public class CustomCommands implements CommandInterface {
             // sound: -s:Sound, -p:Pitch -v:Volume -t:Times -i:Interval
             String[] args = input.split("\\s+");
             for (String arg : args) {
+                arg = arg.toUpperCase();
                 if (arg.startsWith("-S:")) {
-                    soundMap.setType(Sound.valueOf(arg.replace("-s:", "")));
+                    soundMap.setType(Sound.valueOf(arg.replace("-S:", "")));
                     continue;
                 }
-                if (arg.startsWith("-p:")) {
-                    soundMap.setPitch(Integer.parseInt(arg.replace("-p:", "")));
+                if (arg.startsWith("-P:")) {
+                    soundMap.setPitch(Integer.parseInt(arg.replace("-P:", "")));
                     continue;
                 }
-                if (arg.startsWith("-v:")) {
-                    soundMap.setVolume(Integer.parseInt(arg.replace("-v:", "")));
+                if (arg.startsWith("-V:")) {
+                    soundMap.setVolume(Integer.parseInt(arg.replace("-V:", "")));
                     continue;
                 }
-                if (arg.startsWith("-i:")) {
-                    soundMap.setInterval(Integer.parseInt(arg.replace("-i:", "")));
+                if (arg.startsWith("-I:")) {
+                    soundMap.setInterval(Integer.parseInt(arg.replace("-I:", "")));
                 }
             }
             if (soundMap.getType() == null) {
@@ -794,20 +851,20 @@ public class CustomCommands implements CommandInterface {
     }
 
     @Override
-    public void dispatchSoundGroupCmd(String pluginName, Player player, String group) {
-        if (group == null)
+    public void dispatchSoundGroupCmd(String pluginName, Player player, String input) {
+        if (input == null)
             return;
         try {
             Location loc = player.getLocation();
-            SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(group);
+            SoundMap soundMap = ConfigHandler.getConfigPath().getSoundProp().get(input);
             if (soundMap == null) {
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"sound-custom: " + group + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/sound.yml.");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"sound-group: " + input + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + input + "\" in CorePlus/sound.yml.");
                 return;
             }
             SoundUtils.sendSound(player, loc, soundMap);
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound-custom: " + group + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"sound-group: " + input + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }
@@ -819,57 +876,60 @@ public class CustomCommands implements CommandInterface {
             return;
         try {
             ParticleMap particleMap = new ParticleMap();
-            // particle: -p:Particle, -a:Amount -t:Times -i:Interval -x:OffsetX -y:OffsetY -z:OffsetZ -e:Extra -m:Material -c:Color -rgb:0,0,0
-            String[] args = input.split("\\s+");
+            // particle: <particle> -a:Amount -t:Times -i:Interval -x:OffsetX -y:OffsetY -z:OffsetZ -e:Extra -m:Material -c:Color -rgb:0,0,0
+            String value = input;
+            String[] args = value.split("\\s+");
             for (String arg : args) {
-                if (arg.startsWith("-p:")) {
-                    particleMap.setType(Particle.valueOf(arg.replace("-p:", "")));
+                arg = arg.toUpperCase();
+                if (arg.startsWith("-A:")) {
+                    particleMap.setAmount(Integer.parseInt(arg.replace("-A:", "")));
+                    value = value.replace("-A:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-a:")) {
-                    particleMap.setAmount(Integer.parseInt(arg.replace("-a:", "")));
+                if (arg.startsWith("-T:")) {
+                    particleMap.setTimes(Integer.parseInt(arg.replace("-T:", "")));
+                    value = value.replace("-T:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-t:")) {
-                    particleMap.setTimes(Integer.parseInt(arg.replace("-t:", "")));
+                if (arg.startsWith("-X:")) {
+                    particleMap.setOffsetX(Integer.parseInt(arg.replace("-X:", "")));
+                    value = value.replace("-X:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-x:")) {
-                    particleMap.setOffsetX(Integer.parseInt(arg.replace("-x:", "")));
+                if (arg.startsWith("-Y:")) {
+                    particleMap.setOffsetY(Integer.parseInt(arg.replace("-Y:", "")));
+                    value = value.replace("-Y:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-y:")) {
-                    particleMap.setOffsetY(Integer.parseInt(arg.replace("-y:", "")));
+                if (arg.startsWith("-Z:")) {
+                    particleMap.setOffsetZ(Integer.parseInt(arg.replace("-Z:", "")));
+                    value = value.replace("-Z:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-z:")) {
-                    particleMap.setOffsetZ(Integer.parseInt(arg.replace("-z:", "")));
+                if (arg.startsWith("-E:")) {
+                    particleMap.setExtra(Integer.parseInt(arg.replace("-E:", "")));
+                    value = value.replace("-E:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-e:")) {
-                    particleMap.setExtra(Integer.parseInt(arg.replace("-e:", "")));
+                if (arg.startsWith("-M:")) {
+                    particleMap.setMaterial(Material.getMaterial(arg.replace("-M:", "").toUpperCase()));
+                    value = value.replace("-M:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-m:")) {
-                    particleMap.setMaterial(Material.getMaterial(arg.replace("-m:", "")));
+                if (arg.startsWith("-C:")) {
+                    particleMap.setColorType(arg.replace("-C:", "").toUpperCase());
+                    value = value.replace("-C:" + arg, "");
                     continue;
                 }
-                if (arg.startsWith("-c:")) {
-                    particleMap.setColorType(arg.replace("-c:", ""));
-                    continue;
-                }
-                if (arg.startsWith("-r:")) {
-                    particleMap.setColorR(Integer.parseInt(arg.replace("-r:", "")));
-                    continue;
-                }
-                if (arg.startsWith("-g:")) {
-                    particleMap.setColorG(Integer.parseInt(arg.replace("-g:", "")));
-                    continue;
-                }
-                if (arg.startsWith("-b:")) {
-                    particleMap.setColorB(Integer.parseInt(arg.replace("-b:", "")));
+                if (arg.startsWith("-RGB:")) {
+                    String[] rgb = arg.replace("-RGB:", "").split(",");
+                    particleMap.setColorR(Integer.parseInt(rgb[0]));
+                    particleMap.setColorR(Integer.parseInt(rgb[1]));
+                    particleMap.setColorR(Integer.parseInt(rgb[2]));
+                    value = value.replace("-RGB:" + arg, "");
                 }
             }
+            particleMap.setType(Particle.valueOf(value));
             ParticleUtils.spawnParticle(loc, particleMap);
         } catch (Exception ex) {
             UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
@@ -885,13 +945,13 @@ public class CustomCommands implements CommandInterface {
                 return;
             ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(group);
             if (particleMap == null) {
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"particle-custom: " + group + "\"");
+                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while executing command: \"particle-group: " + group + "\"");
                 UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/particle.yml.");
                 return;
             }
             ParticleUtils.spawnParticle(loc, particleMap);
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle-custom: " + group + "\"");
+            UtilsHandler.getLang().sendErrorMsg(pluginName, "Not correct format of command: \"particle-group: " + group + "\"");
             UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
         }

@@ -7,16 +7,16 @@ public class ParticleMap {
 
     private String groupName;
     private Particle type;
-    private int amount;
-    private int times;
-    private int interval;
-    private double offsetX;
-    private double offsetY;
-    private double offsetZ;
-    private double extra;
-    private int colorR;
-    private int colorG;
-    private int colorB;
+    private int amount = 1;
+    private int times = 1;
+    private int interval = 20;
+    private double offsetX = 0;
+    private double offsetY = 0;
+    private double offsetZ = 0;
+    private double extra = 0;
+    private int colorR = 255;
+    private int colorG = 255;
+    private int colorB = 255;
     private String colorType;
     private Material material;
 

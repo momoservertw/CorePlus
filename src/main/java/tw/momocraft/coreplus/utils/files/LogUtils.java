@@ -11,7 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Logger {
+public class LogUtils {
 
     public void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip) {
         createLog(pluginName, file, newFile, zip);

@@ -124,7 +124,7 @@ public interface CommandInterface {
 
     /**
      * Writing message to file from CorePlus config.yml.
-     * Format: "log-custom: Group, Message"
+     * Format: "log-group: Group, Message"
      *
      * @param pluginName the executing plugin name.
      * @param input      the input group name and message.
@@ -202,7 +202,7 @@ public interface CommandInterface {
 
     /**
      * Sending the sound from CorePlus config.yml to player.
-     * Format: "sound-custom: Group"
+     * Format: "sound-group: Group"
      *
      * @param pluginName the executing plugin name.
      * @param player     the target player.
@@ -222,7 +222,7 @@ public interface CommandInterface {
 
     /**
      * Showing the particle from CorePlus config.yml at a location.
-     * Format: "particle-custom: Group"
+     * Format: "particle-group: Group"
      *
      * @param pluginName the executing plugin name.
      * @param loc        the target Location.

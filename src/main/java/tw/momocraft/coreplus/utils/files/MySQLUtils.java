@@ -1,6 +1,6 @@
 package tw.momocraft.coreplus.utils.files;
 
-import tw.momocraft.coreplus.api.MySQLInterface;
+import tw.momocraft.coreplus.api.FileInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MySQLUtils implements MySQLInterface {
+public class MySQLUtils {
 
     static Connection PlayerdataPlus;
     static Connection HotkeyPlus;
@@ -17,8 +17,6 @@ public class MySQLUtils implements MySQLInterface {
     static Connection MySQLPlayerDataBridge;
     static Connection MyCommand;
 
-
-    @Override
     public boolean connect(String pluginName, String prefix, String databaseType) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -79,7 +77,6 @@ public class MySQLUtils implements MySQLInterface {
         return true;
     }
 
-    @Override
     public boolean isConnect(String pluginName, String databaseType) {
         try {
             switch (databaseType) {
@@ -119,7 +116,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public boolean disabledConnect(String pluginName, String prefix, String databaseType) {
         try {
             switch (databaseType) {
@@ -212,7 +208,6 @@ public class MySQLUtils implements MySQLInterface {
     //                    + "EMAIL VARCHAR(45) NOT NULL,"
     //                    + "DEPT varchar(45) NOT NULL"
     //                    + )";
-    @Override
     public void createTables(String pluginName, String databaseType, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"CREATE TABLE IF NOT EXISTS " + table + " (\"");
         for (String column : columns) {
@@ -228,7 +223,6 @@ public class MySQLUtils implements MySQLInterface {
     //                    + "EMAIL VARCHAR(45) NOT NULL,"
     //                    + "DEPT varchar(45) NOT NULL"
     //                    + )";
-    @Override
     public void addColumns(String pluginName, String databaseType, String table, List<String> columns) {
         try {
             StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " ADD (\"");
@@ -243,7 +237,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public void executeSQL(String pluginName, String databaseType, String sql) {
         try {
             getStatement(pluginName, databaseType, sql).executeUpdate();
@@ -254,7 +247,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public Map<String, Map<String, String>> getValues(String pluginName, String databaseType, String table, String key, List<String> variables) {
         StringBuilder sqlBuilder = new StringBuilder("\"SELECT ");
         for (String variable : variables) {
@@ -282,7 +274,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public Map<String, String> getValueMap(String pluginName, String databaseType, String table, String keyColumn, String valueColumn) {
         // SELECT
         String sql = "SELECT " + keyColumn + ", " + valueColumn + " FROM " + table + "\"";
@@ -301,7 +292,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public Map<Object, Object> getValueMap(String pluginName, String databaseType, String table, String keyColumn, String valueColumn, String keyType, String valueType) {
         // SELECT column1, column2 FROM table
         String sql = "SELECT " + keyColumn + ", " + valueColumn + " FROM " + table + "\"";
@@ -370,7 +360,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public String getValue(String pluginName, String databaseType, String table, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
@@ -389,7 +378,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public String getValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "WHERE " + whereKey + " = '" + whereValue + "'\"";
         try {
@@ -408,7 +396,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public void setValue(String pluginName, String databaseType, String table, String column, String columnValue) {
         String sql = "\"UPDATE " + table + " SET " + column + "='" + columnValue + "'\"";
         try {
@@ -433,7 +420,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public ResultSet getResultSet(String pluginName, String databaseType, String sql) {
         try {
             return getStatement(pluginName, databaseType, sql).executeQuery();
@@ -445,7 +431,6 @@ public class MySQLUtils implements MySQLInterface {
         }
     }
 
-    @Override
     public ResultSet getResultSet(String pluginName, String databaseType, String table, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
