@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.economy;
+package tw.momocraft.coreplus.utils.player.economy;
 
 import me.xanium.gemseconomy.api.GemsEconomyAPI;
 import me.xanium.gemseconomy.currency.Currency;

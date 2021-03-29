@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.economy;
+package tw.momocraft.coreplus.utils.player.economy;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.economy;
+package tw.momocraft.coreplus.utils.player.economy;
 
 public class PriceMap {
     private String priceType;

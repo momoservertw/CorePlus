@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.permission;
+package tw.momocraft.coreplus.utils.player.permission;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedPermissionData;
