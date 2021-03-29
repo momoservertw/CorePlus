@@ -194,14 +194,14 @@ public class Utils implements UtilsInterface {
                     }
                 }
             } else {
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
                 return false;
             }
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
         return false;
     }
@@ -272,9 +272,9 @@ public class Utils implements UtilsInterface {
                 return true;
             }
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + input + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + input + "\"");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
         return false;
     }
@@ -308,9 +308,9 @@ public class Utils implements UtilsInterface {
                 return !checkCompare(operator, Double.parseDouble(value1), Double.parseDouble(value2));
             }
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + operator + value2 + "\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getLang().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + operator + value2 + "\"");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
         if (operator.matches("[=]+")) {
             return value1.equals(value2);
@@ -511,16 +511,16 @@ public class Utils implements UtilsInterface {
         try {
             list = ConfigHandler.getConfigPath().getGroupProp().get(returnType).get(group);
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName,
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName,
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "Can not find the type name in groups.yml: \"" + returnType + "\"");
             return null;
         }
         if (list == null && !group.equals("all")) {
-            UtilsHandler.getLang().sendErrorMsg(pluginName,
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
-            UtilsHandler.getLang().sendErrorMsg(pluginName,
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "Can not find the group name in groups.yml: \"" + returnType + "\"");
             return null;
         }
@@ -552,8 +552,8 @@ public class Utils implements UtilsInterface {
                         if (target == null)
                             target = entity.getType().name();
                     } else {
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
-                        UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
                         return null;
                     }
                     if (input.contains(target))

@@ -120,7 +120,7 @@ public interface CommandInterface {
      * @param pluginName the executing plugin name.
      * @param input      the input message.
      */
-    void dispatchLogCmd(String pluginName, String input);
+    void dispatchLog(String pluginName, String input);
 
     /**
      * Writing message to file from CorePlus config.yml.
@@ -129,7 +129,7 @@ public interface CommandInterface {
      * @param pluginName the executing plugin name.
      * @param input      the input group name and message.
      */
-    void dispatchLogGroupCmd(String pluginName, String input);
+    void dispatchLogGroup(String pluginName, String input);
 
     /**
      * Executing a console command.
@@ -188,7 +188,7 @@ public interface CommandInterface {
      * @param pluginName the executing plugin name.
      * @param input      the input command.
      */
-    void dispatchSwitchCmd(String pluginName, String input);
+    void dispatchSwitch(String pluginName, String input);
 
     /**
      * Sending a sound to player.
@@ -198,7 +198,7 @@ public interface CommandInterface {
      * @param player     the target player.
      * @param input      the input command.
      */
-    void dispatchSoundCmd(String pluginName, Player player, String input);
+    void dispatchSound(String pluginName, Player player, String input);
 
     /**
      * Sending the sound from CorePlus config.yml to player.
@@ -208,7 +208,7 @@ public interface CommandInterface {
      * @param player     the target player.
      * @param input      the group name.
      */
-    void dispatchSoundGroupCmd(String pluginName, Player player, String input);
+    void dispatchSoundGroup(String pluginName, Player player, String input);
 
     /**
      * Showing a particle at a location.
@@ -218,7 +218,7 @@ public interface CommandInterface {
      * @param loc        the target Location.
      * @param input      the input value.
      */
-    void dispatchParticleCmd(String pluginName, Location loc, String input);
+    void dispatchParticle(String pluginName, Location loc, String input);
 
     /**
      * Showing the particle from CorePlus config.yml at a location.
@@ -228,5 +228,5 @@ public interface CommandInterface {
      * @param loc        the target Location.
      * @param input      the group name.
      */
-    void dispatchParticleGroupCmd(String pluginName, Location loc, String input);
+    void dispatchParticleGroup(String pluginName, Location loc, String input);
 }

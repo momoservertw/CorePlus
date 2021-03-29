@@ -17,13 +17,13 @@ public class CommandOnlineMPDB implements Listener {
     private void onSyncCompleteEvent(SyncCompleteEvent e) {
         Player player = e.getPlayer();
         String playerName = player.getName();
-        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCustomCommands().getOnlineCmdTable();
+        Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCommandManager().getOnlineCmdTable();
         if (!waitingTable.rowKeySet().contains(playerName)) {
             return;
         }
         for (Pair<Long, Integer> waitingPair : waitingTable.row(playerName).keySet()) {
             if (waitingPair.getKey() == -1000 || System.currentTimeMillis() - waitingPair.getValue() < waitingPair.getKey()) {
-                UtilsHandler.getCustomCommands().executeCmd(ConfigHandler.getPluginPrefix(), player,
+                UtilsHandler.getCommandManager().executeCmd(ConfigHandler.getPluginPrefix(), player,
                         waitingTable.get(playerName, waitingPair), true);
             }
             waitingTable.remove(playerName, waitingPair);

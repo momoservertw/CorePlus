@@ -21,4 +21,5 @@ public interface EffectInterface {
      * @param type the type of sound. Can be custom or vanilla type.
      */
     void sendSound(String pluginName, Player player, Location loc, String type);
+
 }

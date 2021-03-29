@@ -1,8 +1,8 @@
 package tw.momocraft.coreplus.api;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import tw.momocraft.coreplus.utils.conditions.BlocksMap;
-import tw.momocraft.coreplus.utils.conditions.LocationMap;
+import tw.momocraft.coreplus.utils.condition.BlocksMap;
+import tw.momocraft.coreplus.utils.condition.LocationMap;
 
 import java.util.List;
 import java.util.Map;

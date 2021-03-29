@@ -1,7 +1,7 @@
 package tw.momocraft.coreplus.utils;
 
 import org.bukkit.command.CommandSender;
-import tw.momocraft.coreplus.api.UpdateInterface;
+import tw.momocraft.coreplus.api.UpdaterInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -10,16 +10,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Updater implements UpdateInterface {
+public class Updater implements UpdaterInterface {
 
     @Override
     public void check(String pluginName, String prefix, CommandSender sender, String plugin, String ver, boolean auto) {
-        if (auto && !ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates")) {
+        if (auto && !ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates"))
             return;
-        }
         if (prefix == null)
             prefix = "";
-        String id = "";
+        String id;
         switch (plugin) {
             case "BarrierPlus":
                 id = "70510";
@@ -46,23 +45,23 @@ public class Updater implements UpdateInterface {
                 id = "86532";
                 break;
             default:
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not check the update: " + plugin);
-                UtilsHandler.getLang().sendErrorMsg(pluginName, "Please update CorePlus.");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not check the update: " + plugin);
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please update CorePlus.");
                 return;
         }
         String onlineVer = searching(sender, prefix, plugin, ver, id);
         if (onlineVer == null) {
             return;
         } else if (onlineVer.equals("latest")) {
-            UtilsHandler.getLang().sendMsg(prefix, sender, "&fYou are up to date!");
+            UtilsHandler.getMsg().sendMsg(prefix, sender, "&fYou are up to date!");
         } else {
-            UtilsHandler.getLang().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
-            UtilsHandler.getLang().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
+            UtilsHandler.getMsg().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
+            UtilsHandler.getMsg().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
         }
     }
 
     private String searching(CommandSender sender, String prefix, String plugin, String ver, String id) {
-        UtilsHandler.getLang().sendMsg(prefix, sender, "Checking updates...");
+        UtilsHandler.getMsg().sendMsg(prefix, sender, "Checking updates...");
         String onlineVer;
         try {
             URLConnection connection = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + id + "?_=" + System.currentTimeMillis()).openConnection();
@@ -77,20 +76,17 @@ public class Updater implements UpdateInterface {
                     .replace("-RELEASE", "");
             String[] verSplit = ver.split("\\.");
             String[] onlineVerSplit = onlineVer.split("\\.");
-            if (Integer.parseInt(verSplit[0]) > Integer.parseInt(onlineVerSplit[0])) {
+            if (Integer.parseInt(verSplit[0]) > Integer.parseInt(onlineVerSplit[0]))
                 return "latest";
-            }
-            if (Integer.parseInt(verSplit[0]) == Integer.parseInt(onlineVerSplit[0]) && Integer.parseInt(verSplit[1]) > Integer.parseInt(onlineVerSplit[1])) {
+            if (Integer.parseInt(verSplit[0]) == Integer.parseInt(onlineVerSplit[0]) && Integer.parseInt(verSplit[1]) > Integer.parseInt(onlineVerSplit[1]))
                 return "latest";
-            }
             if (Integer.parseInt(verSplit[0]) == Integer.parseInt(onlineVerSplit[0]) &&
                     Integer.parseInt(verSplit[1]) == Integer.parseInt(onlineVerSplit[1]) &&
-                    Integer.parseInt(verSplit[2]) >= Integer.parseInt(onlineVerSplit[2])) {
+                    Integer.parseInt(verSplit[2]) >= Integer.parseInt(onlineVerSplit[2]))
                 return "latest";
-            }
             return onlineVer;
         } catch (Exception ex) {
-            UtilsHandler.getLang().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
+            UtilsHandler.getMsg().sendMsg(prefix, sender, "&cFailed to check new updates for " + plugin + ".");
             return null;
         }
     }

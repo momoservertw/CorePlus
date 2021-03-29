@@ -32,15 +32,15 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getFileManager();
     }
 
-    public static LanguageInterface getLang() {
-        return CorePlus.getInstance().getLangManager();
+    public static MessageInterface getLang() {
+        return CorePlus.getInstance().getMsgManager();
     }
 
     public static PlayerInterface getPlayer() {
         return CorePlus.getInstance().getPlayerManager();
     }
 
-    public static UpdateInterface getUpdate() {
+    public static UpdaterInterface getUpdate() {
         return CorePlus.getInstance().getUpdateManager();
     }
 

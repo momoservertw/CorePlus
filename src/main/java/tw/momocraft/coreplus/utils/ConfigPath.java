@@ -11,11 +11,15 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.ConfigInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.conditions.BlocksMap;
-import tw.momocraft.coreplus.utils.conditions.LocationMap;
-import tw.momocraft.coreplus.utils.customcommands.*;
-import tw.momocraft.coreplus.utils.files.ConfigBuilderMap;
-import tw.momocraft.coreplus.utils.files.MySQLMap;
+import tw.momocraft.coreplus.utils.condition.BlocksMap;
+import tw.momocraft.coreplus.utils.condition.LocationMap;
+import tw.momocraft.coreplus.utils.effect.ParticleMap;
+import tw.momocraft.coreplus.utils.effect.SoundMap;
+import tw.momocraft.coreplus.utils.file.ConfigBuilderMap;
+import tw.momocraft.coreplus.utils.file.MySQLMap;
+import tw.momocraft.coreplus.utils.message.ActionBarMap;
+import tw.momocraft.coreplus.utils.message.LogMap;
+import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 
 import java.io.File;
 import java.util.*;
@@ -93,7 +97,7 @@ public class ConfigPath implements ConfigInterface {
     private void sendSetupMsg() {
         List<String> list = new ArrayList<>(CorePlus.getInstance().getDescription().getDepend());
         list.addAll(CorePlus.getInstance().getDescription().getSoftDepend());
-        UtilsHandler.getLang().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
+        UtilsHandler.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
 
         /*
         list = Arrays.asList((
@@ -110,7 +114,7 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
-        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
+        pvp = Boolean.parseBoolean(UtilsHandler.getProperties().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
 
         vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
         vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
@@ -225,12 +229,10 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setCommands() {
         ConfigurationSection config = ConfigHandler.getConfig("commands.yml").getConfigurationSection("Custom-Commands");
-        if (config == null) {
+        if (config == null)
             return;
-        }
-        for (String group : config.getKeys(false)) {
+        for (String group : config.getKeys(false))
             cmdProp.put(group, ConfigHandler.getConfig("commands.yml").getStringList("Custom-Commands." + group));
-        }
     }
 
     //  ============================================== //
@@ -238,26 +240,22 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setGroups() {
         ConfigurationSection customGroupConfig = ConfigHandler.getConfig("groups.yml").getConfigurationSection("");
-        if (customGroupConfig == null) {
+        if (customGroupConfig == null)
             return;
-        }
         List<String> groupList;
         Map<String, List<String>> groupMap;
         ConfigurationSection groupConfig;
         for (String type : customGroupConfig.getKeys(false)) {
-            if (type.equals("Config-Version")) {
+            if (type.equals("Config-Version"))
                 continue;
-            }
             groupConfig = ConfigHandler.getConfig("groups.yml").getConfigurationSection(type);
-            if (groupConfig == null) {
+            if (groupConfig == null)
                 return;
-            }
             groupMap = new HashMap<>();
             for (String group : groupConfig.getKeys(false)) {
                 groupList = ConfigHandler.getConfig("groups.yml").getStringList(type + "." + group);
-                if (groupList.isEmpty()) {
+                if (groupList.isEmpty())
                     continue;
-                }
                 groupMap.put(group, groupList);
             }
             groupProp.put(type, groupMap);
@@ -275,16 +273,15 @@ public class ConfigPath implements ConfigInterface {
         LogMap logMap;
         String path;
         String name;
-        for (String group : config.getKeys(false)) {
-            if (ConfigHandler.getConfig("logs.yml").getConfigurationSection("Logs." + group) == null) {
+        for (String groupName : config.getKeys(false)) {
+            if (ConfigHandler.getConfig("logs.yml").getConfigurationSection("Logs." + groupName) == null)
                 continue;
-            }
             logMap = new LogMap();
-            path = ConfigHandler.getConfig("logs.yml").getString("Logs." + group + ".Path");
-            name = ConfigHandler.getConfig("logs.yml").getString("Logs." + group + ".Name");
-            if (path == null || name == null) {
+            logMap.setGroupName(groupName);
+            path = ConfigHandler.getConfig("logs.yml").getString("Logs." + groupName + ".Path");
+            name = ConfigHandler.getConfig("logs.yml").getString("Logs." + groupName + ".Name");
+            if (path == null || name == null)
                 continue;
-            }
             if (path.startsWith("plugins//")) {
                 path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
             } else if (path.startsWith("server//")) {
@@ -292,10 +289,10 @@ public class ConfigPath implements ConfigInterface {
                 path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
             }
             logMap.setFile(new File(path, name));
-            logMap.setTime(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + group + ".Time", true));
-            logMap.setNewFile(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + group + ".New-File", false));
-            logMap.setZip(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + group + ".Zip", false));
-            logProp.put(group, logMap);
+            logMap.setTime(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + groupName + ".Time", true));
+            logMap.setNewFile(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + groupName + ".New-File", false));
+            logMap.setZip(ConfigHandler.getConfig("logs.yml").getBoolean("Logs." + groupName + ".Zip", false));
+            logProp.put(groupName, logMap);
         }
     }
 
@@ -304,12 +301,10 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setCondition() {
         ConfigurationSection config = ConfigHandler.getConfig("condition.yml").getConfigurationSection("Conditions");
-        if (config == null) {
+        if (config == null)
             return;
-        }
-        for (String group : config.getKeys(false)) {
+        for (String group : config.getKeys(false))
             conditionProp.put(group, ConfigHandler.getConfig("condition.yml").getStringList("Conditions." + group));
-        }
     }
 
     //  ============================================== //
@@ -322,19 +317,16 @@ public class ConfigPath implements ConfigInterface {
         }
         LocationMap locMap;
         ConfigurationSection areaConfig;
-        for (String group : locConfig.getKeys(false)) {
-            if (ConfigHandler.getConfig("location.yml").getConfigurationSection("Location." + group) == null) {
-                continue;
-            }
+        for (String groupName : locConfig.getKeys(false)) {
             locMap = new LocationMap();
-            areaConfig = ConfigHandler.getConfig("location.yml").getConfigurationSection("Location." + group + ".Area");
-            locMap.setWorlds(ConfigHandler.getConfig("location.yml").getStringList("Location." + group + ".Worlds"));
+            locMap.setGroupName(groupName);
+            areaConfig = ConfigHandler.getConfig("location.yml").getConfigurationSection("Location." + groupName + ".Area");
+            locMap.setWorlds(ConfigHandler.getConfig("location.yml").getStringList("Location." + groupName + ".Worlds"));
             if (areaConfig != null) {
-                for (String area : areaConfig.getKeys(false)) {
-                    locMap.addCord(group, area, ConfigHandler.getConfig("location.yml").getString("Location." + group + ".Area." + area));
-                }
+                for (String area : areaConfig.getKeys(false))
+                    locMap.addCord(groupName, area, ConfigHandler.getConfig("location.yml").getString("Location." + groupName + ".Area." + area));
             }
-            locProp.put(group, locMap);
+            locProp.put(groupName, locMap);
         }
     }
 
@@ -343,28 +335,24 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setBlocks() {
         ConfigurationSection blocksConfig = ConfigHandler.getConfig("blocks.yml").getConfigurationSection("Blocks");
-        if (blocksConfig == null) {
+        if (blocksConfig == null)
             return;
-        }
         BlocksMap blocksMap;
-        for (String group : blocksConfig.getKeys(false)) {
-            if (ConfigHandler.getConfig("blocks.yml").getConfigurationSection("Blocks." + group) == null) {
-                return;
-            }
+        for (String groupName : blocksConfig.getKeys(false)) {
             blocksMap = new BlocksMap();
-            blocksMap.setGroupName(group);
+            blocksMap.setGroupName(groupName);
             blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPluginName(),
-                    ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + group + ".Types"), "Materials"));
-            blocksMap.setIgnoreList(ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + group + ".Ignore"));
-            int r = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.R");
+                    ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Types"), "Materials"));
+            blocksMap.setIgnoreList(ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Ignore"));
+            int r = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.R");
             blocksMap.setR(r);
-            blocksMap.setX(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.X", r));
-            int y = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.Y", r);
+            blocksMap.setX(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.X", r));
+            int y = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.Y", r);
             blocksMap.setY(y);
-            blocksMap.setZ(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.Z", r));
-            blocksMap.setH(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + group + ".Search.Values.H"));
-            blocksMap.setMode(ConfigHandler.getConfig("blocks.yml").getString("Blocks." + group + ".Search.Mode", "Cuboid"));
-            blockProp.put(group, blocksMap);
+            blocksMap.setZ(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.Z", r));
+            blocksMap.setH(ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.H"));
+            blocksMap.setMode(ConfigHandler.getConfig("blocks.yml").getString("Blocks." + groupName + ".Search.Mode", "Cuboid"));
+            blockProp.put(groupName, blocksMap);
         }
     }
 
@@ -375,24 +363,22 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection soundConfig = ConfigHandler.getConfig("sounds.yml").getConfigurationSection("Sounds");
         if (soundConfig != null) {
             SoundMap soundMap;
-            for (String group : soundConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("sounds.yml").getConfigurationSection("Sounds." + group) == null) {
-                    continue;
-                }
+            for (String groupName : soundConfig.getKeys(false)) {
                 soundMap = new SoundMap();
+                soundMap.setGroupName(groupName);
                 try {
-                    soundMap.setType(Sound.valueOf(ConfigHandler.getConfig("sounds.yml").getString("Sounds." + group + ".Type")));
+                    soundMap.setType(Sound.valueOf(ConfigHandler.getConfig("sounds.yml").getString("Sounds." + groupName + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown sound type: " + group);
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown sound type: " + groupName);
                     continue;
                 }
-                soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Volume", 1));
-                soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Pitch", 1));
-                soundMap.setTimes(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Run.Times", 1));
-                soundMap.setInterval(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Run.Interval", 0));
-                soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Volume", 0));
-                soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + group + ".Pitch", 0));
-                soundProp.put(group, soundMap);
+                soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 1));
+                soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Pitch", 1));
+                soundMap.setTimes(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Run.Times", 1));
+                soundMap.setInterval(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Run.Interval", 0));
+                soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 0));
+                soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Pitch", 0));
+                soundProp.put(groupName, soundMap);
             }
         }
     }
@@ -404,39 +390,36 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection particleConfig = ConfigHandler.getConfig("particles.yml").getConfigurationSection("Particles");
         if (particleConfig != null) {
             ParticleMap particleMap;
-            for (String group : particleConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("particles.yml").getConfigurationSection("Particles." + group) == null) {
-                    continue;
-                }
+            for (String groupName : particleConfig.getKeys(false)) {
                 particleMap = new ParticleMap();
+                particleMap.setGroupName(groupName);
                 try {
-                    particleMap.setType(Particle.valueOf(ConfigHandler.getConfig("particles.yml").getString("Particles." + group + ".Type")));
+                    particleMap.setType(Particle.valueOf(ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Particle type of particle: " + group + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Particle type of particle: " + groupName + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                     continue;
                 }
-                particleMap.setGroupName(group);
-                particleMap.setAmount(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Amount", 1));
-                particleMap.setTimes(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Run.Times", 1));
-                particleMap.setInterval(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Run.Interval", 20));
-                particleMap.setOffsetX(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + group + ".Offset.X", 0));
-                particleMap.setOffsetY(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + group + ".Offset.Y", 0));
-                particleMap.setOffsetZ(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + group + ".Offset.Z", 0));
-                particleMap.setExtra(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + group + ".Speed", 0));
-                particleMap.setColorR(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Color.R", 0));
-                particleMap.setColorG(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Color.G", 0));
-                particleMap.setColorB(ConfigHandler.getConfig("particles.yml").getInt("Particles." + group + ".Color.B", 0));
-                particleMap.setColorType(ConfigHandler.getConfig("particles.yml").getString("Particles." + group + ".Color.Type"));
+                particleMap.setAmount(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Amount", 1));
+                particleMap.setTimes(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Run.Times", 1));
+                particleMap.setInterval(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Run.Interval", 20));
+                particleMap.setOffsetX(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + groupName + ".Offset.X", 0));
+                particleMap.setOffsetY(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + groupName + ".Offset.Y", 0));
+                particleMap.setOffsetZ(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + groupName + ".Offset.Z", 0));
+                particleMap.setExtra(ConfigHandler.getConfig("particles.yml").getDouble("Particles." + groupName + ".Speed", 0));
+                particleMap.setColorR(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Color.R", 0));
+                particleMap.setColorG(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Color.G", 0));
+                particleMap.setColorB(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Color.B", 0));
+                particleMap.setColorType(ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Color.Type"));
                 try {
                     particleMap.setMaterial(Material.getMaterial(
-                            ConfigHandler.getConfig("particles.yml").getString("Particles." + group + ".Material", "STONE")));
+                            ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Material", "STONE")));
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Material type of particle: " + group + "\"");
-                    UtilsHandler.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Material type of particle: " + groupName + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                     continue;
                 }
-                particleProp.put(group, particleMap);
+                particleProp.put(groupName, particleMap);
             }
         }
     }
@@ -448,15 +431,12 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection particleConfig = ConfigHandler.getConfig("action_bars.yml").getConfigurationSection("Action-Bars");
         if (particleConfig != null) {
             ActionBarMap actionBarMap;
-            for (String group : particleConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("action_bars.yml").getConfigurationSection("Action-Bars." + group) == null) {
-                    continue;
-                }
+            for (String groupName : particleConfig.getKeys(false)) {
                 actionBarMap = new ActionBarMap();
-                actionBarMap.setGroupName(group);
-                actionBarMap.setTimes(ConfigHandler.getConfig("action_bars.yml").getInt("Action-Bars." + group + ".Times", 1));
-                actionBarMap.setInterval(ConfigHandler.getConfig("action_bars.yml").getInt("Action-Bars." + group + ".Interval", 20));
-                actionProp.put(group, actionBarMap);
+                actionBarMap.setGroupName(groupName);
+                actionBarMap.setTimes(ConfigHandler.getConfig("action_bars.yml").getInt("Action-Bars." + groupName + ".Times", 1));
+                actionBarMap.setInterval(ConfigHandler.getConfig("action_bars.yml").getInt("Action-Bars." + groupName + ".Interval", 20));
+                actionProp.put(groupName, actionBarMap);
             }
         }
     }
@@ -468,16 +448,13 @@ public class ConfigPath implements ConfigInterface {
         ConfigurationSection particleConfig = ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages");
         if (particleConfig != null) {
             TitleMsgMap titleMessageMap;
-            for (String group : particleConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages." + group) == null) {
-                    continue;
-                }
+            for (String groupName : particleConfig.getKeys(false)) {
                 titleMessageMap = new TitleMsgMap();
-                titleMessageMap.setGroupName(group);
-                titleMessageMap.setStay(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + group + ".Stay", 70));
-                titleMessageMap.setFadeIn(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + group + ".FadeIn", 10));
-                titleMessageMap.setFadeOut(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + group + ".FadeOut", 20));
-                titleProp.put(group, titleMessageMap);
+                titleMessageMap.setGroupName(groupName);
+                titleMessageMap.setStay(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".Stay", 70));
+                titleMessageMap.setFadeIn(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".FadeIn", 10));
+                titleMessageMap.setFadeOut(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".FadeOut", 20));
+                titleProp.put(groupName, titleMessageMap);
             }
         }
     }
@@ -498,21 +475,21 @@ public class ConfigPath implements ConfigInterface {
                 if (groupConfig == null)
                     continue;
                 configBuilderMapList = new ArrayList<>();
-                for (String group : groupConfig.getKeys(false)) {
+                for (String groupName : groupConfig.getKeys(false)) {
                     configBuilderMap = new ConfigBuilderMap();
-                    configBuilderMap.setGroup(group);
+                    configBuilderMap.setGroupName(groupName);
                     if (type.equals("Entities")) {
                         configBuilderMap.setType("entity");
                     } else if (type.equals("Materials")) {
                         configBuilderMap.setType("material");
                     }
-                    configBuilderMap.setTitle("  " + group + ":");
+                    configBuilderMap.setTitle("  " + groupName + ":");
                     configBuilderMap.setRowLine(true);
                     configBuilderMap.setValue("    - %value%");
                     configBuilderMap.setSet(new HashSet<>(
-                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".List")));
+                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + groupName + ".List")));
                     configBuilderMap.setIgnoreSet(new HashSet<>(
-                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + group + ".Ignore-List")));
+                            ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Groups." + type + "." + groupName + ".Ignore-List")));
                     configBuilderMapList.add(configBuilderMap);
                 }
                 configBuilderGroupProp.put(type, configBuilderMapList);
@@ -523,30 +500,30 @@ public class ConfigPath implements ConfigInterface {
             ConfigBuilderMap configBuilderMap;
             ConfigurationSection groupConfig;
             String type;
-            for (String group : configCustom.getKeys(false)) {
-                groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Custom." + group);
+            for (String groupName : configCustom.getKeys(false)) {
+                groupConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Config-Builder.Custom." + groupName);
                 if (groupConfig == null)
                     continue;
-                type = ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Type");
+                type = ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + groupName + ".Type");
                 if (type == null)
                     continue;
                 configBuilderMap = new ConfigBuilderMap();
-                configBuilderMap.setGroup(group);
+                configBuilderMap.setGroupName(groupName);
                 configBuilderMap.setType(type);
                 configBuilderMap.setTitle(
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Title", group));
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + groupName + ".Format.Title", groupName));
                 configBuilderMap.setRowLine(
-                        ConfigHandler.getConfig("config.yml").getBoolean("Config-Builder.Custom." + group + ".Format.Row-Line", true));
+                        ConfigHandler.getConfig("config.yml").getBoolean("Config-Builder.Custom." + groupName + ".Format.Row-Line", true));
                 configBuilderMap.setSplit(
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Split", ", "));
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + groupName + ".Format.Split", ", "));
                 configBuilderMap.setValue(
-                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + group + ".Format.Value",
+                        ConfigHandler.getConfig("config.yml").getString("Config-Builder.Custom." + groupName + ".Format.Value",
                                 "  - %value%"));
                 configBuilderMap.setSet(new HashSet<>(
-                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + ".List")));
+                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + groupName + ".List")));
                 configBuilderMap.setIgnoreSet(new HashSet<>(
-                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + group + ".Ignore-List")));
-                configBuilderCustomProp.put(group, configBuilderMap);
+                        ConfigHandler.getConfig("config.yml").getStringList("Config-Builder.Custom." + groupName + ".Ignore-List")));
+                configBuilderCustomProp.put(groupName, configBuilderMap);
             }
         }
     }
@@ -723,9 +700,9 @@ public class ConfigPath implements ConfigInterface {
             customGroup = groupProp.get(inputType);
             // Not find the input type of list.
             if (customGroup == null) {
-                UtilsHandler.getLang().sendErrorMsg(pluginName,
+                UtilsHandler.getMsg().sendErrorMsg(pluginName,
                         "Unknown list type: \"" + inputType + ", " + type + "\"");
-                UtilsHandler.getLang().sendErrorMsg(pluginName,
+                UtilsHandler.getMsg().sendErrorMsg(pluginName,
                         "Please check if CorePlus is updated to the latest version.");
                 return null;
             }
@@ -755,11 +732,11 @@ public class ConfigPath implements ConfigInterface {
                                     outputList.add(customType);
                                     continue;
                                 }
-                                UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + customType);
+                                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + customType);
                             }
                     }
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + type);
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the " + inputType + ": " + type);
                 }
             }
         }
@@ -773,12 +750,12 @@ public class ConfigPath implements ConfigInterface {
 
     @Override
     public String getProp(String pluginName, String fileName, String input) {
-        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
+        return UtilsHandler.getProperties().getValue(pluginName, fileName, input);
     }
 
     @Override
     public String getJson(String pluginName, String fileName, String input) {
-        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
+        return UtilsHandler.getProperties().getValue(pluginName, fileName, input);
     }
 
     @Override

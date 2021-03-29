@@ -4,12 +4,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tw.momocraft.coreplus.api.*;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.EffectUtils;
-import tw.momocraft.coreplus.utils.PlayerUtils;
 import tw.momocraft.coreplus.utils.Updater;
 import tw.momocraft.coreplus.utils.Utils;
-import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
-import tw.momocraft.coreplus.utils.files.MySQLUtils;
+import tw.momocraft.coreplus.utils.customcommand.CommandManager;
+import tw.momocraft.coreplus.utils.effect.EffectManager;
+import tw.momocraft.coreplus.utils.player.PlayerManager;
 
 public class CorePlus extends JavaPlugin {
     private static CorePlus instance;
@@ -18,12 +17,12 @@ public class CorePlus extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigHandler.generateData(false);
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Enabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Enabled.");
     }
 
     @Override
     public void onDisable() {
-        UtilsHandler.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Disabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Disabled.");
     }
 
     public static CorePlus getInstance() {
@@ -38,7 +37,7 @@ public class CorePlus extends JavaPlugin {
 
     public EffectInterface getEffectAPI() {
         if (effectAPI == null)
-            effectAPI = new EffectUtils();
+            effectAPI = new EffectManager();
         return effectAPI;
     }
 
@@ -46,7 +45,7 @@ public class CorePlus extends JavaPlugin {
 
     public CommandInterface getCommandManager() {
         if (commandAPI == null)
-            commandAPI = new CustomCommands();
+            commandAPI = new CommandManager();
         return commandAPI;
     }
 
@@ -90,28 +89,28 @@ public class CorePlus extends JavaPlugin {
         return fileAPI;
     }
 
-    private LanguageInterface languageAPI = null;
+    private MessageInterface messageAPI = null;
 
-    public LanguageInterface getLangManager() {
-        if (languageAPI == null)
-            languageAPI = UtilsHandler.getLang();
-        return languageAPI;
+    public MessageInterface getMsgManager() {
+        if (messageAPI == null)
+            messageAPI = UtilsHandler.getMsg();
+        return messageAPI;
     }
 
     private PlayerInterface playerAPI = null;
 
     public PlayerInterface getPlayerManager() {
         if (playerAPI == null)
-            playerAPI = new PlayerUtils();
+            playerAPI = new PlayerManager();
         return playerAPI;
     }
 
-    private UpdateInterface updateAPI = null;
+    private UpdaterInterface updaterAPI = null;
 
-    public UpdateInterface getUpdateManager() {
-        if (updateAPI == null)
-            updateAPI = new Updater();
-        return updateAPI;
+    public UpdaterInterface getUpdateManager() {
+        if (updaterAPI == null)
+            updaterAPI = new Updater();
+        return updaterAPI;
     }
 
     private UtilsInterface utilsAPI = null;

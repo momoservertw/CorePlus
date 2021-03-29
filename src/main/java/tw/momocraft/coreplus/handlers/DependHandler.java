@@ -8,12 +8,12 @@ import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.listeners.CommandOnline;
 import tw.momocraft.coreplus.listeners.ConditionTest;
 import tw.momocraft.coreplus.utils.MultiverseCoreUtils;
-import tw.momocraft.coreplus.utils.conditions.ItemJoinUtils;
-import tw.momocraft.coreplus.utils.conditions.ResidenceUtils;
-import tw.momocraft.coreplus.utils.economy.GemsEcoUtils;
-import tw.momocraft.coreplus.utils.economy.PlayerPointsUtils;
-import tw.momocraft.coreplus.utils.economy.VaultUtils;
-import tw.momocraft.coreplus.utils.permission.LuckPermsUtils;
+import tw.momocraft.coreplus.utils.condition.ItemJoinUtils;
+import tw.momocraft.coreplus.utils.condition.ResidenceUtils;
+import tw.momocraft.coreplus.utils.player.economy.GemsEcoUtils;
+import tw.momocraft.coreplus.utils.player.economy.PlayerPointsUtils;
+import tw.momocraft.coreplus.utils.player.economy.VaultUtils;
+import tw.momocraft.coreplus.utils.player.permission.LuckPermsUtils;
 
 public class DependHandler implements DependInterface {
 

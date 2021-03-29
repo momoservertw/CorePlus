@@ -124,7 +124,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                UtilsHandler.getLang().sendErrorMsg(getPluginName(), "Cannot save " + fileName + " to disk!");
+                UtilsHandler.getMsg().sendErrorMsg(getPluginName(), "Cannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -224,7 +224,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     getConfigData(filePath, fileName);
-                    UtilsHandler.getLang().sendConsoleMsg(getPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
+                    UtilsHandler.getMsg().sendConsoleMsg(getPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }

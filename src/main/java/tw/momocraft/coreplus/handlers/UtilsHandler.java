@@ -1,27 +1,26 @@
 package tw.momocraft.coreplus.handlers;
 
-import tw.momocraft.coreplus.utils.PlayerUtils;
 import tw.momocraft.coreplus.utils.Updater;
 import tw.momocraft.coreplus.utils.Utils;
-import tw.momocraft.coreplus.utils.conditions.ConditionUtils;
-import tw.momocraft.coreplus.utils.customcommands.CustomCommands;
-import tw.momocraft.coreplus.utils.entities.EntityUtils;
-import tw.momocraft.coreplus.utils.files.*;
-import tw.momocraft.coreplus.utils.language.DiscordUtils;
-import tw.momocraft.coreplus.utils.language.LanguageUtils;
-import tw.momocraft.coreplus.utils.files.LogUtils;
-import tw.momocraft.coreplus.utils.language.VanillaUtils;
+import tw.momocraft.coreplus.utils.condition.ConditionManager;
+import tw.momocraft.coreplus.utils.customcommand.CommandManager;
+import tw.momocraft.coreplus.utils.entity.EntityManager;
+import tw.momocraft.coreplus.utils.file.*;
+import tw.momocraft.coreplus.utils.message.DiscordUtils;
+import tw.momocraft.coreplus.utils.message.MessageManager;
+import tw.momocraft.coreplus.utils.message.VanillaUtils;
+import tw.momocraft.coreplus.utils.player.PlayerManager;
 
 public class UtilsHandler {
 
     public static void setUpFirst(boolean reload) {
         if (!reload)
-            dependence = new DependHandler();
-        languageUtils = new LanguageUtils();
+            depend = new DependHandler();
+        messageManager = new MessageManager();
     }
 
     public static void setUpMid(boolean reload) {
-        fileUtils = new FileUtils();
+        fileManager = new FileManager();
         mySQLUtils = new MySQLUtils();
         jsonUtils = new JsonUtils();
         yamlUtils = new YamlUtils();
@@ -32,43 +31,43 @@ public class UtilsHandler {
     public static void setUpLast(boolean reload) {
         discordUtils = new DiscordUtils();
         utils = new Utils();
-        conditionUtils = new ConditionUtils();
-        playerUtils = new PlayerUtils();
-        entityUtils = new EntityUtils();
-        customCommands = new CustomCommands();
-        zipper = new Zipper();
-        logger = new LogUtils();
+        conditionManager = new ConditionManager();
+        playerManager = new PlayerManager();
+        entityManager = new EntityManager();
+        commandManager = new CommandManager();
+        zipperUtils = new ZipperUtils();
+        logUtils = new LogUtils();
         updater = new Updater();
     }
 
-    private static DependHandler dependence;
-    private static CustomCommands customCommands;
-    private static LanguageUtils languageUtils;
+    private static DependHandler depend;
     private static Updater updater;
     private static Utils utils;
-    private static Zipper zipper;
-    private static LogUtils logger;
-    private static ConditionUtils conditionUtils;
-    private static PlayerUtils playerUtils;
-    private static EntityUtils entityUtils;
-    private static MySQLUtils mySQLUtils;
-    private static VanillaUtils vanillaUtils;
-    private static DiscordUtils discordUtils;
-    private static FileUtils fileUtils;
+    private static CommandManager commandManager;
+    private static MessageManager messageManager;
+    private static ConditionManager conditionManager;
+    private static PlayerManager playerManager;
+    private static EntityManager entityManager;
+    private static FileManager fileManager;
+    private static LogUtils logUtils;
     private static JsonUtils jsonUtils;
     private static YamlUtils yamlUtils;
     private static PropertiesUtils propertiesUtils;
+    private static MySQLUtils mySQLUtils;
+    private static ZipperUtils zipperUtils;
+    private static VanillaUtils vanillaUtils;
+    private static DiscordUtils discordUtils;
 
     public static DependHandler getDepend() {
-        return dependence;
+        return depend;
     }
 
-    public static CustomCommands getCustomCommands() {
-        return customCommands;
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
-    public static LanguageUtils getLang() {
-        return languageUtils;
+    public static MessageManager getMsg() {
+        return messageManager;
     }
 
     public static Updater getUpdate() {
@@ -79,24 +78,24 @@ public class UtilsHandler {
         return utils;
     }
 
-    public static Zipper getZip() {
-        return zipper;
+    public static ZipperUtils getZip() {
+        return zipperUtils;
     }
 
-    public static LogUtils getLogger() {
-        return logger;
+    public static LogUtils getLog() {
+        return logUtils;
     }
 
-    public static ConditionUtils getCondition() {
-        return conditionUtils;
+    public static ConditionManager getCondition() {
+        return conditionManager;
     }
 
-    public static PlayerUtils getPlayer() {
-        return playerUtils;
+    public static PlayerManager getPlayer() {
+        return playerManager;
     }
 
-    public static EntityUtils getEntity() {
-        return entityUtils;
+    public static EntityManager getEntity() {
+        return entityManager;
     }
 
     public static MySQLUtils getMySQL() {
@@ -111,8 +110,8 @@ public class UtilsHandler {
         return discordUtils;
     }
 
-    public static FileUtils getFile() {
-        return fileUtils;
+    public static FileManager getFile() {
+        return fileManager;
     }
 
     public static JsonUtils getJson() {
@@ -123,7 +122,7 @@ public class UtilsHandler {
         return yamlUtils;
     }
 
-    public static PropertiesUtils getProperty() {
+    public static PropertiesUtils getProperties() {
         return propertiesUtils;
     }
 }
