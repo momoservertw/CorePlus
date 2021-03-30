@@ -18,14 +18,12 @@ public class CommandOnlineMPDB implements Listener {
         Player player = e.getPlayer();
         String playerName = player.getName();
         Table<String, Pair<Long, Integer>, String> waitingTable = UtilsHandler.getCommandManager().getOnlineCmdTable();
-        if (!waitingTable.rowKeySet().contains(playerName)) {
+        if (!waitingTable.rowKeySet().contains(playerName))
             return;
-        }
         for (Pair<Long, Integer> waitingPair : waitingTable.row(playerName).keySet()) {
-            if (waitingPair.getKey() == -1000 || System.currentTimeMillis() - waitingPair.getValue() < waitingPair.getKey()) {
-                UtilsHandler.getCommandManager().executeCmd(ConfigHandler.getPluginPrefix(), player,
-                        waitingTable.get(playerName, waitingPair), true);
-            }
+            if (waitingPair.getKey() == -1000 || System.currentTimeMillis() - waitingPair.getValue() < waitingPair.getKey())
+                UtilsHandler.getCommandManager().sendCmd(
+                        ConfigHandler.getPluginName(), player, player, waitingTable.get(playerName, waitingPair));
             waitingTable.remove(playerName, waitingPair);
         }
     }

@@ -32,7 +32,7 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getFileManager();
     }
 
-    public static MessageInterface getLang() {
+    public static MessageInterface getMsg() {
         return CorePlus.getInstance().getMsgManager();
     }
 

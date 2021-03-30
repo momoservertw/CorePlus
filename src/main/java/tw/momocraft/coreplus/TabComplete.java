@@ -29,8 +29,8 @@ public class TabComplete implements TabCompleter {
                 commands.add("test");
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder"))
                 commands.add("configbuilder");
-            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom"))
-                commands.add("cmdcustom");
+            if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdgroup"))
+                commands.add("cmdgroup");
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd"))
                 commands.add("cmd");
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer"))
@@ -72,8 +72,8 @@ public class TabComplete implements TabCompleter {
                         }
                     }
                     break;
-                case "cmdcustom":
-                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdcustom")) {
+                case "cmdgroup":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdgroup")) {
                         if (length == 2) {
                             commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
                         }

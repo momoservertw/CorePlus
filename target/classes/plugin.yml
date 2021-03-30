@@ -34,7 +34,7 @@ permissions:
       CorePlus.command.version: true
       CorePlus.command.test: true
       CorePlus.command.configbuilder: true
-      CorePlus.command.cmdcustom: true
+      CorePlus.command.cmdgroup: true
       CorePlus.command.cmd: true
       CorePlus.command.cmdplayer: true
       CorePlus.command.cmdonline: true
@@ -49,8 +49,8 @@ permissions:
     default: op
   CorePlus.command.configbuilder:
     description: Allows use of command /coreplus configbuilder.
-  CorePlus.command.cmdcustom:
-    description: Allows use of command /coreplus cmdcustom
+  CorePlus.command.cmdgroup:
+    description: Allows use of command /coreplus cmdgroup
     default: op
   CorePlus.command.cmd:
     description: Allows use of command /coreplus cmd

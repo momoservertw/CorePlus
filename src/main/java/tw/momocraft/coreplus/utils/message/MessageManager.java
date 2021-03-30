@@ -221,8 +221,8 @@ public class MessageManager implements MessageInterface {
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
         if (langMessage != null)
             input = langMessage;
-        input = transLang(prefix, UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
-        input = ChatColor.translateAlternateColorCodes('&', input);
+        input = transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
+        input = setPrefixAndColor(prefix, input);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines)
             sender.sendMessage(langLine);
@@ -248,17 +248,45 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public String transLang(String prefix, Player player, String input, String... langHolder) {
-        return transLang(prefix, UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+    public List<String> transLang(CommandSender sender, List<String> input, String... langHolder) {
+        List<String> list = new ArrayList<>();
+        String local = UtilsHandler.getVanillaUtils().getLocal(sender);
+        for (String value : input)
+            list.add(transLang(local, value, langHolder));
+        return list;
     }
 
     @Override
-    public String transLang(String prefix, String local, String input, String... langHolder) {
+    public List<String> transLang(Player player, List<String> input, String... langHolder) {
+        List<String> list = new ArrayList<>();
+        String local = UtilsHandler.getVanillaUtils().getLocal(player);
+        for (String value : input)
+            list.add(transLang(local, value, langHolder));
+        return list;
+    }
+
+    @Override
+    public List<String> transLang(String local, List<String> input, String... langHolder) {
+        List<String> list = new ArrayList<>();
+        for (String value : input)
+            list.add(transLang(local, value, langHolder));
+        return list;
+    }
+
+    @Override
+    public String transLang(CommandSender sender, String input, String... langHolder) {
+        return transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
+    }
+
+    @Override
+    public String transLang(Player player, String input, String... langHolder) {
+        return transLang(UtilsHandler.getVanillaUtils().getLocal(player), input, langHolder);
+    }
+
+    @Override
+    public String transLang(String local, String input, String... langHolder) {
         if (input == null)
             return "";
-        if (prefix == null)
-            prefix = "";
-        input = input.replace("%prefix%", prefix);
         if (langHolder.length == 0)
             return input;
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
@@ -300,7 +328,84 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public List<String> transHolder(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
+    public String transHolder(Player sender, Object target, String input) {
+        if (input == null || input.isEmpty())
+            return null;
+        // Sender: %player_Placeholder%
+        TranslateMap translateMap = getTranslateMap(null, sender, "player");
+        // Target: %target_Placeholder%, %object_Placeholder%
+        if (target != null)
+            translateMap = getTranslateMap(translateMap, target, "target");
+        return transTranslateMap(ConfigHandler.getPluginName(), (Player) sender, translateMap, input);
+    }
+
+    @Override
+    public List<String> transHolder(Player sender, Object target, List<String> input) {
+        if (input == null || input.isEmpty())
+            return null;
+        // Sender: %player_Placeholder%
+        TranslateMap translateMap = getTranslateMap(null, sender, "player");
+        // Target: %target_Placeholder%, %object_Placeholder%
+        if (target != null)
+            translateMap = getTranslateMap(translateMap, target, "target");
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+    }
+
+    @Override
+    public List<String> transHolder(Player sender, Object target, Object trigger, List<String> input) {
+        if (input == null || input.isEmpty())
+            return null;
+        // Sender: %player_Placeholder%
+        TranslateMap translateMap = getTranslateMap(null, sender, "player");
+        // Target: %target_Placeholder%, %object_Placeholder%
+        if (target != null)
+            translateMap = getTranslateMap(translateMap, target, "target");
+        // Trigger: %trigger_Placeholder%, %object_Placeholder%
+        if (target != null)
+            translateMap = getTranslateMap(translateMap, trigger, "trigger");
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+    }
+
+    @Override
+    public List<String> transHolder(Player sender, List<Object> targets, List<String> input) {
+        if (input == null || input.isEmpty())
+            return null;
+        // Sender
+        TranslateMap translateMap = getTranslateMap(null, sender, "player");
+        // Targets
+        Object target;
+        for (int i = 1; i < targets.size(); i++) {
+            target = targets.get(i);
+            if (target != null)
+                translateMap = getTranslateMap(translateMap, target, "target_" + i);
+        }
+        return transTranslateMap(ConfigHandler.getPluginName(), (Player) sender, translateMap, input);
+    }
+
+    @Override
+    public List<String> transHolder(Player sender, List<Object> targets, List<Object> triggers, List<String> input) {
+        if (input == null || input.isEmpty())
+            return null;
+        // Sender
+        TranslateMap translateMap = getTranslateMap(null, sender, "player");
+        // Targets
+        Object target;
+        for (int i = 1; i < targets.size(); i++) {
+            target = targets.get(i);
+            if (target != null)
+                translateMap = getTranslateMap(translateMap, target, "target_" + i);
+        }
+        // Triggers
+        for (int i = 1; i < targets.size(); i++) {
+            target = triggers.get(i);
+            if (target != null)
+                translateMap = getTranslateMap(translateMap, target, "trigger_" + i);
+        }
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+    }
+
+    @Override
+    public List<String> transTranslateMap(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
         if (translateMap == null)
             return transByGeneral(pluginName, local, input);
@@ -308,237 +413,235 @@ public class MessageManager implements MessageInterface {
         // Player
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<Player, String> entry : translateMap.getPlayerMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayer(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // PlayerName
         if (translateMap.getPlayerNameMap() != null)
             for (Map.Entry<String, String> entry : translateMap.getPlayerNameMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayerName(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // PlayerUUID
         if (translateMap.getPlayerUUIDMap() != null)
             for (Map.Entry<UUID, String> entry : translateMap.getPlayerUUIDMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayerUUID(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // OfflinePlayer
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<OfflinePlayer, String> entry : translateMap.getOfflinePlayerMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByOfflinePlayer(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Entity
         if (translateMap.getEntityMap() != null)
             for (Map.Entry<Entity, String> entry : translateMap.getEntityMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByEntity(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // EntityType
         if (translateMap.getEntityTypeMap() != null)
             for (Map.Entry<EntityType, String> entry : translateMap.getEntityTypeMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByEntityType(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Block
         if (translateMap.getBlockMap() != null)
             for (Map.Entry<Block, String> entry : translateMap.getBlockMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByBlock(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // ItemStack
         if (translateMap.getItemStackMap() != null)
             for (Map.Entry<ItemStack, String> entry : translateMap.getItemStackMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByItemStack(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Material
         if (translateMap.getMaterialMap() != null)
             for (Map.Entry<Material, String> entry : translateMap.getMaterialMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByMaterial(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Location
         if (translateMap.getLocationMap() != null)
             for (Map.Entry<Location, String> entry : translateMap.getLocationMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByLocation(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         return input;
     }
 
     @Override
-    public String transHolder(String pluginName, Player player, TranslateMap translateMap, String input) {
+    public String transTranslateMap(String pluginName, Player player, TranslateMap translateMap, String input) {
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
         String output;
         // Player
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<Player, String> entry : translateMap.getPlayerMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayer(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // PlayerName
         if (translateMap.getPlayerNameMap() != null)
             for (Map.Entry<String, String> entry : translateMap.getPlayerNameMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayerName(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // PlayerUUID
         if (translateMap.getPlayerUUIDMap() != null)
             for (Map.Entry<UUID, String> entry : translateMap.getPlayerUUIDMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByPlayerUUID(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // OfflinePlayer
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<OfflinePlayer, String> entry : translateMap.getOfflinePlayerMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByOfflinePlayer(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Entity
         if (translateMap.getEntityMap() != null)
             for (Map.Entry<Entity, String> entry : translateMap.getEntityMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByEntity(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // EntityType
         if (translateMap.getEntityTypeMap() != null)
             for (Map.Entry<EntityType, String> entry : translateMap.getEntityTypeMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByEntityType(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Block
         if (translateMap.getBlockMap() != null)
             for (Map.Entry<Block, String> entry : translateMap.getBlockMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByBlock(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // ItemStack
         if (translateMap.getItemStackMap() != null)
             for (Map.Entry<ItemStack, String> entry : translateMap.getItemStackMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByItemStack(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Material
         if (translateMap.getMaterialMap() != null)
             for (Map.Entry<Material, String> entry : translateMap.getMaterialMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByMaterial(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         // Location
         if (translateMap.getLocationMap() != null)
             for (Map.Entry<Location, String> entry : translateMap.getLocationMap().entrySet())
-                while (true) {
+                do {
                     output = input;
                     input = transByLocation(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
-                    if (input.equals(output))
-                        break;
-                }
+                } while (!input.equals(output));
         return input;
     }
 
     @Override
-    public TranslateMap getTranslateMap(TranslateMap translateMap, Object object, String name) {
+    public TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType, String prefixName) {
+        if (target == null)
+            return translateMap;
+        translateMap = getTranslateMap(translateMap, target, targetType);
         if (translateMap == null)
             translateMap = new TranslateMap();
-        if (object instanceof Player)
-            translateMap.putPlayer((Player) object, name);
-        if (object instanceof Entity)
-            translateMap.putEntity((Entity) object, name);
-        if (object instanceof EntityType)
-            translateMap.putEntityType((EntityType) object, name);
-        if (object instanceof Block)
-            translateMap.putBlock((Block) object, name);
-        if (object instanceof ItemStack)
-            translateMap.putItemStack((ItemStack) object, name);
-        if (object instanceof Material)
-            translateMap.putMaterial((Material) object, name);
-        if (object instanceof Location)
-            translateMap.putLocation((Location) object, name);
-        if (translateMap.equals(new TranslateMap()))
-            return null;
+        if (target instanceof Player)
+            translateMap.putPlayer((Player) target, prefixName);
+        else if (target instanceof Entity)
+            translateMap.putEntity((Entity) target, prefixName);
+        else if (target instanceof EntityType)
+            translateMap.putEntityType((EntityType) target, prefixName);
+        else if (target instanceof Block)
+            translateMap.putBlock((Block) target, prefixName);
+        else if (target instanceof ItemStack)
+            translateMap.putItemStack((ItemStack) target, prefixName);
+        else if (target instanceof Material)
+            translateMap.putMaterial((Material) target, prefixName);
+        else if (target instanceof Location)
+            translateMap.putLocation((Location) target, prefixName);
+        else {
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "An error occurred while translating placeholders.");
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "Unknown target type: \"" + target.toString() + "\"");
+        }
         return translateMap;
     }
 
-    private List<String> transByPlayerName(String pluginName, String local, List<String> input, String target, String prefixName) {
+    @Override
+    public TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType) {
+        if (target == null)
+            return translateMap;
+        if (translateMap == null)
+            translateMap = new TranslateMap();
+        translateMap = getTranslateMap(translateMap, target, targetType);
+        if (target instanceof Player)
+            translateMap.putPlayer((Player) target, "player");
+        else if (target instanceof Entity)
+            translateMap.putEntity((Entity) target, "entity");
+        else if (target instanceof EntityType)
+            translateMap.putEntityType((EntityType) target, "entitytype");
+        else if (target instanceof Block)
+            translateMap.putBlock((Block) target, "block");
+        else if (target instanceof ItemStack)
+            translateMap.putItemStack((ItemStack) target, "item");
+        else if (target instanceof Material)
+            translateMap.putMaterial((Material) target, "material");
+        else if (target instanceof Location)
+            translateMap.putLocation((Location) target, "location");
+        else {
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "An error occurred while translating placeholders.");
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                    "Unknown target type: \"" + target.toString() + "\"");
+        }
+        return translateMap;
+    }
+
+    private List<String> transByPlayerName(String pluginName, String local, List<String> input, String
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -547,7 +650,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByPlayerName(String pluginName, String local, String input, String target, String prefixName) {
+    private String transByPlayerName(String pluginName, String local, String input, String target, String
+            prefixName) {
         Player player = Bukkit.getPlayer(target);
         if (player != null)
             return transByPlayer(pluginName, local, input, player, prefixName);
@@ -557,7 +661,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByPlayerUUID(String pluginName, String local, List<String> input, UUID target, String prefixName) {
+    private List<String> transByPlayerUUID(String pluginName, String local, List<String> input, UUID
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -574,7 +679,8 @@ public class MessageManager implements MessageInterface {
         return transByOfflinePlayer(pluginName, local, input, offlinePlayer, prefixName);
     }
 
-    private List<String> transByPlayer(String pluginName, String local, List<String> input, Player target, String prefixName) {
+    private List<String> transByPlayer(String pluginName, String local, List<String> input, Player
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -606,6 +712,8 @@ public class MessageManager implements MessageInterface {
         if (UtilsHandler.getDepend().PlayerPointsEnabled())
             if (input.contains("%" + prefixName + "_points%"))
                 input = input.replace("%" + prefixName + "_points%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid)));
+        // %TARGET_gamemode%
+        input = input.replace("%" + prefixName + "_gamemode%", target.getGameMode().name());
         // %TARGET_sneaking%
         input = input.replace("%" + prefixName + "_sneaking%", String.valueOf(target.isSneaking()));
         // %TARGET_flying%
@@ -647,7 +755,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByEntity(String pluginName, String local, List<String> input, Entity target, String prefixName) {
+    private List<String> transByEntity(String pluginName, String local, List<String> input, Entity
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -679,7 +788,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByEntityType(String pluginName, String local, List<String> input, EntityType target, String prefixName) {
+    private List<String> transByEntityType(String pluginName, String local, List<String> input, EntityType
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -688,7 +798,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByEntityType(String pluginName, String local, String input, EntityType target, String prefixName) {
+    private String transByEntityType(String pluginName, String local, String input, EntityType target, String
+            prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -715,7 +826,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByOfflinePlayer(String pluginName, String local, List<String> input, OfflinePlayer target, String prefixName) {
+    private List<String> transByOfflinePlayer(String pluginName, String local, List<String> input, OfflinePlayer
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -724,7 +836,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer target, String prefixName) {
+    private String transByOfflinePlayer(String pluginName, String local, String input, OfflinePlayer target, String
+            prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -776,7 +889,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByBlock(String pluginName, String local, List<String> input, Block target, String prefixName) {
+    private List<String> transByBlock(String pluginName, String local, List<String> input, Block target, String
+            prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -797,7 +911,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByItemStack(String pluginName, String local, List<String> input, ItemStack target, String prefixName) {
+    private List<String> transByItemStack(String pluginName, String local, List<String> input, ItemStack
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -806,7 +921,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByItemStack(String pluginName, String local, String input, ItemStack target, String prefixName) {
+    private String transByItemStack(String pluginName, String local, String input, ItemStack target, String
+            prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -838,7 +954,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByMaterial(String pluginName, String local, List<String> input, Material target, String prefixName) {
+    private List<String> transByMaterial(String pluginName, String local, List<String> input, Material
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -847,7 +964,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByMaterial(String pluginName, String local, String input, Material target, String prefixName) {
+    private String transByMaterial(String pluginName, String local, String input, Material target, String
+            prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -874,7 +992,8 @@ public class MessageManager implements MessageInterface {
         return input;
     }
 
-    private List<String> transByLocation(String pluginName, String local, List<String> input, Location target, String prefixName) {
+    private List<String> transByLocation(String pluginName, String local, List<String> input, Location
+            target, String prefixName) {
         if (input == null || input.isEmpty())
             return null;
         List<String> list = new ArrayList<>();
@@ -883,7 +1002,8 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByLocation(String pluginName, String local, String input, Location target, String prefixName) {
+    private String transByLocation(String pluginName, String local, String input, Location target, String
+            prefixName) {
         if (input == null)
             return "";
         if (target == null)

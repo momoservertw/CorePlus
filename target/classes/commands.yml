@@ -14,7 +14,7 @@ Custom-Commands:
   Money:
     - "console: money give %player% %cmd_arg1%"
   Winner:
-    - "title-custom: winner, &eWinner: %player%/n&aPrize: %cmd_arg1%"
+    - "title-group: winner, &eWinner: %player%/n&aPrize: %cmd_arg1%"
   Ambient:
     - "all-sound: ENTITY_WITHER_SPAWN, 1, 1"
     - "delay: 20"

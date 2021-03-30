@@ -76,9 +76,9 @@ Message:
     version: "&f/coreplus version &8- &7Checks the plugin version and updates."
     test: "&f/coreplus test <location/blocks> <group> &8- &7Check if the condition is match."
     cmd: "&f/coreplus cmd [player] <command> &8- &7Executing custom command."
-    cmdcustom: "&f/coreplus cmdcustom [player] <group> &8- &7Executing custom command from configuration."
+    cmdgroup: "&f/coreplus cmdgroup [player] <group> &8- &7Executing custom command from configuration."
     cmdonline: "&f/coreplus cmdonline <player> <time> <command> &8- &7Waiting then execute custom command."
-    cmdcustomonline: "&f/coreplus cmdcustomonline <player> <time> <group> &8- &7Waiting then execute custom command from configuration."
+    cmdgrouponline: "&f/coreplus cmdgrouponline <player> <time> <group> &8- &7Waiting then execute custom command from configuration."
 Translation:
     money: "遊戲幣"
     points: "代幣"

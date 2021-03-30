@@ -4,9 +4,13 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 import tw.momocraft.coreplus.utils.message.TranslateMap;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface MessageInterface {
@@ -86,6 +90,14 @@ public interface MessageInterface {
      * @param langHolder the translation of placeholders. It could be empty.
      */
     void sendActionBarMsg(Player player, String input, String... langHolder);
+
+    /**
+     * @param player      the executing player.
+     * @param input       the input message.
+     * @param titleMsgMap the title message's attributes.
+     * @param langHolder  the translation of placeholders. It could be empty.
+     */
+    void sendTitleMsg(Player player, String input, TitleMsgMap titleMsgMap, String... langHolder);
 
     /**
      * @param player     the executing player.
@@ -172,7 +184,7 @@ public interface MessageInterface {
     String[] newString();
 
     /**
-     * Sending a message from configuration.
+     * Translating by custom placeholders.
      *
      * @param prefix       the executing plugin prefix.
      * @param nodeLocation the configuration path of this message.
@@ -182,26 +194,82 @@ public interface MessageInterface {
     void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... langHolder);
 
     /**
-     * Translating the placeholders before output.
+     * Translating by custom placeholders.
      *
-     * @param prefix     the sending plugin prefix.
+     * @param sender     the target sender.
+     * @param input      the input value list.
+     * @param langHolder the custom placeholders.
+     * @return the a new list which translated by the custom placeholders.
+     */
+    List<String> transLang(CommandSender sender, List<String> input, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param player     the target player.
+     * @param input      the input value list.
+     * @param langHolder the custom placeholders.
+     * @return the a new list which translated by the custom placeholders.
+     */
+    List<String> transLang(Player player, List<String> input, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param local      the target's local language.
+     * @param input      the input value list.
+     * @param langHolder the custom placeholders.
+     * @return the a new list which translated by the custom placeholders.
+     */
+    List<String> transLang(String local, List<String> input, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param sender     the target sender.
+     * @param input      the input string.
+     * @param langHolder the translation of placeholders. It could be empty.
+     * @return a new string which translated language placeholders.
+     */
+    String transLang(CommandSender sender, String input, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
      * @param player     the target player.
      * @param input      the input string.
      * @param langHolder the translation of placeholders. It could be empty.
      * @return a new string which translated language placeholders.
      */
-    String transLang(String prefix, Player player, String input, String... langHolder);
+    String transLang(Player player, String input, String... langHolder);
 
     /**
-     * Translating the language placeholders before output.
+     * Translating by custom placeholders.
      *
-     * @param prefix     the sending plugin prefix.
      * @param local      the sender's local language.
      * @param input      the input string.
      * @param langHolder the translation of placeholders. It could be empty.
      * @return a new string which translated language placeholders.
      */
-    String transLang(String prefix, String local, String input, String... langHolder);
+    String transLang(String local, String input, String... langHolder);
+
+    /**
+     * Translating by target placeholders.
+     *
+     * @param sender      the sender of this.
+     * @param target      the sender's local language.
+     * @param input      the input string.
+     * @return a new string which translated language placeholders.
+     */
+    String transHolder(Player sender, Object target, String input);
+
+    List<String> transHolder(Player sender, Object target, List<String> input);
+
+    List<String> transHolder(Player sender, Object target, Object trigger, List<String> input);
+
+    List<String> transHolder(Player sender, List<Object> targets, List<String> input);
+
+    List<String> transHolder(Player sender, List<Object> targets, List<Object> triggers, List<String> input);
 
     /**
      * Translating the targets placeholders before output.
@@ -212,7 +280,7 @@ public interface MessageInterface {
      * @param input        the input string.
      * @return a new string which translated language placeholders.
      */
-    String transHolder(String pluginName, Player player, TranslateMap translateMap, String input);
+    String transTranslateMap(String pluginName, Player player, TranslateMap translateMap, String input);
 
     /**
      * Translating the targets placeholders before output.
@@ -223,18 +291,27 @@ public interface MessageInterface {
      * @param input        the input string.
      * @return a new string which translated language placeholders.
      */
-    List<String> transHolder(String pluginName, Player player, TranslateMap translateMap, List<String> input);
+    List<String> transTranslateMap(String pluginName, Player player, TranslateMap translateMap, List<String> input);
 
     /**
      * Getting the translate placeholder targets map.
      *
      * @param translateMap the import of translate placeholder targets map.
-     * @param object       the input target object.
-     * @param name         the input target name.
+     * @param target       the input target object.
+     * @param prefixName   the input placeholder's prefix.
      * @return the translate placeholder targets map.
      */
-    TranslateMap getTranslateMap(TranslateMap translateMap, Object object, String name);
+    TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType, String prefixName);
 
+    /**
+     * Getting the translate placeholder targets map.
+     * Automatic adding the prefix to each type.
+     *
+     * @param translateMap the import of translate placeholder targets map.
+     * @param target       the input target object.
+     * @return the translate placeholder targets map.
+     */
+    TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType);
 
     /**
      * Translating the general placeholders.
