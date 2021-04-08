@@ -1588,51 +1588,48 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public String getPlayersString(List<Player> players) {
+    public String getPlayersString(List<Player> input) {
+        if (input == null || input.isEmpty())
+            return getMsgTrans("noTarget");
         StringBuilder stringBuilder = new StringBuilder();
-        Player player;
-        int size = players.size();
-        for (int i = 0; i < size; i++) {
-            player = players.get(i);
-            stringBuilder.append(player.getName());
-            if (i != size - 1)
-                stringBuilder.append(player.getName()).append(", ");
-        }
+        for (Player value : input)
+            try {
+                stringBuilder.append(value.getName()).append(", ");
+            } catch (Exception ignored) {
+            }
         if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        return stringBuilder.toString();
+        return stringBuilder.substring(0, stringBuilder.length() - 2);
     }
 
     @Override
-    public String getBlocksString(List<Block> blocks) {
+    public String getBlocksString(List<Block> input) {
+        if (input == null || input.isEmpty())
+            return getMsgTrans("noTarget");
         StringBuilder stringBuilder = new StringBuilder();
-        Block block;
-        int size = blocks.size();
-        for (int i = 0; i < size; i++) {
-            block = blocks.get(i);
-            stringBuilder.append(block.getType().name());
-            if (i != size - 1)
-                stringBuilder.append(block.getType().name()).append(", ");
-        }
+        for (Block value : input)
+            try {
+                stringBuilder.append(value.getType().name()).append(", ");
+            } catch (Exception ignored) {
+            }
         if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        return stringBuilder.toString();
+        return stringBuilder.substring(0, stringBuilder.length() - 2);
     }
 
     @Override
-    public String getEntitiesString(List<Entity> entities) {
+    public String getEntitiesString(List<Entity> input) {
+        if (input == null || input.isEmpty())
+            return getMsgTrans("noTarget");
         StringBuilder stringBuilder = new StringBuilder();
-        Entity entity;
-        int size = entities.size();
-        for (int i = 0; i < size; i++) {
-            entity = entities.get(i);
-            stringBuilder.append(entity.getType().name());
-            if (i != size - 1)
-                stringBuilder.append(entity.getType().name()).append(", ");
-        }
+        for (Entity value : input)
+            try {
+                stringBuilder.append(value.getType().name()).append(", ");
+            } catch (Exception ignored) {
+            }
         if (stringBuilder.toString().equals(""))
             return getMsgTrans("noTarget");
-        return stringBuilder.toString();
+        return stringBuilder.substring(0, stringBuilder.length() - 2);
     }
 
     @Override
