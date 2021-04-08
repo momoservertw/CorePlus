@@ -15,33 +15,29 @@ import java.util.Map;
 
 public class JsonUtils {
 
-    private final Map<String, JsonObject> jsonMap = new HashMap<>();
+    private final Map<String, JsonObject> fileMap = new HashMap<>();
+    private final List<String> customList = new ArrayList<>();
+    private final List<String> langList = new ArrayList<>();
 
     public JsonUtils() {
         loadLang();
-        loadCustom();
         //loadGroup("");
+        loadCustom();
 
         sendLoadedMsg();
     }
 
     private void sendLoadedMsg() {
-        List<String> langList = new ArrayList<>();
-        List<String> jsonList = new ArrayList<>();
-        for (String fileName : jsonMap.keySet()) {
-            if (fileName.startsWith("lang_"))
-                langList.add(fileName);
-            else
-                jsonList.add(fileName);
-        }
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fLoaded Language files: " + langList.toString());
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fLoaded Json files: " + jsonList.toString());
+        if (!langList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Language files: " + langList.toString());
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Json files: " + customList.toString());
     }
 
     private void loadLang() {
-        String filePath = CorePlus.getInstance().getDataFolder().getPath() + "\\Vanilla-Translation";
+        String filePath = CorePlus.getInstance().getDataFolder().getPath() + "\\Local";
         File file = new File(filePath);
         String[] fileList = file.list();
         if (fileList == null)
@@ -51,14 +47,18 @@ public class JsonUtils {
             if (!fileName.endsWith(".json"))
                 continue;
             langName = fileName.replace(".json", "");
-            load(ConfigHandler.getPluginName(), "lang_" + langName, filePath + "\\" + langName + ".json");
+            load(ConfigHandler.getPlugin(), "lang_" + langName, filePath + "\\" + langName + ".json");
+            langList.add(langName);
         }
     }
 
     private void loadCustom() {
         Map<String, String> prop = ConfigHandler.getConfigPath().getJsonProp();
+        if (prop == null)
+            return;
         for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            customList.add(groupName);
         }
     }
 
@@ -69,11 +69,11 @@ public class JsonUtils {
                 filePath = CorePlus.getInstance().getDataFolder().getPath();
                 break;
             default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                         "Cannot load the Json file: " + group);
                 return false;
         }
-        return load(ConfigHandler.getPluginName(), group, filePath);
+        return load(ConfigHandler.getPlugin(), group, filePath);
     }
 
     public boolean load(String pluginName, String group, String filePath) {
@@ -81,7 +81,7 @@ public class JsonUtils {
         try {
             Gson gson = new Gson();
             JsonObject json = gson.fromJson(new FileReader(file), JsonObject.class);
-            jsonMap.put(group, json);
+            fileMap.put(group, json);
             return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
@@ -93,7 +93,7 @@ public class JsonUtils {
 
     public String getValue(String pluginName, String group, String input) {
         try {
-            return jsonMap.get(group).get(input).toString();
+            return fileMap.get(group).get(input).toString();
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");

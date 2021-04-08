@@ -191,7 +191,7 @@ public interface MessageInterface {
      * @param sender       the executing sender.
      * @param langHolder   the translation of placeholders. It could be empty.
      */
-    void sendLangMsg(String pluginName, String prefix, String nodeLocation, CommandSender sender, String... langHolder);
+    void sendLangMsg(String prefix, String nodeLocation, CommandSender sender, String... langHolder);
 
     /**
      * Translating by custom placeholders.

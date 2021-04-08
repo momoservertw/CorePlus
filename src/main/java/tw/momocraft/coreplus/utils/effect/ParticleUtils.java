@@ -18,7 +18,7 @@ public class ParticleUtils {
                 loc.getWorld().spawnParticle(Particle.valueOf(type), loc, 1);
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the particle type: \"" + type + "\"");
-                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
             }
             return;
         }

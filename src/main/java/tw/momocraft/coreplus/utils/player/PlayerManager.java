@@ -53,7 +53,7 @@ public class PlayerManager implements PlayerInterface {
                 }
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         return null;
     }
@@ -77,7 +77,7 @@ public class PlayerManager implements PlayerInterface {
                 }
             }
         } catch (Exception e) {
-            UtilsHandler.getMsg().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
+            UtilsHandler.getMsg().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebug(), ConfigHandler.getPluginPrefix(), e);
         }
         return playerList;
     }
@@ -97,7 +97,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
                     "playerdataplus", "players", "UUID", offlinePlayer.getUniqueId().toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -111,7 +111,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
                     "playerdataplus", "players", "UUID", uuid.toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -127,7 +127,7 @@ public class PlayerManager implements PlayerInterface {
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             map.put(offlinePlayer.getUniqueId().toString(), offlinePlayer.getLastLogin());
         }
-        Map<Object, Object> mySQLMap = UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPluginName(),
+        Map<Object, Object> mySQLMap = UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPlugin(),
                 "playerdataplus", "players", "uuid", "last_login",
                 "string", "long");
         for (Map.Entry<Object, Object> entry : mySQLMap.entrySet()) {
@@ -185,7 +185,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -223,7 +223,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -261,7 +261,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -301,7 +301,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -318,7 +318,7 @@ public class PlayerManager implements PlayerInterface {
                             "Can not get the Experience from");
                 }
             }
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Target is in other server: " + uuid);
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Target is in other server: " + uuid);
             return 0;
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {

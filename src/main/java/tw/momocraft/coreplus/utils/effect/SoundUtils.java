@@ -17,7 +17,7 @@ public class SoundUtils {
                 player.playSound(loc, Sound.valueOf(type), 1, 1);
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the sound type: \"" + type + "\"");
-                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
             }
             return;
         }

@@ -77,7 +77,7 @@ public class VanillaUtils {
     }
 
     private String getLocalLang(String local, String input) {
-        String lang = UtilsHandler.getJson().getValue(ConfigHandler.getPluginName(), local, "lang_" + input);
+        String lang = UtilsHandler.getJson().getValue(ConfigHandler.getPlugin(), local, "lang_" + input);
         try {
             return lang.replaceAll("\"", "");
         } catch (Exception ex) {

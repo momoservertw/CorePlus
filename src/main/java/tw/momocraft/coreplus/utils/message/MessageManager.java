@@ -125,8 +125,8 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDebugMsg(boolean isDebugging, String pluginName, String input) {
-        if (isDebugging) {
+    public void sendDebugMsg(boolean isDebug, String pluginName, String input) {
+        if (isDebug) {
             input = "&7[" + pluginName + "_Debug]&r " + input;
             input = ChatColor.translateAlternateColorCodes('&', input);
             CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
@@ -134,16 +134,16 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDebugTrace(boolean isDebugging, String pluginName, Exception ex) {
-        if (isDebugging) {
+    public void sendDebugTrace(boolean isDebug, String pluginName, Exception ex) {
+        if (isDebug) {
             sendDebugMsg(true, pluginName, "showing debug trace.");
             ex.printStackTrace();
         }
     }
 
     @Override
-    public void sendDetailMsg(boolean isDebugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
-        if (!isDebugging)
+    public void sendDetailMsg(boolean isDebug, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
+        if (!isDebug)
             return;
         switch (action) {
             case "cancel":
@@ -154,6 +154,7 @@ public class MessageManager implements MessageInterface {
             case "failed":
             case "warning":
             case "deny":
+            case "prevent":
                 action = "&c" + action;
                 break;
             case "continue":
@@ -168,6 +169,7 @@ public class MessageManager implements MessageInterface {
             case "success":
             case "succeed":
             case "accept":
+            case "allow":
             default:
                 action = "&a" + action;
                 break;
@@ -187,8 +189,11 @@ public class MessageManager implements MessageInterface {
             case "remove":
             case "kill":
             case "damage":
+            case "fail":
+            case "failed":
             case "warning":
             case "deny":
+            case "prevent":
                 action = "&c" + action;
                 break;
             case "continue":
@@ -201,7 +206,9 @@ public class MessageManager implements MessageInterface {
                 break;
             case "return":
             case "success":
+            case "succeed":
             case "accept":
+            case "allow":
             default:
                 action = "&a" + action;
                 break;
@@ -213,7 +220,7 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendLangMsg(String pluginName, String prefix, String input, CommandSender sender, String... langHolder) {
+    public void sendLangMsg(String prefix, String input, CommandSender sender, String... langHolder) {
         if (input == null || input.equals(""))
             return;
         if (sender == null)
@@ -336,7 +343,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        return transTranslateMap(ConfigHandler.getPluginName(), (Player) sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), (Player) sender, translateMap, input);
     }
 
     @Override
@@ -348,7 +355,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
     @Override
@@ -363,7 +370,7 @@ public class MessageManager implements MessageInterface {
         // Trigger: %trigger_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, trigger, "trigger");
-        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
     @Override
@@ -379,7 +386,7 @@ public class MessageManager implements MessageInterface {
             if (target != null)
                 translateMap = getTranslateMap(translateMap, target, "target_" + i);
         }
-        return transTranslateMap(ConfigHandler.getPluginName(), (Player) sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), (Player) sender, translateMap, input);
     }
 
     @Override
@@ -401,7 +408,7 @@ public class MessageManager implements MessageInterface {
             if (target != null)
                 translateMap = getTranslateMap(translateMap, target, "trigger_" + i);
         }
-        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
     @Override
@@ -602,9 +609,9 @@ public class MessageManager implements MessageInterface {
         else if (target instanceof Location)
             translateMap.putLocation((Location) target, prefixName);
         else {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "An error occurred while translating placeholders.");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Unknown target type: \"" + target.toString() + "\"");
         }
         return translateMap;
@@ -632,9 +639,9 @@ public class MessageManager implements MessageInterface {
         else if (target instanceof Location)
             translateMap.putLocation((Location) target, "location");
         else {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "An error occurred while translating placeholders.");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Unknown target type: \"" + target.toString() + "\"");
         }
         return translateMap;
@@ -729,7 +736,7 @@ public class MessageManager implements MessageInterface {
                     input = PlaceholderAPI.setPlaceholders(target, input);
                 }
             } catch (NoSuchFieldError e) {
-                UtilsHandler.getMsg().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
+                UtilsHandler.getMsg().sendDebugMsg(ConfigHandler.isDebug(), ConfigHandler.getPrefix(),
                         "Error has occurred when setting the PlaceHolder " + e.getMessage() +
                                 ", if this issue persist contact the developer of PlaceholderAPI.");
             }
@@ -809,19 +816,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_type%
         try {
             input = input.replace("%" + prefixName + "_type%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_type_local%
         try {
             input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, type, "material"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         return input;
     }
@@ -854,7 +861,7 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "_uuid%", target.getUniqueId().toString());
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_last_login%
         boolean hasPlayed = target.hasPlayedBefore();
@@ -862,13 +869,13 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%" + prefixName + "_last_login%",
                     hasPlayed ? String.valueOf(target.getLastLogin()) : getMsgTrans("noData"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_has_played%
         try {
             input = input.replace("%" + prefixName + "_has_played%", String.valueOf(hasPlayed));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // Translate PlaceHolderAPI's placeholders.
         if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
@@ -881,7 +888,7 @@ public class MessageManager implements MessageInterface {
                     input = PlaceholderAPI.setPlaceholders(target, input);
                 }
             } catch (NoSuchFieldError e) {
-                UtilsHandler.getMsg().sendDebugMsg(ConfigHandler.isDebugging(), ConfigHandler.getPrefix(),
+                UtilsHandler.getMsg().sendDebugMsg(ConfigHandler.isDebug(), ConfigHandler.getPrefix(),
                         "Error has occurred when setting the PlaceHolder " + e.getMessage() +
                                 ", if this issue persist contact the developer of PlaceholderAPI.");
             }
@@ -935,19 +942,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "_display_name%", displayName != null ? displayName : target.getType().name());
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_has_custom_name%
         try {
             input = input.replace("%" + prefixName + "_display_name%", displayName != null ? "true" : "false");
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_amount%
         try {
             input = input.replace("%" + prefixName + "_amount%", String.valueOf(target.getAmount()));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // Material
         input = transByMaterial(pluginName, local, input, target.getType(), prefixName);
@@ -975,19 +982,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_type%
         try {
             input = input.replace("%" + prefixName + "_type%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %TARGET_type_local%
         try {
             input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, type, "material"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         return input;
     }
@@ -1123,7 +1130,7 @@ public class MessageManager implements MessageInterface {
                 for (int i = 0; i < arr.length; i++) {
                     if (arr[i].equals("%" + prefixName + "_location%"))
                         input = input.replace("%" + prefixName + "_location%" + arr[i + 1] + "%",
-                                String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPluginName(), target, arr[i + 1], false)));
+                                String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPlugin(), target, arr[i + 1], false)));
                 }
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
@@ -1195,7 +1202,7 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%item%", getMsgTrans("console"));
             input = input.replace("%target%", getMsgTrans("console"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
@@ -1256,7 +1263,7 @@ public class MessageManager implements MessageInterface {
                     String randomPlayer = playerList.get(new Random().nextInt(playerList.size())).getName();
                     input = input.replace("%random_player%", randomPlayer);
                 } catch (Exception ex) {
-                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getLang().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
                 }
                 }
              */
@@ -1292,7 +1299,7 @@ public class MessageManager implements MessageInterface {
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"%random_player_except%PLAYERS%\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
                     }
                 }
             }
@@ -1409,7 +1416,7 @@ public class MessageManager implements MessageInterface {
                             break;
                     }
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
                 }
             }
         }
@@ -1632,9 +1639,8 @@ public class MessageManager implements MessageInterface {
 
     @Override
     public void sendHookMsg(String pluginPrefix, String type, List<String> list) {
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty())
             return;
-        }
         StringBuilder message = new StringBuilder("&fHooked " + type + ": [");
         for (String value : list) {
             if (type.equals("plugins")) {

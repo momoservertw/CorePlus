@@ -29,6 +29,7 @@ public class ConfigHandler {
     private static ConfigPath configPath;
 
     public static void generateData(boolean reload) {
+        setConfigPath(new ConfigPath());
         UtilsHandler.setUpFirst(reload);
         genConfigFile("config.yml");
         genConfigFile("data.yml");
@@ -42,12 +43,12 @@ public class ConfigHandler {
         genConfigFile("sounds.yml");
         genConfigFile("action_bars.yml");
         genConfigFile("title_messages.yml");
-        UtilsHandler.setUpMid(reload);
-        setConfigPath(new ConfigPath());
+        configPath.setupFirst();
         UtilsHandler.setUpLast(reload);
+        configPath.setupLast();
         /*
        if (!reload) {
-            UtilsHandler.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
+            UtilsHandler.getUpdate().check(getPlugin(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     CorePlus.getInstance().getDescription().getName(),
                     CorePlus.getInstance().getDescription().getVersion(), true);
         }
@@ -124,7 +125,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(getPluginName(), "Cannot save " + fileName + " to disk!");
+                UtilsHandler.getMsg().sendErrorMsg(getPlugin(), "Cannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -190,7 +191,7 @@ public class ConfigHandler {
     }
 
     private static void genConfigFile(String fileName) {
-        String[] fileNameSlit = fileName.split("\\.(?=[^\\.]+$)");
+        String[] fileNameSlit = fileName.split("\\.(?=[^.]+$)");
         int ver = 0;
         File filePath = CorePlus.getInstance().getDataFolder();
         switch (fileName) {
@@ -240,7 +241,7 @@ public class ConfigHandler {
     }
 
 
-    public static String getPluginName() {
+    public static String getPlugin() {
         return CorePlus.getInstance().getDescription().getName();
     }
 
@@ -252,7 +253,7 @@ public class ConfigHandler {
         return getConfig("config.yml").getString("Message.prefix");
     }
 
-    public static boolean isDebugging() {
+    public static boolean isDebug() {
         return ConfigHandler.getConfig("config.yml").getBoolean("Debugging");
     }
 }

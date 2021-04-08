@@ -19,16 +19,13 @@ public class UtilsHandler {
         messageManager = new MessageManager();
     }
 
-    public static void setUpMid(boolean reload) {
+    public static void setUpLast(boolean reload) {
         fileManager = new FileManager();
         mySQLUtils = new MySQLUtils();
         jsonUtils = new JsonUtils();
         yamlUtils = new YamlUtils();
         propertiesUtils = new PropertiesUtils();
         vanillaUtils = new VanillaUtils();
-    }
-
-    public static void setUpLast(boolean reload) {
         discordUtils = new DiscordUtils();
         utils = new Utils();
         conditionManager = new ConditionManager();

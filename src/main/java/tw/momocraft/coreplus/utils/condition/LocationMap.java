@@ -17,9 +17,9 @@ public class LocationMap {
         if (isCordFormat(type, value)) {
             cord.put(type, value);
         } else {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Not correct format of Location \"" + group + "\", Area: \"" + type + ": " + value + "\"");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "More information: https://github.com/momoservertw/CorePlus/wiki/Location");
         }
     }

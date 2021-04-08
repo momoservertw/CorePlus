@@ -6,30 +6,35 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class YamlUtils {
 
-    private final Map<String, YamlConfiguration> yamlMap = new HashMap<>();
+    private final Map<String, YamlConfiguration> fileMap = new HashMap<>();
+    private final List<String> customList = new ArrayList<>();
 
     public YamlUtils() {
-        loadCustom();
         loadGroup("discord_messages");
+        loadCustom();
 
         sendLoadedMsg();
     }
 
     private void sendLoadedMsg() {
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fLoaded YAML files: " + yamlMap.keySet().toString());
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded YAML files: " + customList.toString());
     }
 
     private void loadCustom() {
         Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
-        for (String groupName : prop.keySet())
-            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            customList.add(groupName);
+        }
     }
 
     private boolean loadGroup(String group) {
@@ -39,16 +44,16 @@ public class YamlUtils {
                 filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV//messages.yml";
                 break;
             default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                         "Cannot load the YAML file: " + group);
                 return false;
         }
-        return load(ConfigHandler.getPluginName(), group, filePath);
+        return load(ConfigHandler.getPlugin(), group, filePath);
     }
 
     public boolean load(String pluginName, String group, String filePath) {
         try {
-            yamlMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
+            fileMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
             return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
@@ -60,7 +65,7 @@ public class YamlUtils {
 
     public String getString(String pluginName, String group, String input) {
         try {
-            return yamlMap.get(group).getString(input);
+            return fileMap.get(group).getString(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");
@@ -72,7 +77,7 @@ public class YamlUtils {
 
     public List<String> getStringList(String pluginName, String group, String input) {
         try {
-            return yamlMap.get(group).getStringList(input);
+            return fileMap.get(group).getStringList(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");
@@ -83,10 +88,10 @@ public class YamlUtils {
     }
 
     public YamlConfiguration getConfig(String group) {
-        YamlConfiguration yamlConfiguration = yamlMap.get(group);
+        YamlConfiguration yamlConfiguration = fileMap.get(group);
         if (yamlConfiguration == null) {
             loadGroup(group);
-            return yamlMap.get(group);
+            return fileMap.get(group);
         }
         return yamlConfiguration;
     }

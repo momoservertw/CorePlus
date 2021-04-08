@@ -552,8 +552,8 @@ public class Utils implements UtilsInterface {
                         if (target == null)
                             target = entity.getType().name();
                     } else {
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "An unexpected error occurred, please report it to the plugin author.");
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not the the return type of nearby list: \"" + returnType + "\"");
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "An unexpected error occurred, please report it to the plugin author.");
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not the the return type of nearby list: \"" + returnType + "\"");
                         return null;
                     }
                     if (input.contains(target))

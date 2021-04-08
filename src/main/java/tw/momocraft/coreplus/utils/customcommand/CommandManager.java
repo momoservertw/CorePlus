@@ -64,9 +64,9 @@ public class CommandManager implements CommandInterface {
         List<String> commands = ConfigHandler.getConfigPath().getCmdProp().get(groupName);
         List<String> newCommands = new ArrayList<>();
         if (commands == null || commands.isEmpty()) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "An error occurred while executing command: \"custom: " + input + "\"");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Can not find the group of \"" + groupName + "\" in CorePlus/commands.yml.");
             return;
         }
@@ -205,7 +205,7 @@ public class CommandManager implements CommandInterface {
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
                 continue;
             }
             List<String> newCommandList = new ArrayList<>(input);
@@ -243,7 +243,7 @@ public class CommandManager implements CommandInterface {
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
                 continue;
             }
             List<String> newCommandList = new ArrayList<>(input);
@@ -372,11 +372,11 @@ public class CommandManager implements CommandInterface {
                     return;
                 case "title":
                     input = input.replace("title: ", "");
-                    dispatchTitleMsg(ConfigHandler.getPluginName(), player, input);
+                    dispatchTitleMsg(ConfigHandler.getPlugin(), player, input);
                     return;
                 case "title-group":
                     input = input.replace("title-group: ", "");
-                    dispatchTitleMsgGroup(ConfigHandler.getPluginName(), player, input);
+                    dispatchTitleMsgGroup(ConfigHandler.getPlugin(), player, input);
                     return;
                 case "sound":
                     input = input.replace("sound: ", "");
@@ -403,17 +403,17 @@ public class CommandManager implements CommandInterface {
                     dispatchConditionCmd(pluginName, player, input);
                     return;
                 default:
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                             "Unknown command type: \"" + input + "\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName,
                             "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Unknown command type: \"" + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 
@@ -475,16 +475,16 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the execute target.");
                     return;
                 default:
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown command type: \"" + input + "\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please check if CorePlus is updated to the latest version.");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                     "Unknown command type: \"" + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 
@@ -769,7 +769,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"title-group: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 
@@ -828,7 +828,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"sound-group: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 
@@ -896,7 +896,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 
@@ -915,7 +915,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"particle-group: " + group + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebugging(), pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
         }
     }
 }

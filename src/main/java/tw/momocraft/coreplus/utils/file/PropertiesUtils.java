@@ -7,24 +7,24 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class PropertiesUtils {
 
-    private final Map<String, Properties> propertiesMap = new HashMap<>();
+    private final Map<String, Properties> fileMap = new HashMap<>();
+    private final List<String> customList = new ArrayList<>();
 
     public PropertiesUtils() {
-        loadCustom();
         loadGroup("server");
+        loadCustom();
 
         sendLoadedMsg();
     }
 
     private void sendLoadedMsg() {
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                "&fLoaded Properties files: " + propertiesMap.keySet().toString());
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Properties files: " + customList.toString());
     }
 
     private boolean loadGroup(String group) {
@@ -39,17 +39,19 @@ public class PropertiesUtils {
                     break;
                      */
             default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                         "Cannot load the properties file: " + group);
                 return false;
         }
-        return load(ConfigHandler.getPluginName(), group, filePath);
+        return load(ConfigHandler.getPlugin(), group, filePath);
     }
 
     private void loadCustom() {
         Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
-        for (String groupName : prop.keySet())
-            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            customList.add(groupName);
+        }
     }
 
     public boolean load(String pluginName, String group, String filePath) {
@@ -57,7 +59,7 @@ public class PropertiesUtils {
             InputStream inputStream = Files.asByteSource(new File(filePath)).openStream();
             Properties properties = new Properties();
             properties.load(inputStream);
-            propertiesMap.put(group, properties);
+            fileMap.put(group, properties);
             inputStream.close();
             return true;
         } catch (Exception ex) {
@@ -70,7 +72,7 @@ public class PropertiesUtils {
 
     public String getValue(String pluginName, String group, String input) {
         try {
-            return propertiesMap.get(group).getProperty(input);
+            return fileMap.get(group).getProperty(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");

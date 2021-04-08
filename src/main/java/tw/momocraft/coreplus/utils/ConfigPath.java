@@ -25,9 +25,6 @@ import java.io.File;
 import java.util.*;
 
 public class ConfigPath implements ConfigInterface {
-    public ConfigPath() {
-        setUp();
-    }
 
     //  ============================================== //
     //         General Variables                       //
@@ -75,7 +72,7 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         Setup all configuration                 //
     //  ============================================== //
-    private void setUp() {
+    public void setupFirst() {
         setGeneral();
         setData();
         setGroups();
@@ -92,6 +89,10 @@ public class ConfigPath implements ConfigInterface {
         setConfigBuilder();
 
         sendSetupMsg();
+    }
+
+    public void setupLast() {
+        pvp = Boolean.parseBoolean(UtilsHandler.getProperties().getValue(ConfigHandler.getPlugin(), "server.properties", "pvp"));
     }
 
     private void sendSetupMsg() {
@@ -114,11 +115,9 @@ public class ConfigPath implements ConfigInterface {
     //         General Setter                          //
     //  ============================================== //
     private void setGeneral() {
-        pvp = Boolean.parseBoolean(UtilsHandler.getProperties().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
-
-        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Enable");
-        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Vanilla-Translation.Force.Enable");
-        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Vanilla-Translation.Force.Local");
+        vanillaTrans = ConfigHandler.getConfig("config.yml").getBoolean("General.Local.Enable");
+        vanillaTransForce = ConfigHandler.getConfig("config.yml").getBoolean("General.Local.Force.Enable");
+        vanillaTransLocal = ConfigHandler.getConfig("config.yml").getString("General.Local.Force.Language");
         menuItemJoin = ConfigHandler.getConfig("config.yml").getString("General.Menu.ItemJoin");
         menuType = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Type");
         menuName = ConfigHandler.getConfig("config.yml").getString("General.Menu.Item.Name");
@@ -341,7 +340,7 @@ public class ConfigPath implements ConfigInterface {
         for (String groupName : blocksConfig.getKeys(false)) {
             blocksMap = new BlocksMap();
             blocksMap.setGroupName(groupName);
-            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPluginName(),
+            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPlugin(),
                     ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Types"), "Materials"));
             blocksMap.setIgnoreList(ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Ignore"));
             int r = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.R");
@@ -369,7 +368,7 @@ public class ConfigPath implements ConfigInterface {
                 try {
                     soundMap.setType(Sound.valueOf(ConfigHandler.getConfig("sounds.yml").getString("Sounds." + groupName + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown sound type: " + groupName);
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown sound type: " + groupName);
                     continue;
                 }
                 soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 1));
@@ -396,8 +395,8 @@ public class ConfigPath implements ConfigInterface {
                 try {
                     particleMap.setType(Particle.valueOf(ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Type")));
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Particle type of particle: " + groupName + "\"");
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown Particle type of particle: " + groupName + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                     continue;
                 }
                 particleMap.setAmount(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Amount", 1));
@@ -415,8 +414,8 @@ public class ConfigPath implements ConfigInterface {
                     particleMap.setMaterial(Material.getMaterial(
                             ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Material", "STONE")));
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Material type of particle: " + groupName + "\"");
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown Material type of particle: " + groupName + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                     continue;
                 }
                 particleProp.put(groupName, particleMap);

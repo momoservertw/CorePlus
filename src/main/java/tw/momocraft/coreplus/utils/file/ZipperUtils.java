@@ -38,7 +38,7 @@ public class ZipperUtils {
         } catch (IOException ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while compressing file.");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
             return false;
         }
         return true;
@@ -74,7 +74,7 @@ public class ZipperUtils {
             } catch (IOException ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while compressing file.");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-                UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
             }
         }
     }

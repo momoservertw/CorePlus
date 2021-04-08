@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ConditionInterface {
+
     /**
      * Checking the condition is matched.
      * Format:
@@ -19,7 +20,7 @@ public interface ConditionInterface {
      * Value1...Value2<and>Value1...Value2<or>Value1...Value2
      *
      * @param pluginName the sending plugin name.
-     * @param input the input condition string list.
+     * @param input      the input condition string list.
      * @return if the condition is matched.
      */
     boolean checkCondition(String pluginName, List<String> input);
@@ -34,7 +35,7 @@ public interface ConditionInterface {
      * Value1...Value2<and>Value1...Value2<or>Value1...Value2
      *
      * @param pluginName the sending plugin name.
-     * @param input the input condition string.
+     * @param input      the input condition string.
      * @return if the condition is matched.
      */
     boolean checkCondition(String pluginName, String input);

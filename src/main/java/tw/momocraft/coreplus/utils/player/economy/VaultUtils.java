@@ -16,10 +16,10 @@ public class VaultUtils {
 
     public VaultUtils() {
         if (!this.setupEconomy()) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find the Economy plugin.");
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find the Economy plugin.");
         }
         if (!this.setupPermissions()) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find the Permission plugin.");
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find the Permission plugin.");
         }
     }
 
