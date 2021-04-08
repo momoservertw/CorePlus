@@ -1521,9 +1521,8 @@ public class MessageManager implements MessageInterface {
                     input = input + "$%";
                     input = PlaceholderAPI.setPlaceholders(null, input);
                     return input.substring(0, input.length() - 2);
-                } else {
-                    return PlaceholderAPI.setPlaceholders(null, input);
                 }
+                return PlaceholderAPI.setPlaceholders(null, input);
             } catch (NoSuchFieldError e) {
                 UtilsHandler.getMsg().sendDebugMsg(true, pluginName,
                         "Error has occurred when setting the PlaceHolder " + e.getMessage() +
@@ -1551,9 +1550,8 @@ public class MessageManager implements MessageInterface {
                     input = input + "$%";
                     input = PlaceholderAPI.setPlaceholders(player, input);
                     return input.substring(0, input.length() - 2);
-                } else {
-                    return PlaceholderAPI.setPlaceholders(player, input);
                 }
+                return PlaceholderAPI.setPlaceholders(player, input);
             } catch (NoSuchFieldError e) {
                 UtilsHandler.getMsg().sendDebugMsg(true, pluginName,
                         "Error has occurred when setting the PlaceHolder " + e.getMessage() +
@@ -1643,89 +1641,14 @@ public class MessageManager implements MessageInterface {
             return;
         StringBuilder message = new StringBuilder("&fHooked " + type + ": [");
         for (String value : list) {
-            if (type.equals("plugins")) {
-                switch (value) {
-                    case "Vault":
-                        if (UtilsHandler.getDepend().VaultEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "PlayerPoints":
-                        if (UtilsHandler.getDepend().PlayerPointsEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "GemsEconomy":
-                        if (UtilsHandler.getDepend().GemsEconomyEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "LuckPerms":
-                        if (UtilsHandler.getDepend().PlaceHolderAPIEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "PlaceHolderAPI":
-                        if (UtilsHandler.getDepend().DiscordSRVEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "DiscordSRV":
-                        if (UtilsHandler.getDepend().LuckPermsEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "MysqlPlayerDataBridge":
-                        if (UtilsHandler.getDepend().MpdbEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "CMI":
-                        if (UtilsHandler.getDepend().ResidenceEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "MythicMobs":
-                        if (UtilsHandler.getDepend().CMIEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "Residence":
-                        if (UtilsHandler.getDepend().MythicMobsEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "ItemJoin":
-                        if (UtilsHandler.getDepend().ItemJoinEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "AuthMe":
-                        if (UtilsHandler.getDepend().AuthMeEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "PvPManager":
-                        if (UtilsHandler.getDepend().PvPManagerEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "MultiverseCore":
-                        if (UtilsHandler.getDepend().MultiverseCoreEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "Vehicles":
-                        if (UtilsHandler.getDepend().SurvivalMechanicsEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "SurvivalMechanics":
-                        if (UtilsHandler.getDepend().VehiclesEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "MyPet":
-                        if (UtilsHandler.getDepend().MyPetEnabled())
-                            message.append(value).append(", ");
-                        break;
-                    case "MorphTool":
-                        if (UtilsHandler.getDepend().MorphToolEnabled())
-                            message.append(value).append(", ");
-                        break;
-                }
-            } else if (type.equals("Residence flags")) {
+            if (type.equals("Residence flags")) {
                 if (UtilsHandler.getCondition().isRegisteredFlag(value))
                     message.append(value).append(", ");
             } else {
                 message.append(value).append(", ");
             }
         }
-        if (!message.substring(message.length() - 1).equals("["))
+        if (!message.toString().equals("&fHooked " + type + ": ["))
             sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
     }
 }

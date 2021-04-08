@@ -22,7 +22,7 @@ public class ConditionTest implements Listener {
 
     public void cmdOfflinePlayer(CommandSender sender, String playerName) {
         UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender,
-                "&6Starting to show the \"OfflinePlayerr\" placeholders...");
+                "&6Starting to show the \"OfflinePlayer\" placeholders...");
         Player player = null;
         if (sender instanceof Player)
             player = (Player) sender;
