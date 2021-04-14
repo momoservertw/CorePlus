@@ -14,6 +14,7 @@ import tw.momocraft.coreplus.api.PlayerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
+import java.net.URL;
 import java.util.*;
 
 public class PlayerManager implements PlayerInterface {
@@ -26,7 +27,7 @@ public class PlayerManager implements PlayerInterface {
     }
 
     @Override
-    public Player getPlayerString(String playerName) {
+    public Player getPlayer(String playerName) {
         Player args = null;
         try {
             args = Bukkit.getPlayer(UUID.fromString(playerName));
@@ -39,7 +40,53 @@ public class PlayerManager implements PlayerInterface {
     }
 
     @Override
+    public UUID getPlayerUUID(String playerName) {
+        UUID uuid = getPlayerUUIDLocal(playerName);
+        if (uuid != null)
+            return uuid;
+        return getPlayerUUIDMojang(playerName);
+    }
+
+    @Override
+    public UUID getPlayerUUIDLocal(String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null)
+            return player.getUniqueId();
+        UUID uuid;
+        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
+            uuid = UtilsHandler.getDepend().getLuckPermsApi().getUUID(playerName);
+            if (uuid != null)
+                return uuid;
+        }
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            uuid = UtilsHandler.getDepend().getCmiApi().getUUID(playerName);
+            if (uuid != null)
+                return uuid;
+        }
+        OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
+        if (offlinePlayer != null)
+            return offlinePlayer.getUniqueId();
+        return null;
+    }
+
+    @Override
+    public UUID getPlayerUUIDMojang(String playerName) {
+        try {
+            Scanner scanner = new Scanner(new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName).openStream());
+            String rawData = scanner.nextLine();
+            scanner.close();
+            return UUID.fromString(rawData.split("\"")[3].replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5"));
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not get player UUID from the mojang API.");
+            return null;
+        }
+    }
+
+    @Override
     public OfflinePlayer getOfflinePlayer(String playerName) {
+        UUID uuid = getPlayerUUID(playerName);
+        if (uuid != null)
+            return Bukkit.getOfflinePlayer(uuid);
         OfflinePlayer[] playersOnlineOld;
         try {
             Player player = Bukkit.getPlayer(playerName);
@@ -149,9 +196,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean isAFK(Player player) {
-        if (UtilsHandler.getDepend().CMIEnabled()) {
-            return CMI.getInstance().getPlayerManager().getUser(player).isAfk();
-        }
+        if (UtilsHandler.getDepend().CMIEnabled())
+            return UtilsHandler.getDepend().getCmiApi().isAFK(player);
         return false;
     }
 

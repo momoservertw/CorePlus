@@ -139,7 +139,7 @@ public class Commands implements CommandExecutor {
                                 return true;
                                 // crp test placeholder <player/offlineplayer> <player>
                             } else if (args[2].equalsIgnoreCase("player")) {
-                                Player player = UtilsHandler.getPlayer().getPlayerString(args[1]);
+                                Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
                                 if (player == null) {
                                     String[] placeHolders = UtilsHandler.getMsg().newString();
                                     placeHolders[1] = args[3]; // %targetplayer%
@@ -193,7 +193,7 @@ public class Commands implements CommandExecutor {
                         return true;
                         // /crp cmdgroup [player] <command>
                     } else if (length == 3) {
-                        Player player = UtilsHandler.getPlayer().getPlayerString(args[1]);
+                        Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
                         if (player == null) {
                             String[] placeHolders = UtilsHandler.getMsg().newString();
                             placeHolders[1] = args[1]; // %targetplayer%
@@ -230,7 +230,7 @@ public class Commands implements CommandExecutor {
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer")) {
                     // /crp cmdplayer <playerName> <command>
                     if (length > 3) {
-                        Player player = UtilsHandler.getPlayer().getPlayerString(args[1]);
+                        Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
                         if (player == null) {
                             String[] placeHolders = UtilsHandler.getMsg().newString();
                             placeHolders[1] = args[1]; // %targetplayer%
@@ -264,7 +264,7 @@ public class Commands implements CommandExecutor {
                         String command = String.join(" ", args).substring(args[0].length() + args[1].length() + args[2].length() + 3);
                         UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPrefix(),
                                 "Online command start - Player: " + args[1] + ", Expiration: " + args[2] + ", Command: " + command);
-                        Player player = UtilsHandler.getPlayer().getPlayerString(args[1]);
+                        Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
                         if (player != null) {
                             UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPlugin(), player, player, command);
                             return true;

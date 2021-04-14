@@ -40,7 +40,7 @@ public class CorePlusAPI {
         return CorePlus.getInstance().getPlayerManager();
     }
 
-    public static UpdaterInterface getUpdate() {
+    public static UpdateInterface getUpdate() {
         return CorePlus.getInstance().getUpdateManager();
     }
 

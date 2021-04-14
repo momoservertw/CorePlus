@@ -1,8 +1,10 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,13 @@ public interface PlayerInterface {
      * @param playerName the name of this player
      * @return the player from a name or null.
      */
-    Player getPlayerString(String playerName);
+    Player getPlayer(String playerName);
+
+    UUID getPlayerUUID(String playerName);
+
+    UUID getPlayerUUIDLocal(String playerName);
+
+    UUID getPlayerUUIDMojang(String playerName);
 
     /**
      * Getting offline player from a name.

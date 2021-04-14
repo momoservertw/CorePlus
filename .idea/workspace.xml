@@ -23,7 +23,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/CMIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CorePlusAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/CorePlusAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UpdaterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UpdateInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/DependHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/DependHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/permission/LuckPermsUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/permission/LuckPermsUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,8 +81,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EntityPlus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PlayerdataPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -179,28 +191,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="634" y="216" key="FileChooserDialogImpl" timestamp="1617895020602">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="634" y="216" key="FileChooserDialogImpl/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1617895020602" />
-    <state width="1663" height="224" key="GridCell.Tab.0.bottom" timestamp="1617896247318">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="224" key="GridCell.Tab.0.bottom/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1617896247318" />
-    <state width="1663" height="224" key="GridCell.Tab.0.center" timestamp="1617896247318">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="224" key="GridCell.Tab.0.center/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1617896247318" />
-    <state width="1663" height="224" key="GridCell.Tab.0.left" timestamp="1617896247318">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="224" key="GridCell.Tab.0.left/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1617896247318" />
-    <state width="1663" height="224" key="GridCell.Tab.0.right" timestamp="1617896247318">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="224" key="GridCell.Tab.0.right/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1617896247318" />
   </component>
   <component name="masterDetails">
     <states>

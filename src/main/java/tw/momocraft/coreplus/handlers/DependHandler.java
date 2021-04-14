@@ -10,6 +10,7 @@ import tw.momocraft.coreplus.listeners.ConditionTest;
 import tw.momocraft.coreplus.utils.MultiverseCoreUtils;
 import tw.momocraft.coreplus.utils.condition.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.condition.ResidenceUtils;
+import tw.momocraft.coreplus.utils.player.CMIUtils;
 import tw.momocraft.coreplus.utils.player.economy.GemsEcoUtils;
 import tw.momocraft.coreplus.utils.player.economy.PlayerPointsUtils;
 import tw.momocraft.coreplus.utils.player.economy.VaultUtils;
@@ -24,6 +25,7 @@ public class DependHandler implements DependInterface {
     private LuckPermsUtils luckPermsApi;
     private ItemJoinUtils itemJoinApi;
     private ResidenceUtils residenceApi;
+    private CMIUtils cmiApi;
     private MultiverseCoreUtils multiverseCoreApi;
 
     private boolean Vault = false;
@@ -96,6 +98,11 @@ public class DependHandler implements DependInterface {
             if (Residence)
                 setResidenceUtils();
         }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.CMI")) {
+            CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
+            if (CMI)
+                setCMIUtils();
+        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MultiverseCore")) {
             MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
             if (MultiverseCore)
@@ -111,8 +118,6 @@ public class DependHandler implements DependInterface {
             MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence"))
             Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.CMI"))
-            CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MythicMobs"))
             MythicMobs = Bukkit.getServer().getPluginManager().getPlugin("MythicMobs") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.AuthMe"))
@@ -264,6 +269,10 @@ public class DependHandler implements DependInterface {
         return this.residenceApi;
     }
 
+    public CMIUtils getCmiApi() {
+        return cmiApi;
+    }
+
     public MultiverseCoreUtils getMultiverseCoreApi() {
         return multiverseCoreApi;
     }
@@ -291,6 +300,10 @@ public class DependHandler implements DependInterface {
 
     private void setResidenceUtils() {
         residenceApi = new ResidenceUtils();
+    }
+
+    private void setCMIUtils() {
+        cmiApi = new CMIUtils();
     }
 
     private void setMultiverseCoreUtils() {

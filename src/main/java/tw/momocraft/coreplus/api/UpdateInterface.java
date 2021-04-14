@@ -2,7 +2,7 @@ package tw.momocraft.coreplus.api;
 
 import org.bukkit.command.CommandSender;
 
-public interface UpdaterInterface {
+public interface UpdateInterface {
 
     /**
      * Checking the plugin update.

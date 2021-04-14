@@ -105,9 +105,9 @@ public class CorePlus extends JavaPlugin {
         return playerAPI;
     }
 
-    private UpdaterInterface updaterAPI = null;
+    private UpdateInterface updaterAPI = null;
 
-    public UpdaterInterface getUpdateManager() {
+    public UpdateInterface getUpdateManager() {
         if (updaterAPI == null)
             updaterAPI = new Updater();
         return updaterAPI;

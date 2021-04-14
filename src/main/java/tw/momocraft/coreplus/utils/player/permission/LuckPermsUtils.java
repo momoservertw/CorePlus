@@ -1,6 +1,7 @@
 package tw.momocraft.coreplus.utils.player.permission;
 
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.context.ContextManager;
 import net.luckperms.api.model.user.User;
@@ -24,6 +25,13 @@ public class LuckPermsUtils {
         if (provider != null) {
             luckPerms = provider.getProvider();
         }
+    }
+
+    public UUID getUUID(String playerName) {
+        User luckUser = LuckPermsProvider.get().getUserManager().getUser(playerName);
+        if (luckUser != null)
+            return luckUser.getUniqueId();
+        return null;
     }
 
     public User getUser(UUID uuid) {

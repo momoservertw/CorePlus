@@ -1,7 +1,7 @@
 package tw.momocraft.coreplus.utils;
 
 import org.bukkit.command.CommandSender;
-import tw.momocraft.coreplus.api.UpdaterInterface;
+import tw.momocraft.coreplus.api.UpdateInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Updater implements UpdaterInterface {
+public class Updater implements UpdateInterface {
 
     @Override
     public void check(String pluginName, String prefix, CommandSender sender, String plugin, String ver, boolean auto) {
