@@ -24,7 +24,12 @@
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +79,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PlayerdataPlus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BarrierPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -181,12 +186,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="556" y="163" width="594" height="594" key="find.popup" timestamp="1618403324918">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="556" y="163" width="594" height="594" key="find.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618403324918" />
   </component>
   <component name="masterDetails">
     <states>

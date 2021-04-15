@@ -129,11 +129,19 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     private void setData() {
         ConfigurationSection dataConfig;
-        ConfigurationSection subDataConfig;
+        ConfigurationSection tableConfig;
         Map<String, String> map;
         dataMySQL = ConfigHandler.getConfig("data.yml").getBoolean("MySQL.Enable");
         if (dataMySQL) {
             dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("MySQL");
+            String hostname = ConfigHandler.getConfig("data.yml").getString(
+                    "MySQL.Settings.Default.hostname");
+            String port = ConfigHandler.getConfig("data.yml").getString(
+                    "MySQL.Settings.Default.port");
+            String username = ConfigHandler.getConfig("data.yml").getString(
+                    "MySQL.Settings.Default.username");
+            String password = ConfigHandler.getConfig("data.yml").getString(
+                    "MySQL.Settings.Default.password");
             if (dataConfig != null) {
                 MySQLMap mySQLMap;
                 for (String groupName : dataConfig.getKeys(false)) {
@@ -145,40 +153,26 @@ public class ConfigPath implements ConfigInterface {
                     mySQLMap = new MySQLMap();
                     mySQLMap.setGroupName(groupName);
                     mySQLMap.setHostName(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".hostname"));
+                            "MySQL." + groupName + ".hostname", hostname));
                     mySQLMap.setPort(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".port"));
+                            "MySQL." + groupName + ".port", port));
+                    mySQLMap.setUsername(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".username", username));
+                    mySQLMap.setPassword(ConfigHandler.getConfig("data.yml").getString(
+                            "MySQL." + groupName + ".password", password));
                     mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
                             "MySQL." + groupName + ".database"));
-                    mySQLMap.setUsername(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".username"));
-                    mySQLMap.setPassword(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".password"));
-                    subDataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
+                    tableConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
                             "MySQL." + groupName + ".Tables");
-                    if (subDataConfig != null) {
+                    if (tableConfig != null) {
                         map = new HashMap<>();
-                        for (String subGroupName : subDataConfig.getKeys(false)) {
+                        for (String subGroupName : tableConfig.getKeys(false)) {
                             map.put(subGroupName, ConfigHandler.getConfig("data.yml").getString(
                                     "MySQL." + groupName + ".Tables." + subGroupName));
                         }
                         mySQLMap.setTables(map);
                     }
-                    subDataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
-                            "MySQL." + groupName + ".Groups");
-                    if (subDataConfig != null) {
-                        for (String subGroupName : subDataConfig.getKeys(false)) {
-                            if (!ConfigHandler.getConfig("data.yml").getBoolean(
-                                    "MySQL." + groupName + "." + subGroupName + ".Enable", true))
-                                continue;
-                            mySQLMap.setGroupName(subGroupName);
-                            mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
-                                    "MySQL." + groupName + ".Groups." + subGroupName + ".database"));
-                            mySQLProp.put(subGroupName, mySQLMap);
-                        }
-                    } else {
-                        mySQLProp.put(groupName, mySQLMap);
-                    }
+                    mySQLProp.put(groupName, mySQLMap);
                 }
             }
         }

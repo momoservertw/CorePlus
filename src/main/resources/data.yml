@@ -7,33 +7,26 @@ Config-Version: 1
 # Changed MySQL settings need to restart the server.
 MySQL:
   Enable: false
-  Localhost:
+  Settings:
+    Default:
+      hostname: localhost
+      port: 3306
+      username: "root"
+      password: ""
+  CorePlus:
     Enable: false
-    hostname: localhost
-    port: 3306
-    username: root
-    password: ""
-    Groups:
-      MySQLPlayerDataBridge:
-        Enable: false
-        Database: mysqlplayerdatabridge
-        Tables:
-          Experience: mpdb_experience
-      PlayerdataPlus:
-        Enable: false
-        Database: playerdataplus
-      HotkeyPlus:
-        Enable: false
-        Database: hotkeyplus
-      ServerPlus:
-        Enable: false
-        Database: serverplus
-      MyCommand:
-        Enable: false
-        Database: mycommand
-      Example:
-        Enable: false
-        Database: example
+    Database: "coreplus"
+  MySQLPlayerDataBridge:
+    Enable: false
+    Database: "mysqlplayerdatabridge"
+    Tables:
+      Experience: "mpdb_experience"
+  MyCommand:
+    Enable: false
+    Database: "mycommand"
+  Example:
+    Enable: false
+    Database: "example"
 
 Yaml:
   Enable: false

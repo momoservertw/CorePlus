@@ -169,18 +169,53 @@ public class PlayerManager implements PlayerInterface {
     }
 
     @Override
-    public Map<String, Long> getLastLoginMap() {
-        Map<String, Long> map = new HashMap<>();
-        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
-        for (OfflinePlayer offlinePlayer : offlinePlayers)
-            map.put(offlinePlayer.getUniqueId().toString(), offlinePlayer.getLastLogin());
-        AuthMeApi.getInstance().getLastLoginTime("").
-        Map<Object, Object> mySQLMap = UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPlugin(),
+    public Map<Object, Object> getLastLoginMap() {
+        return UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPlugin(),
                 "playerdataplus", "players", "uuid", "last_login",
                 "string", "long");
-        for (Map.Entry<Object, Object> entry : mySQLMap.entrySet())
-            map.put(String.valueOf(entry.getKey()), Long.valueOf((String) entry.getValue()));
-        return map;
+    }
+
+    @Override
+    public void importLastLogin() {
+        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
+        long dataTime;
+        long checkTime;
+        String uuid;
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            uuid = offlinePlayer.getUniqueId().toString();
+            dataTime = Long.parseLong(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
+                    "playerdataplus", "players", "uuid", uuid, "last_login"));
+            checkTime = offlinePlayer.getLastLogin();
+            if (dataTime > checkTime) {
+                UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+                        "playerdataplus", "players",
+                        "uuid", uuid,
+                        "last_login", String.valueOf(checkTime));
+                dataTime = checkTime;
+            }
+            if (UtilsHandler.getDepend().AuthMeEnabled()) {
+                checkTime = AuthMeApi.getInstance().getLastLoginTime("").toEpochMilli();
+                if (dataTime > checkTime) {
+                    UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+                            "playerdataplus", "players",
+                            "uuid", uuid,
+                            "last_login", String.valueOf(checkTime));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void importUUID() {
+        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+                    "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
+                    "username", offlinePlayer.getName());
+        }
+        if (UtilsHandler.getDepend().AuthMeEnabled()) {
+
+        }
     }
 
     @Override

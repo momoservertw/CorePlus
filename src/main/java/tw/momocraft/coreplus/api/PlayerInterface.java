@@ -76,7 +76,7 @@ public interface PlayerInterface {
      *
      * @return a map with player's uuid and last login time(milliseconds).
      */
-    Map<String, Long> getLastLoginMap();
+    Map<Object, Object> getLastLoginMap();
 
     /**
      * Getting the last login time(milliseconds) of player.

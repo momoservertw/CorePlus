@@ -201,6 +201,16 @@ public class MySQLUtils {
         }
     }
 
+    public void executeSQL(String pluginName, String databaseType, String sql) {
+        try {
+            getStatement(pluginName, databaseType, sql).executeUpdate();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to execute SQL statement of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
     // CREATE TABLE tableName ("EMP_ID int(11) NOT NULL,"
     //                    + "NAME VARCHAR(255) NOT NULL,"
     //                    + "DOB DATE NOT NULL,"
@@ -232,16 +242,6 @@ public class MySQLUtils {
             executeSQL(pluginName, databaseType, sql);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add column of MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
-        }
-    }
-
-    public void executeSQL(String pluginName, String databaseType, String sql) {
-        try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to execute SQL statement of MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
             UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -378,7 +378,9 @@ public class MySQLUtils {
     }
 
     public String getValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
-        String sql = "\"SELECT " + column + " FROM " + table + "WHERE " + whereKey + " = '" + whereValue + "'\"";
+        String sql = "\"SELECT " + column + " FROM " + table + "WHERE " +
+                whereKey + " = '" + whereValue + "'" +
+                "\"";
         try {
             // SELECT targetColumn FROM table WHERE uuid = 'UUID'
             ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
@@ -396,9 +398,17 @@ public class MySQLUtils {
     }
 
     public void setValue(String pluginName, String databaseType, String table, String column, String columnValue) {
-        String sql = "\"UPDATE " + table + " SET " + column + "='" + columnValue + "'\"";
+        /*
+        String sql = "\"UPDATE " + table + " SET " +
+                column + "='" + columnValue +
+                "'\"";
+         */
+        String sql = "\"INSERT INTO " + table + " SET " +
+                column + "='" + columnValue + "'" +
+                " ON DUPLICATE KEY UPDATE " +
+                column + "='" + columnValue + "'" +
+                "\"";
         try {
-            // UPDATE table SET column='columnValue' WHERE uuid = 'UUID'
             getStatement(pluginName, databaseType, sql).executeUpdate();
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
@@ -408,9 +418,12 @@ public class MySQLUtils {
     }
 
     public void setValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue) {
-        String sql = "\"UPDATE " + table + " SET " + column + "='" + columnValue + "' WHERE " + whereKey + " = '" + whereValue + "'\"";
+        String sql = "\"UPDATE " + table + " SET " +
+                column + "='" + columnValue + "'" +
+                " WHERE " +
+                whereKey + " = '" + whereValue + "'" +
+                "\"";
         try {
-            // UPDATE table SET column='columnValue' WHERE uuid = 'UUID'
             getStatement(pluginName, databaseType, sql).executeUpdate();
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);

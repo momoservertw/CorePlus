@@ -35,6 +35,12 @@ public class UtilsHandler {
         zipperUtils = new ZipperUtils();
         logUtils = new LogUtils();
         updater = new Updater();
+        syncData();
+    }
+
+    public static void syncData() {
+        playerManager.importLastLogin();
+        playerManager.importUUID();
     }
 
     private static DependHandler depend;
