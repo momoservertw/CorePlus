@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import fr.xephi.authme.api.v3.AuthMeApi;
 import me.NoChance.PvPManager.PvPlayer;
 import net.craftersland.data.bridge.PD;
 import org.bukkit.Bukkit;
@@ -171,15 +172,14 @@ public class PlayerManager implements PlayerInterface {
     public Map<String, Long> getLastLoginMap() {
         Map<String, Long> map = new HashMap<>();
         OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+        for (OfflinePlayer offlinePlayer : offlinePlayers)
             map.put(offlinePlayer.getUniqueId().toString(), offlinePlayer.getLastLogin());
-        }
+        AuthMeApi.getInstance().getLastLoginTime("").
         Map<Object, Object> mySQLMap = UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPlugin(),
                 "playerdataplus", "players", "uuid", "last_login",
                 "string", "long");
-        for (Map.Entry<Object, Object> entry : mySQLMap.entrySet()) {
+        for (Map.Entry<Object, Object> entry : mySQLMap.entrySet())
             map.put(String.valueOf(entry.getKey()), Long.valueOf((String) entry.getValue()));
-        }
         return map;
     }
 
