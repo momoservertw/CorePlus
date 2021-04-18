@@ -39,8 +39,8 @@ public class UtilsHandler {
     }
 
     public static void syncData() {
-        playerManager.importLastLogin();
-        playerManager.importUUID();
+        playerManager.importPlayerList();
+        playerManager.importPlayerLastLogin();
     }
 
     private static DependHandler depend;

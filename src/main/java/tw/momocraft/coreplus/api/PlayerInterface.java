@@ -1,13 +1,10 @@
 package tw.momocraft.coreplus.api;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface PlayerInterface {
@@ -70,13 +67,6 @@ public interface PlayerInterface {
      * @return the last login time(milliseconds) of player.
      */
     double getLastLogin(String playerName);
-
-    /**
-     * Getting a map with player's uuid and last login time(milliseconds).
-     *
-     * @return a map with player's uuid and last login time(milliseconds).
-     */
-    Map<Object, Object> getLastLoginMap();
 
     /**
      * Getting the last login time(milliseconds) of player.

@@ -1,6 +1,9 @@
 package tw.momocraft.coreplus.api;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import tw.momocraft.coreplus.handlers.ConfigHandler;
+import tw.momocraft.coreplus.utils.file.MySQLMap;
+import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.io.File;
 import java.sql.ResultSet;
@@ -8,6 +11,36 @@ import java.util.List;
 import java.util.Map;
 
 public interface FileInterface {
+
+    /**
+     *
+     * @return the YMAL settings in data.yml.
+     */
+    Map<String, String> getYMALProp();
+
+    /**
+     *
+     * @return the Properties settings in data.yml.
+     */
+    Map<String, String> getPropProp();
+
+    /**
+     *
+     * @return the Json settings in data.yml.
+     */
+    Map<String, String> getJsonProp();
+
+    /**
+     *
+     * @return the Log settings in data.yml.
+     */
+    Map<String, LogMap> getLogProp();
+
+    /**
+     *
+     * @return the MySQL settings in data.yml.
+     */
+    Map<String, MySQLMap> getMySQLProp();
 
     /**
      * Compressing a file.
@@ -123,22 +156,6 @@ public interface FileInterface {
     boolean isMySQLConnect(String pluginName, String databaseType);
 
     /**
-     * @param pluginName   the sending plugin name.
-     * @param databaseType the name of database.
-     * @param table        the select table.
-     * @param columns      the target columns.
-     */
-    void createMySQLTables(String pluginName, String databaseType, String table, List<String> columns);
-
-    /**
-     * @param pluginName   the sending plugin name.
-     * @param databaseType the name of database.
-     * @param table        the select table.
-     * @param columns      the target columns.
-     */
-    void addMySQLColumns(String pluginName, String databaseType, String table, List<String> columns);
-
-    /**
      * Executing a sql.
      *
      * @param pluginName   the sending plugin name.
@@ -148,17 +165,134 @@ public interface FileInterface {
     void executeMySQLSQL(String pluginName, String databaseType, String sql);
 
     /**
-     * The get the values from MySQL database.
+     * Creating a table in MySQL database.
      *
      * @param pluginName   the sending plugin name.
      * @param databaseType the name of database.
      * @param table        the select table.
-     * @param key          the main key of map.
-     * @param variables    the checking variables.
-     * @return the values of the variables from MySQL database.
+     * @param columns      the target columns.
      */
-    Map<String, Map<String, String>> getMySQLValues(String pluginName, String databaseType, String table, String key, List<String> variables);
+    void createMySQLTables(String pluginName, String databaseType, String table, List<String> columns);
 
+    /**
+     * Adding a column in MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param column       the target column.
+     */
+    void addMySQLColumn(String pluginName, String databaseType, String table, String column);
+
+    /**
+     * Adding columns in MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param columns      the target columns.
+     */
+    void addMySQLColumns(String pluginName, String databaseType, String table, List<String> columns);
+
+    /**
+     * Removing a column in MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param column       the target column.
+     */
+    void removeMySQLColumn(String pluginName, String databaseType, String table, String column);
+
+    /**
+     * Removing columns in MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param columns      the target columns.
+     */
+    void removeMySQLColumns(String pluginName, String databaseType, String table, List<String> columns);
+
+    /**
+     * To remove the value from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param whereKey     the matching key.
+     * @param whereValue   the matching value.
+     */
+    void removeMySQLValue(String pluginName, String databaseType, String table, String whereKey, String whereValue);
+
+    /**
+     * To set the value in MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the table name in database.
+     * @param column       the target variable.
+     * @param columnValue  the target variable's value.
+     */
+    void setMySQLValue(String pluginName, String databaseType, String table, String column, String columnValue);
+
+    /**
+     * To set the value in MySQL database where match the key and value.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the table name in database.
+     * @param whereKey     the condition key.
+     * @param whereValue   the condition value.
+     * @param column       the target variable.
+     * @param columnValue  the target variable's value.
+     */
+    void setMySQLValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue);
+
+    /**
+     * To get the value from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @return the value of the variable from MySQLof.
+     */
+    String getMySQLValue(String pluginName, String databaseType, String valueName, String sql);
+
+    /**
+     * To get the value from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the table name in database.
+     * @param whereKey     the matching key.
+     * @param whereValue   the matching value.
+     * @param column       the target variable.
+     * @return the value of the variable from MySQLof.
+     */
+    String getMySQLValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column);
+
+    /**
+     * To get the value list from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the table name in database.
+     * @param column       the target variable.
+     * @return the value list of the variable from MySQLof.
+     */
+    List<String> getMySQLValueList(String pluginName, String databaseType, String table, String column);
+
+    /**
+     * To get the value list from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the table name in database.
+     * @param whereKey     the matching key.
+     * @param whereValue   the matching value.
+     * @param column       the target variable.
+     * @return the value list of the variable from MySQLof.
+     */
+    List<String> getMySQLValueListWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column);
 
     /**
      * The get a map from MySQL database.
@@ -187,56 +321,23 @@ public interface FileInterface {
     Map<Object, Object> getMySQLValueMap(String pluginName, String databaseType, String table, String keyColumn, String valueColumn, String keyType, String valueType);
 
     /**
-     * To get the value from MySQL database.
+     * The get the values from MySQL database.
      *
      * @param pluginName   the sending plugin name.
      * @param databaseType the name of database.
-     * @return the value of the variable from MySQLof.
+     * @param table        the select table.
+     * @param key          the main key of map.
+     * @param variables    the checking variables.
+     * @return the values of the variables from MySQL database.
      */
-    String getMySQLValue(String pluginName, String databaseType, String valueName, String sql);
-
-    /**
-     * To get the value from MySQL database.
-     *
-     * @param pluginName   the sending plugin name.
-     * @param databaseType the name of database.
-     * @param table        the table name in database.
-     * @param whereKey     the matching key.
-     * @param whereValue   the matching value.
-     * @param column       the target variable.
-     * @return the value of the variable from MySQLof.
-     */
-    String getMySQLValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column);
-
-    /**
-     * To set the value in MySQL database.
-     *
-     * @param pluginName   the sending plugin name.
-     * @param databaseType the name of database.
-     * @param table        the table name in database.
-     * @param column       the target variable.
-     * @param columnValue  the target variable's value.
-     */
-    void setMySQLValue(String pluginName, String databaseType, String table, String column, String columnValue);
-
-    /**
-     * To set the value in MySQL database where match the key and value.
-     *
-     * @param pluginName   the sending plugin name.
-     * @param databaseType the name of database.
-     * @param table        the table name in database.
-     * @param whereKey     the condition key.
-     * @param whereValue   the condition value.
-     * @param column       the target variable.
-     * @param columnValue  the target variable's value.
-     */
-    void setMySQLValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue);
+    Map<String, Map<String, String>> getMySQLValues(String pluginName, String databaseType, String table, String key, List<String> variables);
 
     /**
      * To get the MySQL ResultSet from MySQL database.
      *
      * @param pluginName   the sending plugin name.
      * @param databaseType the name of database.
+     * @param sql          the input sql.
      * @return the MySQL ResultSet from MySQL.
      */
     ResultSet getMySQLResultSet(String pluginName, String databaseType, String sql);
@@ -246,7 +347,22 @@ public interface FileInterface {
      *
      * @param pluginName   the sending plugin name.
      * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param column       the target variable.
      * @return the MySQL ResultSet from MySQL.
      */
     ResultSet getMySQLResultSet(String pluginName, String databaseType, String table, String column);
+
+    /**
+     * To get the MySQL ResultSet from MySQL database.
+     *
+     * @param pluginName   the sending plugin name.
+     * @param databaseType the name of database.
+     * @param table        the select table.
+     * @param column       the target variable.
+     * @param whereKey     the matching key.
+     * @param whereValue   the matching value.
+     * @return the MySQL ResultSet from MySQL.
+     */
+    ResultSet getMySQLResultSetWhere(String pluginName, String databaseType, String table, String column, String whereKey, String whereValue);
 }

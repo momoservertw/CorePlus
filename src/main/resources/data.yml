@@ -16,6 +16,11 @@ MySQL:
   CorePlus:
     Enable: false
     Database: "coreplus"
+  LuckPerms:
+    Enable: false
+    Database: "luckperms"
+    Tables:
+      Players: "luckperms_players"
   MySQLPlayerDataBridge:
     Enable: false
     Database: "mysqlplayerdatabridge"

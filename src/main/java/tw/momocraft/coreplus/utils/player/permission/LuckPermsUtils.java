@@ -34,6 +34,13 @@ public class LuckPermsUtils {
         return null;
     }
 
+    public String getUserName(UUID uuid) {
+        User luckUser = LuckPermsProvider.get().getUserManager().getUser(uuid);
+        if (luckUser != null)
+            return luckUser.getUsername();
+        return null;
+    }
+
     public User getUser(UUID uuid) {
         UserManager userManager = luckPerms.getUserManager();
         CompletableFuture<User> userFuture = userManager.loadUser(uuid);

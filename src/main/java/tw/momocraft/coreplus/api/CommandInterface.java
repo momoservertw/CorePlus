@@ -228,10 +228,9 @@ public interface CommandInterface {
      * Format: "console: Command"
      *
      * @param pluginName the executing plugin name.
-     * @param player     the target player.
      * @param input      the input command.
      */
-    void dispatchConsoleCmd(String pluginName, Player player, String input);
+    void dispatchConsoleCmd(String pluginName, String input);
 
     /**
      * Executing a operator command.

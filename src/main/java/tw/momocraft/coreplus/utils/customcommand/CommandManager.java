@@ -340,7 +340,7 @@ public class CommandManager implements CommandInterface {
                     return;
                 case "console":
                     input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConsoleCmd(pluginName, player, input);
+                    dispatchConsoleCmd(pluginName, input);
                     return;
                 case "op":
                     input = input.substring(input.indexOf(": ") + 1);
@@ -456,7 +456,7 @@ public class CommandManager implements CommandInterface {
                     return;
                 case "console":
                     input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConsoleCmd(pluginName, null, input);
+                    dispatchConsoleCmd(pluginName,  input);
                     return;
                 case "op":
                 case "player":
@@ -623,7 +623,7 @@ public class CommandManager implements CommandInterface {
     }
 
     @Override
-    public void dispatchConsoleCmd(String pluginName, Player player, String input) {
+    public void dispatchConsoleCmd(String pluginName, String input) {
         if (input == null)
             return;
         try {

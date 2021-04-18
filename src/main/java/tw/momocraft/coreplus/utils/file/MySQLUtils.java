@@ -4,6 +4,7 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,6 +227,16 @@ public class MySQLUtils {
         executeSQL(pluginName, databaseType, sql);
     }
 
+    public void addColumn(String pluginName, String databaseType, String table, String column) {
+        try {
+            String sql = "\"ALTER TABLE " + table + " ADD " + column + "\"";
+            executeSQL(pluginName, databaseType, sql);
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add column of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
     // ALTER TABLE tableName ADD ("EMP_ID int(11) NOT NULL,"
     //                    + "NAME VARCHAR(255) NOT NULL,"
     //                    + "DOB DATE NOT NULL,"
@@ -241,7 +252,33 @@ public class MySQLUtils {
             String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
             executeSQL(pluginName, databaseType, sql);
         } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add columns of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Columns: " + columns);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
+    public void removeColumn(String pluginName, String databaseType, String table, String column) {
+        try {
+            String sql = "\"ALTER TABLE " + table + " DROP " + column + "\"";
+            executeSQL(pluginName, databaseType, sql);
+        } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add column of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
+    public void removeColumns(String pluginName, String databaseType, String table, List<String> columns) {
+        try {
+            StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " DROP (\"");
+            for (String column : columns) {
+                sqlBuilder.append(column).append(",");
+            }
+            String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
+            executeSQL(pluginName, databaseType, sql);
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to drop column of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Columns: " + columns);
             UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
     }
@@ -259,9 +296,8 @@ public class MySQLUtils {
             String keyValue;
             while (result.next()) {
                 keyValue = result.getString(key);
-                for (String variable : variables) {
+                for (String variable : variables)
                     columnMap.put(variable, result.getString(variable));
-                }
                 keyMap.put(keyValue, columnMap);
             }
             return keyMap;
@@ -359,6 +395,47 @@ public class MySQLUtils {
         }
     }
 
+    public void setValue(String pluginName, String databaseType, String table, String column, String columnValue) {
+        String sql = "\"INSERT INTO " + table +
+                " SET " + column + "='" + columnValue + "'" +
+                " ON DUPLICATE KEY UPDATE " + column + "='" + columnValue + "'" +
+                "\"";
+        try {
+            getStatement(pluginName, databaseType, sql).executeUpdate();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
+    public void setValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue) {
+        String sql = "\"UPDATE " + table +
+                " SET " + column + "='" + columnValue + "'" +
+                " WHERE " + whereKey + " = '" + whereValue + "'" +
+                "\"";
+        try {
+            getStatement(pluginName, databaseType, sql).executeUpdate();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
+    public void removeValue(String pluginName, String databaseType, String table, String whereKey, String whereValue) {
+        String sql = "\"DELETE FROM " + table +
+                " WHERE " + whereKey + " = '" + whereValue + "'" +
+                "\"";
+        try {
+            getStatement(pluginName, databaseType, sql).executeUpdate();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+        }
+    }
+
     public String getValue(String pluginName, String databaseType, String table, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
@@ -378,8 +455,8 @@ public class MySQLUtils {
     }
 
     public String getValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
-        String sql = "\"SELECT " + column + " FROM " + table + "WHERE " +
-                whereKey + " = '" + whereValue + "'" +
+        String sql = "\"SELECT " + column + " FROM " + table +
+                "WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
             // SELECT targetColumn FROM table WHERE uuid = 'UUID'
@@ -397,38 +474,41 @@ public class MySQLUtils {
         }
     }
 
-    public void setValue(String pluginName, String databaseType, String table, String column, String columnValue) {
-        /*
-        String sql = "\"UPDATE " + table + " SET " +
-                column + "='" + columnValue +
-                "'\"";
-         */
-        String sql = "\"INSERT INTO " + table + " SET " +
-                column + "='" + columnValue + "'" +
-                " ON DUPLICATE KEY UPDATE " +
-                column + "='" + columnValue + "'" +
-                "\"";
+    public List<String> getValueList(String pluginName, String databaseType, String table, String column) {
+        String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
+            // SELECT targetColumn FROM table
+            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            List<String> value = new ArrayList<>();
+            while (result.next()) {
+                value.add(result.getString(column));
+            }
+            return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value of MySQL database: " + databaseType);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
             UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            return null;
         }
     }
 
-    public void setValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue) {
-        String sql = "\"UPDATE " + table + " SET " +
-                column + "='" + columnValue + "'" +
-                " WHERE " +
-                whereKey + " = '" + whereValue + "'" +
+    public List<String> getValueListWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
+        String sql = "\"SELECT " + column + " FROM " + table +
+                "WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
+            // SELECT targetColumn FROM table WHERE uuid = 'UUID'
+            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            List<String> value = new ArrayList<>();
+            while (result.next()) {
+                value.add(result.getString(column));
+            }
+            return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value of MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value of MySQL database: " + databaseType);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
             UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            return null;
         }
     }
 
@@ -445,6 +525,20 @@ public class MySQLUtils {
 
     public ResultSet getResultSet(String pluginName, String databaseType, String table, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
+        try {
+            return getStatement(pluginName, databaseType, sql).executeQuery();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            return null;
+        }
+    }
+
+    public ResultSet getResultSetWhere(String pluginName, String databaseType, String table, String column, String whereKey, String whereValue) {
+        String sql = "\"SELECT " + column + " FROM " + table +
+                "WHERE " + whereKey + " = '" + whereValue + "'" +
+                "\"";
         try {
             return getStatement(pluginName, databaseType, sql).executeQuery();
         } catch (Exception ex) {

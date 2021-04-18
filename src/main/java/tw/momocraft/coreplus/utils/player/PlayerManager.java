@@ -14,8 +14,10 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import tw.momocraft.coreplus.api.PlayerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.file.MySQLMap;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.*;
 
 public class PlayerManager implements PlayerInterface {
@@ -168,53 +170,59 @@ public class PlayerManager implements PlayerInterface {
         return offlinePlayer.getLastLogin() * 1000;
     }
 
-    @Override
-    public Map<Object, Object> getLastLoginMap() {
-        return UtilsHandler.getMySQL().getValueMap(ConfigHandler.getPlugin(),
-                "playerdataplus", "players", "uuid", "last_login",
-                "string", "long");
-    }
-
-    @Override
-    public void importLastLogin() {
-        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
+    public void importPlayerLastLogin() {
+        List<String> uuidList = UtilsHandler.getMySQL().getValueList(ConfigHandler.getPlugin(),
+                "coreplus", "player", "uuid");
         long dataTime;
         long checkTime;
-        String uuid;
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            uuid = offlinePlayer.getUniqueId().toString();
+        OfflinePlayer offlinePlayer;
+        for (String uuid : uuidList) {
+            // Getting the CorePlus login time.
             dataTime = Long.parseLong(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
-                    "playerdataplus", "players", "uuid", uuid, "last_login"));
+                    "coreplus", "players", "uuid", uuid, "last_login"));
+            // Checking the Server login time.
+            offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
             checkTime = offlinePlayer.getLastLogin();
-            if (dataTime > checkTime) {
+            if (checkTime == 0 && dataTime > checkTime) {
                 UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
-                        "playerdataplus", "players",
-                        "uuid", uuid,
-                        "last_login", String.valueOf(checkTime));
+                        "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 dataTime = checkTime;
             }
+            // Checking the AuthMe login time.
             if (UtilsHandler.getDepend().AuthMeEnabled()) {
-                checkTime = AuthMeApi.getInstance().getLastLoginTime("").toEpochMilli();
-                if (dataTime > checkTime) {
+                checkTime = AuthMeApi.getInstance().getLastLoginTime(offlinePlayer.getName()).toEpochMilli();
+                if (checkTime == 0 && dataTime > checkTime) {
                     UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
-                            "playerdataplus", "players",
-                            "uuid", uuid,
-                            "last_login", String.valueOf(checkTime));
+                            "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 }
             }
         }
     }
 
-    @Override
-    public void importUUID() {
+    public void importPlayerList() {
+        // Getting the LuckPerms user list.
+        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
+            MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
+            if (mySQLMap != null) {
+                ResultSet resultSet = UtilsHandler.getMySQL().getResultSet(ConfigHandler.getPlugin(),
+                        mySQLMap.getDatabase(), mySQLMap.getTables().get("Players"));
+                try {
+                    while (resultSet.next()) {
+                        resultSet.getString("uuid");
+                        resultSet.getString("username");
+                    }
+                } catch (Exception ex) {
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "An error occurred while importing the player data.");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Please check the settings \"MySQL.LuckPerms\" in data.yml.");
+                }
+            }
+        }
+        // Getting the Server player list.
         OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
                     "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
                     "username", offlinePlayer.getName());
-        }
-        if (UtilsHandler.getDepend().AuthMeEnabled()) {
-
         }
     }
 
