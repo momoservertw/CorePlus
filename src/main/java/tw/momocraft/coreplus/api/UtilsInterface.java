@@ -67,6 +67,17 @@ public interface UtilsInterface {
     boolean isInteger(String s);
 
     /**
+     * Getting a inverted map of input map that.
+     * The new map will not have duplicate values.
+     *
+     * @param map the input map.
+     * @param <K> the type of key.
+     * @param <V> the type of value.
+     * @return a inverted map of input map that.
+     */
+    <K, V> Map<V, K> invertMap(Map<K, V> map);
+
+    /**
      * Getting a random number from the low number to higher number.
      *
      * @param lower  the lower number.
@@ -145,8 +156,8 @@ public interface UtilsInterface {
      * the input is match the condition.
      *
      * @param pluginName the sending plugin name.
-     * @param value1      the first checking value.
-     * @param value2      the second checking value with operator.
+     * @param value1     the first checking value.
+     * @param value2     the second checking value with operator.
      * @return if the input is match the condition.
      */
     boolean checkValues(String pluginName, String value1, String value2);
@@ -165,9 +176,9 @@ public interface UtilsInterface {
      * Comparing two numbers or strings.
      *
      * @param pluginName the sending plugin name.
-     * @param operator the comparison operator to compare two numbers.
-     * @param value1   the first value.
-     * @param value2   the second value.
+     * @param operator   the comparison operator to compare two numbers.
+     * @param value1     the first value.
+     * @param value2     the second value.
      * @return if the comparing is succeed or not.
      */
     boolean checkCompareAndEquals(String pluginName, String operator, String value1, String value2);

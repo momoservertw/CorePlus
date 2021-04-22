@@ -75,6 +75,14 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
+    public <K, V> Map<V, K> invertMap(Map<K, V> map) {
+        Map<V, K> output = new HashMap<V, K>();
+        for (Map.Entry<K, V> entry : map.entrySet())
+            output.put(entry.getValue(), entry.getKey());
+        return output;
+    }
+
+    @Override
     public int getRandom(int value1, int value2) {
         Random random = new Random();
         if (value2 > value1) {

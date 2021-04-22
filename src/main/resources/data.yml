@@ -29,6 +29,12 @@ MySQL:
   MyCommand:
     Enable: false
     Database: "mycommand"
+  MyPet:
+    Enable: false
+    Database: "mypet"
+    Tables:
+      Players: "players"
+      Pets: "pets"
   Example:
     Enable: false
     Database: "example"
