@@ -23,13 +23,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/DataUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/FileInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/FileInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/DataUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/DataUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/ZipperUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/ZipperUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +79,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BarrierPlus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PlayerdataPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -187,36 +186,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state width="1663" height="259" key="GridCell.Tab.0.bottom" timestamp="1618854862269">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="259" key="GridCell.Tab.0.bottom/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618854862269" />
-    <state width="1663" height="259" key="GridCell.Tab.0.center" timestamp="1618854862269">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="259" key="GridCell.Tab.0.center/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618854862269" />
-    <state width="1663" height="259" key="GridCell.Tab.0.left" timestamp="1618854862268">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="259" key="GridCell.Tab.0.left/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618854862268" />
-    <state width="1663" height="259" key="GridCell.Tab.0.right" timestamp="1618854862269">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1663" height="259" key="GridCell.Tab.0.right/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618854862269" />
-    <state x="556" y="163" width="594" height="594" key="find.popup" timestamp="1618733921564">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="556" y="163" width="594" height="594" key="find.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618733921564" />
-    <state x="510" y="211" key="run.anything.popup" timestamp="1618655306426">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="510" y="211" key="run.anything.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618655306426" />
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1618655031421">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618655031421" />
   </component>
   <component name="masterDetails">
     <states>

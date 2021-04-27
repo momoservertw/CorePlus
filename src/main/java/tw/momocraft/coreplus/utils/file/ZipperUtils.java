@@ -1,6 +1,7 @@
 
 package tw.momocraft.coreplus.utils.file;
 
+import org.jetbrains.annotations.Nullable;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -19,15 +20,15 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipperUtils {
 
-    public boolean zipFiles(String pluginName, File file, String path, String name) {
+    public boolean zipFiles(String pluginName, File file, @Nullable String zipPath, @Nullable String zipName) {
         String OUTPUT_ZIP_FILE;
-        if (path == null || path.equals(""))
-            path = file.getParentFile().getPath();
-        if (name == null || name.equals(""))
-            OUTPUT_ZIP_FILE = path + ".zip";
+        if (zipPath == null || zipPath.equals(""))
+            zipPath = file.getParentFile().getPath();
+        if (zipName == null || zipName.equals(""))
+            OUTPUT_ZIP_FILE = zipPath + ".zip";
         else
-            OUTPUT_ZIP_FILE = file.getParentFile().getPath() + "\\" + name + ".zip";
-        String SOURCE_FOLDER = path;
+            OUTPUT_ZIP_FILE = file.getParentFile().getPath() + "\\" + zipName + ".zip";
+        String SOURCE_FOLDER = zipPath;
         List<String> fileList = new ArrayList<>();
         generateFileList(new File(SOURCE_FOLDER), fileList, SOURCE_FOLDER);
         zipIt(pluginName, OUTPUT_ZIP_FILE, SOURCE_FOLDER, fileList);

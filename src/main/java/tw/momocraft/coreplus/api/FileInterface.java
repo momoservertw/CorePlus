@@ -1,8 +1,9 @@
 package tw.momocraft.coreplus.api;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
+import org.jetbrains.annotations.Nullable;
 import tw.momocraft.coreplus.utils.file.MySQLMap;
+import tw.momocraft.coreplus.utils.file.PropertiesUtils;
 import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.io.File;
@@ -13,31 +14,26 @@ import java.util.Map;
 public interface FileInterface {
 
     /**
-     *
      * @return the YMAL settings in data.yml.
      */
     Map<String, String> getYMALProp();
 
     /**
-     *
      * @return the Properties settings in data.yml.
      */
     Map<String, String> getPropProp();
 
     /**
-     *
      * @return the Json settings in data.yml.
      */
     Map<String, String> getJsonProp();
 
     /**
-     *
      * @return the Log settings in data.yml.
      */
     Map<String, LogMap> getLogProp();
 
     /**
-     *
      * @return the MySQL settings in data.yml.
      */
     Map<String, MySQLMap> getMySQLProp();
@@ -50,7 +46,7 @@ public interface FileInterface {
      * @param name the new file's name.
      * @return if the compressing succeed or not.
      */
-    boolean zipFiles(String pluginName, File file, String path, String name);
+    boolean zipFiles(String pluginName, File file, @Nullable String path, @Nullable String name);
 
     /**
      * Loading a YAML file.
@@ -120,6 +116,7 @@ public interface FileInterface {
      */
     String getJsonValue(String pluginName, String group, String input);
 
+    PropertiesUtils getProperty();
     /**
      * Getting the value in a Properties file.
      *

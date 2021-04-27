@@ -17,6 +17,7 @@ tw\momocraft\coreplus\utils\file\FileManager.class
 tw\momocraft\coreplus\utils\player\economy\PriceMap.class
 tw\momocraft\coreplus\utils\Utils.class
 tw\momocraft\coreplus\utils\customcommand\BungeeCordUtils.class
+tw\momocraft\coreplus\utils\file\DataUtils.class
 tw\momocraft\coreplus\utils\file\ZipperUtils.class
 tw\momocraft\coreplus\utils\inventory\InventoryManager.class
 tw\momocraft\coreplus\utils\message\LogMap.class
