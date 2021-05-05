@@ -1,6 +1,8 @@
 package tw.momocraft.coreplus.utils.file;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tw.momocraft.coreplus.api.FileInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
@@ -39,8 +41,8 @@ public class FileManager implements FileInterface {
     }
 
     @Override
-    public boolean zipFiles(String pluginName, File file, String path, String name) {
-        return UtilsHandler.getZip().zipFiles(pluginName, file, path, name);
+    public boolean zipFiles(String pluginName, File file, @Nullable String zipPath, @Nullable String zipName) {
+        return UtilsHandler.getZip().zipFiles(pluginName, file, zipPath, zipName);
     }
 
     @Override
@@ -51,6 +53,11 @@ public class FileManager implements FileInterface {
     @Override
     public boolean loadJsonFile(String pluginName, String group, String filePath) {
         return UtilsHandler.getJson().load(pluginName, group, filePath);
+    }
+
+    @Override
+    public PropertiesUtils getProperty() {
+        return UtilsHandler.getProperties();
     }
 
     @Override
