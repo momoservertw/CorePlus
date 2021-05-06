@@ -158,7 +158,6 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public double getLastLogin(UUID uuid) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         double lastLogin = 0;
         try {
             lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
@@ -167,7 +166,7 @@ public class PlayerManager implements PlayerInterface {
         }
         if (lastLogin != 0)
             return lastLogin;
-        return offlinePlayer.getLastLogin() * 1000;
+        return Bukkit.getOfflinePlayer(uuid).getLastLogin() * 1000;
     }
 
     public void importPlayerLastLogin() {
@@ -200,7 +199,6 @@ public class PlayerManager implements PlayerInterface {
     }
 
     public void importPlayerList() {
-        // Getting the LuckPerms user list.
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
             if (mySQLMap != null) {

@@ -33,6 +33,26 @@ public class YamlUtils {
                     "Loaded YAML files: " + customList.toString());
     }
 
+    private void create(String pluginName, String path, String name) {
+        File file = new File(path, name);
+        if (!file.exists()) {
+            try {
+                if (!file.mkdir())
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                            "Can not create YAML file: " + name);
+            } catch (Exception ex) {
+                UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                        "Can not create YAML file: " + name);
+            }
+        }
+    }
+
+    private void setValue(String groupName, String path, Object value) {
+        YamlConfiguration config = fileMap.get(groupName);
+        config.set(path, value);
+        config.save();
+    }
+
     private void loadCustom() {
         Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
         for (String groupName : prop.keySet()) {

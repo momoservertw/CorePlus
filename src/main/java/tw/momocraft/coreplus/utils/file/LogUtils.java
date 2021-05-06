@@ -46,19 +46,20 @@ public class LogUtils {
             File parentFile = file.getParentFile();
             if (!parentFile.exists()) {
                 try {
-                    if (!parentFile.mkdir()) {
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
-                    }
+                    if (!parentFile.mkdir())
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                                "Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                            "Log: &fcreate folder &8\"&e" + parentFile.getName() + "&8\"  &c✘");
                     UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
                 }
             }
             // Creating file.
             try {
-                if (!file.createNewFile()) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
-                }
+                if (!file.createNewFile())
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                            "Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &fcreate log &8\"&e" + file.getName() + ".log&8\"  &c✘");
                 UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
@@ -83,11 +84,12 @@ public class LogUtils {
                     }
                     // Renaming the old file.
                     try {
-                        if (!file.renameTo(renameFile)) {
-                            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
-                        }
+                        if (!file.renameTo(renameFile))
+                            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                                    "Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
                     } catch (Exception ex) {
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                                "Log: &frename log &8\"&e" + renameFile.getName() + "&8\"  &c✘");
                         UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
                     }
                     // Compressing the file.

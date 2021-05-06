@@ -16,9 +16,13 @@ MySQL:
   CorePlus:
     Enable: false
     Database: "coreplus"
+    Tables:
+      Players: "players"
   PlayerdataPlus:
     Enable: false
     Database: "playerdataplus"
+    Tables:
+      Players: "luckperms_players"
   LuckPerms:
     Enable: false
     Database: "luckperms"
@@ -32,6 +36,9 @@ MySQL:
   MyCommand:
     Enable: false
     Database: "mycommand"
+    Tables:
+      PlayerData: "PLAYERDATA"
+      Variables: "VARIABLES"
   MyPet:
     Enable: false
     Database: "mypet"
@@ -41,6 +48,8 @@ MySQL:
   Example:
     Enable: false
     Database: "example"
+      Tables:
+        Players: "players"
 
 Yaml:
   Enable: false
