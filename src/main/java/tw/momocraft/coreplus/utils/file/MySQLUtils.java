@@ -17,6 +17,10 @@ public class MySQLUtils {
     static Connection MySQLPlayerDataBridge;
     static Connection MyCommand;
 
+    public Map<String, MySQLMap> getMySQLProp() {
+        return ConfigHandler.getConfigPath().getMySQLProp();
+    }
+
     public boolean connect(String pluginName, String prefix, String databaseType) {
         try {
             Class.forName("com.mysql.jdbc.Driver");

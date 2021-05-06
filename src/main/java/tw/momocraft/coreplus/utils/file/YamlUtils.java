@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class YamlUtils {
 
+    public Map<String, String> getYMALProp() {
+        return ConfigHandler.getConfigPath().getYMALProp();
+    }
+
     private final Map<String, YamlConfiguration> fileMap = new HashMap<>();
     private final List<String> customList = new ArrayList<>();
 

@@ -11,6 +11,10 @@ import java.util.*;
 
 public class PropertiesUtils {
 
+    public Map<String, String> getPropProp() {
+        return ConfigHandler.getConfigPath().getPropProp();
+    }
+
     private final Map<String, Properties> fileMap = new HashMap<>();
     private final List<String> customList = new ArrayList<>();
 

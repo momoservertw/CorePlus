@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.file;
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,8 +11,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class LogUtils {
+
+    public Map<String, LogMap> getLogProp() {
+        return ConfigHandler.getConfigPath().getLogProp();
+    }
 
     public void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip) {
         createLog(pluginName, file, newFile, zip);
@@ -87,7 +93,7 @@ public class LogUtils {
                     // Compressing the file.
                     if (zip) {
                         try {
-                            if (UtilsHandler.getFile().zipFiles(pluginName, file, null, null)) {
+                            if (UtilsHandler.getFile().getZip().zipFiles(pluginName, file, null, null)) {
                                 UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
                                         "Log: &fcompress log &8\"&e" + renameFile.getName() + ".zip &8\"  &c✘");
                             }

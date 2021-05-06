@@ -92,7 +92,7 @@ public class ConfigPath implements ConfigInterface {
     }
 
     public void setupLast() {
-        pvp = Boolean.parseBoolean(UtilsHandler.getProperties().getValue(ConfigHandler.getPlugin(), "server.properties", "pvp"));
+        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPlugin(), "server.properties", "pvp"));
     }
 
     private void sendSetupMsg() {
@@ -743,12 +743,12 @@ public class ConfigPath implements ConfigInterface {
 
     @Override
     public String getProp(String pluginName, String fileName, String input) {
-        return UtilsHandler.getProperties().getValue(pluginName, fileName, input);
+        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
     }
 
     @Override
     public String getJson(String pluginName, String fileName, String input) {
-        return UtilsHandler.getProperties().getValue(pluginName, fileName, input);
+        return UtilsHandler.getProperty().getValue(pluginName, fileName, input);
     }
 
     @Override

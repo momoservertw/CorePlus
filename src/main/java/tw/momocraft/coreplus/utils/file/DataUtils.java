@@ -25,7 +25,7 @@ public class DataUtils {
         if (zip) {
             File zipFile = new File(backupPath, backupName + ".zip");
             if (zipFile.exists()) {
-                if (UtilsHandler.getFile().zipFiles(pluginName, file, null, null))
+                if (UtilsHandler.getFile().getZip().zipFiles(pluginName, file, null, null))
                     CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not compress the file: " + file.getPath());
             }
         }

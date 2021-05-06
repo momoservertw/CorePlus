@@ -22,9 +22,11 @@ public class UtilsHandler {
     public static void setUpLast(boolean reload) {
         fileManager = new FileManager();
         mySQLUtils = new MySQLUtils();
-        jsonUtils = new JsonUtils();
         yamlUtils = new YamlUtils();
+        jsonUtils = new JsonUtils();
+        logUtils = new LogUtils();
         propertiesUtils = new PropertiesUtils();
+        dataUtils = new DataUtils();
         vanillaUtils = new VanillaUtils();
         discordUtils = new DiscordUtils();
         utils = new Utils();
@@ -33,7 +35,6 @@ public class UtilsHandler {
         entityManager = new EntityManager();
         commandManager = new CommandManager();
         zipperUtils = new ZipperUtils();
-        logUtils = new LogUtils();
         updater = new Updater();
         syncData();
     }
@@ -60,6 +61,7 @@ public class UtilsHandler {
     private static ZipperUtils zipperUtils;
     private static VanillaUtils vanillaUtils;
     private static DiscordUtils discordUtils;
+    private static DataUtils dataUtils;
 
     public static DependHandler getDepend() {
         return depend;
@@ -125,7 +127,11 @@ public class UtilsHandler {
         return yamlUtils;
     }
 
-    public static PropertiesUtils getProperties() {
+    public static PropertiesUtils getProperty() {
         return propertiesUtils;
+    }
+
+    public static DataUtils getData() {
+        return dataUtils;
     }
 }

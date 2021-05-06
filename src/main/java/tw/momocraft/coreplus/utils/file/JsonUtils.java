@@ -15,6 +15,10 @@ import java.util.Map;
 
 public class JsonUtils {
 
+    public Map<String, String> getJsonProp() {
+        return ConfigHandler.getConfigPath().getJsonProp();
+    }
+
     private final Map<String, JsonObject> fileMap = new HashMap<>();
     private final List<String> customList = new ArrayList<>();
     private final List<String> langList = new ArrayList<>();
