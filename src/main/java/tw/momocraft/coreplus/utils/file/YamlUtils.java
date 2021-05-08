@@ -6,6 +6,7 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,8 @@ public class YamlUtils {
         return ConfigHandler.getConfigPath().getYMALProp();
     }
 
-    private final Map<String, YamlConfiguration> fileMap = new HashMap<>();
+    private final Map<String, YamlConfiguration> configMap = new HashMap<>();
+    private final Map<String, File> fileMap = new HashMap<>();
     private final List<String> customList = new ArrayList<>();
 
     public YamlUtils() {
@@ -48,9 +50,13 @@ public class YamlUtils {
     }
 
     private void setValue(String groupName, String path, Object value) {
-        YamlConfiguration config = fileMap.get(groupName);
+        YamlConfiguration config = configMap.get(groupName);
         config.set(path, value);
-        config.save();
+        try {
+            config.save(fileMap.get(groupName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadCustom() {
@@ -77,7 +83,8 @@ public class YamlUtils {
 
     public boolean load(String pluginName, String group, String filePath) {
         try {
-            fileMap.put(group, YamlConfiguration.loadConfiguration(new File(filePath)));
+            File file = new File(filePath);
+            configMap.put(group, YamlConfiguration.loadConfiguration(file));
             return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
@@ -89,7 +96,7 @@ public class YamlUtils {
 
     public String getString(String pluginName, String group, String input) {
         try {
-            return fileMap.get(group).getString(input);
+            return configMap.get(group).getString(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");
@@ -101,7 +108,7 @@ public class YamlUtils {
 
     public List<String> getStringList(String pluginName, String group, String input) {
         try {
-            return fileMap.get(group).getStringList(input);
+            return configMap.get(group).getStringList(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");
@@ -112,10 +119,10 @@ public class YamlUtils {
     }
 
     public YamlConfiguration getConfig(String group) {
-        YamlConfiguration yamlConfiguration = fileMap.get(group);
+        YamlConfiguration yamlConfiguration = configMap.get(group);
         if (yamlConfiguration == null) {
             loadGroup(group);
-            return fileMap.get(group);
+            return configMap.get(group);
         }
         return yamlConfiguration;
     }
