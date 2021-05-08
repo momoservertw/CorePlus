@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DataUtils {
 
-    private void backup(String pluginName, File file, String backupPath, String backupName, boolean timeFolder, boolean zip, boolean log) {
+    private void backup(String pluginName, File file, String backupPath, String backupName, boolean timeFolder, boolean zip) {
         if (timeFolder) {
             LocalDateTime currentDate = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -31,8 +31,8 @@ public class DataUtils {
         }
     }
 
-    private void createFolder(String pluginName, String targetPath) {
-        File file = new File(targetPath);
+    private void createFolder(String pluginName, String filePath) {
+        File file = new File(filePath);
         if (!file.exists()) {
             try {
                 Files.createDirectories(Paths.get(file.getPath()));
@@ -45,10 +45,10 @@ public class DataUtils {
         }
     }
 
-    private void copy(String pluginName, File file, String targetPath, String target) {
+    private void copy(String pluginName, File file, String newFilePath, String newFileName) {
         try {
-            createFolder(pluginName, targetPath);
-            Files.copy(file.toPath(), Paths.get(targetPath, target), StandardCopyOption.REPLACE_EXISTING);
+            createFolder(pluginName, newFilePath);
+            Files.copy(file.toPath(), Paths.get(newFilePath, newFileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ex) {
             CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not copy the file: " + file.getPath());
             CorePlusAPI.getMsg().sendDebugTrace(true, pluginName, ex);
