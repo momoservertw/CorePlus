@@ -6,7 +6,6 @@ import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,19 +22,26 @@ public class YamlUtils {
     private final List<String> customList = new ArrayList<>();
 
     public YamlUtils() {
-        loadGroup("discord_messages");
         loadCustom();
+        loadGroup("discord_messages");
 
         sendLoadedMsg();
     }
 
-    private void sendLoadedMsg() {
-        if (!customList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded YAML files: " + customList.toString());
+    public boolean load(String pluginName, String group, String filePath) {
+        try {
+            File file = new File(filePath);
+            configMap.put(group, YamlConfiguration.loadConfiguration(file));
+            fileMap.put(group, file);
+            return true;
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Cannot load the YAML file: " + filePath);
+            return false;
+        }
     }
 
-    private void create(String pluginName, String path, String name) {
+    public void create(String pluginName, String path, String name) {
         File file = new File(path, name);
         if (!file.exists()) {
             try {
@@ -49,14 +55,25 @@ public class YamlUtils {
         }
     }
 
-    private void setValue(String groupName, String path, Object value) {
+    public void setValue(String pluginName, String groupName, String path, Object value) {
         YamlConfiguration config = configMap.get(groupName);
         config.set(path, value);
         try {
             config.save(fileMap.get(groupName));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Can not create YAML file: " + groupName);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
         }
+    }
+
+    public YamlConfiguration getConfig(String group) {
+        YamlConfiguration yamlConfiguration = configMap.get(group);
+        if (yamlConfiguration == null) {
+            loadGroup(group);
+            return configMap.get(group);
+        }
+        return yamlConfiguration;
     }
 
     private void loadCustom() {
@@ -81,49 +98,9 @@ public class YamlUtils {
         return load(ConfigHandler.getPlugin(), group, filePath);
     }
 
-    public boolean load(String pluginName, String group, String filePath) {
-        try {
-            File file = new File(filePath);
-            configMap.put(group, YamlConfiguration.loadConfiguration(file));
-            return true;
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Cannot load the YAML file: " + filePath);
-            return false;
-        }
-    }
-
-
-    public String getString(String pluginName, String group, String input) {
-        try {
-            return configMap.get(group).getString(input);
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "An error occurred while getting the value of \"" + input + "\".");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the YAML group of \"" + group + "\".");
-            return null;
-        }
-    }
-
-    public List<String> getStringList(String pluginName, String group, String input) {
-        try {
-            return configMap.get(group).getStringList(input);
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "An error occurred while getting the value of \"" + input + "\".");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the YAML group of \"" + group + "\".");
-            return null;
-        }
-    }
-
-    public YamlConfiguration getConfig(String group) {
-        YamlConfiguration yamlConfiguration = configMap.get(group);
-        if (yamlConfiguration == null) {
-            loadGroup(group);
-            return configMap.get(group);
-        }
-        return yamlConfiguration;
+    private void sendLoadedMsg() {
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded YAML files: " + customList.toString());
     }
 }

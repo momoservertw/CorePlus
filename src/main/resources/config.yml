@@ -44,6 +44,7 @@ General:
       MythicMobs: true
       ItemJoin: true
       AuthMe: true
+      NameTagEdit: true
 
 # To create a custom configurations.
 # More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder

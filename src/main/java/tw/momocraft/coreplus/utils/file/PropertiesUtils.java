@@ -19,43 +19,10 @@ public class PropertiesUtils {
     private final List<String> customList = new ArrayList<>();
 
     public PropertiesUtils() {
-        loadGroup("server");
         loadCustom();
+        loadGroup("server");
 
         sendLoadedMsg();
-    }
-
-    private void sendLoadedMsg() {
-        if (!customList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Properties files: " + customList.toString());
-    }
-
-    private boolean loadGroup(String group) {
-        String filePath;
-        switch (group) {
-            case "server":
-                filePath = Bukkit.getServer().getWorldContainer().toString() + "//server.properties";
-                break;
-                    /*
-                case "":
-                    filePath = CorePlus.getInstance().getDataFolder();
-                    break;
-                     */
-            default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
-                        "Cannot load the properties file: " + group);
-                return false;
-        }
-        return load(ConfigHandler.getPlugin(), group, filePath);
-    }
-
-    private void loadCustom() {
-        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
-        for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
-            customList.add(groupName);
-        }
     }
 
     public boolean load(String pluginName, String group, String filePath) {
@@ -84,5 +51,33 @@ public class PropertiesUtils {
                     "Can not find the Properties group of \"" + group + "\".");
             return null;
         }
+    }
+
+    private boolean loadGroup(String group) {
+        String filePath;
+        switch (group) {
+            case "server":
+                filePath = Bukkit.getServer().getWorldContainer().toString() + "//server.properties";
+                break;
+            default:
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                        "Cannot load the properties file: " + group);
+                return false;
+        }
+        return load(ConfigHandler.getPlugin(), group, filePath);
+    }
+
+    private void loadCustom() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            customList.add(groupName);
+        }
+    }
+
+    private void sendLoadedMsg() {
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Properties files: " + customList.toString());
     }
 }

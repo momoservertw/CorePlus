@@ -4,7 +4,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import javafx.util.Pair;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,7 +15,6 @@ import tw.momocraft.coreplus.utils.effect.ParticleMap;
 import tw.momocraft.coreplus.utils.effect.ParticleUtils;
 import tw.momocraft.coreplus.utils.effect.SoundMap;
 import tw.momocraft.coreplus.utils.effect.SoundUtils;
-import tw.momocraft.coreplus.utils.message.LogMap;
 import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 
 import java.util.ArrayList;
@@ -492,14 +490,8 @@ public class CommandManager implements CommandInterface {
     public void dispatchLog(String pluginName, String input) {
         if (input == null)
             return;
-        LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get("Default");
-        if (logMap == null) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log: " + input + "\"");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the group of \"Default\" in CorePlus/logs.yml.");
-            return;
-        }
         try {
-            UtilsHandler.getMsg().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+            UtilsHandler.getFile().getLog().add(pluginName, "Default", input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
@@ -512,15 +504,9 @@ public class CommandManager implements CommandInterface {
         if (input == null)
             return;
         String group = input.split(", ")[0];
-        LogMap logMap = ConfigHandler.getConfigPath().getLogProp().get(group);
-        if (logMap == null) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the group of \"" + group + "\" in CorePlus/logs.yml.");
-            return;
-        }
         input = input.substring(input.indexOf(",") + 2);
         try {
-            UtilsHandler.getMsg().addLog(pluginName, logMap.getFile(), input, logMap.isTime(), logMap.isNewFile(), logMap.isZip());
+            UtilsHandler.getFile().getLog().add(pluginName, group, input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");

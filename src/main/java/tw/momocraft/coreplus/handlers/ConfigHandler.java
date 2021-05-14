@@ -16,7 +16,6 @@ public class ConfigHandler {
     private static YamlConfiguration groupsYAML;
 
     private static YamlConfiguration commandsYAML;
-    private static YamlConfiguration logsYAML;
     private static YamlConfiguration conditionYAML;
     private static YamlConfiguration locationYAML;
     private static YamlConfiguration blocksYAML;
@@ -35,7 +34,6 @@ public class ConfigHandler {
         genConfigFile("data.yml");
         genConfigFile("groups.yml");
         genConfigFile("commands.yml");
-        genConfigFile("logs.yml");
         genConfigFile("location.yml");
         genConfigFile("blocks.yml");
         genConfigFile("condition.yml");
@@ -74,10 +72,6 @@ public class ConfigHandler {
                 break;
             case "commands.yml":
                 if (commandsYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
-            case "logs.yml":
-                if (logsYAML == null)
                     getConfigData(filePath, fileName);
                 break;
             case "condition.yml":
@@ -150,10 +144,6 @@ public class ConfigHandler {
                 if (saveData)
                     commandsYAML = YamlConfiguration.loadConfiguration(file);
                 return commandsYAML;
-            case "logs.yml":
-                if (saveData)
-                    logsYAML = YamlConfiguration.loadConfiguration(file);
-                return logsYAML;
             case "condition.yml":
                 if (saveData)
                     conditionYAML = YamlConfiguration.loadConfiguration(file);

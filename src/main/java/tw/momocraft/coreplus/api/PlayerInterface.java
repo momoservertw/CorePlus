@@ -38,6 +38,14 @@ public interface PlayerInterface {
     OfflinePlayer getOfflinePlayer(String playerName);
 
     /**
+     * Getting offline player from a uuid.
+     *
+     * @param uuid the name uuid this player
+     * @return the player from a uuid or null.
+     */
+    OfflinePlayer getOfflinePlayer(UUID uuid);
+
+    /**
      * Getting online player names.
      *
      * @return online player names.

@@ -21,17 +21,17 @@ import java.util.zip.ZipOutputStream;
 public class ZipperUtils {
 
     public boolean zipFiles(String pluginName, File file, @Nullable String zipPath, @Nullable String zipName) {
-        String OUTPUT_ZIP_FILE;
+        String outputName;
         if (zipPath == null || zipPath.equals(""))
             zipPath = file.getParentFile().getPath();
         if (zipName == null || zipName.equals(""))
-            OUTPUT_ZIP_FILE = zipPath + ".zip";
+            outputName = zipPath + ".zip";
         else
-            OUTPUT_ZIP_FILE = file.getParentFile().getPath() + "\\" + zipName + ".zip";
+            outputName = file.getParentFile().getPath() + "\\" + zipName + ".zip";
         String SOURCE_FOLDER = zipPath;
         List<String> fileList = new ArrayList<>();
         generateFileList(new File(SOURCE_FOLDER), fileList, SOURCE_FOLDER);
-        zipIt(pluginName, OUTPUT_ZIP_FILE, SOURCE_FOLDER, fileList);
+        zipIt(pluginName, outputName, SOURCE_FOLDER, fileList);
         try (Stream<Path> walk = Files.walk(file.toPath())) {
             walk.sorted(Comparator.reverseOrder())
                     .map(Path::toFile)

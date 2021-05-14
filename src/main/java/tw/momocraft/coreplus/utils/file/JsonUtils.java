@@ -31,13 +31,31 @@ public class JsonUtils {
         sendLoadedMsg();
     }
 
-    private void sendLoadedMsg() {
-        if (!langList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Language files: " + langList.toString());
-        if (!customList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Json files: " + customList.toString());
+    public boolean load(String pluginName, String group, String filePath) {
+        File file = new File(filePath);
+        try {
+            Gson gson = new Gson();
+            JsonObject json = gson.fromJson(new FileReader(file), JsonObject.class);
+            fileMap.put(group, json);
+            return true;
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Cannot load the Json file: " + filePath);
+            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            return false;
+        }
+    }
+
+    public String getValue(String pluginName, String group, String input) {
+        try {
+            return fileMap.get(group).get(input).toString();
+        } catch (Exception ex) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "An error occurred while getting the value of \"" + input + "\".");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Can not find the Json group of \"" + group + "\".");
+            return null;
+        }
     }
 
     private void loadLang() {
@@ -80,30 +98,12 @@ public class JsonUtils {
         return load(ConfigHandler.getPlugin(), group, filePath);
     }
 
-    public boolean load(String pluginName, String group, String filePath) {
-        File file = new File(filePath);
-        try {
-            Gson gson = new Gson();
-            JsonObject json = gson.fromJson(new FileReader(file), JsonObject.class);
-            fileMap.put(group, json);
-            return true;
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Cannot load the Json file: " + filePath);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
-            return false;
-        }
-    }
-
-    public String getValue(String pluginName, String group, String input) {
-        try {
-            return fileMap.get(group).get(input).toString();
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "An error occurred while getting the value of \"" + input + "\".");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the Json group of \"" + group + "\".");
-            return null;
-        }
+    private void sendLoadedMsg() {
+        if (!langList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Language files: " + langList.toString());
+        if (!customList.isEmpty())
+            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                    "Loaded Json files: " + customList.toString());
     }
 }

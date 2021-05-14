@@ -45,4 +45,6 @@ public interface DependInterface {
     boolean MyPetEnabled();
 
     boolean MorphToolEnabled();
+
+    boolean NameTagEditEnabled();
 }

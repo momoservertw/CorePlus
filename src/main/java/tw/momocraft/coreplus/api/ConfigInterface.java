@@ -45,43 +45,4 @@ public interface ConfigInterface {
      * @return a new list without custom group.
      */
     List<String> getTypeList(String pluginName, List<String> list, String type);
-
-    /**
-     * Getting the configuration of the file.
-     * Avail: config.yml, spigot.yml, group.yml
-     *
-     * @param fileName the file name.
-     * @return the FileConfiguration of this file.
-     */
-    FileConfiguration getConfig(String fileName);
-
-    /**
-     * Getting the value from property file.
-     * Avail: server.properties
-     *
-     * @param pluginName the sending plugin name.
-     * @param fileName   the file name.
-     * @param input      the checking name.
-     * @return the value from property file.
-     */
-    String getProp(String pluginName, String fileName, String input);
-
-    /**
-     * Getting the value from json file.
-     * Avail:
-     *
-     * @param pluginName the sending plugin name.
-     * @param fileName   the file name.
-     * @param input      the checking name.
-     * @return the value from property file.
-     */
-    String getJson(String pluginName, String fileName, String input);
-
-    /**
-     * Getting the configuration from yaml file.
-     * Avail: discord_message
-     *
-     * @param fileName   the file name.
-     */
-    FileConfiguration getYaml(String fileName);
 }

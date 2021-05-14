@@ -108,6 +108,13 @@ public class PlayerManager implements PlayerInterface {
         return null;
     }
 
+    @Override
+    public OfflinePlayer getOfflinePlayer(UUID uuid) {
+        if (uuid == null)
+            return null;
+        return Bukkit.getOfflinePlayer(uuid);
+    }
+
     public List<String> getOnlinePlayerNames() {
         Collection<?> playersOnlineNew;
         Player[] playersOnlineOld;

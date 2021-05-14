@@ -17,5 +17,4 @@ public interface FileInterface {
     LogUtils getLog();
 
     ZipperUtils getZip();
-
 }

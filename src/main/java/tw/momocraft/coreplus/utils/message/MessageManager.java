@@ -1583,11 +1583,6 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip) {
-        UtilsHandler.getLog().addLog(pluginName, file, message, time, newFile, zip);
-    }
-
-    @Override
     public String getPlayersString(List<Player> input) {
         if (input == null || input.isEmpty())
             return getMsgTrans("noTarget");

@@ -16,9 +16,13 @@ MySQL:
   CorePlus:
     Enable: false
     Database: "coreplus"
+    Tables:
+      Players: "players"
   PlayerdataPlus:
     Enable: false
     Database: "playerdataplus"
+    Tables:
+      Players: "luckperms_players"
   LuckPerms:
     Enable: false
     Database: "luckperms"
@@ -32,6 +36,9 @@ MySQL:
   MyCommand:
     Enable: false
     Database: "mycommand"
+    Tables:
+      PlayerData: "PLAYERDATA"
+      Variables: "VARIABLES"
   MyPet:
     Enable: false
     Database: "mypet"
@@ -41,7 +48,8 @@ MySQL:
   Example:
     Enable: false
     Database: "example"
-
+      Tables:
+        Players: "players"
 Yaml:
   Enable: false
   Example:
@@ -57,3 +65,35 @@ Properties:
   Example:
     Enable: false
     Path: "//plugins//Example_Plugin//config.properties"
+Logs:
+  Settings:
+    Default:
+      # Creating the file if not it is exist.
+      Create: true
+      # Creating the new file if it is exist.
+      New-File: false
+      # Compressing the old file.
+      Zip: false
+      # Adding the timestamp in the front of line.
+      Time: false
+  Default:
+    Path: "plugins//CorePlus//Logs"
+    Name: "latest.log"
+    Time: true
+  GroupConfig:
+    Path: "plugins//CorePlus//Logs"
+    Name: "groups.yml"
+  CustomConfig:
+    Path: "plugins//CorePlus//Logs"
+    Name: "custom.yml"
+  SpawnerChanged:
+    Path: "plugins//EntityPlus//Logs"
+    Name: "spawner.log"
+    Time: true
+  LotteryPlus:
+    Path: "plugins//LotteryPlus//Logs"
+    Name: "latest.log"
+    Time: true
+  PlayerdataPlus:
+    Path: "plugins//PlayerdataPlus//Logs"
+    Name: "latest.log"

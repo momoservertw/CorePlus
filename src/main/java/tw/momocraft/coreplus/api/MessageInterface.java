@@ -397,19 +397,6 @@ public interface MessageInterface {
     String getVanillaTrans(String pluginName, String input, String type);
 
     /**
-     * Logging the message in a file.
-     *
-     * @param pluginName the sending plugin name.
-     * @param file       the file from CorePlus configuration.
-     * @param message    the value of message.
-     * @param time       if adding the time in front of the line. Example: "[2020/11/20 18:30:00]: "
-     * @param newFile    if creating a new file every day.
-     * @param zip        if compressing the old log file.
-     */
-    void addLog(String pluginName, File file, String message, boolean time, boolean newFile, boolean zip);
-
-
-    /**
      * @param players the list of player.
      * @return a string of player list.
      */

@@ -216,9 +216,8 @@ public class MySQLUtils {
     //                    + )";
     public void createTables(String pluginName, String database, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"CREATE TABLE IF NOT EXISTS " + table + " (\"");
-        for (String column : columns) {
+        for (String column : columns)
             sqlBuilder.append(column).append(",");
-        }
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
         executeSQL(pluginName, database, sql);
     }
@@ -242,9 +241,8 @@ public class MySQLUtils {
     //                    + )";
     public void addColumns(String pluginName, String database, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " ADD (\"");
-        for (String column : columns) {
+        for (String column : columns)
             sqlBuilder.append(column).append(",");
-        }
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
         try {
             executeSQL(pluginName, database, sql);
@@ -268,9 +266,8 @@ public class MySQLUtils {
 
     public void removeColumns(String pluginName, String databaseType, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " DROP (\"");
-        for (String column : columns) {
+        for (String column : columns)
             sqlBuilder.append(column).append(",");
-        }
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
         try {
             executeSQL(pluginName, databaseType, sql);
@@ -283,9 +280,8 @@ public class MySQLUtils {
 
     public Map<String, Map<String, String>> getValues(String pluginName, String database, String table, String key, List<String> variables) {
         StringBuilder sqlBuilder = new StringBuilder("\"SELECT ");
-        for (String variable : variables) {
+        for (String variable : variables)
             sqlBuilder.append(variable).append(",");
-        }
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + " FROM " + table + "\"";
         try {
             ResultSet result = getStatement(pluginName, database, sql).executeQuery();

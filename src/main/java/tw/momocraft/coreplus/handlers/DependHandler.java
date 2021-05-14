@@ -47,6 +47,7 @@ public class DependHandler implements DependInterface {
     private boolean Vehicles = false;
     private boolean MyPet = false;
     private boolean MorphTool = false;
+    private boolean NameTagEdit = false;
 
     public DependHandler() {
         setup();
@@ -132,6 +133,8 @@ public class DependHandler implements DependInterface {
             MyPet = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MorphTool"))
             MorphTool = Bukkit.getServer().getPluginManager().getPlugin("MorphTool") != null;
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.NameTagEdit"))
+            NameTagEdit = Bukkit.getServer().getPluginManager().getPlugin("NameTagEdit") != null;
     }
 
     @Override
@@ -244,6 +247,10 @@ public class DependHandler implements DependInterface {
         return this.MorphTool;
     }
 
+    @Override
+    public boolean NameTagEditEnabled() {
+        return this.NameTagEdit;
+    }
 
     public VaultUtils getVaultApi() {
         return this.vaultApi;
