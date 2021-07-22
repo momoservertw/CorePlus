@@ -20,7 +20,7 @@ public class PropertiesUtils {
 
     public PropertiesUtils() {
         loadCustom();
-        loadGroup("server");
+        loadGroup("server.properties");
 
         sendLoadedMsg();
     }
@@ -56,8 +56,8 @@ public class PropertiesUtils {
     private boolean loadGroup(String group) {
         String filePath;
         switch (group) {
-            case "server":
-                filePath = Bukkit.getServer().getWorldContainer().toString() + "//server.properties";
+            case "server.properties":
+                filePath = Bukkit.getServer().getWorldContainer() + "//server.properties";
                 break;
             default:
                 UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
@@ -78,6 +78,6 @@ public class PropertiesUtils {
     private void sendLoadedMsg() {
         if (!customList.isEmpty())
             UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Properties files: " + customList.toString());
+                    "Loaded Properties files: " + customList);
     }
 }

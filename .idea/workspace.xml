@@ -23,35 +23,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMIAPI8.7.8.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/ItemJoin-5.2.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core-4.3.1-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyCommand.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.11-SNAPSHOT-B1641.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v3.36.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MythicMobs-5.0.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/NametagEdit-4.4.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PvPManager-3.14.8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Residence5.0.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/SkinsRestorer-14.1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CorePlus.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/ConfigInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/ConfigInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/DependInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/DependInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/FileInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/FileInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/MessageInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/MessageInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/TabComplete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/TabComplete.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyToUpdateFolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyToUpdateFolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMIAPI7.6.2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/LanguageUtils.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core-4.2.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.11-SNAPSHOT-B1586.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v3.35.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PvPManager.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Residence4.9.2.1.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/DependHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/DependHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/CommandOnline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/CommandOnline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/CommandOnlineMPDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/CommandOnlineMPDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/ConditionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/listeners/PlaceHolderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/MultiverseCoreUtils.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ConditionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ConditionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/CommandManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/DataUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/DataUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/JsonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/JsonUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/LogUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/LogUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/PropertiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/PropertiesUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/YamlUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/YamlUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/ZipperUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/ZipperUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/VanillaUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/VanillaUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/commands.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/commands.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logs.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/commands.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/commands.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/logs.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
@@ -86,7 +110,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.1\plugins\maven\lib\maven3" />
+        <option name="usePluginRegistry" value="true" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -108,23 +132,28 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../untitled" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ToolPlus" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.side.proportion" value="0.34272996" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="ExtractSuperBase.RECENT_KEYS">
-      <recent name="tw.momocraft.coreplus.utils.eco" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\sayuri\IdeaProjects\CorePlus\src\main\resources\zh_tw" />
       <recent name="C:\Users\Sayuri\IdeaProjects\CorePlus\src\main\resources" />
       <recent name="C:\Users\sayuri\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils" />
       <recent name="C:\Users\sayuri\IdeaProjects\ServerPlus\src\main\java\tw\momocraft\serverplus\utils" />
       <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\java\tw\momocraft\entityplus\utils\locationapi" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources" />
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources\Entities" />
+      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="tw.momocraft.coreplus.utils.eco" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="tw.momocraft.coreplus.listeners" />
@@ -133,13 +162,8 @@
       <recent name="tw.momocraft.coreplus.api" />
       <recent name="tw.momocraft.serverplus.listeners.event" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources" />
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus\src\main\resources\Entities" />
-      <recent name="C:\Users\sayuri\IdeaProjects\EntityPlus" />
-    </key>
   </component>
-  <component name="RunManager" selected="Application.CopyApiToPlugins">
+  <component name="RunManager" selected="Application.CopyToUpdateFolder">
     <configuration name="CopyApiToPlugins" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.utils.CopyApiToPlugins" />
       <module name="CorePlus" />
@@ -181,8 +205,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.CopyToUpdateFolder" />
+        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
@@ -215,56 +239,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="632" y="354" width="442" height="220" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1620543711015">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="632" y="354" width="442" height="220" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620543711015" />
-    <state x="146" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1620831321469">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="146" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620831321469" />
-    <state x="583" y="206" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1620888904901">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="583" y="206" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620888904901" />
-    <state x="634" y="216" key="FileChooserDialogImpl" timestamp="1620748304887">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="634" y="216" key="FileChooserDialogImpl/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620748304887" />
-    <state width="1663" height="260" key="GridCell.Tab.0.bottom" timestamp="1620915400027">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1664" height="260" key="GridCell.Tab.0.bottom/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620893548097" />
-    <state width="1663" height="260" key="GridCell.Tab.0.bottom/2560.0.1920.1020/0.0.1707.920@0.0.1707.920" timestamp="1620915400027" />
-    <state width="1663" height="260" key="GridCell.Tab.0.center" timestamp="1620915400027">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1664" height="260" key="GridCell.Tab.0.center/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620893548097" />
-    <state width="1663" height="260" key="GridCell.Tab.0.center/2560.0.1920.1020/0.0.1707.920@0.0.1707.920" timestamp="1620915400027" />
-    <state width="1663" height="260" key="GridCell.Tab.0.left" timestamp="1620915400026">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1664" height="260" key="GridCell.Tab.0.left/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620893548097" />
-    <state width="1663" height="260" key="GridCell.Tab.0.left/2560.0.1920.1020/0.0.1707.920@0.0.1707.920" timestamp="1620915400026" />
-    <state width="1663" height="260" key="GridCell.Tab.0.right" timestamp="1620915400027">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state width="1664" height="260" key="GridCell.Tab.0.right/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620893548097" />
-    <state width="1663" height="260" key="GridCell.Tab.0.right/2560.0.1920.1020/0.0.1707.920@0.0.1707.920" timestamp="1620915400027" />
-    <state x="556" y="163" width="594" height="594" key="find.popup" timestamp="1620885011793">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="556" y="163" width="594" height="594" key="find.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620885011793" />
-    <state x="510" y="211" key="run.anything.popup" timestamp="1618655306426">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="510" y="211" key="run.anything.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1618655306426" />
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1620543825766">
-      <screen x="0" y="0" width="1707" height="920" />
-    </state>
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/2560.0.1707.920/0.0.1707.920@0.0.1707.920" timestamp="1620543825766" />
   </component>
   <component name="masterDetails">
     <states>

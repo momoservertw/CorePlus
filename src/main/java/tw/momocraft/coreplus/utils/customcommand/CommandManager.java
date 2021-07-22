@@ -2,7 +2,6 @@ package tw.momocraft.coreplus.utils.customcommand;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -23,16 +22,16 @@ import java.util.List;
 
 public class CommandManager implements CommandInterface {
 
-    // Table<PlayerName, Pair<sendTime, expiration>, Command>
-    private final Table<String, Pair<Long, Integer>, String> onlineCmdTable = HashBasedTable.create();
+    // Table<PlayerName, expireTime, Command>
+    private final Table<String, Long, String> onlineCmdTable = HashBasedTable.create();
 
-    public Table<String, Pair<Long, Integer>, String> getOnlineCmdTable() {
+    public Table<String, Long, String> getOnlineCmdTable() {
         return onlineCmdTable;
     }
 
     @Override
     public void addOnlineCommand(String pluginName, String playerName, int expiration, String command) {
-        Pair<Long, Integer> waitingPair = new Pair<>(System.currentTimeMillis(), expiration * 1000);
+        long waitingPair = System.currentTimeMillis() + expiration * 1000L;
         onlineCmdTable.put(playerName, waitingPair, command);
         new BukkitRunnable() {
             @Override
@@ -44,7 +43,7 @@ public class CommandManager implements CommandInterface {
                 } catch (Exception ignored) {
                 }
             }
-        }.runTaskLater(CorePlus.getInstance(), expiration * 20);
+        }.runTaskLater(CorePlus.getInstance(), expiration * 20L);
     }
 
     @Override
@@ -298,117 +297,95 @@ public class CommandManager implements CommandInterface {
 
     private void selectCmdType(String pluginName, Player player, String input) {
         String[] split;
+        System.out.println(input);
+        String subInput = input.substring(input.indexOf(": ") + 2);
+        System.out.println(subInput);
         try {
-
             switch (input.split(": ")[0]) {
                 // Message
                 case "print":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    UtilsHandler.getMsg().sendConsoleMsg("", input);
+                    UtilsHandler.getMsg().sendConsoleMsg("", subInput);
                     return;
                 case "log":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchLog(pluginName, input);
+                    dispatchLog(pluginName, subInput);
                     return;
                 case "log-group":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchLogGroup(pluginName, input);
+                    dispatchLogGroup(pluginName, subInput);
                     return;
                 case "broadcast":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    UtilsHandler.getMsg().sendBroadcastMsg("", input);
+                    UtilsHandler.getMsg().sendBroadcastMsg("", subInput);
                     return;
                 case "discord-chat":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    split = input.split(", ");
+                    split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1], player);
                     return;
                 case "discord":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    split = input.split(", ");
+                    split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1]);
                     return;
                 case "bungee":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchBungeeCmd(pluginName, player, input);
+                    dispatchBungeeCmd(pluginName, player, subInput);
                     return;
                 case "switch":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchSwitch(pluginName, input);
+                    dispatchSwitch(pluginName, subInput);
                     return;
                 case "console":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConsoleCmd(pluginName, input);
+                    dispatchConsoleCmd(pluginName, subInput);
                     return;
                 case "op":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchOpCmd(pluginName, player, input);
+                    dispatchOpCmd(pluginName, player, subInput);
                     return;
                 case "player":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchPlayerCmd(pluginName, player, input);
+                    dispatchPlayerCmd(pluginName, player, subInput);
                     return;
                 case "chat-op":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    sendChatOpMsg("", player, input);
+                    sendChatOpMsg("", player, subInput);
                     return;
                 case "chat":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    UtilsHandler.getMsg().sendChatMsg("", player, input);
+                    UtilsHandler.getMsg().sendChatMsg("", player, subInput);
                     return;
                 case "message":
-                    input = input.replace("message: ", "");
-                    UtilsHandler.getMsg().sendPlayerMsg("", player, input);
+                    UtilsHandler.getMsg().sendPlayerMsg("", player, subInput);
                     return;
                 case "actionbar":
-                    input = input.replace("actionbar: ", "");
-                    UtilsHandler.getMsg().sendActionBarMsg(player, input);
+                    UtilsHandler.getMsg().sendActionBarMsg(player, subInput);
                     return;
                 case "actionbar-group":
-                    input = input.replace("actionbar-group: ", "");
-                    UtilsHandler.getMsg().sendActionBarMsg(player, input);
+                    UtilsHandler.getMsg().sendActionBarMsg(player, subInput);
                     return;
                 case "title":
-                    input = input.replace("title: ", "");
-                    dispatchTitleMsg(ConfigHandler.getPlugin(), player, input);
+                    dispatchTitleMsg(ConfigHandler.getPlugin(), player, subInput);
                     return;
                 case "title-group":
-                    input = input.replace("title-group: ", "");
-                    dispatchTitleMsgGroup(ConfigHandler.getPlugin(), player, input);
+                    dispatchTitleMsgGroup(ConfigHandler.getPlugin(), player, subInput);
                     return;
                 case "sound":
-                    input = input.replace("sound: ", "");
-                    dispatchSound(pluginName, player, input);
+                    dispatchSound(pluginName, player, subInput);
                     return;
                 case "sound-group":
-                    input = input.replace("sound-group: ", "");
-                    dispatchSoundGroup(pluginName, player, input);
+                    dispatchSoundGroup(pluginName, player, subInput);
                     return;
                 case "particle":
-                    input = input.replace("particle: ", "");
-                    dispatchParticle(pluginName, player.getLocation(), input);
+                    dispatchParticle(pluginName, player.getLocation(), subInput);
                     return;
                 case "particle-group":
-                    input = input.replace("particle-group: ", "");
-                    dispatchParticleGroup(pluginName, player.getLocation(), input);
+                    dispatchParticleGroup(pluginName, player.getLocation(), subInput);
                     return;
                 case "custom":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    sendGroupCmd(pluginName, player, player, input);
+                    sendGroupCmd(pluginName, player, player, subInput);
                     return;
                 case "condition":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConditionCmd(pluginName, player, input);
+                    dispatchConditionCmd(pluginName, player, subInput);
                     return;
                 default:
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName,
                             "Unknown command type: \"" + input + "\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName,
                             "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
-                    "Unknown command type: \"" + input + "\"");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "There is an error when executing command: \"" + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
@@ -417,44 +394,40 @@ public class CommandManager implements CommandInterface {
 
     private void selectCmdType(String pluginName, String input) {
         String[] split;
+        System.out.println(input);
+        String subInput = input.substring(input.indexOf(": ") + 2);
+        System.out.println(subInput);
         try {
             switch (input.split(": ")[0]) {
                 case "custom":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    sendGroupCmd(pluginName, null, null, input);
+                    sendGroupCmd(pluginName, null, null, subInput);
                     return;
                 case "condition":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConditionCmd(pluginName, null, input);
+                    dispatchConditionCmd(pluginName, null, subInput);
                     return;
                 case "print":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    UtilsHandler.getMsg().sendConsoleMsg("", input);
+                    UtilsHandler.getMsg().sendConsoleMsg("", subInput);
                     return;
                 case "log":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchLog(pluginName, input);
+                    dispatchLog(pluginName, subInput);
                     return;
                 case "log-group":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchLogGroup(pluginName, input);
+                    dispatchLogGroup(pluginName, subInput);
                     return;
                 case "broadcast":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    UtilsHandler.getMsg().sendBroadcastMsg("", input);
+                    UtilsHandler.getMsg().sendBroadcastMsg("", subInput);
                     return;
                 case "discord":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    split = input.split(", ");
+                    split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1]);
                     return;
                 case "bungee":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchBungeeCmd(pluginName, null, input);
+                    dispatchBungeeCmd(pluginName, null, subInput);
                     return;
                 case "console":
-                    input = input.substring(input.indexOf(": ") + 1);
-                    dispatchConsoleCmd(pluginName,  input);
+                    System.out.println(input);
+                    dispatchConsoleCmd(pluginName, subInput);
+                    System.out.println(subInput);
                     return;
                 case "op":
                 case "player":
@@ -478,8 +451,8 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
-                    "Unknown command type: \"" + input + "\"");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "There is an error when executing command: \"" + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
@@ -710,23 +683,19 @@ public class CommandManager implements CommandInterface {
             return;
         try {
             TitleMsgMap titleMsgMap = new TitleMsgMap();
-            // title: <title>\n<subtitle> -i:FadeIn, -o:FadeOut -s:Stay
+            // title: <title>\n<subtitle> -i:FadeIn -o:FadeOut -s:Stay
             String[] args = input.split("\\s+");
             for (String arg : args) {
                 arg = arg.toUpperCase();
-                if (arg.startsWith("-I:")) {
-                    titleMsgMap.setFadeIn(Integer.parseInt(arg.replace("-I:", "")));
-                    input = input.replace("-I:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-O:")) {
-                    titleMsgMap.setFadeOut(Integer.parseInt(arg.replace("-O:", "")));
-                    input = input.replace("-O:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-S:")) {
-                    titleMsgMap.setStay(Integer.parseInt(arg.replace("-S:", "")));
-                    input = input.replace("-S:" + arg, "");
+                if (arg.startsWith("-i:")) {
+                    titleMsgMap.setFadeIn(Integer.parseInt(arg.replace("-i:", "")));
+                    input = input.replace("-i:" + arg, "");
+                } else if (arg.startsWith("-o:")) {
+                    titleMsgMap.setFadeOut(Integer.parseInt(arg.replace("-o:", "")));
+                    input = input.replace("-o:" + arg, "");
+                } else if (arg.startsWith("-s:")) {
+                    titleMsgMap.setStay(Integer.parseInt(arg.replace("-s:", "")));
+                    input = input.replace("-s:" + arg, "");
                 }
             }
             UtilsHandler.getMsg().sendTitleMsg(player, input, titleMsgMap);
@@ -768,27 +737,20 @@ public class CommandManager implements CommandInterface {
             // sound: -s:Sound, -p:Pitch -v:Volume -t:Times -i:Interval
             String[] args = input.split("\\s+");
             for (String arg : args) {
-                arg = arg.toUpperCase();
-                if (arg.startsWith("-S:")) {
-                    soundMap.setType(Sound.valueOf(arg.replace("-S:", "")));
-                    continue;
+                if (arg.startsWith("-s:")) {
+                    soundMap.setType(Sound.valueOf(arg.replace("-s:", "").toUpperCase()));
+                } else if (arg.startsWith("-p:")) {
+                    soundMap.setPitch(Integer.parseInt(arg.replace("-p:", "")));
+                } else if (arg.startsWith("-v:")) {
+                    soundMap.setVolume(Integer.parseInt(arg.replace("-v:", "")));
+                } else if (arg.startsWith("-i:")) {
+                    soundMap.setInterval(Integer.parseInt(arg.replace("-i:", "")));
+                } else if (arg.startsWith("-t:")) {
+                    soundMap.setTimes(Integer.parseInt(arg.replace("-t:", "")));
+                } else {
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 }
-                if (arg.startsWith("-P:")) {
-                    soundMap.setPitch(Integer.parseInt(arg.replace("-P:", "")));
-                    continue;
-                }
-                if (arg.startsWith("-V:")) {
-                    soundMap.setVolume(Integer.parseInt(arg.replace("-V:", "")));
-                    continue;
-                }
-                if (arg.startsWith("-I:")) {
-                    soundMap.setInterval(Integer.parseInt(arg.replace("-I:", "")));
-                }
-            }
-            if (soundMap.getType() == null) {
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-                return;
             }
             SoundUtils.sendSound(player, player.getLocation(), soundMap);
         } catch (Exception ex) {
@@ -828,56 +790,38 @@ public class CommandManager implements CommandInterface {
             String value = input;
             String[] args = value.split("\\s+");
             for (String arg : args) {
-                arg = arg.toUpperCase();
-                if (arg.startsWith("-A:")) {
-                    particleMap.setAmount(Integer.parseInt(arg.replace("-A:", "")));
-                    value = value.replace("-A:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-T:")) {
-                    particleMap.setTimes(Integer.parseInt(arg.replace("-T:", "")));
-                    value = value.replace("-T:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-X:")) {
-                    particleMap.setOffsetX(Integer.parseInt(arg.replace("-X:", "")));
-                    value = value.replace("-X:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-Y:")) {
-                    particleMap.setOffsetY(Integer.parseInt(arg.replace("-Y:", "")));
-                    value = value.replace("-Y:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-Z:")) {
-                    particleMap.setOffsetZ(Integer.parseInt(arg.replace("-Z:", "")));
-                    value = value.replace("-Z:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-E:")) {
-                    particleMap.setExtra(Integer.parseInt(arg.replace("-E:", "")));
-                    value = value.replace("-E:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-M:")) {
-                    particleMap.setMaterial(Material.getMaterial(arg.replace("-M:", "").toUpperCase()));
-                    value = value.replace("-M:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-C:")) {
-                    particleMap.setColorType(arg.replace("-C:", "").toUpperCase());
-                    value = value.replace("-C:" + arg, "");
-                    continue;
-                }
-                if (arg.startsWith("-RGB:")) {
-                    String[] rgb = arg.replace("-RGB:", "").split(",");
+                if (arg.startsWith("-p:")) {
+                    particleMap.setType(Particle.valueOf(arg.replace("-p:", "").toUpperCase()));
+                } else if (arg.startsWith("-a:")) {
+                    particleMap.setAmount(Integer.parseInt(arg.replace("-a:", "")));
+                } else if (arg.startsWith("-t:")) {
+                    particleMap.setTimes(Integer.parseInt(arg.replace("-t:", "")));
+                } else if (arg.startsWith("-i:")) {
+                    particleMap.setInterval(Integer.parseInt(arg.replace("-i:", "")));
+                } else if (arg.startsWith("-x:")) {
+                    particleMap.setOffsetX(Integer.parseInt(arg.replace("-x:", "")));
+                } else if (arg.startsWith("-y:")) {
+                    particleMap.setOffsetY(Integer.parseInt(arg.replace("-y:", "")));
+                } else if (arg.startsWith("-z:")) {
+                    particleMap.setOffsetZ(Integer.parseInt(arg.replace("-z:", "")));
+                } else if (arg.startsWith("-e:")) {
+                    particleMap.setExtra(Integer.parseInt(arg.replace("-e:", "")));
+                } else if (arg.startsWith("-m:")) {
+                    particleMap.setMaterial(Material.getMaterial(arg.replace("-m:", "").toUpperCase()));
+                } else if (arg.startsWith("-c:")) {
+                    particleMap.setColorType(arg.replace("-c:", "").toUpperCase());
+                } else if (arg.startsWith("-rgb:")) {
+                    String[] rgb = arg.replace("-rgb:", "").split(",");
                     particleMap.setColorR(Integer.parseInt(rgb[0]));
                     particleMap.setColorR(Integer.parseInt(rgb[1]));
                     particleMap.setColorR(Integer.parseInt(rgb[2]));
-                    value = value.replace("-RGB:" + arg, "");
+                    value = value.replace("-rgb:" + arg, "");
+                } else {
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
+                    return;
                 }
             }
-            particleMap.setType(Particle.valueOf(value));
             ParticleUtils.spawnParticle(loc, particleMap);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");

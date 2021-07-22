@@ -1,16 +1,13 @@
 package tw.momocraft.coreplus;
 
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.file.ConfigBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Commands implements CommandExecutor {
 
@@ -95,65 +92,19 @@ public class Commands implements CommandExecutor {
                 return true;
             case "test":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
-                    if (args[1].equalsIgnoreCase("location")) {
-                        // /crp test <blocks/location> <group>
-                        if (length == 3) {
-                            if (sender instanceof ConsoleCommandSender) {
-                                UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
-                                        "Message.onlyPlayer", sender);
-                                return true;
-                            }
-                            Player player = (Player) sender;
-                            List<String> group = new ArrayList<>();
-                            group.add(args[2]);
-                            if (UtilsHandler.getCondition().checkLocation(ConfigHandler.getPlugin(), player.getLocation(), group, false)) {
-                                UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Location: " + args[2] + ")");
-                                return true;
-                            }
-                            UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Location: " + args[2] + ")");
-                            return true;
-                        }
-                    } else if (args[1].equalsIgnoreCase("blocks")) {
-                        // /crp test <blocks/location> <group>
-                        if (length == 3) {
-                            if (sender instanceof ConsoleCommandSender) {
-                                UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
-                                        "Message.onlyPlayer", sender);
-                                return true;
-                            }
-                            Player player = (Player) sender;
-                            List<String> group = new ArrayList<>();
-                            group.add(args[2]);
-                            if (UtilsHandler.getCondition().checkBlocks(player.getLocation(), group, false)) {
-                                UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "&aTest Succeed &7(Blocks: " + args[2] + ")");
-                                return true;
-                            }
-                            UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "&cTest Failed &7(Blocks: " + args[2] + ")");
-                            return true;
-                        }
-                    } else if (args[1].equalsIgnoreCase("placeholder")) {
+                    if (args[1].equalsIgnoreCase("placeholder")) {
+                        // crp test placeholder <placeholder> <player>
                         if (length == 4) {
-                            // crp test placeholder <player/offlineplayer> <player>
-                            if (args[2].equalsIgnoreCase("offlineplayer")) {
-                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[3]);
-                                return true;
-                                // crp test placeholder <player/offlineplayer> <player>
-                            } else if (args[2].equalsIgnoreCase("player")) {
-                                Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
-                                if (player == null) {
-                                    String[] placeHolders = UtilsHandler.getMsg().newString();
-                                    placeHolders[1] = args[3]; // %targetplayer%
-                                    UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
-                                            "Message.targetNotFound", sender, placeHolders);
-                                    return true;
-                                }
-                                UtilsHandler.getCondition().getConditionTest().cmdOfflinePlayer(sender, args[2]);
-                                return true;
-                            }
+                            UtilsHandler.getCondition().getConditionTest().placeholder(sender, args[3], args[2]);
+                            return true;
+                            // crp test placeholder <placeholder>
+                        } else if (length == 3) {
+                            UtilsHandler.getCondition().getConditionTest().placeholder(sender, null, args[2]);
+                            return true;
                         }
+                    } else if (args[1].equalsIgnoreCase("dev")) {
+                        return true;
                     }
-                    UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
-                            "Message.Commands.test", sender);
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.Commands.testPlaceholder", sender);
                     return true;

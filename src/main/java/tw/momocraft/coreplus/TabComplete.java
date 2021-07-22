@@ -42,22 +42,11 @@ public class TabComplete implements TabCompleter {
                 case "test":
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
                         if (length == 2) {
-                            commands.add("location");
-                            commands.add("blocks");
                             commands.add("placeholder");
                         } else if (length == 3) {
-                            if (args[1].equalsIgnoreCase("location")) {
-                                commands.addAll(ConfigHandler.getConfigPath().getLocProp().keySet());
-                            } else if (args[1].equalsIgnoreCase("blocks")) {
-                                commands.addAll(ConfigHandler.getConfigPath().getBlocksProp().keySet());
-                            } else if (args[1].equalsIgnoreCase("placeholder")) {
-                                commands.add("offlineplayer");
-                                commands.add("player");
-                            }
+                            commands.add("all");
                         } else if (length == 4) {
-                            if (args[1].equalsIgnoreCase("placeholder")) {
-                                commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
-                            }
+                            commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                         }
                     }
                     break;
@@ -74,9 +63,8 @@ public class TabComplete implements TabCompleter {
                     break;
                 case "cmdgroup":
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdgroup")) {
-                        if (length == 2) {
+                        if (length == 2)
                             commands.addAll(ConfigHandler.getConfigPath().getCmdProp().keySet());
-                        }
                     }
                     break;
                 case "cmd":

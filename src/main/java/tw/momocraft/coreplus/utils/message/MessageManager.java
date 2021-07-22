@@ -19,7 +19,6 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,8 +27,10 @@ public class MessageManager implements MessageInterface {
     private String setPrefixAndColor(String prefix, String input) {
         if (prefix == null)
             prefix = "";
-        input = prefix + input;
-        input = input.replace("%prefix%", prefix);
+        if (input.contains("%prefix%"))
+            input = input.replace("%prefix%", prefix);
+        else
+            input = prefix + input;
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
@@ -306,15 +307,15 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%entity%", getVanillaTrans(local, langHolder[8], "entity"));
         return input
                 .replace("%player%", langHolder[0])
-                .replace("%target_player%", langHolder[1])
+                .replace("%targetplayer%", langHolder[1])
                 .replace("%plugin%", langHolder[2])
-                .replace("%prefix%", langHolder[3])
+                //.replace("%prefix%", langHolder[3])
                 .replace("%value%", langHolder[4])
                 .replace("%group%", langHolder[5])
                 .replace("%amount%", langHolder[6])
                 .replace("%material%", langHolder[7])
                 .replace("%entity%", langHolder[8])
-                .replace("%price_type%", getMsgTrans(langHolder[9]))
+                .replace("%price%", getMsgTrans(langHolder[9]))
                 .replace("%price%", langHolder[10])
                 .replace("%balance%", langHolder[11])
                 .replace("%distance%", langHolder[12])
@@ -343,7 +344,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        return transTranslateMap(ConfigHandler.getPlugin(), (Player) sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
     @Override
@@ -355,6 +356,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
+        System.out.println(2);
         return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
@@ -413,10 +415,12 @@ public class MessageManager implements MessageInterface {
 
     @Override
     public List<String> transTranslateMap(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
+        System.out.println(3);
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
         if (translateMap == null)
             return transByGeneral(pluginName, local, input);
         List<String> output;
+        System.out.println(4);
         // Player
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<Player, String> entry : translateMap.getPlayerMap().entrySet())
@@ -442,7 +446,7 @@ public class MessageManager implements MessageInterface {
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
         // OfflinePlayer
-        if (translateMap.getPlayerMap() != null)
+        if (translateMap.getOfflinePlayerMap() != null)
             for (Map.Entry<OfflinePlayer, String> entry : translateMap.getOfflinePlayerMap().entrySet())
                 do {
                     output = input;
@@ -466,13 +470,15 @@ public class MessageManager implements MessageInterface {
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
         // Block
-        if (translateMap.getBlockMap() != null)
+        if (translateMap.getBlockMap() != null) {
+            System.out.println(5 + " " + input);
             for (Map.Entry<Block, String> entry : translateMap.getBlockMap().entrySet())
                 do {
                     output = input;
                     input = transByBlock(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
+        }
         // ItemStack
         if (translateMap.getItemStackMap() != null)
             for (Map.Entry<ItemStack, String> entry : translateMap.getItemStackMap().entrySet())
@@ -497,12 +503,15 @@ public class MessageManager implements MessageInterface {
                     input = transByLocation(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
+        System.out.println(6 + " " + input);
         return input;
     }
 
     @Override
     public String transTranslateMap(String pluginName, Player player, TranslateMap translateMap, String input) {
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
+        if (translateMap == null)
+            return transByGeneral(pluginName, local, input);
         String output;
         // Player
         if (translateMap.getPlayerMap() != null)
@@ -529,7 +538,7 @@ public class MessageManager implements MessageInterface {
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
         // OfflinePlayer
-        if (translateMap.getPlayerMap() != null)
+        if (translateMap.getOfflinePlayerMap() != null)
             for (Map.Entry<OfflinePlayer, String> entry : translateMap.getOfflinePlayerMap().entrySet())
                 do {
                     output = input;
@@ -623,7 +632,6 @@ public class MessageManager implements MessageInterface {
             return translateMap;
         if (translateMap == null)
             translateMap = new TranslateMap();
-        translateMap = getTranslateMap(translateMap, target, targetType);
         if (target instanceof Player)
             translateMap.putPlayer((Player) target, "player");
         else if (target instanceof Entity)
@@ -805,8 +813,7 @@ public class MessageManager implements MessageInterface {
         return list;
     }
 
-    private String transByEntityType(String pluginName, String local, String input, EntityType target, String
-            prefixName) {
+    private String transByEntityType(String pluginName, String local, String input, EntityType target, String prefixName) {
         if (input == null)
             return "";
         if (target == null)
@@ -826,7 +833,7 @@ public class MessageManager implements MessageInterface {
         }
         // %TARGET_type_local%
         try {
-            input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, type, "material"));
+            input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, local, type, "material"));
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
@@ -992,7 +999,7 @@ public class MessageManager implements MessageInterface {
         }
         // %TARGET_type_local%
         try {
-            input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, type, "material"));
+            input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, local, type, "material"));
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
         }
@@ -1128,7 +1135,7 @@ public class MessageManager implements MessageInterface {
             try {
                 String[] arr = input.split("%");
                 for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("%" + prefixName + "_location%"))
+                    if (arr[i].equals(prefixName + "_location"))
                         input = input.replace("%" + prefixName + "_location%" + arr[i + 1] + "%",
                                 String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPlugin(), target, arr[i + 1], false)));
                 }
@@ -1144,7 +1151,7 @@ public class MessageManager implements MessageInterface {
             try {
                 String[] arr = input.split("%");
                 for (int i = 0; i < arr.length; i++) {
-                    if (arr[i].equals("%" + prefixName + "_blocks%"))
+                    if (arr[i].equals(prefixName + "_blocks"))
                         input = input.replace("%" + prefixName + "_blocks%" + arr[i + 1] + "%",
                                 String.valueOf(UtilsHandler.getCondition().checkBlocks(target, arr[i + 1], false)));
                 }
@@ -1161,12 +1168,19 @@ public class MessageManager implements MessageInterface {
             String[] arr = input.split("%");
             String nearbyString;
             for (int i = 0; i < arr.length; i++) {
-                if (arr[i].equals("%" + prefixName + "_nearby%")) {
-                    nearbyString = UtilsHandler.getUtil().getStringFromNearbyType(pluginName, target,
-                            arr[i + 1], arr[i + 2], arr[i + 3], Integer.parseInt(arr[i + 4]));
-                    input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] +
-                            "%" + arr[i + 3] + "%" + arr[i + 4] + "%", nearbyString);
-                    i += 4;
+                try {
+                    if (arr[i].equals(prefixName + "_nearby")) {
+                        nearbyString = UtilsHandler.getUtil().getNearbyListString(pluginName, target,
+                                arr[i + 1], arr[i + 2], arr[i + 3], Integer.parseInt(arr[i + 4]));
+                        input = input.replace("%" + arr[i] + "%" + arr[i + 1] + "%" + arr[i + 2] +
+                                "%" + arr[i + 3] + "%" + arr[i + 4] + "%", nearbyString);
+                        i += 4;
+                    }
+                } catch (Exception ex) {
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_nearby%type%name/type%group%radius%\"");
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                    UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
                 }
             }
         }
@@ -1183,7 +1197,6 @@ public class MessageManager implements MessageInterface {
             list.add(transByGeneral(pluginName, local, value));
         return list;
     }
-
 
     @Override
     public String transByGeneral(String pluginName, String local, String input) {
@@ -1442,7 +1455,7 @@ public class MessageManager implements MessageInterface {
                             } catch (Exception ex) {
                                 input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
                                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "</js>\"");
                                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
                                 continue back;
                             }
@@ -1458,7 +1471,7 @@ public class MessageManager implements MessageInterface {
                         } catch (Exception ex) {
                             input = input.replace("<js>" + placeholder + "</js>", "%ERROR%");
                             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "\"");
+                            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + placeholder + "</js>\"");
                             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
                         }
                     }
@@ -1466,7 +1479,7 @@ public class MessageManager implements MessageInterface {
                 }
                 input = input.replace("<if>" + split[i], "%ERROR%");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<js>" + split[i] + "</js>\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
             }
         }
@@ -1486,14 +1499,14 @@ public class MessageManager implements MessageInterface {
                         ex.printStackTrace();
                         input = input.replace("<if>" + placeholder, "%ERROR%");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "\"");
+                        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "</if>\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
                     }
                     continue;
                 }
                 input = input.replace("<if>" + split[i], "%ERROR%");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting message: \"" + originInput + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of placeholder: \"<if>" + split[i] + "</if>\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
             }
         }
@@ -1574,12 +1587,12 @@ public class MessageManager implements MessageInterface {
 
     @Override
     public String getVanillaTrans(String pluginName, String local, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaNode(local, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaName(local, input, type);
     }
 
     @Override
     public String getVanillaTrans(String pluginName, String input, String type) {
-        return UtilsHandler.getVanillaUtils().getValinaNode(null, input, type);
+        return UtilsHandler.getVanillaUtils().getValinaName(input, type);
     }
 
     @Override

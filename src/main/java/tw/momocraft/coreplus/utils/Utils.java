@@ -76,7 +76,7 @@ public class Utils implements UtilsInterface {
 
     @Override
     public <K, V> Map<V, K> invertMap(Map<K, V> map) {
-        Map<V, K> output = new HashMap<V, K>();
+        Map<V, K> output = new HashMap<>();
         for (Map.Entry<K, V> entry : map.entrySet())
             output.put(entry.getValue(), entry.getKey());
         return output;
@@ -317,12 +317,12 @@ public class Utils implements UtilsInterface {
                 return !checkCompare(operator, Double.parseDouble(value1), Double.parseDouble(value2));
             }
         } catch (Exception ex) {
+            if (operator.matches("[=]+")) {
+                return value1.equals(value2);
+            }
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + operator + value2 + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
             UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
-        }
-        if (operator.matches("[=]+")) {
-            return value1.equals(value2);
         }
         return false;
     }
@@ -403,8 +403,9 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public List<String> getStringListFromObjects(List<Object> input, String type) {
+    public List<String> getObjectList(List<Object> input, String type) {
         List<String> returnList = new ArrayList<>();
+        String customName;
         for (Object value : input) {
             if (value == null)
                 continue;
@@ -440,11 +441,11 @@ public class Utils implements UtilsInterface {
                     }
                 }
                 if (value instanceof Entity) {
-                    try {
-                        returnList.add(((Entity) value).getCustomName());
-                    } catch (Exception ex) {
+                    customName = ((Entity) value).getCustomName();
+                    if (customName != null)
+                        returnList.add(customName);
+                    else
                         returnList.add(((Entity) value).getType().name());
-                    }
                 }
                 if (value instanceof ItemStack) {
                     try {
@@ -459,133 +460,79 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public String getStringFromObjects(List<Object> input, String type) {
+    public String getObjectListString(List<Object> input, String type) {
         StringBuilder sb = new StringBuilder();
-        for (Object value : input) {
-            if (value == null)
-                continue;
-            if (type.equals("type")) {
-                if (value instanceof Material)
-                    sb.append(((Material) value).name()).append(",");
-                if (value instanceof EntityType)
-                    sb.append(((EntityType) value).name()).append(",");
-                if (value instanceof Block)
-                    sb.append(((Block) value).getType().name()).append(",");
-                if (value instanceof UUID)
-                    sb.append(((UUID) value).toString()).append(",");
-                if (value instanceof Player)
-                    sb.append(((Player) value).getName()).append(",");
-                if (value instanceof Entity)
-                    sb.append(((Entity) value).getType().name()).append(",");
-                if (value instanceof ItemStack)
-                    sb.append(((ItemStack) value).getType().name()).append(",");
-            } else if (type.equals("name")) {
-                if (value instanceof Material)
-                    sb.append(((Material) value).name()).append(",");
-                if (value instanceof EntityType)
-                    sb.append(((EntityType) value).name()).append(",");
-                if (value instanceof Block)
-                    sb.append(((Block) value).getType().name()).append(",");
-                if (value instanceof UUID)
-                    sb.append(((UUID) value).toString()).append(",");
-                if (value instanceof Player) {
-                    try {
-                        sb.append(((Player) value).getCustomName()).append(",");
-                    } catch (Exception ex) {
-                        sb.append(((Player) value).getName()).append(",");
-                    }
-                }
-                if (value instanceof Entity) {
-                    try {
-                        sb.append(((Entity) value).getCustomName()).append(",");
-                    } catch (Exception ex) {
-                        sb.append(((Entity) value).getType().name()).append(",");
-                    }
-                }
-                if (value instanceof ItemStack) {
-                    try {
-                        sb.append(((ItemStack) value).getItemMeta().getDisplayName()).append(",");
-                    } catch (Exception ex) {
-                        sb.append(((ItemStack) value).getType().name()).append(",");
-                    }
-                }
-            }
+        for (String str : getObjectList(input, type))
+            sb.append(str).append(", ");
+        try {
+            sb.setLength(sb.length() - 2);
+        } catch (Exception ignored) {
         }
         return sb.toString();
     }
 
     @Override
-    public String getStringFromNearbyType(String pluginName, Location loc, String targetType, String returnType, String group, int range) {
-        List<String> list;
-        try {
-            list = ConfigHandler.getConfigPath().getGroupProp().get(returnType).get(group);
-        } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
-            UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the type name in groups.yml: \"" + returnType + "\"");
-            return null;
+    public String getNearbyListString(String pluginName, Location loc, String targetType, String returnType, String group, int range) {
+        switch (targetType) {
+            case "players":
+                break;
+            case "entities":
+                targetType = "Entities";
+                break;
+            case "blocks":
+                targetType = "Materials";
+                break;
+            case "mythicmobs":
+                targetType = "MythicMobs";
+                break;
+            default:
+                UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                        "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                        "Can not find the type name in groups.yml: \"" + group + "\"");
+                return null;
         }
+        List<String> list = null;
+        if (!targetType.equals("players"))
+            list = ConfigHandler.getConfigPath().getGroupProp().get(targetType).get(group);
         if (list == null && !group.equals("all")) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while converting placeholder: \"%TARGET_nearby%TYPE%NAME/TYPE%GROUP%RADIUS%\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the group name in groups.yml: \"" + returnType + "\"");
+                    "Can not find the group name in groups.yml: \"" + group + "\"");
             return null;
         }
-        return getNearbyStringFromTypes(loc, targetType, returnType, list, range);
+        List<Object> objectList = getNearbyList(loc, targetType, list, range, group.equals("all"));
+        if (returnType.equals("amount"))
+            return String.valueOf(objectList.size());
+        return getObjectListString(objectList, returnType);
     }
 
     @Override
-    public String getNearbyStringFromTypes(Location loc, String targetType, String returnType, List<String> input, int range) {
-        StringBuilder output = new StringBuilder();
-        for (String string : getNearbyStringListFromTypes(loc, targetType, returnType, input, range)) {
-            output.append(string).append(", ");
-        }
-        return output.toString();
-    }
-
-    @Override
-    public List<String> getNearbyStringListFromTypes(Location loc, String targetType, String returnType, List<String> input, int range) {
-        List<String> output = new ArrayList<>();
-        String target;
+    public List<Object> getNearbyList(Location loc, String targetType, List<String> input, int range, boolean all) {
+        List<Object> output = new ArrayList<>();
         switch (targetType.toLowerCase()) {
+            case "players":
+                for (Player player : getNearbyPlayersXZY(loc, range))
+                    if (all)
+                        output.add(player);
+                break;
             case "entities":
-                for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    if (entity == null)
-                        continue;
-                    if (returnType.equals("type")) {
-                        target = entity.getType().name();
-                    } else if (returnType.equals("name")) {
-                        target = entity.getCustomName();
-                        if (target == null)
-                            target = entity.getType().name();
-                    } else {
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "An unexpected error occurred, please report it to the plugin author.");
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not the the return type of nearby list: \"" + returnType + "\"");
-                        return null;
-                    }
-                    if (input.contains(target))
-                        output.add(target);
-                }
+                for (Entity entity : loc.getNearbyEntities(range, range, range))
+                    if (all || input.contains(entity.getType().name()))
+                        output.add(entity);
                 break;
             case "materials":
-                for (Block block : getNearbyBlocks(loc, range, range, range)) {
-                    target = block.getType().name();
-                    if (input.contains(target))
-                        output.add(target);
-                }
+                for (Block block : getNearbyBlocks(loc, range, range, range))
+                    if (all || input.contains(block.getType().name()))
+                        output.add(block);
                 break;
             case "mythicmobs":
-                for (Entity entity : loc.getNearbyEntities(range, range, range)) {
-                    if (UtilsHandler.getEntity().isMythicMob(entity)) {
-                        target = entity.getCustomName();
-                        if (target == null)
-                            target = UtilsHandler.getEntity().getMythicMobName(entity);
-                        if (input.contains(target))
-                            output.add(target);
-                    }
-                }
+                if (!UtilsHandler.getDepend().MythicMobsEnabled())
+                    return null;
+                for (Entity entity : loc.getNearbyEntities(range, range, range))
+                    if (all || input.contains(UtilsHandler.getEntity().getMythicMobName(entity)))
+                        output.add(entity);
                 break;
         }
         return output;
@@ -594,22 +541,18 @@ public class Utils implements UtilsInterface {
     @Override
     public List<Player> getNearbyPlayersXZY(Location loc, int rangeSquared) {
         List<Player> list = new ArrayList<>();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (inTheRangeXZY(player.getLocation(), loc, rangeSquared)) {
+        for (Player player : Bukkit.getServer().getOnlinePlayers())
+            if (inTheRangeXZY(player.getLocation(), loc, rangeSquared))
                 list.add(player);
-            }
-        }
         return list;
     }
 
     @Override
     public List<Player> getNearbyPlayersXZ(Location loc, int rangeSquared) {
         List<Player> list = new ArrayList<>();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (inTheRangeXZ(player.getLocation(), loc, rangeSquared)) {
+        for (Player player : Bukkit.getServer().getOnlinePlayers())
+            if (inTheRangeXZ(player.getLocation(), loc, rangeSquared))
                 list.add(player);
-            }
-        }
         return list;
     }
 
@@ -648,9 +591,8 @@ public class Utils implements UtilsInterface {
         list.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
 
         Map<K, V> result = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : list) {
+        for (Map.Entry<K, V> entry : list)
             result.put(entry.getKey(), entry.getValue());
-        }
         return result;
     }
 
@@ -669,9 +611,8 @@ public class Utils implements UtilsInterface {
         list.sort(Map.Entry.comparingByValue());
 
         Map<K, V> result = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : list) {
+        for (Map.Entry<K, V> entry : list)
             result.put(entry.getKey(), entry.getValue());
-        }
         return result;
     }
 
@@ -740,16 +681,14 @@ public class Utils implements UtilsInterface {
             Class<?>[] interfaces = clazz.getInterfaces();
             if (interfaces.length > 0) {
                 res.addAll(Arrays.asList(interfaces));
-                for (Class<?> interfaze : interfaces) {
+                for (Class<?> interfaze : interfaces)
                     res.addAll(getAllExtendedOrImplementedClass(interfaze));
-                }
             }
             // Add the super class
             Class<?> superClass = clazz.getSuperclass();
             // Interfaces does not have java,lang.Object as superclass, they have null, so break the cycle and return
-            if (superClass == null) {
+            if (superClass == null)
                 break;
-            }
             // Now inspect the superclass
             clazz = superClass;
         } while (!"java.lang.Object".equals(clazz.getCanonicalName()));

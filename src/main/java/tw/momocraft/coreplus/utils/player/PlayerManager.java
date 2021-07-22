@@ -177,8 +177,12 @@ public class PlayerManager implements PlayerInterface {
     }
 
     public void importPlayerLastLogin() {
+        if (!ConfigHandler.getConfigPath().isDataMySQL())
+            return;
         List<String> uuidList = UtilsHandler.getMySQL().getValueList(ConfigHandler.getPlugin(),
                 "coreplus", "player", "uuid");
+        if (uuidList == null)
+            return;
         long dataTime;
         long checkTime;
         OfflinePlayer offlinePlayer;
@@ -188,6 +192,8 @@ public class PlayerManager implements PlayerInterface {
                     "coreplus", "players", "uuid", uuid, "last_login"));
             // Checking the Server login time.
             offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+            if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
+                continue;
             checkTime = offlinePlayer.getLastLogin();
             if (checkTime == 0 && dataTime > checkTime) {
                 UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
@@ -206,6 +212,8 @@ public class PlayerManager implements PlayerInterface {
     }
 
     public void importPlayerList() {
+        if (!ConfigHandler.getConfigPath().isDataMySQL())
+            return;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
             if (mySQLMap != null) {
@@ -225,6 +233,8 @@ public class PlayerManager implements PlayerInterface {
         // Getting the Server player list.
         OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
+                continue;
             UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
                     "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
                     "username", offlinePlayer.getName());
@@ -235,9 +245,6 @@ public class PlayerManager implements PlayerInterface {
     public boolean isPvPEnabled(Player player) {
         if (UtilsHandler.getDepend().PvPManagerEnabled()) {
             return PvPlayer.get(player).hasPvPEnabled();
-        }
-        if (UtilsHandler.getDepend().MultiverseCoreEnabled()) {
-            return UtilsHandler.getDepend().getMultiverseCoreApi().isPvPEnabled(player.getWorld().getName());
         }
         return ConfigHandler.getConfigPath().isPvp();
     }

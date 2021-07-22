@@ -280,7 +280,7 @@ public interface UtilsInterface {
      * @param type  the type of this object list.
      * @return the string list from object list.
      */
-    List<String> getStringListFromObjects(List<Object> input, String type);
+    List<String> getObjectList(List<Object> input, String type);
 
     /**
      * Getting the string list from object list.
@@ -289,18 +289,7 @@ public interface UtilsInterface {
      * @param type  the type of this object list.
      * @return the string list from object list.
      */
-    String getStringFromObjects(List<Object> input, String type);
-
-    /**
-     * @param pluginName the sending plugin name.
-     * @param loc        the checking location.
-     * @param targetType the searching target type.
-     * @param returnType the return name or type.
-     * @param group      the group from the group.
-     * @param range      the searching range.
-     * @return the
-     */
-    String getStringFromNearbyType(String pluginName, Location loc, String targetType, String returnType, String group, int range);
+    String getObjectListString(List<Object> input, String type);
 
     /**
      * Getting the string list of targets.
@@ -308,23 +297,22 @@ public interface UtilsInterface {
      * @param loc        the checking location.
      * @param targetType the searching target type.
      * @param returnType the return name or type.
-     * @param input      the searching target type list.
      * @param range      the searching range.
      * @return the string list of targets.
      */
-    String getNearbyStringFromTypes(Location loc, String targetType, String returnType, List<String> input, int range);
+    String getNearbyListString(String pluginName, Location loc, String targetType, String returnType, String group, int range);
 
     /**
      * Getting the string list of targets.
      *
      * @param loc        the checking location.
      * @param targetType the searching target type.
-     * @param returnType the return name or type.
      * @param input      the searching target type list.
      * @param range      the searching range.
+     * @param all        getting all nearby list.
      * @return the string list of targets.
      */
-    List<String> getNearbyStringListFromTypes(Location loc, String targetType, String returnType, List<String> input, int range);
+    List<Object> getNearbyList(Location loc, String targetType, List<String> input, int range, boolean all);
 
     /**
      * @param loc          the checking location.

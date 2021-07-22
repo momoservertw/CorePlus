@@ -362,8 +362,8 @@ public class ConfigPath implements ConfigInterface {
             soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Pitch", 1));
             soundMap.setTimes(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Run.Times", 1));
             soundMap.setInterval(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Run.Interval", 0));
-            soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 0));
-            soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Pitch", 0));
+            soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 1));
+            soundMap.setPitch(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Pitch", 1));
             soundProp.put(groupName, soundMap);
         }
     }

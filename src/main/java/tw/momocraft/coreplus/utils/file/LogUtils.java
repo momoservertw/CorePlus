@@ -20,6 +20,10 @@ public class LogUtils {
 
     public void add(String pluginName, String group, String message) {
         LogMap logMap = getLogProp().get(group);
+        if (logMap == null) {
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the log group: " + group);
+            return;
+        }
         UtilsHandler.getFile().getData().create(pluginName, logMap.getFile(), logMap.isNewFile(), logMap.isZip());
         message = message + "\n";
         if (logMap.isTime()) {
@@ -32,7 +36,7 @@ public class LogUtils {
             bw.append(message);
             bw.close();
         } catch (IOException ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while compressing file.");
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while log message.");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
             UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
         }

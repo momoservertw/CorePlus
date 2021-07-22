@@ -50,6 +50,8 @@ public class JsonUtils {
         try {
             return fileMap.get(group).get(input).toString();
         } catch (Exception ex) {
+            if (group.startsWith("lang_"))
+                return null;
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
                     "An error occurred while getting the value of \"" + input + "\".");
             UtilsHandler.getMsg().sendErrorMsg(pluginName,

@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import tw.momocraft.coreplus.api.ConditionInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.listeners.ConditionTest;
+import tw.momocraft.coreplus.listeners.PlaceHolderTest;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -23,22 +23,21 @@ public class ConditionManager implements ConditionInterface {
 
     private static LocationUtils locationUtils;
     private static BlocksUtils blocksUtils;
-    private static ConditionTest conditionTest;
+    private static PlaceHolderTest conditionTest;
 
     public ConditionManager() {
         locationUtils = new LocationUtils();
         blocksUtils = new BlocksUtils();
-        conditionTest = new ConditionTest();
+        conditionTest = new PlaceHolderTest();
     }
 
     @Override
     public boolean checkCondition(String pluginName, List<String> input) {
         if (input == null || input.isEmpty())
             return true;
-        for (String condition : input) {
+        for (String condition : input)
             if (!checkCondition(pluginName, condition))
                 return false;
-        }
         return true;
     }
 
@@ -49,16 +48,16 @@ public class ConditionManager implements ConditionInterface {
         String[] conditionArray = input.split("<or>");
         back:
         for (String conditions : conditionArray) {
+            System.out.println(conditions);
             if (conditions.contains("<and>")) {
-                for (String condition : conditions.split("<and>")) {
+                for (String condition : conditions.split("<and>"))
                     if (!UtilsHandler.getUtil().checkValues(pluginName, condition))
                         continue back;
-                }
+                return true;
             } else {
-                if (!UtilsHandler.getUtil().checkValues(pluginName, conditions))
-                    continue;
+                if (UtilsHandler.getUtil().checkValues(pluginName, conditions))
+                    return true;
             }
-            return true;
         }
         return false;
     }
@@ -88,7 +87,7 @@ public class ConditionManager implements ConditionInterface {
         return blocksUtils.checkBlocks(loc, group, def);
     }
 
-    public ConditionTest getConditionTest() {
+    public PlaceHolderTest getConditionTest() {
         return conditionTest;
     }
 
@@ -129,9 +128,8 @@ public class ConditionManager implements ConditionInterface {
 
     @Override
     public boolean isInResidence(Location loc) {
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled())
             return false;
-        }
         return UtilsHandler.getDepend().getResidenceApi().isInResidence(loc);
     }
 
@@ -153,9 +151,8 @@ public class ConditionManager implements ConditionInterface {
         // Holding ItemJoin menu.
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
             String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
-            if (!menuIJ.equals("")) {
+            if (!menuIJ.equals(""))
                 return UtilsHandler.getDepend().getItemJoinApi().isMenu(itemStack);
-            }
         }
         // Holding a menu item.
         String itemType = itemStack.getType().name();
@@ -167,12 +164,10 @@ public class ConditionManager implements ConditionInterface {
                 itemName = "";
             }
             String menuName = ConfigHandler.getConfigPath().getMenuName();
-            if (menuName.equals("") || itemName.equals(UtilsHandler.getUtil().translateColorCode(menuName))) {
-                if (itemType.equals("PLAYER_HEAD")) {
+            if (menuName.equals("") || itemName.equals(UtilsHandler.getUtil().translateColorCode(menuName)))
+                if (itemType.equals("PLAYER_HEAD"))
                     return isSkullTextures(itemStack, ConfigHandler.getConfigPath().getMenuSkullTextures());
-                }
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -220,9 +215,8 @@ public class ConditionManager implements ConditionInterface {
             profileField.setAccessible(true);
             GameProfile profile = (GameProfile) profileField.get(headMeta);
             Collection<Property> properties = profile.getProperties().get("textures");
-            for (Property property : properties) {
+            for (Property property : properties)
                 url = property.getValue();
-            }
         } catch (IllegalArgumentException | NoSuchFieldException | SecurityException | IllegalAccessException error) {
             error.printStackTrace();
         }
@@ -335,9 +329,8 @@ public class ConditionManager implements ConditionInterface {
             for (int z = -3; z <= 3; z++) {
                 for (int y = -3; y <= 3; y++) {
                     blockLoc = loc.clone().add(x, y, z);
-                    if (Material.CAVE_AIR.equals(blockLoc.getBlock().getType())) {
+                    if (Material.CAVE_AIR.equals(blockLoc.getBlock().getType()))
                         return true;
-                    }
                 }
             }
         }

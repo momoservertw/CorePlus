@@ -31,7 +31,7 @@ public class MySQLUtils {
             return false;
         }
         MySQLMap mySQLMap;
-        mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get(databaseType);
+        mySQLMap = getMySQLProp().get(databaseType);
         if (mySQLMap == null) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not connect MySQL database: " + databaseType);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please add the database settings in CorePlus/data.yml.");

@@ -6,8 +6,7 @@ import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.TabComplete;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.listeners.CommandOnline;
-import tw.momocraft.coreplus.listeners.ConditionTest;
-import tw.momocraft.coreplus.utils.MultiverseCoreUtils;
+import tw.momocraft.coreplus.listeners.PlaceHolderTest;
 import tw.momocraft.coreplus.utils.condition.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.condition.ResidenceUtils;
 import tw.momocraft.coreplus.utils.player.CMIUtils;
@@ -26,7 +25,6 @@ public class DependHandler implements DependInterface {
     private ItemJoinUtils itemJoinApi;
     private ResidenceUtils residenceApi;
     private CMIUtils cmiApi;
-    private MultiverseCoreUtils multiverseCoreApi;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
@@ -61,7 +59,7 @@ public class DependHandler implements DependInterface {
         CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
         if (MpdbEnabled())
             CorePlus.getInstance().getServer().getPluginManager().registerEvents(new CommandOnline(), CorePlus.getInstance());
-        CorePlus.getInstance().getServer().getPluginManager().registerEvents(new ConditionTest(), CorePlus.getInstance());
+        CorePlus.getInstance().getServer().getPluginManager().registerEvents(new PlaceHolderTest(), CorePlus.getInstance());
     }
 
     private void setup() {
@@ -103,11 +101,6 @@ public class DependHandler implements DependInterface {
             CMI = Bukkit.getServer().getPluginManager().getPlugin("CMI") != null;
             if (CMI)
                 setCMIUtils();
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MultiverseCore")) {
-            MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
-            if (MultiverseCore)
-                setMultiverseCoreUtils();
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.PlaceHolderAPI"))
             PlaceHolderAPI = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null;
@@ -280,10 +273,6 @@ public class DependHandler implements DependInterface {
         return cmiApi;
     }
 
-    public MultiverseCoreUtils getMultiverseCoreApi() {
-        return multiverseCoreApi;
-    }
-
 
     private void setVaultApi() {
         vaultApi = new VaultUtils();
@@ -311,9 +300,5 @@ public class DependHandler implements DependInterface {
 
     private void setCMIUtils() {
         cmiApi = new CMIUtils();
-    }
-
-    private void setMultiverseCoreUtils() {
-        multiverseCoreApi = new MultiverseCoreUtils();
     }
 }

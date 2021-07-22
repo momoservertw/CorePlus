@@ -7,18 +7,10 @@
     <groupId>momocraft.tw</groupId>
     <artifactId>CorePlus</artifactId>
     <version>1.0.0</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+    </properties>
 
     <repositories>
         <!--Maven Repo-->
@@ -46,12 +38,6 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <!--MythicMobs Repo-->
-        <repository>
-            <id>nexus</id>
-            <name>Lumine Releases</name>
-            <url>https://mvn.lumine.io/repository/maven-public/</url>
-        </repository>
         <!--CraftationGaming Repository-->
         <repository>
             <id>CraftationGaming</id>
@@ -67,11 +53,6 @@
             <id>codemc-repo</id>
             <url>http://repo.codemc.org/repository/maven-public/</url>
         </repository>
-        <!--NameTagEdit Repo-->
-        <repository>
-            <id>upstream</id>
-            <url>http://ci.nametagedit.com/plugin/repository/everything/</url>
-        </repository>
     </repositories>
     <dependencies>
         <!--Google API-->
@@ -82,16 +63,16 @@
         </dependency>
         <!--Paper API-->
         <dependency>
-        <groupId>com.destroystokyo.paper</groupId>
-        <artifactId>paper-api</artifactId>
-        <version>1.16.5-R0.1-SNAPSHOT</version>
-        <scope>provided</scope>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Mojang API -->
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
-            <version>1.5.21</version>
+            <version>1.5.25</version>
             <scope>provided</scope>
         </dependency>
         <!--Vault API-->
@@ -114,7 +95,7 @@
             <groupId>me.GemsEconomy</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.2.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--PlaceholderAPI API-->
@@ -143,7 +124,7 @@
             <groupId>me.MysqlPlayerDataBridge</groupId>
             <artifactId>MysqlPlayerDataBridge</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v3.35.0.jar
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v3.36.3.jar
             </systemPath>
             <version>LEGACY</version>
         </dependency>
@@ -152,29 +133,22 @@
             <groupId>me.CMI</groupId>
             <artifactId>CMI</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMIAPI7.6.2.0.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMIAPI8.7.8.2.jar</systemPath>
             <version>LEGACY</version>
-        </dependency>
-        <!--MythicMobs API-->
-        <dependency>
-            <groupId>io.lumine.xikage</groupId>
-            <artifactId>MythicMobs</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
         </dependency>
         <!--Residence API-->
         <dependency>
             <groupId>me.Residence</groupId>
             <artifactId>Residence</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Residence4.9.2.1.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Residence5.0.0.1.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--ItemJoin API-->
         <dependency>
             <groupId>me.RockinChaos.itemjoin</groupId>
             <artifactId>ItemJoin</artifactId>
-            <version>5.1.1-SNAPSHOT</version>
+            <version>5.2.0-RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <!--AuthMe API-->
@@ -189,7 +163,7 @@
             <groupId>me.PvPManager</groupId>
             <artifactId>PvPManager</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/PvPManager.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/PvPManager-3.14.8.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--Multiverse-Core API-->
@@ -197,16 +171,19 @@
             <groupId>me.Multiverse-Core</groupId>
             <artifactId>Multiverse-Core</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core-4.2.2.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core-4.3.1-SNAPSHOT.jar
+            </systemPath>
             <version>LEGACY</version>
         </dependency>
-        <!--NameTagEdit API-->
+        <!--MythicMobs API-->
         <dependency>
-            <groupId>com.nametagedit</groupId>
-            <artifactId>nametagedit</artifactId>
-            <version>4.4.0</version>
+            <groupId>me.MythicMobs</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MythicMobs-5.0.0-SNAPSHOT.jar
+            </systemPath>
+            <version>LEGACY</version>
         </dependency>
-
     </dependencies>
 
 </project>

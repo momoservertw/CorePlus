@@ -10,22 +10,26 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 public class VanillaUtils {
 
     public String getValinaName(Player player, String input, String type) {
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans())
             return input;
-        }
-        if (input == null) {
+        if (input == null)
             return "";
-        }
         return getValinaNode(getLocal(player), input, type);
     }
 
-    public String getValinaName(String input, String type) {
-        if (!ConfigHandler.getConfigPath().isVanillaTrans()) {
+    public String getValinaName(String local, String input, String type) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans())
             return input;
-        }
-        if (input == null) {
+        if (input == null)
             return "";
-        }
+        return getValinaNode(local, input, type);
+    }
+
+    public String getValinaName(String input, String type) {
+        if (!ConfigHandler.getConfigPath().isVanillaTrans())
+            return input;
+        if (input == null)
+            return "";
         return getValinaNode(ConfigHandler.getConfigPath().getVanillaTransLocal(), input, type);
     }
 
@@ -39,7 +43,7 @@ public class VanillaUtils {
         if (type.equals("entity")) {
             try {
                 EntityType entityType = EntityType.valueOf(input);
-                return getLocalLang("entity.minecraft." + input.toLowerCase(), input);
+                return getLocalLang(local, "entity.minecraft." + input.toLowerCase());
             } catch (Exception ex) {
                 return input;
             }
@@ -47,10 +51,9 @@ public class VanillaUtils {
         if (type.equals("material")) {
             try {
                 Material material = Material.valueOf(input);
-                if (material.isBlock()) {
-                    return getLocalLang("block.minecraft." + input.toLowerCase(), input);
-                }
-                return getLocalLang("item.minecraft." + input.toLowerCase(), input);
+                if (material.isBlock())
+                    return getLocalLang(local, "block.minecraft." + input.toLowerCase());
+                return getLocalLang(local, "item.minecraft." + input.toLowerCase());
             } catch (Exception ex) {
                 return input;
             }
@@ -60,9 +63,8 @@ public class VanillaUtils {
 
     public String getLocal(CommandSender sender) {
         Player player = null;
-        if (sender instanceof Player) {
+        if (sender instanceof Player)
             player = (Player) sender;
-        }
         return getLocal(player);
     }
 
@@ -77,7 +79,9 @@ public class VanillaUtils {
     }
 
     private String getLocalLang(String local, String input) {
-        String lang = UtilsHandler.getJson().getValue(ConfigHandler.getPlugin(), local, "lang_" + input);
+        String lang = UtilsHandler.getJson().getValue(ConfigHandler.getPlugin(), "lang_" + local, input);
+        if (lang == null)
+            return input;
         try {
             return lang.replaceAll("\"", "");
         } catch (Exception ex) {

@@ -48,8 +48,8 @@ MySQL:
   Example:
     Enable: false
     Database: "example"
-      Tables:
-        Players: "players"
+    Tables:
+      Players: "players"
 Yaml:
   Enable: false
   Example:
@@ -66,6 +66,7 @@ Properties:
     Enable: false
     Path: "//plugins//Example_Plugin//config.properties"
 Logs:
+  Enable: true
   Settings:
     Default:
       # Creating the file if not it is exist.

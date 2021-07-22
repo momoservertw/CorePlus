@@ -12,5 +12,6 @@
         <module name="ServerPlus" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="16" />
   </component>
 </project>
