@@ -230,12 +230,12 @@ public class ConfigBuilder {
                 }
                 // org.bukkit.block.data.*
                 if (type.equals("inherited") && // org.bukkit.block.data.BlockData
-                        UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     continue back;
                 }
                 // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
                 if (type.equals("not_inherited") &&
-                        !UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        !UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     continue back;
                 }
                 // endsWith_logs
@@ -282,13 +282,13 @@ public class ConfigBuilder {
                 }
                 // org.bukkit.block.data.*
                 if (type.equals("inherited") &&
-                        UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     valueSet.add(value.name());
                     continue back;
                 }
                 // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
                 if (type.equals("not_inherited") &&
-                        !UtilsHandler.getUtil().matchString(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        !UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     valueSet.add(value.name());
                     continue back;
                 }

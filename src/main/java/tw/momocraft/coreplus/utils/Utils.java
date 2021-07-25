@@ -20,7 +20,7 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public boolean matchString(List<String> list, String regex) {
+    public boolean containsColorCode(List<String> list, String regex) {
         if (regex != null && list != null) {
             for (String s : list) {
                 if (s.matches(regex)) {
@@ -29,6 +29,11 @@ public class Utils implements UtilsInterface {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean containsColorCode(String input) {
+        return (input.matches(".*[§&][12345678abcdef].*$"));
     }
 
     @Override

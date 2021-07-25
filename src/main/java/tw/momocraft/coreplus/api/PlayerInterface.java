@@ -382,4 +382,8 @@ public interface PlayerInterface {
      * @param def        the default value if the player doesn't have any permission.
      */
     void changePermLevel(UUID uuid, String permission, int number, int def);
+
+    void setDiscordNick(UUID uuid, String nickname);
+
+    void getDiscordNick(UUID uuid);
 }

@@ -5,6 +5,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class DiscordUtils {
 
@@ -29,5 +30,15 @@ public class DiscordUtils {
 
     public boolean isChannelExist(String channelName) {
         return getChannelId(channelName) != null;
+    }
+
+    public void setMemberNick(UUID uuid, String name) {
+        String memberID = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(uuid);
+        DiscordUtil.getMemberById(memberID).modifyNickname(name);
+    }
+
+    public String getMemberNick(UUID uuid) {
+        String memberID = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(uuid);
+        return DiscordUtil.getMemberById(memberID).getNickname();
     }
 }

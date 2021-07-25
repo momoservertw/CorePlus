@@ -484,7 +484,7 @@ public class PlayerManager implements PlayerInterface {
 
     public String getOnlineStatus(UUID uuid) {
         if (Bukkit.getPlayer(uuid) == null) {
-            if (UtilsHandler.getDepend().MythicMobsEnabled()) {
+            if (UtilsHandler.getDepend().MpdbEnabled()) {
                 if (PD.api.isPlayerOnline(uuid)) {
                     return "bungee";
                 }
@@ -758,5 +758,15 @@ public class PlayerManager implements PlayerInterface {
         }
         removePermission(uuid, permission + level);
         addPermission(uuid, permission + nextLevel);
+    }
+
+    @Override
+    public void setDiscordNick(UUID uuid, String nickname) {
+        UtilsHandler.getDiscord().setMemberNick(uuid, nickname);
+    }
+
+    @Override
+    public void getDiscordNick(UUID uuid) {
+        UtilsHandler.getDiscord().getMemberNick(uuid);
     }
 }

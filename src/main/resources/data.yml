@@ -22,7 +22,7 @@ MySQL:
     Enable: false
     Database: "playerdataplus"
     Tables:
-      Players: "luckperms_players"
+      Players: "`luckperms_players`"
   LuckPerms:
     Enable: false
     Database: "luckperms"

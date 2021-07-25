@@ -29,7 +29,7 @@ public interface UtilsInterface {
      * @param string the checking string.
      * @return if the string in the list matches some words.
      */
-    boolean matchString(List<String> list, String string);
+    boolean containsColorCode(List<String> list, String string);
 
     /**
      * Checking if the string in the list contains some words.
@@ -39,6 +39,14 @@ public interface UtilsInterface {
      * @return if the string in the list contains some words.
      */
     boolean containsString(List<String> list, String string);
+
+    /**
+     * Checking if the string contains color code.
+     *
+     * @param input the input string.
+     * @return if the string contains color code.
+     */
+    boolean containsColorCode(String input);
 
     /**
      * Checking if a string list contains another string with ignore case.
