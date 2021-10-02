@@ -16,8 +16,7 @@ MySQL:
   CorePlus:
     Enable: false
     Database: "coreplus"
-    Tables:
-      Players: "players"
+    Prefix: ""
   PlayerdataPlus:
     Enable: false
     Database: "playerdataplus"

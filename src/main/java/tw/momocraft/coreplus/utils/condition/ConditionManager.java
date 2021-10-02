@@ -48,7 +48,6 @@ public class ConditionManager implements ConditionInterface {
         String[] conditionArray = input.split("<or>");
         back:
         for (String conditions : conditionArray) {
-            System.out.println(conditions);
             if (conditions.contains("<and>")) {
                 for (String condition : conditions.split("<and>"))
                     if (!UtilsHandler.getUtil().checkValues(pluginName, condition))

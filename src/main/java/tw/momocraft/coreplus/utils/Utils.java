@@ -699,4 +699,46 @@ public class Utils implements UtilsInterface {
         } while (!"java.lang.Object".equals(clazz.getCanonicalName()));
         return new HashSet<>(res);
     }
+
+    /**
+     * @param input  the input status. Values: true/on, false/off, null, known
+     * @param status the currently status. Values: true, false, null
+     * @param unknown_default setting the unknown input value to null or not.
+     * @return the new status. Values: true, false, none, known
+     */
+    @Override
+    public String getToggleStatus(String input, boolean status, boolean unknown_default) {
+        if (input == null)
+            input = "null";
+        switch (input) {
+            case "t":
+            case "on":
+            case "enable":
+                input = "true";
+                break;
+            case "f":
+            case "off":
+            case "disable":
+                input = "false";
+                break;
+            case "null":
+                break;
+            default:
+                if (unknown_default) {
+                    input = "null";
+                    break;
+                }
+                return "unknown";
+        }if (status) {
+            if (input.equals("true"))
+                return "alreadyOn";
+            else
+                return "false";
+        } else {
+            if (input.equals("false"))
+                return "alreadyOff";
+            else
+                return "true";
+        }
+    }
 }

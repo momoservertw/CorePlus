@@ -146,37 +146,18 @@ public class MessageManager implements MessageInterface {
     public void sendDetailMsg(boolean isDebug, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
         if (!isDebug)
             return;
-        switch (action) {
-            case "cancel":
-            case "remove":
-            case "kill":
-            case "damage":
-            case "fail":
-            case "failed":
-            case "warning":
-            case "deny":
-            case "prevent":
-                action = "&c" + action;
-                break;
-            case "continue":
-            case "bypass":
-            case "change":
-                action = "&e" + action;
-                break;
-            case "none":
-                action = "&7" + action;
-                break;
-            case "return":
-            case "success":
-            case "succeed":
-            case "accept":
-            case "allow":
-            default:
-                action = "&a" + action;
-                break;
+        StringBuilder sb = new StringBuilder();
+        sb.append("&f").append(feature).append("&8 - &f").append(target).append(" &8: &f").append(check);
+        if (action != null) {
+            switch (action) {
+                case "cancel", "remove", "kill", "damage", "fail", "failed", "warning", "deny", "prevent" -> sb.append("&8, &c").append(action);
+                case "continue", "bypass", "change" -> sb.append("&8, &e").append(action);
+                case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
+            }
         }
-        sendDebugMsg(true, pluginName,
-                "&f" + feature + "&8 - &f" + target + "&8 : &f" + check + "&8, &f" + action + "&8, &7" + detail);
+        if (detail != null && !detail.equals("none"))
+            sb.append("&8, &f").append(detail);
+        sendDebugMsg(true, pluginName, sb.toString());
         sendDebugMsg(true, pluginName,
                 "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
@@ -185,37 +166,16 @@ public class MessageManager implements MessageInterface {
     public void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste) {
         if (!debugging)
             return;
-        switch (action) {
-            case "cancel":
-            case "remove":
-            case "kill":
-            case "damage":
-            case "fail":
-            case "failed":
-            case "warning":
-            case "deny":
-            case "prevent":
-                action = "&c" + action;
-                break;
-            case "continue":
-            case "bypass":
-            case "change":
-                action = "&e" + action;
-                break;
-            case "none":
-                action = "&7" + action;
-                break;
-            case "return":
-            case "success":
-            case "succeed":
-            case "accept":
-            case "allow":
-            default:
-                action = "&a" + action;
-                break;
+        StringBuilder sb = new StringBuilder();
+        sb.append("&f").append(feature).append("&8 - &f").append(target).append(" &8: &f").append(check);
+        if (action != null) {
+            switch (action) {
+                case "cancel", "remove", "kill", "damage", "fail", "failed", "warning", "deny", "prevent" -> sb.append("&8, &c").append(action);
+                case "continue", "bypass", "change" -> sb.append("&8, &e").append(action);
+                case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
+            }
         }
-        sendDebugMsg(true, pluginName,
-                "&f" + feature + "&8 - &f" + target + " &8: &f" + check + "&8, &f" + action);
+        sendDebugMsg(true, pluginName, sb.toString());
         sendDebugMsg(true, pluginName,
                 "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
@@ -356,7 +316,6 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        System.out.println(2);
         return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
     }
 
@@ -415,12 +374,10 @@ public class MessageManager implements MessageInterface {
 
     @Override
     public List<String> transTranslateMap(String pluginName, Player player, TranslateMap translateMap, List<String> input) {
-        System.out.println(3);
         String local = UtilsHandler.getPlayer().getPlayerLocal(player);
         if (translateMap == null)
             return transByGeneral(pluginName, local, input);
         List<String> output;
-        System.out.println(4);
         // Player
         if (translateMap.getPlayerMap() != null)
             for (Map.Entry<Player, String> entry : translateMap.getPlayerMap().entrySet())
@@ -471,7 +428,6 @@ public class MessageManager implements MessageInterface {
                 } while (!input.equals(output));
         // Block
         if (translateMap.getBlockMap() != null) {
-            System.out.println(5 + " " + input);
             for (Map.Entry<Block, String> entry : translateMap.getBlockMap().entrySet())
                 do {
                     output = input;
@@ -503,7 +459,6 @@ public class MessageManager implements MessageInterface {
                     input = transByLocation(pluginName, local, input, entry.getKey(), entry.getValue());
                     input = transByGeneral(pluginName, local, input);
                 } while (!input.equals(output));
-        System.out.println(6 + " " + input);
         return input;
     }
 
@@ -733,6 +688,25 @@ public class MessageManager implements MessageInterface {
         input = input.replace("%" + prefixName + "_sneaking%", String.valueOf(target.isSneaking()));
         // %TARGET_flying%
         input = input.replace("%" + prefixName + "_flying%", String.valueOf(target.isFlying()));
+        // %TARGET_perm%PERMISSION%
+        if (UtilsHandler.getDepend().VaultEnabled() || UtilsHandler.getDepend().LuckPermsEnabled())
+            if (input.contains("%" + prefixName + "_perm%"))
+                input = input.replace("%" + prefixName + "_perm%", String.valueOf(UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid)));
+        // %TARGET_perm%PERMISSION%
+        if (input.contains("%" + prefixName + "_perm%")) {
+            try {
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++)
+                    if (arr[i].equals(prefixName + "_perm"))
+                        input = input.replace("%" + prefixName + "_perm%" + arr[i + 1] + "%",
+                                String.valueOf(UtilsHandler.getPlayer().hasPerm(target, arr[i + 1])));
+            } catch (Exception ex) {
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_perm%PERMISSION%\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            }
+        }
         // Translate PlaceHolderAPI placeholders.
         if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {
             try {
@@ -883,6 +857,21 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%" + prefixName + "_has_played%", String.valueOf(hasPlayed));
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+        }
+        // %TARGET_perm%PERMISSION%
+        if (input.contains("%" + prefixName + "_perm%")) {
+            try {
+                String[] arr = input.split("%");
+                for (int i = 0; i < arr.length; i++)
+                    if (arr[i].equals(prefixName + "_perm"))
+                        input = input.replace("%" + prefixName + "_perm%" + arr[i + 1] + "%",
+                                String.valueOf(UtilsHandler.getPlayer().hasPerm(target, arr[i + 1])));
+            } catch (Exception ex) {
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_perm%PERMISSION%\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
+                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            }
         }
         // Translate PlaceHolderAPI's placeholders.
         if (UtilsHandler.getDepend().PlaceHolderAPIEnabled()) {

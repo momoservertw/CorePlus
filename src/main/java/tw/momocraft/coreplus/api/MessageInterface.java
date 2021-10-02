@@ -4,13 +4,9 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.handlers.ConfigHandler;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 import tw.momocraft.coreplus.utils.message.TranslateMap;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface MessageInterface {
@@ -128,27 +124,27 @@ public interface MessageInterface {
     /**
      * Sending the information of feature in console to debug.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param feature the name of feature.
-     * @param target  the checking target or type.
-     * @param check   the checking things.
-     * @param action  the feature's action like succeed, failed, return...
-     * @param ste     the class and the line of code of this feature.
+     * @param pluginName the executing plugin prefix.
+     * @param feature    the name of feature.
+     * @param target     the checking target or type.
+     * @param check      the checking things.
+     * @param action     the feature's action like succeed, failed, return...
+     * @param ste        the class and the line of code of this feature.
      */
-    void sendDetailMsg(boolean debugging, String prefix, String feature, String target, String check, String action, StackTraceElement ste);
+    void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste);
 
     /**
      * Sending the information of feature in console to debug.
      *
-     * @param prefix  the executing plugin prefix.
-     * @param feature the name of feature.
-     * @param target  the checking target or type.
-     * @param check   the checking things.
-     * @param action  the feature's action like succeed, failed, return...
-     * @param detail  more information.
-     * @param ste     the class and the line of code of this feature.
+     * @param pluginName the executing plugin prefix.
+     * @param feature    the name of feature.
+     * @param target     the checking target or type.
+     * @param check      the checking things.
+     * @param action     the feature's action like succeed, failed, return...
+     * @param detail     more information.
+     * @param ste        the class and the line of code of this feature.
      */
-    void sendDetailMsg(boolean debugging, String prefix, String feature, String target, String check, String action, String detail, StackTraceElement ste);
+    void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste);
 
     /**
      * Sending debug message in console.
@@ -256,9 +252,9 @@ public interface MessageInterface {
     /**
      * Translating by target placeholders.
      *
-     * @param sender      the sender of this.
-     * @param target      the sender's local language.
-     * @param input      the input string.
+     * @param sender the sender of this.
+     * @param target the sender's local language.
+     * @param input  the input string.
      * @return a new string which translated language placeholders.
      */
     String transHolder(Player sender, Object target, String input);

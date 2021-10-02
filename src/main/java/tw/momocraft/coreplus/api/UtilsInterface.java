@@ -393,4 +393,11 @@ public interface UtilsInterface {
      */
     Set<Class<?>> getAllExtendedOrImplementedClass(Class<?> clazz);
 
+    /**
+     * @param input  the input status. Values: true/on, false/off, null, known
+     * @param status the currently status. Values: true, false, null
+     * @param unknown_default setting the unknown input value to null or not.
+     * @return the new status. Values: true, false, none, known
+     */
+    String getToggleStatus(String input, boolean status, boolean unknown_default);
 }

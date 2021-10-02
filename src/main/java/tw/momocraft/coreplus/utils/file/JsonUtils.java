@@ -103,9 +103,9 @@ public class JsonUtils {
     private void sendLoadedMsg() {
         if (!langList.isEmpty())
             UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Language files: " + langList.toString());
+                    "Loaded Language files: " + langList);
         if (!customList.isEmpty())
             UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Json files: " + customList.toString());
+                    "Loaded Json files: " + customList);
     }
 }

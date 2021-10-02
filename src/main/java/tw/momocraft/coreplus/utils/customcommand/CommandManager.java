@@ -297,9 +297,7 @@ public class CommandManager implements CommandInterface {
 
     private void selectCmdType(String pluginName, Player player, String input) {
         String[] split;
-        System.out.println(input);
         String subInput = input.substring(input.indexOf(": ") + 2);
-        System.out.println(subInput);
         try {
             switch (input.split(": ")[0]) {
                 // Message
@@ -394,9 +392,7 @@ public class CommandManager implements CommandInterface {
 
     private void selectCmdType(String pluginName, String input) {
         String[] split;
-        System.out.println(input);
         String subInput = input.substring(input.indexOf(": ") + 2);
-        System.out.println(subInput);
         try {
             switch (input.split(": ")[0]) {
                 case "custom":
@@ -425,9 +421,7 @@ public class CommandManager implements CommandInterface {
                     dispatchBungeeCmd(pluginName, null, subInput);
                     return;
                 case "console":
-                    System.out.println(input);
                     dispatchConsoleCmd(pluginName, subInput);
-                    System.out.println(subInput);
                     return;
                 case "op":
                 case "player":
