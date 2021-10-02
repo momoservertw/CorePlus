@@ -155,8 +155,7 @@ public class MessageManager implements MessageInterface {
                 case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
             }
         }
-        if (detail != null && !detail.equals("none"))
-            sb.append("&8, &f").append(detail);
+        sb.append("&8, &8").append(detail);
         sendDebugMsg(true, pluginName, sb.toString());
         sendDebugMsg(true, pluginName,
                 "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
@@ -186,7 +185,7 @@ public class MessageManager implements MessageInterface {
             return;
         if (sender == null)
             sender = Bukkit.getConsoleSender();
-        String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
+        String langMessage = ConfigHandler.getConfig("config.yml").getString("Message." + input);
         if (langMessage != null)
             input = langMessage;
         input = transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
