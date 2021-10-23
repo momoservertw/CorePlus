@@ -61,9 +61,9 @@ public class CommandManager implements CommandInterface {
         List<String> commands = ConfigHandler.getConfigPath().getCmdProp().get(groupName);
         List<String> newCommands = new ArrayList<>();
         if (commands == null || commands.isEmpty()) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "An error occurred while executing command: \"custom: " + input + "\"");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "Can not find the group of \"" + groupName + "\" in CorePlus/commands.yml.");
             return;
         }
@@ -352,10 +352,10 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendActionBarMsg(player, subInput);
                     return;
                 case "title":
-                    dispatchTitleMsg(ConfigHandler.getPlugin(), player, subInput);
+                    dispatchTitleMsg(ConfigHandler.getPluginName(), player, subInput);
                     return;
                 case "title-group":
-                    dispatchTitleMsgGroup(ConfigHandler.getPlugin(), player, subInput);
+                    dispatchTitleMsgGroup(ConfigHandler.getPluginName(), player, subInput);
                     return;
                 case "sound":
                     dispatchSound(pluginName, player, subInput);
@@ -440,7 +440,7 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the execute target.");
                     return;
                 default:
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown command type: \"" + input + "\"");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown command type: \"" + input + "\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please check if CorePlus is updated to the latest version.");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
             }

@@ -38,7 +38,7 @@ public class LogUtils {
         } catch (IOException ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while log message.");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
     }
 }

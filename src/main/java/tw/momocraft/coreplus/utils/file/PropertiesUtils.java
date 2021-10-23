@@ -60,17 +60,17 @@ public class PropertiesUtils {
                 filePath = Bukkit.getServer().getWorldContainer() + "//server.properties";
                 break;
             default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "Cannot load the properties file: " + group);
                 return false;
         }
-        return load(ConfigHandler.getPlugin(), group, filePath);
+        return load(ConfigHandler.getPluginName(), group, filePath);
     }
 
     private void loadCustom() {
         Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
         for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
             customList.add(groupName);
         }
     }

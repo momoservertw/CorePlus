@@ -119,7 +119,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(fileName, false);
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(getPlugin(), "Cannot save " + fileName + " to disk!");
+                UtilsHandler.getMsg().sendErrorMsg(getPluginName(), "Cannot save " + fileName + " to disk!");
                 return;
             }
         }
@@ -231,7 +231,7 @@ public class ConfigHandler {
     }
 
 
-    public static String getPlugin() {
+    public static String getPluginName() {
         return CorePlus.getInstance().getDescription().getName();
     }
 

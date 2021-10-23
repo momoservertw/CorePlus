@@ -28,7 +28,7 @@ public class BungeeCordUtils implements PluginMessageListener {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"switch: " + server + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }
@@ -46,7 +46,7 @@ public class BungeeCordUtils implements PluginMessageListener {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"bungee: " + cmd + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
         }
         player.sendPluginMessage(CorePlus.getInstance(), "BungeeCord", out.toByteArray());
     }

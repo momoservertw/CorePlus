@@ -91,7 +91,7 @@ public class ConfigPath implements ConfigInterface {
     }
 
     public void setupLast() {
-        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPlugin(), "server.properties", "pvp"));
+        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
     }
 
     private void sendSetupMsg() {
@@ -327,7 +327,7 @@ public class ConfigPath implements ConfigInterface {
         for (String groupName : blocksConfig.getKeys(false)) {
             blocksMap = new BlocksMap();
             blocksMap.setGroupName(groupName);
-            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPlugin(),
+            blocksMap.setBlockTypes(getTypeList(ConfigHandler.getPluginName(),
                     ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Types"), "Materials"));
             blocksMap.setIgnoreList(ConfigHandler.getConfig("blocks.yml").getStringList("Blocks." + groupName + ".Ignore"));
             int r = ConfigHandler.getConfig("blocks.yml").getInt("Blocks." + groupName + ".Search.Values.R");
@@ -355,7 +355,7 @@ public class ConfigPath implements ConfigInterface {
             try {
                 soundMap.setType(Sound.valueOf(ConfigHandler.getConfig("sounds.yml").getString("Sounds." + groupName + ".Type")));
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown sound type: " + groupName);
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown sound type: " + groupName);
                 continue;
             }
             soundMap.setVolume(ConfigHandler.getConfig("sounds.yml").getInt("Sounds." + groupName + ".Volume", 1));
@@ -382,8 +382,8 @@ public class ConfigPath implements ConfigInterface {
             try {
                 particleMap.setType(Particle.valueOf(ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Type")));
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown Particle type of particle: " + groupName + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Particle type of particle: " + groupName + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                 continue;
             }
             particleMap.setAmount(ConfigHandler.getConfig("particles.yml").getInt("Particles." + groupName + ".Amount", 1));
@@ -401,8 +401,8 @@ public class ConfigPath implements ConfigInterface {
                 particleMap.setMaterial(Material.getMaterial(
                         ConfigHandler.getConfig("particles.yml").getString("Particles." + groupName + ".Material", "STONE")));
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Unknown Material type of particle: " + groupName + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Unknown Material type of particle: " + groupName + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "More information: https://github.com/momoservertw/CorePlus/wiki/Particle");
                 continue;
             }
             particleProp.put(groupName, particleMap);

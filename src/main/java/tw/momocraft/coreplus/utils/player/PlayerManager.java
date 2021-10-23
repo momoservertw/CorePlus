@@ -80,7 +80,7 @@ public class PlayerManager implements PlayerInterface {
             scanner.close();
             return UUID.fromString(rawData.split("\"")[3].replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not get player UUID from the mojang API.");
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not get player UUID from the mojang API.");
             return null;
         }
     }
@@ -103,7 +103,7 @@ public class PlayerManager implements PlayerInterface {
                 }
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         return null;
     }
@@ -154,7 +154,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "UUID", offlinePlayer.getUniqueId().toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -167,7 +167,7 @@ public class PlayerManager implements PlayerInterface {
     public double getLastLogin(UUID uuid) {
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
+            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "UUID", uuid.toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -179,7 +179,7 @@ public class PlayerManager implements PlayerInterface {
     public void importPlayerLastLogin() {
         if (!ConfigHandler.getConfigPath().isDataMySQL())
             return;
-        List<String> uuidList = UtilsHandler.getMySQL().getValueList(ConfigHandler.getPlugin(),
+        List<String> uuidList = UtilsHandler.getMySQL().getValueList(ConfigHandler.getPluginName(),
                 "coreplus", "player", "uuid");
         if (uuidList == null)
             return;
@@ -188,7 +188,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer;
         for (String uuid : uuidList) {
             // Getting the CorePlus login time.
-            dataTime = Long.parseLong(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPlugin(),
+            dataTime = Long.parseLong(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "coreplus", "players", "uuid", uuid, "last_login"));
             // Checking the Server login time.
             offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
@@ -196,7 +196,7 @@ public class PlayerManager implements PlayerInterface {
                 continue;
             checkTime = offlinePlayer.getLastLogin();
             if (checkTime == 0 && dataTime > checkTime) {
-                UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+                UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                         "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 dataTime = checkTime;
             }
@@ -204,7 +204,7 @@ public class PlayerManager implements PlayerInterface {
             if (UtilsHandler.getDepend().AuthMeEnabled()) {
                 checkTime = AuthMeApi.getInstance().getLastLoginTime(offlinePlayer.getName()).toEpochMilli();
                 if (checkTime == 0 && dataTime > checkTime) {
-                    UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                             "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 }
             }
@@ -217,7 +217,7 @@ public class PlayerManager implements PlayerInterface {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
             if (mySQLMap != null) {
-                ResultSet resultSet = UtilsHandler.getMySQL().getResultSet(ConfigHandler.getPlugin(),
+                ResultSet resultSet = UtilsHandler.getMySQL().getResultSet(ConfigHandler.getPluginName(),
                         mySQLMap.getDatabase(), mySQLMap.getTables().get("Players"));
                 try {
                     while (resultSet.next()) {
@@ -225,8 +225,8 @@ public class PlayerManager implements PlayerInterface {
                         resultSet.getString("username");
                     }
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "An error occurred while importing the player data.");
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Please check the settings \"MySQL.LuckPerms\" in data.yml.");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while importing the player data.");
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Please check the settings \"MySQL.LuckPerms\" in data.yml.");
                 }
             }
         }
@@ -235,7 +235,7 @@ public class PlayerManager implements PlayerInterface {
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
                 continue;
-            UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPlugin(),
+            UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
                     "username", offlinePlayer.getName());
         }
@@ -286,7 +286,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -324,7 +324,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -362,7 +362,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -402,7 +402,7 @@ public class PlayerManager implements PlayerInterface {
                 }
                 break;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Can not find price type: " + type);
+        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
         return 0;
     }
 
@@ -419,7 +419,7 @@ public class PlayerManager implements PlayerInterface {
                             "Can not get the Experience from");
                 }
             }
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Target is in other server: " + uuid);
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Target is in other server: " + uuid);
             return 0;
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {

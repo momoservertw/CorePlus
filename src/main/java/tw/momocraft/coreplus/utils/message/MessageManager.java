@@ -27,10 +27,11 @@ public class MessageManager implements MessageInterface {
     private String setPrefixAndColor(String prefix, String input) {
         if (prefix == null)
             prefix = "";
-        if (input.contains("%prefix%"))
-            input = input.replace("%prefix%", prefix);
-        else
+        if (input.contains("%prefix%")) {
+            input = input.replaceAll("%prefix%\\s*", prefix);
+        } else {
             input = prefix + input;
+        }
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
@@ -303,7 +304,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
     }
 
     @Override
@@ -315,7 +316,7 @@ public class MessageManager implements MessageInterface {
         // Target: %target_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, target, "target");
-        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
     }
 
     @Override
@@ -330,7 +331,7 @@ public class MessageManager implements MessageInterface {
         // Trigger: %trigger_Placeholder%, %object_Placeholder%
         if (target != null)
             translateMap = getTranslateMap(translateMap, trigger, "trigger");
-        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
     }
 
     @Override
@@ -346,7 +347,7 @@ public class MessageManager implements MessageInterface {
             if (target != null)
                 translateMap = getTranslateMap(translateMap, target, "target_" + i);
         }
-        return transTranslateMap(ConfigHandler.getPlugin(), (Player) sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPluginName(), (Player) sender, translateMap, input);
     }
 
     @Override
@@ -368,7 +369,7 @@ public class MessageManager implements MessageInterface {
             if (target != null)
                 translateMap = getTranslateMap(translateMap, target, "trigger_" + i);
         }
-        return transTranslateMap(ConfigHandler.getPlugin(), sender, translateMap, input);
+        return transTranslateMap(ConfigHandler.getPluginName(), sender, translateMap, input);
     }
 
     @Override
@@ -572,9 +573,9 @@ public class MessageManager implements MessageInterface {
         else if (target instanceof Location)
             translateMap.putLocation((Location) target, prefixName);
         else {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "An error occurred while translating placeholders.");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "Unknown target type: \"" + target.toString() + "\"");
         }
         return translateMap;
@@ -601,9 +602,9 @@ public class MessageManager implements MessageInterface {
         else if (target instanceof Location)
             translateMap.putLocation((Location) target, "location");
         else {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "An error occurred while translating placeholders.");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "Unknown target type: \"" + target.toString() + "\"");
         }
         return translateMap;
@@ -796,19 +797,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_type%
         try {
             input = input.replace("%" + prefixName + "_type%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_type_local%
         try {
             input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, local, type, "material"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         return input;
     }
@@ -841,7 +842,7 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "_uuid%", target.getUniqueId().toString());
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_last_login%
         boolean hasPlayed = target.hasPlayedBefore();
@@ -849,13 +850,13 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%" + prefixName + "_last_login%",
                     hasPlayed ? String.valueOf(target.getLastLogin()) : getMsgTrans("noData"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_has_played%
         try {
             input = input.replace("%" + prefixName + "_has_played%", String.valueOf(hasPlayed));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_perm%PERMISSION%
         if (input.contains("%" + prefixName + "_perm%")) {
@@ -937,19 +938,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "_display_name%", displayName != null ? displayName : target.getType().name());
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_has_custom_name%
         try {
             input = input.replace("%" + prefixName + "_display_name%", displayName != null ? "true" : "false");
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_amount%
         try {
             input = input.replace("%" + prefixName + "_amount%", String.valueOf(target.getAmount()));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // Material
         input = transByMaterial(pluginName, local, input, target.getType(), prefixName);
@@ -977,19 +978,19 @@ public class MessageManager implements MessageInterface {
         try {
             input = input.replace("%" + prefixName + "%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_type%
         try {
             input = input.replace("%" + prefixName + "_type%", type);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %TARGET_type_local%
         try {
             input = input.replace("%" + prefixName + "_type_local%", getVanillaTrans(pluginName, local, type, "material"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         return input;
     }
@@ -1125,7 +1126,7 @@ public class MessageManager implements MessageInterface {
                 for (int i = 0; i < arr.length; i++) {
                     if (arr[i].equals(prefixName + "_location"))
                         input = input.replace("%" + prefixName + "_location%" + arr[i + 1] + "%",
-                                String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPlugin(), target, arr[i + 1], false)));
+                                String.valueOf(UtilsHandler.getCondition().checkLocation(ConfigHandler.getPluginName(), target, arr[i + 1], false)));
                 }
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
@@ -1203,7 +1204,7 @@ public class MessageManager implements MessageInterface {
             input = input.replace("%item%", getMsgTrans("console"));
             input = input.replace("%target%", getMsgTrans("console"));
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
         }
         // %localtime_time% => 2020/08/08 12:30:00
         input = input.replace("%localtime_time%", new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
@@ -1300,7 +1301,7 @@ public class MessageManager implements MessageInterface {
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"%random_player_except%PLAYERS%\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     }
                 }
             }
@@ -1417,7 +1418,7 @@ public class MessageManager implements MessageInterface {
                             break;
                     }
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPlugin(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), ConfigHandler.getPluginName(), ex);
                 }
             }
         }

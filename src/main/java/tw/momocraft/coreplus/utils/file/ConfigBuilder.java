@@ -17,7 +17,7 @@ public class ConfigBuilder {
     public static void startGroups(CommandSender sender) {
         Map<String, List<ConfigBuilderMap>> map = ConfigHandler.getConfigPath().getConfigBuilderGroupProp();
         for (String type : map.keySet()) {
-            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPlugin(),
+            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                     "GroupConfig, " + type + ":");
             for (ConfigBuilderMap configBuilderMap : map.get(type)) {
                 switch (type.toLowerCase()) {
@@ -167,16 +167,16 @@ public class ConfigBuilder {
                 }
             }
             if (!block.getType().equals(Material.AIR)) {
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "An error occurred while creating Material configuration.");
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "Please change the world or radius in config.yml Config-Builder settings.");
                 return;
             }
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "An error occurred while creating Material configuration.");
-            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "Please change the world or radius in config.yml Config-Builder settings.");
             return;
         }
@@ -323,14 +323,14 @@ public class ConfigBuilder {
     private static void createLog(String logGroup, ConfigBuilderMap configBuilderMap, Set<String> valueSet) {
         String title = configBuilderMap.getTitle().replace("%title%", configBuilderMap.getGroupName());
         if (valueSet.isEmpty()) {
-            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPlugin(),
+            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                     logGroup + ", " +
-                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPlugin(), null, title) + " []");
+                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(), null, title) + " []");
             return;
         }
-        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPlugin(),
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                 logGroup + ", " +
-                        UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPlugin(), null, title));
+                        UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(), null, title));
         StringBuilder output = new StringBuilder();
         String line = configBuilderMap.getValue();
         String split = configBuilderMap.getSplit();
@@ -340,9 +340,9 @@ public class ConfigBuilder {
         if (configBuilderMap.isRowLine()) {
             for (String value : sortedList) {
                 output = new StringBuilder(line.replace("%value%", value));
-                UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPlugin(),
+                UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                         logGroup + ", " +
-                                UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPlugin(),
+                                UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(),
                                         null, output.toString()));
             }
         } else {
@@ -350,9 +350,9 @@ public class ConfigBuilder {
                 output.append(split.replace("%value%", value)).append(split);
             }
             output.substring(0, output.length() - split.length());
-            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPlugin(),
+            UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                     logGroup + ", " +
-                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPlugin(),
+                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(),
                                     null, output.toString()));
         }
     }

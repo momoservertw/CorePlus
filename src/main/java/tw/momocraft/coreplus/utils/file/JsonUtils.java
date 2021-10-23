@@ -71,7 +71,7 @@ public class JsonUtils {
             if (!fileName.endsWith(".json"))
                 continue;
             langName = fileName.replace(".json", "");
-            load(ConfigHandler.getPlugin(), "lang_" + langName, filePath + "\\" + langName + ".json");
+            load(ConfigHandler.getPluginName(), "lang_" + langName, filePath + "\\" + langName + ".json");
             langList.add(langName);
         }
     }
@@ -81,7 +81,7 @@ public class JsonUtils {
         if (prop == null)
             return;
         for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPlugin(), groupName, prop.get(groupName));
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
             customList.add(groupName);
         }
     }
@@ -93,11 +93,11 @@ public class JsonUtils {
                 filePath = CorePlus.getInstance().getDataFolder().getPath();
                 break;
             default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "Cannot load the Json file: " + group);
                 return false;
         }
-        return load(ConfigHandler.getPlugin(), group, filePath);
+        return load(ConfigHandler.getPluginName(), group, filePath);
     }
 
     private void sendLoadedMsg() {

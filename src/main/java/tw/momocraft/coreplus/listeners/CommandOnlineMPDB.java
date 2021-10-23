@@ -22,7 +22,7 @@ public class CommandOnlineMPDB implements Listener {
         for (long expireTime : waitingTable.row(playerName).keySet()) {
             if (expireTime > System.currentTimeMillis())
                 UtilsHandler.getCommandManager().sendCmd(
-                        ConfigHandler.getPlugin(), player, player, waitingTable.get(playerName, expireTime));
+                        ConfigHandler.getPluginName(), player, player, waitingTable.get(playerName, expireTime));
             waitingTable.remove(playerName, expireTime);
         }
     }

@@ -313,7 +313,7 @@ Config-Builder:
       Ignore-List: []
 
 Message:
-  prefix: "&7[&dCorePlus&7]&r"
+  prefix: "&7[&dCorePlus&7]&r "
   unknownCommand: "%prefix% &fUnknown command."
   noPermission: "%prefix% &cYou do not have permission to use that command!"
   configReload: "%prefix% &aConfiguration(s) Reloaded!"
@@ -327,7 +327,7 @@ Message:
   notEnoughMoney: "%prefix% &cYou need %pricetype%: %price% - Balance: %balance%"
   notEnoughMoneyTarget: "%prefix% &c%targetplayer% need %pricetype%: %price% - Balance: %balance%"
   inventoryFull: "%prefix% &cYou don't have enough inventory space."
-  inventoryFullTarget: '%prefix% &c%targetplayer% dont have enough inventory space.'
+  inventoryFullTarget: "%prefix% &c%targetplayer% dont have enough inventory space."
   noShopItem: "%prefix% &cYou can not buy this block."
   buySuccess: "%prefix% &aSuccess buy &e%item% x%amount% &afor %price% %pricetype% &8- &a%pricetype%: %balance%"
   buyTargetSuccess: "%prefix% &aSuccess buy &e%item% x%amount% &afor %price% %pricetype% for %targetplayer% &8- &a%pricetype%: %balance%"

@@ -39,7 +39,7 @@ public class PlaceHolderTest implements Listener {
                     }
                     return;
                 }
-                String output = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+                String output = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                         UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
                 UtilsHandler.getMsg().sendConsoleMsg("", placeholder + ": " + output);
                 return;
@@ -51,7 +51,7 @@ public class PlaceHolderTest implements Listener {
             testPlayer(player);
             return;
         }
-        String output = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+        String output = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                 UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
         UtilsHandler.getMsg().sendConsoleMsg("", placeholder + ": " + output);
     }
@@ -59,32 +59,32 @@ public class PlaceHolderTest implements Listener {
     public void testPlayer(Player player) {
         String input;
         for (String placeholder : getOther()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getTarget()) {
             placeholder = "%player" + placeholder;
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCustom()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCondition()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
@@ -94,32 +94,32 @@ public class PlaceHolderTest implements Listener {
     public void testOfflinePlayer(OfflinePlayer offlinePlayer) {
         String input;
         for (String placeholder : getOther()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), null,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), null,
                     UtilsHandler.getMsg().getTranslateMap(null, offlinePlayer, "player"), placeholder);
             input = "player - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getTarget()) {
             placeholder = "%player" + placeholder;
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), null,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), null,
                     UtilsHandler.getMsg().getTranslateMap(null, offlinePlayer, "player"), placeholder);
             input = "player - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCustom()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), null,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), null,
                     UtilsHandler.getMsg().getTranslateMap(null, offlinePlayer, "player"), placeholder);
             input = "player - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), null,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), null,
                     UtilsHandler.getMsg().getTranslateMap(null, offlinePlayer, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCondition()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), null,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), null,
                     UtilsHandler.getMsg().getTranslateMap(null, offlinePlayer, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
@@ -138,59 +138,59 @@ public class PlaceHolderTest implements Listener {
         Block target = e.getClickedBlock();
         String input;
         for (String placeholder : getOther()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendMsg("", player, input);
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "blocks - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getTarget()) {
             placeholder = "%player" + placeholder;
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
             placeholder = "%target" + placeholder.replace("%player", "");
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "block - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCustom()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "blocks - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "blocks - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCondition()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "blocks - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
@@ -209,58 +209,58 @@ public class PlaceHolderTest implements Listener {
         Entity target = e.getRightClicked();
         String input;
         for (String placeholder : getOther()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "entity - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getTarget()) {
             placeholder = "%player" + placeholder;
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
             placeholder = "%target" + placeholder.replace("%player", "");
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "entity - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCustom()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "entity - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "entity - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCondition()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "entity - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
@@ -279,59 +279,59 @@ public class PlaceHolderTest implements Listener {
         ItemStack target = e.getCurrentItem();
         String input;
         for (String placeholder : getOther()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "item - other 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getTarget()) {
             placeholder = "%player" + placeholder;
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
             placeholder = "%target" + placeholder.replace("%player", "");
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "item - target 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCustom()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendMsg("", player, input);
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "item - custom 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getJS()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "item - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
         }
         for (String placeholder : getCondition()) {
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, player, "player"), placeholder);
             input = "player - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);
 
-            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPlugin(), player,
+            input = UtilsHandler.getMsg().transTranslateMap(ConfigHandler.getPluginName(), player,
                     UtilsHandler.getMsg().getTranslateMap(null, target, "target"), placeholder);
             input = "item - condition 【 " + placeholder + " 】【 " + input + " 】";
             UtilsHandler.getMsg().sendConsoleMsg("", input);

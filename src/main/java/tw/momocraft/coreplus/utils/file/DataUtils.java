@@ -124,23 +124,23 @@ public class DataUtils {
             if (!parentFile.exists()) {
                 try {
                     if (!parentFile.mkdir())
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                 "Can not create folder: " + parentFile.getName());
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "Can not create folder: " + parentFile.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                 }
             }
             // Creating file.
             try {
                 if (!file.createNewFile())
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "Can not create file: " + file.getName());
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "Can not create file: " + file.getName());
-                UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
             }
         } else {
             // Creating new file on new date.
@@ -164,34 +164,34 @@ public class DataUtils {
                 // Renaming the old file.
                 try {
                     if (!file.renameTo(renameFile))
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                 "&fCan not rename the file: " + renameFile.getName());
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "&fCan not rename the file: " + renameFile.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                 }
                 // Compressing the file.
                 if (zip) {
                     try {
                         if (UtilsHandler.getFile().getZip().zipFiles(pluginName, file, null, null))
-                            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                            UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                     "&fCan not compress the file: " + renameFile.getName());
                     } catch (Exception ex) {
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                 "&fCan not compress the file: " + renameFile.getName());
-                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                     }
                 }
                 // Create a new the file.
                 try {
                     if (!file.createNewFile())
-                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                 "&fCan not create the new file: " + file.getName());
                 } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPlugin(),
+                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "&fCan not create the new file: " + file.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPlugin(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
                 }
             }
         }
