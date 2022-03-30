@@ -108,6 +108,8 @@ public class DependHandler implements DependInterface {
             LangUtils = Bukkit.getServer().getPluginManager().getPlugin("LangUtils") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.DiscordSRV"))
             DiscordSRV = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV") != null;
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MultiverseCore"))
+            MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.MysqlPlayerDataBridge"))
             MysqlPlayerDataBridge = Bukkit.getServer().getPluginManager().getPlugin("MysqlPlayerDataBridge") != null;
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Features.Hook.Residence"))

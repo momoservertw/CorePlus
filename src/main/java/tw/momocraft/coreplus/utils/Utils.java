@@ -415,43 +415,23 @@ public class Utils implements UtilsInterface {
             if (value == null)
                 continue;
             if (type.equals("type")) {
-                if (value instanceof Material)
-                    returnList.add(((Material) value).name());
-                if (value instanceof EntityType)
-                    returnList.add(((EntityType) value).name());
+                if (value instanceof UUID)
+                    returnList.add(value.toString());
                 if (value instanceof Block)
                     returnList.add(((Block) value).getType().name());
-                if (value instanceof UUID)
-                    returnList.add(((UUID) value).toString());
-                if (value instanceof Player)
-                    returnList.add(((Player) value).getName());
-                if (value instanceof Entity)
-                    returnList.add(((Entity) value).getType().name());
                 if (value instanceof ItemStack)
                     returnList.add(((ItemStack) value).getType().name());
-            } else if (type.equals("name")) {
                 if (value instanceof Material)
                     returnList.add(((Material) value).name());
+                if (value instanceof Entity)
+                    returnList.add(((Entity) value).getType().name());
                 if (value instanceof EntityType)
                     returnList.add(((EntityType) value).name());
+            } else if (type.equals("name")) {
+                if (value instanceof UUID)
+                    returnList.add(value.toString());
                 if (value instanceof Block)
                     returnList.add(((Block) value).getType().name());
-                if (value instanceof UUID)
-                    returnList.add(((UUID) value).toString());
-                if (value instanceof Player) {
-                    try {
-                        returnList.add(((Player) value).getDisplayName());
-                    } catch (Exception ex) {
-                        returnList.add(((Player) value).getName());
-                    }
-                }
-                if (value instanceof Entity) {
-                    customName = ((Entity) value).getCustomName();
-                    if (customName != null)
-                        returnList.add(customName);
-                    else
-                        returnList.add(((Entity) value).getType().name());
-                }
                 if (value instanceof ItemStack) {
                     try {
                         returnList.add(((ItemStack) value).getItemMeta().getDisplayName());
@@ -459,6 +439,25 @@ public class Utils implements UtilsInterface {
                         returnList.add(((ItemStack) value).getType().name());
                     }
                 }
+                if (value instanceof Material)
+                    returnList.add(((Material) value).name());
+                if (value instanceof Entity) {
+                    if (value instanceof Player) {
+                        try {
+                            returnList.add(((Player) value).getDisplayName());
+                        } catch (Exception ex) {
+                            returnList.add(((Player) value).getName());
+                        }
+                    } else {
+                        customName = ((Entity) value).getCustomName();
+                        if (customName != null)
+                            returnList.add(customName);
+                        else
+                            returnList.add(((Entity) value).getType().name());
+                    }
+                }
+                if (value instanceof EntityType)
+                    returnList.add(((EntityType) value).name());
             }
         }
         return returnList;
@@ -508,6 +507,11 @@ public class Utils implements UtilsInterface {
             return null;
         }
         List<Object> objectList = getNearbyList(loc, targetType, list, range, group.equals("all"));
+        for (Object o : objectList) {
+            if (o instanceof Player) {
+                System.out.println(((Player) o).getName());
+            }
+        }
         if (returnType.equals("amount"))
             return String.valueOf(objectList.size());
         return getObjectListString(objectList, returnType);
@@ -701,8 +705,8 @@ public class Utils implements UtilsInterface {
     }
 
     /**
-     * @param input  the input status. Values: true/on, false/off, null, known
-     * @param status the currently status. Values: true, false, null
+     * @param input           the input status. Values: true/on, false/off, null, known
+     * @param status          the currently status. Values: true, false, null
      * @param unknown_default setting the unknown input value to null or not.
      * @return the new status. Values: true, false, none, known
      */
@@ -729,7 +733,8 @@ public class Utils implements UtilsInterface {
                     break;
                 }
                 return "unknown";
-        }if (status) {
+        }
+        if (status) {
             if (input.equals("true"))
                 return "alreadyOn";
             else

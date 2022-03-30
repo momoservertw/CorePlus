@@ -186,9 +186,11 @@ public class MessageManager implements MessageInterface {
             return;
         if (sender == null)
             sender = Bukkit.getConsoleSender();
-        String langMessage = ConfigHandler.getConfig("config.yml").getString("Message." + input);
-        if (langMessage != null)
-            input = langMessage;
+        if (input.startsWith("Message.")) {
+            String langMessage = ConfigHandler.getConfig("config.yml").getString(input, null);
+            if (langMessage != null)
+                input = langMessage;
+        }
         input = transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
         input = setPrefixAndColor(prefix, input);
         String[] langLines = input.split("\\n");

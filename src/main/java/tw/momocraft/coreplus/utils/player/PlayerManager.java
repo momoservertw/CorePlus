@@ -496,6 +496,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean hasPerm(CommandSender sender, String permission) {
+        if (permission == null)
+            return true;
         if (sender.hasPermission(permission + ".*"))
             return true;
         return sender.hasPermission(permission) || sender.isOp() || (sender instanceof ConsoleCommandSender);
@@ -503,6 +505,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean hasPerm(Player player, String permission) {
+        if (permission == null)
+            return true;
         if (player.hasPermission(permission + ".*"))
             return true;
         return player.hasPermission(permission) || player.isOp() || (player instanceof ConsoleCommandSender);
@@ -510,6 +514,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean hasPerm(UUID uuid, String permission) {
+        if (permission == null)
+            return true;
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         if (offlinePlayer.isOp())
             return true;
@@ -522,6 +528,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean hasPerm(OfflinePlayer offlinePlayer, String permission) {
+        if (permission == null)
+            return true;
         if (offlinePlayer.isOp())
             return true;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
@@ -533,6 +541,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean havePerm(List<CommandSender> senders, String permission) {
+        if (permission == null)
+            return true;
         for (CommandSender sender : senders) {
             if (hasPerm(sender, permission))
                 return true;
@@ -542,6 +552,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean havePermPlayer(List<Player> players, String permission) {
+        if (permission == null)
+            return true;
         for (Player player : players) {
             if (hasPerm(player, permission))
                 return true;
@@ -551,6 +563,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean havePermUUID(List<UUID> uuids, String permission) {
+        if (permission == null)
+            return true;
         for (UUID uuid : uuids) {
             return hasPerm(uuid, permission);
         }
@@ -559,6 +573,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean havePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
+        if (permission == null)
+            return true;
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             return hasPerm(offlinePlayer, permission);
         }
@@ -567,6 +583,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean allHavePerm(List<CommandSender> senders, String permission) {
+        if (permission == null)
+            return true;
         for (CommandSender sender : senders) {
             if (!hasPerm(sender, permission))
                 return false;
@@ -576,6 +594,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean allHavePermPlayer(List<Player> players, String permission) {
+        if (permission == null)
+            return true;
         for (Player player : players) {
             if (!hasPerm(player, permission))
                 return false;
@@ -585,6 +605,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean allHavePermUUID(List<UUID> uuids, String permission) {
+        if (permission == null)
+            return true;
         for (UUID uuid : uuids) {
             if (!hasPerm(uuid, permission))
                 return false;
@@ -594,6 +616,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public boolean allHavePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
+        if (permission == null)
+            return true;
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             if (!hasPerm(offlinePlayer, permission))
                 return false;
@@ -603,6 +627,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMaxPerm(CommandSender sender, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         String perm;
         for (PermissionAttachmentInfo permInfo : sender.getEffectivePermissions()) {
@@ -621,6 +647,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMaxPerm(Player player, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         String perm;
         for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
@@ -639,6 +667,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMaxPerm(UUID uuid, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
             if (!perm.contains(permission))
@@ -655,6 +685,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMinPerm(CommandSender sender, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         String perm;
         for (PermissionAttachmentInfo permInfo : sender.getEffectivePermissions()) {
@@ -673,6 +705,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMinPerm(Player player, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         String perm;
         for (PermissionAttachmentInfo permInfo : player.getEffectivePermissions()) {
@@ -691,6 +725,8 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public int getMinPerm(UUID uuid, String permission, int def) {
+        if (permission == null)
+            return def;
         List<Integer> numbers = new ArrayList<>();
         for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
             if (!perm.contains(permission))
