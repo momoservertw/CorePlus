@@ -94,7 +94,7 @@ public class Commands implements CommandExecutor {
                     if (args[1].equalsIgnoreCase("placeholder")) {
                         // crp test placeholder <placeholder> <player>
                         if (length == 4) {
-                            UtilsHandler.getCondition().getConditionTest().plac0eholder(sender, args[3], args[2]);
+                            UtilsHandler.getCondition().getConditionTest().placeholder(sender, args[3], args[2]);
                             return true;
                             // crp test placeholder <placeholder>
                         } else if (length == 3) {
