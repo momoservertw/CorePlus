@@ -211,27 +211,25 @@ public class ResidenceUtils {
     }
 
     public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
-        if (!UtilsHandler.getDepend().ResidenceEnabled()) {
+        if (!UtilsHandler.getDepend().ResidenceEnabled())
             return def;
-        }
-        if (!check) {
+        if (!check)
             return true;
-        }
         if (flag != null) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(loc);
-            if (res != null) {
-                ResidencePermissions perms = res.getPermissions();
-                switch (flag) {
-                    case "destroy":
-                    case "place":
-                        if (perms.has(Flags.build, false)) {
-                            if (perms.has(Flags.getFlag(flag), true))
-                                return true;
-                        }
-                        break;
-                }
-                return perms.has(flag, def);
+            if (res == null)
+                return def;
+            ResidencePermissions perms = res.getPermissions();
+            switch (flag) {
+                case "destroy":
+                case "place":
+                    if (perms.has(Flags.build, false)) {
+                        if (perms.has(Flags.getFlag(flag), true))
+                            return true;
+                    }
+                    break;
             }
+            return perms.has(flag, def);
         }
         return true;
     }
