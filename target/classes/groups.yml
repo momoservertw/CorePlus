@@ -179,17 +179,10 @@ Entities:
     - PIG
     - RABBIT
     - SHEEP
-  Others:
+    -
+  Golem:
     - SNOWMAN
     - IRON_GOLEM
-    - VILLAGER
-    - BAT
-  UselessMobs:
-    - COD
-    - PUFFERFISH
-    - SALMON
-    - TROPICAL_FISH
-    - BAT
   WaterMobs:
     - SQUID
     - COD
