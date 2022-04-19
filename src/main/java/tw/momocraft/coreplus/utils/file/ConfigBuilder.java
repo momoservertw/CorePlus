@@ -27,12 +27,6 @@ public class ConfigBuilder {
                     case "materials":
                         createMaterial("GroupConfig", configBuilderMap);
                         continue;
-                    /*
-                case "mythicmobs":
-                    createMythicMobs("groups", configBuilderMap);
-                    continue;
-
-                     */
                     default:
                         UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender,
                                 "&cCan not find the type: " + type);
@@ -57,11 +51,6 @@ public class ConfigBuilder {
             case "material":
                 createMaterial("CustomConfig", configBuilderMap);
                 break;
-                    /*
-                case "mythicmobs":
-                    createMythicMobs("groups", configBuilderMap);
-                    break;
-                     */
             default:
                 UtilsHandler.getMsg().sendMsg(ConfigHandler.getPrefix(), sender,
                         "&cCan not find the group: " + group);

@@ -470,9 +470,9 @@ public class CommandManager implements CommandInterface {
     public void dispatchLogGroup(String pluginName, String input) {
         if (input == null)
             return;
+        try {
         String group = input.split(", ")[0];
         input = input.substring(input.indexOf(",") + 2);
-        try {
             UtilsHandler.getFile().getLog().add(pluginName, group, input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");

@@ -50,22 +50,18 @@ MySQL:
     Tables:
       Players: "players"
 Yaml:
-  Enable: false
   Example:
     Enable: false
     Path: "//plugins//Example_Plugin//config.yml"
 Json:
-  Enable: false
   Example:
     Enable: false
     Path: "//plugins//Example_Plugin//config.json"
 Properties:
-  Enable: false
   Example:
     Enable: false
     Path: "//plugins//Example_Plugin//config.properties"
 Logs:
-  Enable: true
   Settings:
     Default:
       # Creating the file if not it is exist.
@@ -86,7 +82,7 @@ Logs:
   CustomConfig:
     Path: "plugins//CorePlus//Logs"
     Name: "custom.yml"
-  SpawnerChanged:
+  EntityPlus-Spawner:
     Path: "plugins//EntityPlus//Logs"
     Name: "spawner.log"
     Time: true

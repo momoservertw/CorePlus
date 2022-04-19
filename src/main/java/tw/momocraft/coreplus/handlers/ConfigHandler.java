@@ -1,29 +1,20 @@
 package tw.momocraft.coreplus.handlers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.utils.ConfigPath;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigHandler {
-    private static YamlConfiguration configYAML;
-    private static YamlConfiguration spigotYAML;
-    private static YamlConfiguration groupsYAML;
 
-    private static YamlConfiguration commandsYAML;
-    private static YamlConfiguration conditionYAML;
-    private static YamlConfiguration locationYAML;
-    private static YamlConfiguration blocksYAML;
-    private static YamlConfiguration particlesYAML;
-    private static YamlConfiguration soundsYAML;
-    private static YamlConfiguration actionBarsYAML;
-    private static YamlConfiguration titleMessagesYAML;
-    private static YamlConfiguration dataYAML;
+    private static final Map<String, YamlConfiguration> configMap = new HashMap<>();
 
     private static ConfigPath configPath;
 
@@ -41,6 +32,7 @@ public class ConfigHandler {
         genConfigFile("sounds.yml");
         genConfigFile("action_bars.yml");
         genConfigFile("title_messages.yml");
+        logConfigMsg();
         configPath.setupFirst();
         UtilsHandler.setUpLast(reload);
         configPath.setupLast();
@@ -53,57 +45,37 @@ public class ConfigHandler {
         */
     }
 
+    private static void logConfigMsg() {
+        CorePlusAPI.getMsg().sendConsoleMsg(getPrefix(), "Load yaml files:" + configMap.keySet());
+    }
+
+    private static void genConfigFolder(String folderName) {
+        File filePath = new File(CorePlus.getInstance().getDataFolder().getPath(), folderName);
+        String[] fileList = filePath.list();
+        for (String fileName : fileList) {
+            if (fileName.endsWith(".yml")) {
+                genConfigFile(fileName);
+            }
+        }
+    }
+
     public static FileConfiguration getConfig(String fileName) {
         File filePath = CorePlus.getInstance().getDataFolder();
         File file;
         switch (fileName) {
             case "config.yml":
-                if (configYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "spigot.yml":
-                filePath = Bukkit.getServer().getWorldContainer();
-                if (spigotYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "groups.yml":
-                if (groupsYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "commands.yml":
-                if (commandsYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "condition.yml":
-                if (conditionYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "location.yml":
-                if (locationYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "blocks.yml":
-                if (blocksYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "particles.yml":
-                if (particlesYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "sounds.yml":
-                if (soundsYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "action_bars.yml":
-                if (actionBarsYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "title_messages.yml":
-                if (titleMessagesYAML == null)
-                    getConfigData(filePath, fileName);
-                break;
             case "data.yml":
-                if (dataYAML == null)
+                if (configMap.get(fileName) == null)
                     getConfigData(filePath, fileName);
                 break;
             default:
@@ -129,53 +101,20 @@ public class ConfigHandler {
     private static YamlConfiguration getPath(String fileName, File file, boolean saveData) {
         switch (fileName) {
             case "config.yml":
-                if (saveData)
-                    configYAML = YamlConfiguration.loadConfiguration(file);
-                return configYAML;
             case "spigot.yml":
-                if (saveData)
-                    spigotYAML = YamlConfiguration.loadConfiguration(file);
-                return spigotYAML;
             case "groups.yml":
-                if (saveData)
-                    groupsYAML = YamlConfiguration.loadConfiguration(file);
-                return groupsYAML;
             case "commands.yml":
-                if (saveData)
-                    commandsYAML = YamlConfiguration.loadConfiguration(file);
-                return commandsYAML;
             case "condition.yml":
-                if (saveData)
-                    conditionYAML = YamlConfiguration.loadConfiguration(file);
-                return locationYAML;
             case "location.yml":
-                if (saveData)
-                    locationYAML = YamlConfiguration.loadConfiguration(file);
-                return locationYAML;
             case "blocks.yml":
-                if (saveData)
-                    blocksYAML = YamlConfiguration.loadConfiguration(file);
-                return blocksYAML;
             case "particles.yml":
-                if (saveData)
-                    particlesYAML = YamlConfiguration.loadConfiguration(file);
-                return particlesYAML;
             case "sounds.yml":
-                if (saveData)
-                    soundsYAML = YamlConfiguration.loadConfiguration(file);
-                return soundsYAML;
             case "action_bars.yml":
-                if (saveData)
-                    actionBarsYAML = YamlConfiguration.loadConfiguration(file);
-                return actionBarsYAML;
             case "title_messages.yml":
-                if (saveData)
-                    titleMessagesYAML = YamlConfiguration.loadConfiguration(file);
-                return titleMessagesYAML;
             case "data.yml":
                 if (saveData)
-                    dataYAML = YamlConfiguration.loadConfiguration(file);
-                return dataYAML;
+                    configMap.put(fileName, YamlConfiguration.loadConfiguration(file));
+                return configMap.get(fileName);
         }
         return null;
     }
@@ -186,8 +125,6 @@ public class ConfigHandler {
         File filePath = CorePlus.getInstance().getDataFolder();
         switch (fileName) {
             case "config.yml":
-                ver = 1;
-                break;
             case "groups.yml":
             case "commands.yml":
             case "logs.yml":
@@ -206,7 +143,6 @@ public class ConfigHandler {
         File file = new File(filePath, fileName);
         if (file.exists() && getConfig(fileName).getInt("Config-Version") != ver) {
             if (CorePlus.getInstance().getResource(fileName) != null) {
-                // Creating a new file name "2020-11-20 00-00-00.yml"
                 File newFile = new File(filePath, fileNameSlit[0] + " " + LocalDateTime.now().format(
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss"))
                         + "." + fileNameSlit[0]);

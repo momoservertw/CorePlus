@@ -60,7 +60,9 @@ Config-Builder:
   Groups:
     Entities:
       All:
-        # Can be a Group of types or entity type.
+        # Can be a entity group or type.
+        # Group: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/package-summary.html
+        # EntityType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
         List:
           - all
         Ignore-List: []
@@ -74,11 +76,8 @@ Config-Builder:
         List:
           - Monster
           - Flying
-      NormalMobs:
+      Boss:
         List:
-          - Monster
-          - Flying
-        Ignore-List:
           - Boss
       Animals:
         List:
@@ -86,21 +85,23 @@ Config-Builder:
       Breedable:
         List:
           - Breedable
-      Pets:
+      Tameable:
         List:
           - Tameable
-          - Fox
+      Golem:
+        List:
           - Golem
         Ignore-List:
           - Shulker
       ChestedHorse:
         List:
           - ChestedHorse
-      Useless:
+      WaterMobs:
+        List:
+          - WaterMob
+      Ambient:
         List:
           - Bat
-          - Fish
-          - BAT
     Materials:
       All:
         List:
@@ -121,7 +122,6 @@ Config-Builder:
           - BrewingStand
           - Dispenser
           - ANVIL
-
           - Powerable
           - Jukebox
           - EnderChest
