@@ -46,23 +46,18 @@ General:
       AuthMe: true
       NameTagEdit: true
 
-# To create a custom configurations.
+# Regenerate the group.yml or create a custom configurations.
 # More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder
 Config-Builder:
   Settings:
     Material:
-      # Creating a temporary block data to build the Material list. Only changed if you get errors.
+      # Creating a temporary block data to build the Material list.
       Temporary-Block-Data:
         World: world
         Radius: 30
-  # To create groups.yml configuration in the path from log.yml "GroupsConfig".
-  # Command: /crp configbuilder groups
   Groups:
     Entities:
       All:
-        # Can be a entity group or type.
-        # Group: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/package-summary.html
-        # EntityType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
         List:
           - all
         Ignore-List: []

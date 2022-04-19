@@ -1635,7 +1635,7 @@ public class MessageManager implements MessageInterface {
     public void sendHookMsg(String pluginPrefix, String type, List<String> list) {
         if (list == null || list.isEmpty())
             return;
-        StringBuilder message = new StringBuilder("&fHooked " + type + ": [");
+        StringBuilder message = new StringBuilder("&7Hooked " + type + ": [");
         for (String value : list) {
             if (type.equals("Residence flags")) {
                 if (UtilsHandler.getCondition().isRegisteredFlag(value))

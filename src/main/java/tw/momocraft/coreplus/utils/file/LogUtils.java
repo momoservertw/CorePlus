@@ -18,22 +18,22 @@ public class LogUtils {
         return ConfigHandler.getConfigPath().getLogProp();
     }
 
-    public void add(String pluginName, String group, String message) {
+    public void add(String pluginName, String group, String input) {
         LogMap logMap = getLogProp().get(group);
         if (logMap == null) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the log group: " + group);
             return;
         }
         UtilsHandler.getFile().getData().create(pluginName, logMap.getFile(), logMap.isNewFile(), logMap.isZip());
-        message = message + "\n";
+        input = input + "\n";
         if (logMap.isTime()) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String date = dateFormat.format(new Date());
-            message = "[" + date + "]: " + message;
+            input = "[" + date + "]: " + input;
         }
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(logMap.getFile(), true));
-            bw.append(message);
+            bw.append(input);
             bw.close();
         } catch (IOException ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while log message.");

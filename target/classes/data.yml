@@ -73,23 +73,23 @@ Logs:
       # Adding the timestamp in the front of line.
       Time: false
   Default:
-    Path: "plugins//CorePlus//Logs"
+    Path: "plugins//CorePlus//logs"
     Name: "latest.log"
     Time: true
   GroupConfig:
-    Path: "plugins//CorePlus//Logs"
+    Path: "plugins//CorePlus//logs"
     Name: "groups.yml"
   CustomConfig:
-    Path: "plugins//CorePlus//Logs"
+    Path: "plugins//CorePlus//logs"
     Name: "custom.yml"
   EntityPlus-Spawner:
-    Path: "plugins//EntityPlus//Logs"
+    Path: "plugins//EntityPlus//logs"
     Name: "spawner.log"
     Time: true
   LotteryPlus:
-    Path: "plugins//LotteryPlus//Logs"
+    Path: "plugins//LotteryPlus//logs"
     Name: "latest.log"
     Time: true
   PlayerdataPlus:
-    Path: "plugins//PlayerdataPlus//Logs"
+    Path: "plugins//PlayerdataPlus//logs"
     Name: "latest.log"

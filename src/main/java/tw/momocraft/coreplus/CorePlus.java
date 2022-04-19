@@ -17,12 +17,12 @@ public class CorePlus extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigHandler.generateData(false);
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Enabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&7has been Enabled.");
     }
 
     @Override
     public void onDisable() {
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Disabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&7has been Disabled.");
     }
 
     public static CorePlus getInstance() {

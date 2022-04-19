@@ -15,6 +15,23 @@ import java.util.*;
 public class ConfigBuilder {
 
     public static void startGroups(CommandSender sender) {
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, # ░░░░░░░░░░░░░░░   CorePlus, By Momocraft♥   ░░░░░░░░░░░░░░░░░░░");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, #  Spigot: https://www.spigotmc.org/resources/coreplus.86532/");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, #  Wiki: https://github.com/momoservertw/CorePlus/wiki/groups.yml");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, #");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, # Grouping of entities and materials.");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, Config-Version: 1");
+        UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
+                "GroupConfig, ");
+
         Map<String, List<ConfigBuilderMap>> map = ConfigHandler.getConfigPath().getConfigBuilderGroupProp();
         for (String type : map.keySet()) {
             UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),

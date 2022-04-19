@@ -53,7 +53,7 @@ public class Updater implements UpdateInterface {
         if (onlineVer == null) {
             return;
         } else if (onlineVer.equals("latest")) {
-            UtilsHandler.getMsg().sendMsg(prefix, sender, "&fYou are up to date!");
+            UtilsHandler.getMsg().sendMsg(prefix, sender, "&7You are up to date!");
         } else {
             UtilsHandler.getMsg().sendMsg(prefix, sender, "&eFound new version: &ev" + onlineVer);
             UtilsHandler.getMsg().sendMsg(prefix, sender, "&fhttps://www.spigotmc.org/resources/" + plugin + "." + id + "/history");
