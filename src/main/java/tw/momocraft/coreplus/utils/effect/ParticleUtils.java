@@ -15,7 +15,7 @@ public class ParticleUtils {
         ParticleMap particleMap = ConfigHandler.getConfigPath().getParticleProp().get(type);
         if (particleMap == null) {
             try {
-                loc.getWorld().spawnParticle(Particle.valueOf(type), loc, 1);
+                loc.getWorld().spawnParticle(Particle.valueOf(type), loc, 0);
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the particle type: \"" + type + "\"");
                 UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);

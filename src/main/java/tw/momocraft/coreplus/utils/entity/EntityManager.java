@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.entity;
 
 import io.lumine.mythic.bukkit.MythicBukkit;
 import org.bukkit.entity.Entity;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.EntityInterface;
 
 public class EntityManager implements EntityInterface {
@@ -21,5 +22,13 @@ public class EntityManager implements EntityInterface {
         if (!isMythicMob(entity))
             return null;
         return MythicBukkit.inst().getAPIHelper().getMythicMobInstance(entity).getType().getInternalName();
+    }
+
+    @Override
+    public String getMythicMobDisplayName(Entity entity) {
+        String mmName = CorePlusAPI.getEnt().getMythicMobName(entity);
+        if (mmName == null)
+            return null;
+        return MythicBukkit.inst().getAPIHelper().getMythicMob(mmName).getDisplayName().get();
     }
 }

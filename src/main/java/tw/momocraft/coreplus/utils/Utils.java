@@ -107,6 +107,19 @@ public class Utils implements UtilsInterface {
         return value > new Random().nextDouble();
     }
 
+
+    @Override
+    public List<String> removeIgnoreList(List<String> list, List<String> ignoreList) {
+        if (list == null || ignoreList == null)
+            return list;
+        List<String> newList = new ArrayList<>();
+        for (String s : list) {
+            if (!ignoreList.contains(s))
+                newList.add(s);
+        }
+        return newList;
+    }
+
     @Override
     public boolean containIgnoreValue(String value, List<String> list, List<String> ignoreList, boolean def) {
         if (ignoreList != null && ignoreList.contains(value))

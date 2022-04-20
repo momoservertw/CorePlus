@@ -29,4 +29,13 @@ public interface EntityInterface {
      * @return the Entity's MythicMob name.
      */
     String getMythicMobName(Entity entity);
+
+
+    /**
+     * Getting the Entity's MythicMob display name.
+     *
+     * @param entity the checking entity.
+     * @return the Entity's MythicMob name.
+     */
+    String getMythicMobDisplayName(Entity entity);
 }

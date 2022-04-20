@@ -110,6 +110,13 @@ public interface UtilsInterface {
      */
     boolean isRandChance(double value);
 
+    /**
+     *
+     * @param list the checking list.
+     * @param ignoreList the ignore list to remove from list.
+     * @return new list without ignore list.
+     */
+    List<String> removeIgnoreList(List<String> list, List<String> ignoreList);
 
     /**
      * Checking a value is not in the ignore list and contains in the list.
