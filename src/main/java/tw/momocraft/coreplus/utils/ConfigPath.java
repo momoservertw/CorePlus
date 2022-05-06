@@ -28,6 +28,7 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Variables                       //
     //  ============================================== //
+    private Map<String, String> msgMap = new HashMap<>();
     private boolean pvp;
 
     private boolean vanillaTrans;

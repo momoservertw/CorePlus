@@ -61,6 +61,10 @@ public class VanillaUtils {
         return input;
     }
 
+    public String getLocal() {
+        return ConfigHandler.getConfigPath().getVanillaTransLocal();
+    }
+
     public String getLocal(CommandSender sender) {
         Player player = null;
         if (sender instanceof Player)

@@ -24,123 +24,249 @@ import java.util.*;
 
 public class MessageManager implements MessageInterface {
 
-    private String setPrefixAndColor(String prefix, String input) {
-        if (prefix == null)
-            prefix = "";
-        if (input.contains("%prefix%")) {
-            input = input.replaceAll("%prefix%\\s*", prefix);
-        } else {
-            input = prefix + input;
-        }
-        return ChatColor.translateAlternateColorCodes('&', input);
-    }
-
     @Override
     public void sendBroadcastMsg(String prefix, String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         Bukkit.broadcastMessage(input);
     }
 
     @Override
+    public void sendBroadcastMsg(String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
+        input = setColor(input);
+        Bukkit.broadcastMessage(input);
+    }
+
+    @Override
     public void sendDiscordMsg(String prefix, String channel, String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
-        UtilsHandler.getDiscord().sendDiscordMsg(channel, input);
+        UtilsHandler.getDiscord().sendMsg(channel, input);
+    }
+
+    @Override
+    public void sendDiscordMsg(String channel, String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
+        input = setColor(input);
+        UtilsHandler.getDiscord().sendMsg(channel, input);
     }
 
     @Override
     public void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder) {
-        input = setPrefixAndColor(prefix, input);
+        if (input == null)
+            return;
+        if (player == null)
+            return;
         String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         if (message != null)
             message = message.replace("%message%", input);
         else
             message = input;
-        if (player != null) {
-            String name = player.getName();
-            String displayName = player.getCustomName();
-            message = message.replace("%username%", name);
-            message = message.replace("%displayname%", displayName != null ? displayName : name);
-        }
+        String name = player.getName();
+        String displayName = player.getCustomName();
+        message = message.replace("%username%", name);
+        message = message.replace("%displayname%", displayName != null ? displayName : name);
         message = message.replace("%channelname%", channel);
-        UtilsHandler.getDiscord().sendDiscordMsg(input, message);
+        input = transLang(player, input, langHolder);
+        input = setPrefixAndColor(prefix, input);
+        UtilsHandler.getDiscord().sendMsg(input, message);
+    }
+
+    @Override
+    public void sendDiscordMsg(String channel, String input, Player player, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
+        if (message != null)
+            message = message.replace("%message%", input);
+        else
+            message = input;
+        String name = player.getName();
+        String displayName = player.getCustomName();
+        message = message.replace("%username%", name);
+        message = message.replace("%displayname%", displayName != null ? displayName : name);
+        message = message.replace("%channelname%", channel);
+        input = transLang(player, input, langHolder);
+        input = setColor(input);
+        UtilsHandler.getDiscord().sendMsg(input, message);
     }
 
     @Override
     public void sendMsg(String prefix, CommandSender sender, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (sender == null)
+            return;
+        input = transLang(sender, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         sender.sendMessage(input);
     }
 
     @Override
+    public void sendMsg(CommandSender sender, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (sender == null)
+            return;
+        input = transLang(sender, input, langHolder);
+        input = setColor(input);
+        sender.sendMessage(input);
+    }
+
+    @Override
     public void sendConsoleMsg(String prefix, String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     @Override
+    public void sendConsoleMsg(String input, String... langHolder) {
+        if (input == null)
+            return;
+        input = transLang(input, langHolder);
+        input = setColor(input);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
+    }
+
+    @Override
     public void sendPlayerMsg(String prefix, Player player, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         player.sendMessage(input);
     }
 
     @Override
+    public void sendPlayerMsg(Player player, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(input, langHolder);
+        input = setColor(input);
+        player.sendMessage(input);
+    }
+
+    @Override
     public void sendChatMsg(String prefix, Player player, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(player, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         player.chat(input);
     }
 
     @Override
+    public void sendChatMsg(Player player, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(player, input, langHolder);
+        input = setColor(input);
+        player.chat(input);
+    }
+
+
+    @Override
     public void sendActionBarMsg(Player player, String input, String... langHolder) {
-        input = ChatColor.translateAlternateColorCodes('&', input);
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(player, input, langHolder);
+        input = setColor(input);
         player.sendActionBar(TextComponent.fromLegacyText(input));
     }
 
     @Override
     public void sendTitleMsg(Player player, String input, String... langHolder) {
+        if (input == null)
+            return;
+        if (player == null)
+            return;
+        input = transLang(player, input, langHolder);
+        input = setColor(input);
         String[] args = input.split("\\n");
         sendTitleMsg(player, args[0], args[1], 10, 70, 20, langHolder);
     }
 
     @Override
     public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder) {
+        if (inputTitle == null && inputSubtitle == null)
+            return;
+        if (player == null)
+            return;
+        inputTitle = setColor(inputTitle);
+        inputSubtitle = setColor(inputSubtitle);
         sendTitleMsg(player, inputTitle, inputSubtitle, 10, 70, 20, langHolder);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String input, TitleMsgMap titleMsgMap, String... langHolder) {
-        String[] args = input.split("\\n");
-        sendTitleMsg(player, args[0], args[1], titleMsgMap.getFadeIn(), titleMsgMap.getStay(), titleMsgMap.getFadeOut(), langHolder);
-    }
-
-    @Override
     public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder) {
-        inputTitle = ChatColor.translateAlternateColorCodes('&', inputTitle);
-        inputSubtitle = ChatColor.translateAlternateColorCodes('&', inputSubtitle);
+        if (player == null)
+            return;
+        inputTitle = transLang(player, inputTitle, langHolder);
+        inputSubtitle = transLang(player, inputSubtitle, langHolder);
+        inputTitle = setColor(inputTitle);
+        inputSubtitle = setColor(inputSubtitle);
         player.sendTitle(inputTitle, inputSubtitle, fadeIn, stay, fadeOut);
     }
 
     @Override
     public void sendErrorMsg(String pluginName, String input) {
         input = "&4[" + pluginName + "_Error] &e" + input;
-        input = ChatColor.translateAlternateColorCodes('&', input);
+        input = setColor(input);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     @Override
     public void sendDebugMsg(boolean isDebug, String pluginName, String input) {
-        if (isDebug) {
-            input = "&7[" + pluginName + "_Debug]&r " + input;
-            input = ChatColor.translateAlternateColorCodes('&', input);
-            CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
-        }
+        if (!isDebug)
+            return;
+        input = "&7[" + pluginName + "_Debug]&r " + input;
+        input = setColor(input);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
+    }
+
+    @Override
+    public void sendDebugMsg(String pluginName, String input) {
+        input = "&7[" + pluginName + "_Debug]&r " + input;
+        input = setColor(input);
+        CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
 
     @Override
     public void sendDebugTrace(boolean isDebug, String pluginName, Exception ex) {
-        if (isDebug) {
-            sendDebugMsg(true, pluginName, "showing debug trace.");
-            ex.printStackTrace();
-        }
+        if (!isDebug)
+            return;
+        sendDebugMsg(pluginName, "showing debug trace.");
+        ex.printStackTrace();
+    }
+
+    @Override
+    public void sendDebugTrace(String pluginName, Exception ex) {
+        sendDebugMsg(pluginName, "showing debug trace.");
+        ex.printStackTrace();
     }
 
     @Override
@@ -157,8 +283,26 @@ public class MessageManager implements MessageInterface {
             }
         }
         sb.append("&8, &8").append(detail);
-        sendDebugMsg(true, pluginName, sb.toString());
-        sendDebugMsg(true, pluginName,
+        sendDebugMsg(pluginName, sb.toString());
+        sendDebugMsg(pluginName,
+                "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+    }
+
+
+    @Override
+    public void sendDetailMsg(String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("&f").append(feature).append("&8 - &f").append(target).append(" &8: &f").append(check);
+        if (action != null) {
+            switch (action) {
+                case "cancel", "remove", "kill", "damage", "fail", "failed", "warning", "deny", "prevent" -> sb.append("&8, &c").append(action);
+                case "continue", "bypass", "change" -> sb.append("&8, &e").append(action);
+                case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
+            }
+        }
+        sb.append("&8, &8").append(detail);
+        sendDebugMsg(pluginName, sb.toString());
+        sendDebugMsg(pluginName,
                 "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
 
@@ -175,23 +319,64 @@ public class MessageManager implements MessageInterface {
                 case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
             }
         }
-        sendDebugMsg(true, pluginName, sb.toString());
-        sendDebugMsg(true, pluginName,
+        sendDebugMsg(pluginName, sb.toString());
+        sendDebugMsg(pluginName,
                 "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
     }
 
     @Override
-    public void sendLangMsg(String prefix, String input, CommandSender sender, String... langHolder) {
-        if (input == null || input.equals(""))
+    public void sendDetailMsg(String pluginName, String feature, String target, String check, String action, StackTraceElement ste) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("&f").append(feature).append("&8 - &f").append(target).append(" &8: &f").append(check);
+        if (action != null) {
+            switch (action) {
+                case "cancel", "remove", "kill", "damage", "fail", "failed", "warning", "deny", "prevent" -> sb.append("&8, &c").append(action);
+                case "continue", "bypass", "change" -> sb.append("&8, &e").append(action);
+                case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
+            }
+        }
+        sendDebugMsg(pluginName, sb.toString());
+        sendDebugMsg(pluginName,
+                "&8(" + ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber() + ")");
+    }
+
+    @Override
+    public void sendLangMsg(String input, CommandSender sender, String... langHolder) {
+        if (input == null)
             return;
         if (sender == null)
-            sender = Bukkit.getConsoleSender();
+            return;
         if (input.startsWith("Message.")) {
-            String langMessage = ConfigHandler.getConfig("config.yml").getString(input, null);
-            if (langMessage != null)
+            String langMessage = ConfigHandler.getConfig("message.yml").getString(input);
+            if (langMessage != null) {
                 input = langMessage;
+            } else {
+                sendErrorMsg(ConfigHandler.getPluginName(), "Can not find message \"" + input + "\" in message.yml.");
+                return;
+            }
         }
-        input = transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
+        input = transLang(sender, input, langHolder);
+        String[] langLines = input.split("\\n");
+        for (String langLine : langLines)
+            sender.sendMessage(langLine);
+    }
+
+    @Override
+    public void sendLangMsg(String prefix, String input, CommandSender sender, String... langHolder) {
+        if (input == null)
+            return;
+        if (sender == null)
+            return;
+        if (input.startsWith("Message.")) {
+            String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
+            if (langMessage != null) {
+                input = langMessage;
+            } else {
+                sendErrorMsg(ConfigHandler.getPluginName(), "Can not find message \"" + input + "\".");
+                return;
+            }
+        }
+        input = transLang(sender, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         String[] langLines = input.split("\\n");
         for (String langLine : langLines)
@@ -215,6 +400,15 @@ public class MessageManager implements MessageInterface {
                     placeHolder[i] = "null";
             return placeHolder;
         }
+    }
+
+    @Override
+    public List<String> transLang(List<String> input, String... langHolder) {
+        List<String> list = new ArrayList<>();
+        String local = UtilsHandler.getVanillaUtils().getLocal();
+        for (String value : input)
+            list.add(transLang(local, value, langHolder));
+        return list;
     }
 
     @Override
@@ -244,6 +438,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
+    public String transLang(String input, String... langHolder) {
+        return transLang(UtilsHandler.getVanillaUtils().getLocal(), input, langHolder);
+    }
+
+    @Override
     public String transLang(CommandSender sender, String input, String... langHolder) {
         return transLang(UtilsHandler.getVanillaUtils().getLocal(sender), input, langHolder);
     }
@@ -256,7 +455,7 @@ public class MessageManager implements MessageInterface {
     @Override
     public String transLang(String local, String input, String... langHolder) {
         if (input == null)
-            return "";
+            return null;
         if (langHolder.length == 0)
             return input;
         String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
@@ -1646,5 +1845,25 @@ public class MessageManager implements MessageInterface {
         }
         if (!message.toString().equals("&fHooked " + type + ": ["))
             sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
+    }
+
+
+    private String setPrefixAndColor(String prefix, String input) {
+        if (input == null)
+            return null;
+        if (prefix == null)
+            prefix = "";
+        if (input.contains("%prefix%")) {
+            input = input.replaceAll("%prefix%\\s*", prefix);
+        } else {
+            input = prefix + input;
+        }
+        return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    private String setColor(String input) {
+        if (input == null)
+            return null;
+        return ChatColor.translateAlternateColorCodes('&', input);
     }
 }

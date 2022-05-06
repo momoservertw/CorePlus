@@ -520,11 +520,6 @@ public class Utils implements UtilsInterface {
             return null;
         }
         List<Object> objectList = getNearbyList(loc, targetType, list, range, group.equals("all"));
-        for (Object o : objectList) {
-            if (o instanceof Player) {
-                System.out.println(((Player) o).getName());
-            }
-        }
         if (returnType.equals("amount"))
             return String.valueOf(objectList.size());
         return getObjectListString(objectList, returnType);

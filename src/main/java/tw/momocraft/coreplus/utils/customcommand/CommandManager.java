@@ -89,8 +89,8 @@ public class CommandManager implements CommandInterface {
         }
         newCommands = UtilsHandler.getMsg().transLang(sender, newCommands, langHolder);
         if (placeholder)
-            newCommands = UtilsHandler.getMsg().transHolder((Player) sender, target, newCommands);
-        executeCmd(pluginName, (Player) sender, newCommands);
+            newCommands = UtilsHandler.getMsg().transHolder(sender, target, newCommands);
+        executeCmd(pluginName, sender, newCommands);
     }
 
 
@@ -340,14 +340,12 @@ public class CommandManager implements CommandInterface {
                     sendChatOpMsg("", player, subInput);
                     return;
                 case "chat":
-                    UtilsHandler.getMsg().sendChatMsg("", player, subInput);
+                    UtilsHandler.getMsg().sendChatMsg(player, subInput);
                     return;
                 case "message":
-                    UtilsHandler.getMsg().sendPlayerMsg("", player, subInput);
+                    UtilsHandler.getMsg().sendPlayerMsg(player, subInput);
                     return;
                 case "actionbar":
-                    UtilsHandler.getMsg().sendActionBarMsg(player, subInput);
-                    return;
                 case "actionbar-group":
                     UtilsHandler.getMsg().sendActionBarMsg(player, subInput);
                     return;
@@ -471,8 +469,8 @@ public class CommandManager implements CommandInterface {
         if (input == null)
             return;
         try {
-        String group = input.split(", ")[0];
-        input = input.substring(input.indexOf(",") + 2);
+            String group = input.split(", ")[0];
+            input = input.substring(input.indexOf(",") + 2);
             UtilsHandler.getFile().getLog().add(pluginName, group, input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
@@ -692,7 +690,9 @@ public class CommandManager implements CommandInterface {
                     input = input.replace("-s:" + arg, "");
                 }
             }
-            UtilsHandler.getMsg().sendTitleMsg(player, input, titleMsgMap);
+            String[] inputSplit = input.split("\\n");
+            UtilsHandler.getMsg().sendTitleMsg(player, inputSplit[0], inputSplit[1],
+                    titleMsgMap.getFadeIn(), titleMsgMap.getStay(), titleMsgMap.getFadeOut());
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"title: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");

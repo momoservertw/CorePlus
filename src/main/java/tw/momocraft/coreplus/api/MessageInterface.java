@@ -4,7 +4,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 import tw.momocraft.coreplus.utils.message.TranslateMap;
 
 import java.util.List;
@@ -21,10 +20,19 @@ public interface MessageInterface {
     void sendBroadcastMsg(String prefix, String input, String... langHolder);
 
     /**
+     * Sending broadcast message to the server.
+     *
+     * @param input the value of message.
+     */
+    void sendBroadcastMsg(String input, String... langHolder);
+
+
+    /**
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
      * @param prefix     the executing plugin prefix.
+     * @param channel    the discord channel to send message.
      * @param input      the value of message.
      * @param langHolder the translation of placeholders. It could be empty.
      */
@@ -34,11 +42,32 @@ public interface MessageInterface {
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
+     * @param input   the value of message.
+     * @param channel the discord channel to send message.
+     */
+    void sendDiscordMsg(String channel, String input);
+
+    /**
+     * Sending Discord message to the server.
+     * Need: DiscordSRV
+     *
      * @param prefix     the executing plugin prefix.
+     * @param channel    the discord channel to send message.
+     * @param player     the player who will send message.
      * @param input      the value of message.
      * @param langHolder the translation of placeholders. It could be empty.
      */
     void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder);
+
+    /**
+     * Sending Discord message to the server.
+     * Need: DiscordSRV
+     *
+     * @param channel the discord channel to send message.
+     * @param player  the player who will send message.
+     * @param input   the value of message.
+     */
+    void sendDiscordMsg(String channel, String input, Player player, String... langHolder);
 
     /**
      * Sending message to a player or console.
@@ -51,6 +80,14 @@ public interface MessageInterface {
     void sendMsg(String prefix, CommandSender sender, String input, String... langHolder);
 
     /**
+     * Sending message to a player or console.
+     *
+     * @param sender the executing sender.
+     * @param input  the value of message.
+     */
+    void sendMsg(CommandSender sender, String input, String... langHolder);
+
+    /**
      * Printing the message in console.
      *
      * @param prefix     the executing plugin prefix.
@@ -60,6 +97,13 @@ public interface MessageInterface {
     void sendConsoleMsg(String prefix, String input, String... langHolder);
 
     /**
+     * Printing the message in console.
+     *
+     * @param input the value of message.
+     */
+    void sendConsoleMsg(String input, String... langHolder);
+
+    /**
      * Sending message to a player.
      *
      * @param prefix     the executing plugin prefix.
@@ -67,6 +111,13 @@ public interface MessageInterface {
      * @param langHolder the translation of placeholders. It could be empty.
      */
     void sendPlayerMsg(String prefix, Player player, String input, String... langHolder);
+
+    /**
+     * Sending message to a player.
+     *
+     * @param input the value of message.
+     */
+    void sendPlayerMsg(Player player, String input, String... langHolder);
 
     /**
      * Sending message as player.
@@ -79,6 +130,14 @@ public interface MessageInterface {
     void sendChatMsg(String prefix, Player player, String input, String... langHolder);
 
     /**
+     * Sending message as player.
+     *
+     * @param player the executing player.
+     * @param input  the value of message.
+     */
+    void sendChatMsg(Player player, String input, String... langHolder);
+
+    /**
      * Sending message to a player or console.
      *
      * @param player     the executing player.
@@ -86,14 +145,6 @@ public interface MessageInterface {
      * @param langHolder the translation of placeholders. It could be empty.
      */
     void sendActionBarMsg(Player player, String input, String... langHolder);
-
-    /**
-     * @param player      the executing player.
-     * @param input       the input message.
-     * @param titleMsgMap the title message's attributes.
-     * @param langHolder  the translation of placeholders. It could be empty.
-     */
-    void sendTitleMsg(Player player, String input, TitleMsgMap titleMsgMap, String... langHolder);
 
     /**
      * @param player     the executing player.
@@ -133,6 +184,19 @@ public interface MessageInterface {
      */
     void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, StackTraceElement ste);
 
+
+    /**
+     * Sending the information of feature in console to debug.
+     *
+     * @param pluginName the executing plugin prefix.
+     * @param feature    the name of feature.
+     * @param target     the checking target or type.
+     * @param check      the checking things.
+     * @param action     the feature's action like succeed, failed, return...
+     * @param ste        the class and the line of code of this feature.
+     */
+    void sendDetailMsg(String pluginName, String feature, String target, String check, String action, StackTraceElement ste);
+
     /**
      * Sending the information of feature in console to debug.
      *
@@ -146,6 +210,20 @@ public interface MessageInterface {
      */
     void sendDetailMsg(boolean debugging, String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste);
 
+
+    /**
+     * Sending the information of feature in console to debug.
+     *
+     * @param pluginName the executing plugin prefix.
+     * @param feature    the name of feature.
+     * @param target     the checking target or type.
+     * @param check      the checking things.
+     * @param action     the feature's action like succeed, failed, return...
+     * @param detail     more information.
+     * @param ste        the class and the line of code of this feature.
+     */
+    void sendDetailMsg(String pluginName, String feature, String target, String check, String action, String detail, StackTraceElement ste);
+
     /**
      * Sending debug message in console.
      *
@@ -154,6 +232,14 @@ public interface MessageInterface {
      * @param input      the value of message.
      */
     void sendDebugMsg(boolean debugging, String pluginName, String input);
+
+    /**
+     * Sending debug message in console.
+     *
+     * @param pluginName the executing plugin name.
+     * @param input      the value of message.
+     */
+    void sendDebugMsg(String pluginName, String input);
 
     /**
      * Sending error message in console.
@@ -173,6 +259,14 @@ public interface MessageInterface {
     void sendDebugTrace(boolean debugging, String pluginName, Exception ex);
 
     /**
+     * Sending exception message in console.
+     *
+     * @param pluginName the executing plugin prefix.
+     * @param ex         the type of exception.
+     */
+    void sendDebugTrace(String pluginName, Exception ex);
+
+    /**
      * Creating a array for translation the placeholder of message.
      *
      * @return a array for translation the placeholder of message..
@@ -182,12 +276,30 @@ public interface MessageInterface {
     /**
      * Translating by custom placeholders.
      *
-     * @param prefix       the executing plugin prefix.
-     * @param nodeLocation the configuration path of this message.
-     * @param sender       the executing sender.
-     * @param langHolder   the translation of placeholders. It could be empty.
+     * @param prefix     the executing plugin prefix.
+     * @param input      the configuration path of this message.
+     * @param sender     the executing sender.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendLangMsg(String prefix, String nodeLocation, CommandSender sender, String... langHolder);
+    void sendLangMsg(String prefix, String input, CommandSender sender, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param input      the configuration path of this message.
+     * @param sender     the executing sender.
+     * @param langHolder the translation of placeholders. It could be empty.
+     */
+    void sendLangMsg(String input, CommandSender sender, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param input      the input value list.
+     * @param langHolder the custom placeholders.
+     * @return the a new list which translated by the custom placeholders.
+     */
+    List<String> transLang(List<String> input, String... langHolder);
 
     /**
      * Translating by custom placeholders.
@@ -248,6 +360,15 @@ public interface MessageInterface {
      * @return a new string which translated language placeholders.
      */
     String transLang(String local, String input, String... langHolder);
+
+    /**
+     * Translating by custom placeholders.
+     *
+     * @param input      the input string.
+     * @param langHolder the translation of placeholders. It could be empty.
+     * @return a new string which translated language placeholders.
+     */
+    String transLang(String input, String... langHolder);
 
     /**
      * Translating by target placeholders.

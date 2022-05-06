@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class DiscordUtils {
 
-    public void sendDiscordMsg(String channelName, String input) {
+    public void sendMsg(String channelName, String input) {
         String channelId = getChannelId(channelName);
         if (channelId == null)
             return;

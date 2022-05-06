@@ -15,14 +15,12 @@ public class Commands implements CommandExecutor {
         if (length == 0) {
             if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
                 UtilsHandler.getMsg().sendMsg("", sender, "");
-                UtilsHandler.getMsg().sendLangMsg("",
-                        "Message.Commands.title", sender);
-                UtilsHandler.getMsg().sendMsg("", sender,
+                UtilsHandler.getMsg().sendLangMsg("Message.Commands.title", sender);
+                UtilsHandler.getMsg().sendMsg(sender,
                         "&f " + CorePlus.getInstance().getDescription().getName()
                                 + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                UtilsHandler.getMsg().sendLangMsg("",
-                        "Message.Commands.help", sender);
-                UtilsHandler.getMsg().sendMsg("", sender, "");
+                UtilsHandler.getMsg().sendLangMsg("Message.Commands.help", sender);
+                UtilsHandler.getMsg().sendMsg(sender, "");
             } else {
                 UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                         "Message.noPermission", sender);
@@ -32,33 +30,33 @@ public class Commands implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "help":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.use")) {
-                    UtilsHandler.getMsg().sendMsg("", sender, "");
-                    UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.title", sender);
-                    UtilsHandler.getMsg().sendMsg("", sender,
+                    UtilsHandler.getMsg().sendMsg(sender, "");
+                    UtilsHandler.getMsg().sendLangMsg("Message.Commands.title", sender);
+                    UtilsHandler.getMsg().sendMsg(sender,
                             "&f " + CorePlus.getInstance().getDescription().getName()
                                     + " &ev" + CorePlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.help", sender);
+                    UtilsHandler.getMsg().sendLangMsg("Message.Commands.help", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.reload", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.reload", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.version"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.version", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.version", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.test")) {
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.test", sender);
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.testPlaceholder", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.test", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.testPlaceholder", sender);
                     }
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.configbuilder")) {
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.configbuilderGroup", sender);
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.configbuilderCustom", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.configbuilderGroup", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.configbuilderCustom", sender);
                     }
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmd"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.cmd", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.cmd", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdgroup"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.cmdgroup", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.cmdgroup", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdplayer"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.cmdplayer", sender);
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.cmdplayer", sender);
                     if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdonline"))
-                        UtilsHandler.getMsg().sendLangMsg("", "Message.Commands.cmdonline", sender);
-                    UtilsHandler.getMsg().sendMsg("", sender, "");
+                        UtilsHandler.getMsg().sendLangMsg("Message.Commands.cmdonline", sender);
+                    UtilsHandler.getMsg().sendMsg(sender, "");
                 } else {
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
