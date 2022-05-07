@@ -34,10 +34,9 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendBroadcastMsg(String input, String... langHolder) {
+    public void sendBroadcastMsg(String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setColor(input);
         Bukkit.broadcastMessage(input);
     }
@@ -52,10 +51,9 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDiscordMsg(String channel, String input, String... langHolder) {
+    public void sendDiscordMsg(String channel, String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setColor(input);
         UtilsHandler.getDiscord().sendMsg(channel, input);
     }
@@ -82,7 +80,7 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDiscordMsg(String channel, String input, Player player, String... langHolder) {
+    public void sendDiscordMsg(String channel, String input, Player player) {
         if (input == null)
             return;
         if (player == null)
@@ -97,7 +95,6 @@ public class MessageManager implements MessageInterface {
         message = message.replace("%username%", name);
         message = message.replace("%displayname%", displayName != null ? displayName : name);
         message = message.replace("%channelname%", channel);
-        input = transLang(player, input, langHolder);
         input = setColor(input);
         UtilsHandler.getDiscord().sendMsg(input, message);
     }
@@ -114,12 +111,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendMsg(CommandSender sender, String input, String... langHolder) {
+    public void sendMsg(CommandSender sender, String input) {
         if (input == null)
             return;
         if (sender == null)
             return;
-        input = transLang(sender, input, langHolder);
         input = setColor(input);
         sender.sendMessage(input);
     }
@@ -134,10 +130,9 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendConsoleMsg(String input, String... langHolder) {
+    public void sendConsoleMsg(String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setColor(input);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
@@ -154,12 +149,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendPlayerMsg(Player player, String input, String... langHolder) {
+    public void sendPlayerMsg(Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(input, langHolder);
         input = setColor(input);
         player.sendMessage(input);
     }
@@ -176,12 +170,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendChatMsg(Player player, String input, String... langHolder) {
+    public void sendChatMsg(Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(player, input, langHolder);
         input = setColor(input);
         player.chat(input);
     }

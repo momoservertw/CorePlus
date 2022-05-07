@@ -302,7 +302,7 @@ public class CommandManager implements CommandInterface {
             switch (input.split(": ")[0]) {
                 // Message
                 case "print":
-                    UtilsHandler.getMsg().sendConsoleMsg("", subInput);
+                    UtilsHandler.getMsg().sendConsoleMsg(subInput);
                     return;
                 case "log":
                     dispatchLog(pluginName, subInput);
@@ -311,7 +311,7 @@ public class CommandManager implements CommandInterface {
                     dispatchLogGroup(pluginName, subInput);
                     return;
                 case "broadcast":
-                    UtilsHandler.getMsg().sendBroadcastMsg("", subInput);
+                    UtilsHandler.getMsg().sendBroadcastMsg(subInput);
                     return;
                 case "discord-chat":
                     split = subInput.split(", ");
@@ -319,7 +319,7 @@ public class CommandManager implements CommandInterface {
                     return;
                 case "discord":
                     split = subInput.split(", ");
-                    UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1]);
+                    UtilsHandler.getMsg().sendDiscordMsg(split[0], split[1]);
                     return;
                 case "bungee":
                     dispatchBungeeCmd(pluginName, player, subInput);
@@ -400,7 +400,7 @@ public class CommandManager implements CommandInterface {
                     dispatchConditionCmd(pluginName, null, subInput);
                     return;
                 case "print":
-                    UtilsHandler.getMsg().sendConsoleMsg("", subInput);
+                    UtilsHandler.getMsg().sendConsoleMsg(subInput);
                     return;
                 case "log":
                     dispatchLog(pluginName, subInput);
@@ -409,11 +409,11 @@ public class CommandManager implements CommandInterface {
                     dispatchLogGroup(pluginName, subInput);
                     return;
                 case "broadcast":
-                    UtilsHandler.getMsg().sendBroadcastMsg("", subInput);
+                    UtilsHandler.getMsg().sendBroadcastMsg(subInput);
                     return;
                 case "discord":
                     split = subInput.split(", ");
-                    UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1]);
+                    UtilsHandler.getMsg().sendDiscordMsg(split[0], split[1]);
                     return;
                 case "bungee":
                     dispatchBungeeCmd(pluginName, null, subInput);

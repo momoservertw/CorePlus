@@ -24,7 +24,7 @@ public interface MessageInterface {
      *
      * @param input the value of message.
      */
-    void sendBroadcastMsg(String input, String... langHolder);
+    void sendBroadcastMsg(String input);
 
 
     /**
@@ -67,7 +67,7 @@ public interface MessageInterface {
      * @param player  the player who will send message.
      * @param input   the value of message.
      */
-    void sendDiscordMsg(String channel, String input, Player player, String... langHolder);
+    void sendDiscordMsg(String channel, String input, Player player);
 
     /**
      * Sending message to a player or console.
@@ -85,7 +85,7 @@ public interface MessageInterface {
      * @param sender the executing sender.
      * @param input  the value of message.
      */
-    void sendMsg(CommandSender sender, String input, String... langHolder);
+    void sendMsg(CommandSender sender, String input);
 
     /**
      * Printing the message in console.
@@ -101,7 +101,7 @@ public interface MessageInterface {
      *
      * @param input the value of message.
      */
-    void sendConsoleMsg(String input, String... langHolder);
+    void sendConsoleMsg(String input);
 
     /**
      * Sending message to a player.
@@ -117,7 +117,7 @@ public interface MessageInterface {
      *
      * @param input the value of message.
      */
-    void sendPlayerMsg(Player player, String input, String... langHolder);
+    void sendPlayerMsg(Player player, String input);
 
     /**
      * Sending message as player.
@@ -135,7 +135,7 @@ public interface MessageInterface {
      * @param player the executing player.
      * @param input  the value of message.
      */
-    void sendChatMsg(Player player, String input, String... langHolder);
+    void sendChatMsg(Player player, String input);
 
     /**
      * Sending message to a player or console.
@@ -147,11 +147,15 @@ public interface MessageInterface {
     void sendActionBarMsg(Player player, String input, String... langHolder);
 
     /**
-     * @param player     the executing player.
-     * @param input      the input message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param player        the executing player.
+     * @param inputTitle    the title message.
+     * @param inputSubtitle the subtitle message.
+     * @param fadeIn        the time in ticks for titles to fade in.
+     * @param stay          the  time in ticks for titles to stay.
+     * @param fadeOut       the time in ticks for titles to fade out.
+     * @param langHolder    the translation of placeholders. It could be empty.
      */
-    void sendTitleMsg(Player player, String input, String... langHolder);
+    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder);
 
     /**
      * @param player        the executing player.
@@ -162,15 +166,11 @@ public interface MessageInterface {
     void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder);
 
     /**
-     * @param player        the executing player.
-     * @param inputTitle    the title message.
-     * @param inputSubtitle the subtitle message.
-     * @param fadeIn        the time in ticks for titles to fade in.
-     * @param stay          the  time in ticks for titles to stay.
-     * @param fadeOut       the time in ticks for titles to fade out.
-     * @param langHolder    the translation of placeholders. It could be empty.
+     * @param player     the executing player.
+     * @param input      the input message.
+     * @param langHolder the translation of placeholders. It could be empty.
      */
-    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder);
+    void sendTitleMsg(Player player, String input, String... langHolder);
 
     /**
      * Sending the information of feature in console to debug.

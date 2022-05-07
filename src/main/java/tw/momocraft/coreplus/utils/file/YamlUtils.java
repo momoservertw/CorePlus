@@ -101,6 +101,6 @@ public class YamlUtils {
     private void sendLoadedMsg() {
         if (!customList.isEmpty())
             UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded YAML files: " + customList.toString());
+                    "Loaded YAML files: " + customList);
     }
 }
