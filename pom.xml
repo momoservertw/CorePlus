@@ -208,6 +208,15 @@
             <version>4.6.0</version>
             <scope>provided</scope>
         </dependency>
+        <!--MyPet API-->
+        <dependency>
+        <groupId>me.MyPet</groupId>
+        <artifactId>MythicMobs</artifactId>
+        <scope>system</scope>
+        <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.12-SNAPSHOT-B1686.jar
+        </systemPath>
+        <version>LEGACY</version>
+        </dependency>
     </dependencies>
 
 </project>

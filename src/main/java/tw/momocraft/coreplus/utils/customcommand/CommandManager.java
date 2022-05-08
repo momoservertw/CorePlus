@@ -460,7 +460,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -475,7 +475,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"log-group: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -582,7 +582,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"console: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -600,7 +600,7 @@ public class CommandManager implements CommandInterface {
             player.setOp(isOp);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"chat-op: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             removeOp(pluginName, player);
         } finally {
             player.setOp(isOp);
@@ -619,7 +619,7 @@ public class CommandManager implements CommandInterface {
             player.setOp(isOp);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"op: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             removeOp(pluginName, player);
         } finally {
             player.setOp(isOp);
@@ -648,7 +648,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while executing command: \"player: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -696,7 +696,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"title: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -750,7 +750,7 @@ public class CommandManager implements CommandInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"sound: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 

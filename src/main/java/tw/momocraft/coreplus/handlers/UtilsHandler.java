@@ -5,7 +5,7 @@ import tw.momocraft.coreplus.utils.Utils;
 import tw.momocraft.coreplus.utils.condition.ConditionManager;
 import tw.momocraft.coreplus.utils.customcommand.CommandManager;
 import tw.momocraft.coreplus.utils.entity.EntityManager;
-import tw.momocraft.coreplus.utils.file.*;
+import tw.momocraft.coreplus.utils.file.FileManager;
 import tw.momocraft.coreplus.utils.message.DiscordUtils;
 import tw.momocraft.coreplus.utils.message.MessageManager;
 import tw.momocraft.coreplus.utils.message.VanillaUtils;
@@ -13,20 +13,15 @@ import tw.momocraft.coreplus.utils.player.PlayerManager;
 
 public class UtilsHandler {
 
-    public static void setUpFirst(boolean reload) {
-        if (!reload)
-            depend = new DependHandler();
+    public static void setupFirst(boolean reload) {
         messageManager = new MessageManager();
+        depend = new DependHandler();
+        depend.setup(reload);
     }
 
-    public static void setUpLast(boolean reload) {
+    public static void setupLast(boolean reload) {
         fileManager = new FileManager();
-        mySQLUtils = new MySQLUtils();
-        yamlUtils = new YamlUtils();
-        jsonUtils = new JsonUtils();
-        logUtils = new LogUtils();
-        propertiesUtils = new PropertiesUtils();
-        dataUtils = new DataUtils();
+        fileManager.setup();
         vanillaUtils = new VanillaUtils();
         discordUtils = new DiscordUtils();
         utils = new Utils();
@@ -34,7 +29,6 @@ public class UtilsHandler {
         playerManager = new PlayerManager();
         entityManager = new EntityManager();
         commandManager = new CommandManager();
-        zipperUtils = new ZipperUtils();
         updater = new Updater();
         syncData();
     }
@@ -53,15 +47,8 @@ public class UtilsHandler {
     private static PlayerManager playerManager;
     private static EntityManager entityManager;
     private static FileManager fileManager;
-    private static LogUtils logUtils;
-    private static JsonUtils jsonUtils;
-    private static YamlUtils yamlUtils;
-    private static PropertiesUtils propertiesUtils;
-    private static MySQLUtils mySQLUtils;
-    private static ZipperUtils zipperUtils;
     private static VanillaUtils vanillaUtils;
     private static DiscordUtils discordUtils;
-    private static DataUtils dataUtils;
 
     public static DependHandler getDepend() {
         return depend;
@@ -83,14 +70,6 @@ public class UtilsHandler {
         return utils;
     }
 
-    public static ZipperUtils getZip() {
-        return zipperUtils;
-    }
-
-    public static LogUtils getLog() {
-        return logUtils;
-    }
-
     public static ConditionManager getCondition() {
         return conditionManager;
     }
@@ -103,10 +82,6 @@ public class UtilsHandler {
         return entityManager;
     }
 
-    public static MySQLUtils getMySQL() {
-        return mySQLUtils;
-    }
-
     public static VanillaUtils getVanillaUtils() {
         return vanillaUtils;
     }
@@ -117,21 +92,5 @@ public class UtilsHandler {
 
     public static FileManager getFile() {
         return fileManager;
-    }
-
-    public static JsonUtils getJson() {
-        return jsonUtils;
-    }
-
-    public static YamlUtils getYaml() {
-        return yamlUtils;
-    }
-
-    public static PropertiesUtils getProperty() {
-        return propertiesUtils;
-    }
-
-    public static DataUtils getData() {
-        return dataUtils;
     }
 }

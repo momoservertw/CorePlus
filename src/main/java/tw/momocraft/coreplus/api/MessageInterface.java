@@ -13,11 +13,10 @@ public interface MessageInterface {
     /**
      * Sending broadcast message to the server.
      *
-     * @param prefix     the executing plugin prefix.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
      */
-    void sendBroadcastMsg(String prefix, String input, String... langHolder);
+    void sendBroadcastMsg(String prefix, String input);
 
     /**
      * Sending broadcast message to the server.
@@ -26,17 +25,15 @@ public interface MessageInterface {
      */
     void sendBroadcastMsg(String input);
 
-
     /**
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
-     * @param prefix     the executing plugin prefix.
-     * @param channel    the discord channel to send message.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix  the executing plugin prefix.
+     * @param channel the discord channel to send message.
+     * @param input   the value of message.
      */
-    void sendDiscordMsg(String prefix, String channel, String input, String... langHolder);
+    void sendDiscordMsg(String prefix, String channel, String input);
 
     /**
      * Sending Discord message to the server.
@@ -51,13 +48,12 @@ public interface MessageInterface {
      * Sending Discord message to the server.
      * Need: DiscordSRV
      *
-     * @param prefix     the executing plugin prefix.
-     * @param channel    the discord channel to send message.
-     * @param player     the player who will send message.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix  the executing plugin prefix.
+     * @param channel the discord channel to send message.
+     * @param player  the player who will send message.
+     * @param input   the value of message.
      */
-    void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder);
+    void sendDiscordMsg(String prefix, String channel, String input, Player player);
 
     /**
      * Sending Discord message to the server.
@@ -72,12 +68,11 @@ public interface MessageInterface {
     /**
      * Sending message to a player or console.
      *
-     * @param prefix     the executing plugin prefix.
-     * @param sender     the executing sender.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix the executing plugin prefix.
+     * @param sender the executing sender.
+     * @param input  the value of message.
      */
-    void sendMsg(String prefix, CommandSender sender, String input, String... langHolder);
+    void sendMsg(String prefix, CommandSender sender, String input);
 
     /**
      * Sending message to a player or console.
@@ -90,11 +85,10 @@ public interface MessageInterface {
     /**
      * Printing the message in console.
      *
-     * @param prefix     the executing plugin prefix.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
      */
-    void sendConsoleMsg(String prefix, String input, String... langHolder);
+    void sendConsoleMsg(String prefix, String input);
 
     /**
      * Printing the message in console.
@@ -106,11 +100,10 @@ public interface MessageInterface {
     /**
      * Sending message to a player.
      *
-     * @param prefix     the executing plugin prefix.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix the executing plugin prefix.
+     * @param input  the value of message.
      */
-    void sendPlayerMsg(String prefix, Player player, String input, String... langHolder);
+    void sendPlayerMsg(String prefix, Player player, String input);
 
     /**
      * Sending message to a player.
@@ -122,12 +115,11 @@ public interface MessageInterface {
     /**
      * Sending message as player.
      *
-     * @param prefix     the executing plugin prefix.
-     * @param player     the executing player.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param prefix the executing plugin prefix.
+     * @param player the executing player.
+     * @param input  the value of message.
      */
-    void sendChatMsg(String prefix, Player player, String input, String... langHolder);
+    void sendChatMsg(String prefix, Player player, String input);
 
     /**
      * Sending message as player.
@@ -140,11 +132,10 @@ public interface MessageInterface {
     /**
      * Sending message to a player or console.
      *
-     * @param player     the executing player.
-     * @param input      the value of message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param player the executing player.
+     * @param input  the value of message.
      */
-    void sendActionBarMsg(Player player, String input, String... langHolder);
+    void sendActionBarMsg(Player player, String input);
 
     /**
      * @param player        the executing player.
@@ -153,24 +144,21 @@ public interface MessageInterface {
      * @param fadeIn        the time in ticks for titles to fade in.
      * @param stay          the  time in ticks for titles to stay.
      * @param fadeOut       the time in ticks for titles to fade out.
-     * @param langHolder    the translation of placeholders. It could be empty.
      */
-    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder);
+    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut);
 
     /**
      * @param player        the executing player.
      * @param inputTitle    the title message.
      * @param inputSubtitle the subtitle message.
-     * @param langHolder    the translation of placeholders. It could be empty.
      */
-    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder);
+    void sendTitleMsg(Player player, String inputTitle, String inputSubtitle);
 
     /**
-     * @param player     the executing player.
-     * @param input      the input message.
-     * @param langHolder the translation of placeholders. It could be empty.
+     * @param player the executing player.
+     * @param input  the input message.
      */
-    void sendTitleMsg(Player player, String input, String... langHolder);
+    void sendTitleMsg(Player player, String input);
 
     /**
      * Sending the information of feature in console to debug.

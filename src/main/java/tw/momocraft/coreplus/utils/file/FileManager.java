@@ -1,42 +1,65 @@
 package tw.momocraft.coreplus.utils.file;
 
 import tw.momocraft.coreplus.api.FileInterface;
-import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class FileManager implements FileInterface {
 
+    private static LogUtils logUtils;
+    private static JsonUtils jsonUtils;
+    private static YamlUtils yamlUtils;
+    private static PropertiesUtils propertiesUtils;
+    private static MySQLUtils mySQLUtils;
+    private static ZipperUtils zipperUtils;
+    private static DataUtils dataUtils;
+
+    public void setup() {
+        mySQLUtils = new MySQLUtils();
+        yamlUtils = new YamlUtils();
+        jsonUtils = new JsonUtils();
+        logUtils = new LogUtils();
+        propertiesUtils = new PropertiesUtils();
+        mySQLUtils.setup();
+        yamlUtils.setup();
+        jsonUtils.setup();
+        logUtils.setup();
+        propertiesUtils.setup();
+
+        zipperUtils = new ZipperUtils();
+        dataUtils = new DataUtils();
+    }
+
     @Override
     public YamlUtils getYaml() {
-        return UtilsHandler.getYaml();
+        return yamlUtils;
     }
 
     @Override
     public JsonUtils getJson() {
-        return UtilsHandler.getJson();
+        return jsonUtils;
     }
 
     @Override
     public PropertiesUtils getProperty() {
-        return UtilsHandler.getProperty();
+        return propertiesUtils;
     }
 
     @Override
     public LogUtils getLog() {
-        return UtilsHandler.getLog();
+        return logUtils;
     }
 
     @Override
     public DataUtils getData() {
-        return UtilsHandler.getData();
+        return dataUtils;
     }
 
     @Override
     public ZipperUtils getZip() {
-        return UtilsHandler.getZip();
+        return zipperUtils;
     }
 
     @Override
     public MySQLUtils getMySQL() {
-        return UtilsHandler.getMySQL();
+        return mySQLUtils;
     }
 }

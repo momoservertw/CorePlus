@@ -13,83 +13,77 @@ MySQL:
       port: 3306
       username: "root"
       password: ""
-  CorePlus:
-    Enable: false
-    Database: "coreplus"
-    Prefix: ""
-  PlayerdataPlus:
-    Enable: false
-    Database: "playerdataplus"
-    Tables:
-      Players: "`luckperms_players`"
-  LuckPerms:
-    Enable: false
-    Database: "luckperms"
-    Tables:
-      Players: "luckperms_players"
-  MySQLPlayerDataBridge:
-    Enable: false
-    Database: "mysqlplayerdatabridge"
-    Tables:
-      Experience: "mpdb_experience"
-  MyCommand:
-    Enable: false
-    Database: "mycommand"
-    Tables:
-      PlayerData: "PLAYERDATA"
-      Variables: "VARIABLES"
-  MyPet:
-    Enable: false
-    Database: "mypet"
-    Tables:
-      Players: "players"
-      Pets: "pets"
-  Example:
-    Enable: false
-    Database: "example"
-    Tables:
-      Players: "players"
+  Groups:
+    CorePlus:
+      Enable: false
+      Database: "coreplus"
+      Prefix: ""
+    PlayerdataPlus:
+      Enable: false
+      Database: "playerdataplus"
+      Tables:
+        Players: "`players"
+    LuckPerms:
+      Enable: false
+      Database: "luckperms"
+      Tables:
+        Players: "luckperms_players"
+    MySQLPlayerDataBridge:
+      Enable: false
+      Database: "mysqlplayerdatabridge"
+      Tables:
+        Experience: "mpdb_experience"
+    MyCommand:
+      Enable: false
+      Database: "mycommand"
+      Tables:
+        PlayerData: "PLAYERDATA"
+        Variables: "VARIABLES"
+    MyPet:
+      Enable: false
+      Database: "mypet"
+      Tables:
+        Players: "players"
+        Pets: "pets"
+    Example:
+      Enable: false
+      Database: "example"
+      Tables:
+        Players: "players"
 Yaml:
-  Example:
-    Enable: false
-    Path: "//plugins//Example_Plugin//config.yml"
+  Enable: false
+  Groups:
+    Example:
+      Enable: false
+      Path: "//plugins//Example_Plugin//config.yml"
 Json:
-  Example:
-    Enable: false
-    Path: "//plugins//Example_Plugin//config.json"
+  Enable: false
+  Groups:
+    Example:
+      Enable: false
+      Path: "//plugins//Example_Plugin//config.json"
 Properties:
-  Example:
-    Enable: false
-    Path: "//plugins//Example_Plugin//config.properties"
+  Enable: false
+  Groups:
+    Example:
+      Enable: false
+      Path: "//plugins//Example_Plugin//config.properties"
 Logs:
+  Enable: false
   Settings:
     Default:
-      # Creating the file if not it is exist.
-      Create: true
-      # Creating the new file if it is exist.
+      # Adding the timestamp in front of line.
+      Time: false
+      # Creating new file on new date.
       New-File: false
       # Compressing the old file.
       Zip: false
-      # Adding the timestamp in the front of line.
-      Time: false
-  Default:
-    Path: "plugins//CorePlus//logs"
-    Name: "latest.log"
-    Time: true
-  GroupConfig:
-    Path: "plugins//CorePlus//logs"
-    Name: "groups.yml"
-  CustomConfig:
-    Path: "plugins//CorePlus//logs"
-    Name: "custom.yml"
-  EntityPlus-Spawner:
-    Path: "plugins//EntityPlus//logs"
-    Name: "spawner.log"
-    Time: true
-  LotteryPlus:
-    Path: "plugins//LotteryPlus//logs"
-    Name: "latest.log"
-    Time: true
-  PlayerdataPlus:
-    Path: "plugins//PlayerdataPlus//logs"
-    Name: "latest.log"
+  Groups:
+    Example:
+      Enable: false
+      Path: "plugins//CorePlus//Logs"
+      Name: "example.log"
+      Create: true
+      Time: true
+      New-File: false
+      Zip: false

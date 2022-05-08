@@ -23,10 +23,29 @@ public interface PlayerInterface {
      */
     Player getPlayer(String playerName);
 
+    /**
+     * Getting player uuid from a name.
+     * plguins(LuckPerms > AuthMe > Local > Mojang)
+     *
+     * @param playerName the name of this player
+     * @return the player's uuid.
+     */
     UUID getPlayerUUID(String playerName);
 
+    /**
+     * Getting player uuid from a name.
+     *
+     * @param playerName the name of this player
+     * @return the player's uuid.
+     */
     UUID getPlayerUUIDLocal(String playerName);
 
+    /**
+     * Getting player uuid from a name.
+     *
+     * @param playerName the name of this player
+     * @return the player's uuid.
+     */
     UUID getPlayerUUIDMojang(String playerName);
 
     /**
@@ -131,6 +150,17 @@ public interface PlayerInterface {
      */
     double giveCurrency(UUID uuid, String type, double amount);
 
+
+    /**
+     * Setting the amount of currency for player.
+     *
+     * @param uuid   the uuid of player.
+     * @param type   the type of currency. Types: money, points, GemsEconomy Currency
+     * @param amount the amount to take.
+     * @return the name amount of currency of player.
+     */
+    double setCurrency(UUID uuid, String type, double amount);
+
     /**
      * Giving the amount of exp from player.
      *
@@ -147,7 +177,6 @@ public interface PlayerInterface {
      * @param pluginName the sending plugin name.
      * @param uuid       the uuid of player.
      * @param amount     the amount to take.
-     * @return the name amount of exp of player.
      */
     void setExp(String pluginName, UUID uuid, int amount);
 
@@ -157,7 +186,6 @@ public interface PlayerInterface {
      * @param pluginName the sending plugin name.
      * @param uuid       the uuid of player.
      * @param amount     the amount to take.
-     * @return the name amount of exp of player.
      */
     void giveExp(String pluginName, UUID uuid, int amount);
 
@@ -383,7 +411,17 @@ public interface PlayerInterface {
      */
     void changePermLevel(UUID uuid, String permission, int number, int def);
 
+    /**
+     *
+     * @param uuid the id of player in the game.
+     * @param nickname the new name of Discord name.
+     */
     void setDiscordNick(UUID uuid, String nickname);
 
+    /**
+     * Get the name of Discord.
+     *
+     * @param uuid the id of player in the game.
+     */
     void getDiscordNick(UUID uuid);
 }

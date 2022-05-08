@@ -43,7 +43,7 @@ public class DataUtils {
                     CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
             } catch (Exception ex) {
                 CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
-                CorePlusAPI.getMsg().sendDebugTrace(true, pluginName, ex);
+                CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
     }
@@ -54,7 +54,7 @@ public class DataUtils {
             Files.copy(file.toPath(), Paths.get(newFilePath, newFileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ex) {
             CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not copy the file: " + file.getPath());
-            CorePlusAPI.getMsg().sendDebugTrace(true, pluginName, ex);
+            CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -64,7 +64,7 @@ public class DataUtils {
                 CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
         } catch (Exception ex) {
             CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
-            CorePlusAPI.getMsg().sendDebugTrace(true, pluginName, ex);
+            CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
@@ -129,7 +129,7 @@ public class DataUtils {
                 } catch (Exception ex) {
                     UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "Can not create folder: " + parentFile.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
                 }
             }
             // Creating file.
@@ -140,7 +140,7 @@ public class DataUtils {
             } catch (Exception ex) {
                 UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                         "Can not create file: " + file.getName());
-                UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
             }
         } else {
             // Creating new file on new date.
@@ -169,7 +169,7 @@ public class DataUtils {
                 } catch (Exception ex) {
                     UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "&fCan not rename the file: " + renameFile.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
                 }
                 // Compressing the file.
                 if (zip) {
@@ -180,7 +180,7 @@ public class DataUtils {
                     } catch (Exception ex) {
                         UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                                 "&fCan not compress the file: " + renameFile.getName());
-                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
                     }
                 }
                 // Create a new the file.
@@ -191,7 +191,7 @@ public class DataUtils {
                 } catch (Exception ex) {
                     UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                             "&fCan not create the new file: " + file.getName());
-                    UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                    UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
                 }
             }
         }

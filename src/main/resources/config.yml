@@ -35,16 +35,16 @@ General:
       Vault: true
       PlayerPoints: true
       GemsEconomy: true
+      LuckPerms: true
+      ItemJoin: true
+      Residence: true
+      CMI: true
       PlaceHolderAPI: true
       DiscordSRV: true
-      LuckPerms: true
       MysqlPlayerDataBridge: true
-      CMI: true
-      Residence: true
       MythicMobs: true
-      ItemJoin: true
       AuthMe: true
-      NameTagEdit: true
+      PvPManager: true
 
 # Regenerate the group.yml or create a custom configurations.
 # More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder
@@ -306,73 +306,3 @@ Config-Builder:
       List:
         - Chest
       Ignore-List: []
-
-Message:
-  prefix: "&7[&dCorePlus&7]&r "
-  unknownCommand: "%prefix% &fUnknown command."
-  noPermission: "%prefix% &cYou do not have permission to use that command!"
-  configReload: "%prefix% &aConfiguration(s) Reloaded!"
-  targetNotFound: "%prefix% &cThe player &c%targetplayer% &ccould not be found!"
-  cooldown: "%prefix% &fPlease try it again later."
-  featureDisabled: "%prefix% &cThis feature is disabled."
-  dependNotFound: "%prefix% &cThis feature needs plugin %plugin%."
-  groupNotFound: "%prefix% &cCan not find: %group%"
-  onlyPlayer: "%prefix% &cThis command can only executing from player."
-  noFlagPerm: "%prefix% &cYou dont have &6%flag% &cpermission<s> here."
-  notEnoughMoney: "%prefix% &cYou need %pricetype%: %price% - Balance: %balance%"
-  notEnoughMoneyTarget: "%prefix% &c%targetplayer% need %pricetype%: %price% - Balance: %balance%"
-  inventoryFull: "%prefix% &cYou don't have enough inventory space."
-  inventoryFullTarget: "%prefix% &c%targetplayer% dont have enough inventory space."
-  noShopItem: "%prefix% &cYou can not buy this block."
-  buySuccess: "%prefix% &aSuccess buy &e%item% x%amount% &afor %price% %pricetype% &8- &a%pricetype%: %balance%"
-  buyTargetSuccess: "%prefix% &aSuccess buy &e%item% x%amount% &afor %price% %pricetype% for %targetplayer% &8- &a%pricetype%: %balance%"
-  runcmdOther: "%prefix% &eExecuted command for %targetplayer%: %value%"
-  runcmdCustomOther: "%prefix% &eExecuted custom command for %targetplayer%: %group%"
-  foundAmount: "%prefix% &eFound %amount% %value%."
-  Commands:
-    title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
-    help: "&f/coreplus help &8- &7This help menu."
-    reload: "&f/coreplus reload &8- &7Reloads config file."
-    version: "&f/coreplus version &8- &7Checks the plugin version and updates."
-    testPlaceholder: "&f/coreplus test placeholder <placeholder> [player] &8- &7Toggles the placeholder debug mode."
-    configbuilderCustom: "&f/coreplus configbuilder custom <group> &8- &7Creates a configuration for custom group."
-    configbuilderGroup: "&f/coreplus configbuilder group &8- &7Creates a configuration for group.yml."
-    cmdgroup: "&f/coreplus cmdgroup [player] <group> &8- &7Executes custom group command for a player."
-    cmd: "&f/coreplus cmd <command> &8- &7Executes custom command."
-    cmdplayer: "&f/coreplus cmdplayer <player> <command> &8- &7Executes custom command for a player."
-    cmdonline: "&f/coreplus cmdonline <player> <expiration> <command> &8- &7Executes the custom command after the player joined the server."
-  Translation:
-    console: "Console"
-    empty: "empty"
-    noTargets: "No Target"
-    noData: "No Data"
-    money: "money"
-    points: "points"
-    res_points: "points"
-    blocks: "blocks"
-    chunks: "chunks"
-    resCreate: "create residence"
-    resChangeSize: "change residence size"
-    fishing: "fishing"
-    usingItem: "using items"
-    interactBlock: "interact blocks"
-    interactEntity: "interact entities"
-    damamgeEntity: "damage entities"
-    dropItem: "drop items"
-    pickupItem: "pickup items"
-    color_a: "green"
-    color_b: "aqua"
-    color_c: "red"
-    color_d: "light_purple"
-    color_e: "yellow"
-    color_f: "white"
-    color_0: "black"
-    color_1: "dark_blue"
-    color_2: "dark_green"
-    color_3: "dark_aqua"
-    color_4: "dark_red"
-    color_5: "dark_purple"
-    color_6: "gold"
-    color_7: "gray"
-    color_8: "dark_gray"
-    color_9: "blue"

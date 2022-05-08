@@ -1,5 +1,7 @@
 package tw.momocraft.coreplus.utils;
 
+import me.NoChance.PvPManager.PvPManager;
+import me.NoChance.PvPManager.PvPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -14,8 +16,8 @@ import tw.momocraft.coreplus.utils.condition.BlocksMap;
 import tw.momocraft.coreplus.utils.condition.LocationMap;
 import tw.momocraft.coreplus.utils.effect.ParticleMap;
 import tw.momocraft.coreplus.utils.effect.SoundMap;
-import tw.momocraft.coreplus.utils.file.ConfigBuilderMap;
-import tw.momocraft.coreplus.utils.file.MySQLMap;
+import tw.momocraft.coreplus.utils.file.maps.ConfigBuilderMap;
+import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 import tw.momocraft.coreplus.utils.message.ActionBarMap;
 import tw.momocraft.coreplus.utils.message.LogMap;
 import tw.momocraft.coreplus.utils.message.TitleMsgMap;
@@ -28,7 +30,6 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         General Variables                       //
     //  ============================================== //
-    private Map<String, String> msgMap = new HashMap<>();
     private boolean pvp;
 
     private boolean vanillaTrans;
@@ -52,6 +53,10 @@ public class ConfigPath implements ConfigInterface {
     //         ConfigBuilder Variables                 //
     //  ============================================== //
     private boolean dataMySQL;
+    private boolean dataYMAL;
+    private boolean dataJson;
+    private boolean dataProp;
+    private boolean dataLog;
     private final Map<String, MySQLMap> mySQLProp = new HashMap<>();
     private final Map<String, String> YMALProp = new HashMap<>();
     private final Map<String, String> jsonProp = new HashMap<>();
@@ -88,7 +93,12 @@ public class ConfigPath implements ConfigInterface {
     }
 
     public void setupLast() {
-        pvp = Boolean.parseBoolean(UtilsHandler.getProperty().getValue(ConfigHandler.getPluginName(), "server.properties", "pvp"));
+        if (UtilsHandler.getDepend().PvPManagerEnabled()) {
+            pvp = PvPManager.getInstance().getConfig().getBoolean("General.Default PvP");
+        } else {
+            pvp = Boolean.parseBoolean(UtilsHandler.getFile().getProperty().getValue(
+                    ConfigHandler.getPluginName(), "server_properties", "pvp"));
+        }
     }
 
     private void sendSetupMsg() {
@@ -144,27 +154,27 @@ public class ConfigPath implements ConfigInterface {
                     if (groupName.equals("Enable"))
                         continue;
                     if (!ConfigHandler.getConfig("data.yml").getBoolean(
-                            "MySQL." + groupName + ".Enable", true))
+                            "MySQL.groups." + groupName + ".Enable", true))
                         continue;
                     mySQLMap = new MySQLMap();
                     mySQLMap.setGroupName(groupName);
                     mySQLMap.setHostName(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".hostname", hostname));
+                            "MySQL.groups." + groupName + ".hostname", hostname));
                     mySQLMap.setPort(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".port", port));
+                            "MySQL.groups." + groupName + ".port", port));
                     mySQLMap.setUsername(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".username", username));
+                            "MySQL.groups." + groupName + ".username", username));
                     mySQLMap.setPassword(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".password", password));
+                            "MySQL.groups." + groupName + ".password", password));
                     mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL." + groupName + ".database"));
+                            "MySQL.groups." + groupName + ".database"));
                     tableConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
-                            "MySQL." + groupName + ".Tables");
+                            "MySQL.groups." + groupName + ".Tables");
                     if (tableConfig != null) {
                         map = new HashMap<>();
                         for (String subGroupName : tableConfig.getKeys(false)) {
                             map.put(subGroupName, ConfigHandler.getConfig("data.yml").getString(
-                                    "MySQL." + groupName + ".Tables." + subGroupName));
+                                    "MySQL.groups." + groupName + ".Tables." + subGroupName));
                         }
                         mySQLMap.setTables(map);
                     }
@@ -172,61 +182,79 @@ public class ConfigPath implements ConfigInterface {
                 }
             }
         }
-        dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Yaml");
-        if (dataConfig != null) {
-            for (String groupName : dataConfig.getKeys(false)) {
-                if (groupName.equals("Enable"))
-                    continue;
-                if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml." + groupName + ".Enable", true))
-                    continue;
-                YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml." + groupName + ".Path"));
-            }
-        }
-        dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Json");
-        if (dataConfig != null) {
-            for (String groupName : dataConfig.getKeys(false)) {
-                if (groupName.equals("Enable"))
-                    continue;
-                if (!ConfigHandler.getConfig("data.yml").getBoolean("Json." + groupName + ".Enable", true))
-                    continue;
-                jsonProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Json." + groupName + ".Path"));
-            }
-        }
-        dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Properties");
-        if (dataConfig != null) {
-            for (String groupName : dataConfig.getKeys(false)) {
-                if (groupName.equals("Enable"))
-                    continue;
-                if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties." + groupName + ".Enable", true))
-                    continue;
-                YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties." + groupName + ".Path"));
-            }
-        }
-        dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs");
-        if (dataConfig != null) {
-            LogMap logMap;
-            String path;
-            String name;
-            for (String groupName : dataConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs." + groupName) == null)
-                    continue;
-                logMap = new LogMap();
-                logMap.setGroupName(groupName);
-                path = ConfigHandler.getConfig("data.yml").getString("Logs." + groupName + ".Path");
-                name = ConfigHandler.getConfig("data.yml").getString("Logs." + groupName + ".Name");
-                if (path == null || name == null)
-                    continue;
-                if (path.startsWith("plugins//")) {
-                    path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
-                } else if (path.startsWith("server//")) {
-                    path = path.replace("server//", "");
-                    path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+        dataYMAL = ConfigHandler.getConfig("data.yml").getBoolean("Yaml.Enable");
+        if (dataYMAL) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Yaml.groups");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml.groups." + groupName + ".Enable", true))
+                        continue;
+                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml.groups." + groupName + ".Path"));
                 }
-                logMap.setFile(new File(path, name));
-                logMap.setTime(ConfigHandler.getConfig("data.yml").getBoolean("Logs." + groupName + ".Time", false));
-                logMap.setNewFile(ConfigHandler.getConfig("data.yml").getBoolean("Logs." + groupName + ".New-File", false));
-                logMap.setZip(ConfigHandler.getConfig("data.yml").getBoolean("Logs." + groupName + ".Zip", false));
-                logProp.put(groupName, logMap);
+            }
+        }
+        dataJson = ConfigHandler.getConfig("data.yml").getBoolean("Json.Enable");
+        if (dataJson) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Json.groups");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Json.groups." + groupName + ".Enable", true))
+                        continue;
+                    jsonProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Json.groups." + groupName + ".Path"));
+                }
+            }
+        }
+        dataProp = ConfigHandler.getConfig("data.yml").getBoolean("Properties.Enable");
+        if (dataProp) {
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Properties.groups");
+            if (dataConfig != null) {
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (groupName.equals("Enable"))
+                        continue;
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties.groups." + groupName + ".Enable", true))
+                        continue;
+                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties.groups." + groupName + ".Path"));
+                }
+            }
+        }
+        dataLog = ConfigHandler.getConfig("data.yml").getBoolean("Logs.Enable");
+        if (dataLog) {
+            boolean time = ConfigHandler.getConfig("data.yml").getBoolean(
+                    "Logs.Settings.Default.Time", false);
+            boolean newFile = ConfigHandler.getConfig("data.yml").getBoolean(
+                    "Logs.Settings.Default.New-File", false);
+            boolean zip = ConfigHandler.getConfig("data.yml").getBoolean(
+                    "Logs.Settings.Default.Zip", false);
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.groups");
+            if (dataConfig != null) {
+                LogMap logMap;
+                String path;
+                String name;
+                for (String groupName : dataConfig.getKeys(false)) {
+                    if (ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.groups." + groupName) == null)
+                        continue;
+                    logMap = new LogMap();
+                    logMap.setGroupName(groupName);
+                    path = ConfigHandler.getConfig("data.yml").getString("Logs.groups." + groupName + ".Path");
+                    name = ConfigHandler.getConfig("data.yml").getString("Logs.groups." + groupName + ".Name");
+                    if (path == null || name == null)
+                        continue;
+                    if (path.startsWith("plugins//")) {
+                        path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                    } else if (path.startsWith("server//")) {
+                        path = path.replace("server//", "");
+                        path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
+                    }
+                    logMap.setFile(new File(path, name));
+                    logMap.setTime(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".Time", time));
+                    logMap.setNewFile(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".New-File", newFile));
+                    logMap.setZip(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".Zip", zip));
+                    logProp.put(groupName, logMap);
+                }
             }
         }
     }
@@ -558,6 +586,42 @@ public class ConfigPath implements ConfigInterface {
 
     public Map<String, ParticleMap> getParticleProp() {
         return particleProp;
+    }
+
+    public void setDataMySQL(boolean dataMySQL) {
+        this.dataMySQL = dataMySQL;
+    }
+
+    public boolean isDataYMAL() {
+        return dataYMAL;
+    }
+
+    public void setDataYMAL(boolean dataYMAL) {
+        this.dataYMAL = dataYMAL;
+    }
+
+    public boolean isDataJson() {
+        return dataJson;
+    }
+
+    public void setDataJson(boolean dataJson) {
+        this.dataJson = dataJson;
+    }
+
+    public boolean isDataProp() {
+        return dataProp;
+    }
+
+    public void setDataProp(boolean dataProp) {
+        this.dataProp = dataProp;
+    }
+
+    public boolean isDataLog() {
+        return dataLog;
+    }
+
+    public void setDataLog(boolean dataLog) {
+        this.dataLog = dataLog;
     }
 
     @Override

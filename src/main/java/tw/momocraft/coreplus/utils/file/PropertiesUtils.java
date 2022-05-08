@@ -11,73 +11,58 @@ import java.util.*;
 
 public class PropertiesUtils {
 
-    public Map<String, String> getPropProp() {
-        return ConfigHandler.getConfigPath().getPropProp();
-    }
-
     private final Map<String, Properties> fileMap = new HashMap<>();
-    private final List<String> customList = new ArrayList<>();
+    private final List<String> dataList = new ArrayList<>();
 
-    public PropertiesUtils() {
-        loadCustom();
-        loadGroup("server.properties");
-
-        sendLoadedMsg();
+    public Map<String, Properties> getDataMap() {
+        return fileMap;
     }
 
-    public boolean load(String pluginName, String group, String filePath) {
+    public boolean isEnable() {
+        return ConfigHandler.getConfigPath().isDataProp();
+    }
+
+    public void setup() {
+        setupConfig();
+
+        load(ConfigHandler.getPluginName(), "server_properties", Bukkit.getServer().getWorldContainer() + "//server.properties");
+        UtilsHandler.getMsg().sendFileLoadedMsg("Properties", dataList);
+    }
+
+    public void setupConfig() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+        }
+    }
+
+    public boolean load(String pluginName, String groupName, String filePath) {
         try {
             InputStream inputStream = Files.asByteSource(new File(filePath)).openStream();
             Properties properties = new Properties();
             properties.load(inputStream);
-            fileMap.put(group, properties);
+            fileMap.put(groupName, properties);
+            dataList.add(groupName);
             inputStream.close();
             return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Cannot load the properties file: " + group);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                    "Cannot load the properties file: " + groupName);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             return false;
         }
     }
 
-    public String getValue(String pluginName, String group, String input) {
+    public String getValue(String pluginName, String groupName, String input) {
         try {
-            return fileMap.get(group).getProperty(input);
+            return fileMap.get(groupName).getProperty(input);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "An error occurred while getting the value of \"" + input + "\".");
+                    "Cannot set the value for Properties file: " + groupName);
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not find the Properties group of \"" + group + "\".");
+                    "Value = " + input);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
             return null;
         }
-    }
-
-    private boolean loadGroup(String group) {
-        String filePath;
-        switch (group) {
-            case "server.properties":
-                filePath = Bukkit.getServer().getWorldContainer() + "//server.properties";
-                break;
-            default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
-                        "Cannot load the properties file: " + group);
-                return false;
-        }
-        return load(ConfigHandler.getPluginName(), group, filePath);
-    }
-
-    private void loadCustom() {
-        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
-        for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
-            customList.add(groupName);
-        }
-    }
-
-    private void sendLoadedMsg() {
-        if (!customList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded Properties files: " + customList);
     }
 }

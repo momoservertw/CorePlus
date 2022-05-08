@@ -2,6 +2,7 @@ package tw.momocraft.coreplus.utils.file;
 
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,200 +12,99 @@ import java.util.Map;
 
 public class MySQLUtils {
 
-    static Connection PlayerdataPlus;
-    static Connection HotkeyPlus;
-    static Connection ServerPlus;
-    static Connection MySQLPlayerDataBridge;
-    static Connection MyCommand;
+    Map<String, Connection> dataMap = new HashMap<>();
+    private final List<String> dataList = new ArrayList<>();
 
-    public Map<String, MySQLMap> getMySQLProp() {
-        return ConfigHandler.getConfigPath().getMySQLProp();
+    public Map<String, Connection> getDataMap() {
+        return dataMap;
     }
 
-    public boolean connect(String pluginName, String prefix, String databaseType) {
+    public boolean isEnable() {
+        return ConfigHandler.getConfigPath().isDataProp();
+    }
+
+    public void setup() {
+        setupConfig();
+
+        UtilsHandler.getMsg().sendFileLoadedMsg("MySQL", dataList);
+    }
+
+    public void setupConfig() {
+        Map<String, MySQLMap> map = ConfigHandler.getConfigPath().getMySQLProp();
+        for (Map.Entry<String, MySQLMap> entry : map.entrySet())
+            connect(entry.getKey(), entry.getValue());
+    }
+
+    public boolean connect(String pluginName, MySQLMap mySQLMap) {
+        String groupName = mySQLMap.getGroupName();
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to connect MySQL database: " + databaseType);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to connect MySQL: " + groupName);
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "The jdbc driver is unavailable!");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
-            return false;
-        }
-        MySQLMap mySQLMap;
-        mySQLMap = getMySQLProp().get(databaseType);
-        if (mySQLMap == null) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not connect MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please add the database settings in CorePlus/data.yml.");
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             return false;
         }
         try {
-            switch (databaseType) {
-                case "PlayerdataPlus":
-                    PlayerdataPlus = DriverManager.getConnection("jdbc:mysql://" +
-                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
-                            mySQLMap.getUsername(), mySQLMap.getPassword());
-                    break;
-                case "HotkeyPlus":
-                    HotkeyPlus = DriverManager.getConnection("jdbc:mysql://" +
-                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
-                            mySQLMap.getUsername(), mySQLMap.getPassword());
-                    break;
-                case "ServerPlus":
-                    ServerPlus = DriverManager.getConnection("jdbc:mysql://" +
-                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
-                            mySQLMap.getUsername(), mySQLMap.getPassword());
-                    break;
-                case "MySQLPlayerDataBridge":
-                    MySQLPlayerDataBridge = DriverManager.getConnection("jdbc:mysql://" +
-                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
-                            mySQLMap.getUsername(), mySQLMap.getPassword());
-                    break;
-                case "MyCommand":
-                    MyCommand = DriverManager.getConnection("jdbc:mysql://" +
-                                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
-                            mySQLMap.getUsername(), mySQLMap.getPassword());
-                    break;
-                default:
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not connect MySQL database: " + databaseType);
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please update CorePlus.");
-                    return false;
-            }
+            Connection connection = DriverManager.getConnection("jdbc:mysql://" +
+                            mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
+                    mySQLMap.getUsername(), mySQLMap.getPassword());
+            dataMap.put(groupName, connection);
+            dataList.add(groupName);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to connect MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to connect MySQL: " + groupName);
+            UtilsHandler.getMsg().sendDebugTrace(groupName, ex);
             return false;
         }
-        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to connect MySQL database: " + databaseType);
+        UtilsHandler.getMsg().sendConsoleMsg(pluginName, "Succeed to connect MySQL: " + groupName);
         return true;
     }
 
-    public boolean isConnect(String pluginName, String databaseType) {
+    public boolean isConnect(String pluginName, String database) {
         try {
-            switch (databaseType) {
-                case "PlayerdataPlus":
-                    if (PlayerdataPlus != null && !PlayerdataPlus.isClosed())
-                        return true;
-                    break;
-                case "HotkeyPlus":
-                    if (HotkeyPlus != null && !HotkeyPlus.isClosed())
-                        return true;
-                    break;
-                case "ServerPlus":
-                    if (ServerPlus != null && !ServerPlus.isClosed())
-                        return true;
-                    break;
-                case "MySQLPlayerDataBridge":
-                    if (MySQLPlayerDataBridge != null && !MySQLPlayerDataBridge.isClosed())
-                        return true;
-                    break;
-                case "MyCommand":
-                    if (MyCommand != null && !MyCommand.isClosed())
-                        return true;
-                    break;
-                default:
-                    return false;
-            }
-            return false;
+            Connection connection = dataMap.get(database);
+            return connection != null && connection.isClosed();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not check the connect of MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Can not check the connect of MySQL: " + database);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             return false;
         }
     }
 
-    public boolean disabledConnect(String pluginName, String prefix, String databaseType) {
+    public boolean disabledConnect(String pluginName, String database) {
         try {
-            switch (databaseType) {
-                case "PlayerdataPlus":
-                    if (PlayerdataPlus != null && !PlayerdataPlus.isClosed()) {
-                        PlayerdataPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: " + databaseType);
-                    }
-                    break;
-                case "HotkeyPlus":
-                    if (HotkeyPlus != null && !HotkeyPlus.isClosed()) {
-                        HotkeyPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: " + databaseType);
-                    }
-                    break;
-                case "ServerPlus":
-                    if (ServerPlus != null && !ServerPlus.isClosed()) {
-                        ServerPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: " + databaseType);
-                    }
-                    break;
-                case "MySQLPlayerDataBridge":
-                    if (MySQLPlayerDataBridge != null && !MySQLPlayerDataBridge.isClosed()) {
-                        MySQLPlayerDataBridge.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: " + databaseType);
-                    }
-                    break;
-                case "ALL":
-                    if (PlayerdataPlus != null && !PlayerdataPlus.isClosed()) {
-                        PlayerdataPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: PlayerdataPlus");
-                    }
-                    if (HotkeyPlus != null && !HotkeyPlus.isClosed()) {
-                        HotkeyPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: HotkeyPlus");
-                    }
-                    if (ServerPlus != null && !ServerPlus.isClosed()) {
-                        ServerPlus.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: ServerPlus");
-                    }
-                    if (MySQLPlayerDataBridge != null && !MySQLPlayerDataBridge.isClosed()) {
-                        MySQLPlayerDataBridge.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: MySQLPlayerDataBridge");
-                    }
-                    if (MyCommand != null && !MyCommand.isClosed()) {
-                        MyCommand.close();
-                        UtilsHandler.getMsg().sendConsoleMsg(prefix, "Succeed to disconnect MySQL database: MySQLPlayerDataBridge");
-                    }
-                    break;
-                default:
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not disconnect MySQL database: " + databaseType);
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please update CorePlus.");
-                    return false;
+            Connection connection = dataMap.get(database);
+            if (connection != null && connection.isClosed()) {
+                connection.close();
+                return true;
             }
-            return true;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not disconnect MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not disconnect MySQL: " + database);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             return false;
         }
+        return true;
     }
 
-    private PreparedStatement getStatement(String pluginName, String databaseType, String sql) {
+    private PreparedStatement getStatement(String pluginName, String database, String sql) {
         try {
-            switch (databaseType) {
-                case "PlayerdataPlus":
-                    return PlayerdataPlus.prepareStatement(sql);
-                case "HotkeyPlus":
-                    return HotkeyPlus.prepareStatement(sql);
-                case "ServerPlus":
-                    return ServerPlus.prepareStatement(sql);
-                case "MyCommand":
-                    return MyCommand.prepareStatement(sql);
-                default:
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Please check whether CorePlus is the latest version.");
-                    return null;
+            Connection connection = dataMap.get(database);
+            if (connection != null && connection.isClosed()) {
+                return connection.prepareStatement(sql);
             }
         } catch (SQLException ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
+        return null;
     }
 
     public void executeSQL(String pluginName, String database, String sql) {
         try {
             getStatement(pluginName, database, sql).executeUpdate();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to execute SQL statement from MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
@@ -227,9 +127,7 @@ public class MySQLUtils {
         try {
             executeSQL(pluginName, database, sql);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add column in MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
@@ -247,9 +145,7 @@ public class MySQLUtils {
         try {
             executeSQL(pluginName, database, sql);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add columns in MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
@@ -258,23 +154,19 @@ public class MySQLUtils {
         try {
             executeSQL(pluginName, database, sql);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to add column in MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
-    public void removeColumns(String pluginName, String databaseType, String table, List<String> columns) {
+    public void removeColumns(String pluginName, String database, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " DROP (\"");
         for (String column : columns)
             sqlBuilder.append(column).append(",");
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
         try {
-            executeSQL(pluginName, databaseType, sql);
+            executeSQL(pluginName, database, sql);
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to drop column in MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
@@ -296,9 +188,7 @@ public class MySQLUtils {
             }
             return keyMap;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
@@ -314,232 +204,185 @@ public class MySQLUtils {
             }
             return map;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + database);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public Map<Object, Object> getValueMap(String pluginName, String databaseType, String table, String keyColumn, String valueColumn, String keyType, String valueType) {
+    public Map<Object, Object> getValueMap(String pluginName, String database, String table, String keyColumn, String valueColumn, String keyType, String valueType) {
         // SELECT column1, column2 FROM table
         String sql = "SELECT " + keyColumn + ", " + valueColumn + " FROM " + table + "\"";
         try {
             Map<Object, Object> map = new HashMap<>();
-            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            ResultSet result = getStatement(pluginName, database, sql).executeQuery();
             while (result.next()) {
-                Object key;
-                switch (keyType) {
-                    case "int":
-                        key = result.getInt(keyColumn);
-                        break;
-                    case "float":
-                        key = result.getFloat(keyColumn);
-                        break;
-                    case "long":
-                        key = result.getLong(keyColumn);
-                        break;
-                    case "double":
-                        key = result.getDouble(keyColumn);
-                        break;
-                    case "boolean":
-                        key = result.getBoolean(keyColumn);
-                        break;
-                    case "byte":
-                        key = result.getByte(keyColumn);
-                        break;
-                    case "string":
-                    default:
-                        key = result.getString(keyColumn);
-                        break;
-                }
-                Object value;
-                switch (valueType) {
-                    case "int":
-                        value = result.getInt(valueColumn);
-                        break;
-                    case "float":
-                        value = result.getFloat(valueColumn);
-                        break;
-                    case "long":
-                        value = result.getLong(valueColumn);
-                        break;
-                    case "double":
-                        value = result.getDouble(valueColumn);
-                        break;
-                    case "boolean":
-                        value = result.getBoolean(valueColumn);
-                        break;
-                    case "byte":
-                        value = result.getByte(valueColumn);
-                        break;
-                    case "string":
-                    default:
-                        value = result.getString(valueColumn);
-                        break;
-                }
+                Object key = switch (keyType) {
+                    case "int" -> result.getInt(keyColumn);
+                    case "float" -> result.getFloat(keyColumn);
+                    case "long" -> result.getLong(keyColumn);
+                    case "double" -> result.getDouble(keyColumn);
+                    case "boolean" -> result.getBoolean(keyColumn);
+                    case "byte" -> result.getByte(keyColumn);
+                    default -> result.getString(keyColumn);
+                };
+                Object value = switch (valueType) {
+                    case "int" -> result.getInt(valueColumn);
+                    case "float" -> result.getFloat(valueColumn);
+                    case "long" -> result.getLong(valueColumn);
+                    case "double" -> result.getDouble(valueColumn);
+                    case "boolean" -> result.getBoolean(valueColumn);
+                    case "byte" -> result.getByte(valueColumn);
+                    default -> result.getString(valueColumn);
+                };
                 map.put(key, value);
             }
             return map;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public void setValue(String pluginName, String databaseType, String table, String column, String columnValue) {
+    public void setValue(String pluginName, String database, String table, String column, String columnValue) {
+        // INSERT INTO table SET column = 'columnValue' ON DUPLICATE KEY UPDATE column = 'columnValue'
         String sql = "\"INSERT INTO " + table +
                 " SET " + column + "='" + columnValue + "'" +
                 " ON DUPLICATE KEY UPDATE " + column + "='" + columnValue + "'" +
                 "\"";
         try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
+            getStatement(pluginName, database, sql).executeUpdate();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
-    public void setValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column, String columnValue) {
+    public void setValueWhere(String pluginName, String database, String table, String whereKey, String whereValue, String column, String columnValue) {
+        // UPDATE table SET column = 'columnValue' WHERE whereKey = 'whereValue'
         String sql = "\"UPDATE " + table +
                 " SET " + column + "='" + columnValue + "'" +
                 " WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
+            getStatement(pluginName, database, sql).executeUpdate();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to set the value in MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
-    public void removeValue(String pluginName, String databaseType, String table, String whereKey, String whereValue) {
+    public void removeValue(String pluginName, String database, String table, String whereKey, String whereValue) {
+        // DELETE FROM table WHERE whereKey = 'whereValue'
         String sql = "\"DELETE FROM " + table +
                 " WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
-            getStatement(pluginName, databaseType, sql).executeUpdate();
+            getStatement(pluginName, database, sql).executeUpdate();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to remove the value in MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
         }
     }
 
-    public String getValue(String pluginName, String databaseType, String table, String column) {
+    public String getValue(String pluginName, String database, String table, String column) {
+        // SELECT targetColumn FROM table
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
-            // SELECT targetColumn FROM table
-            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            ResultSet result = getStatement(pluginName, database, sql).executeQuery();
             String value = null;
             while (result.next()) {
                 value = result.getString(column);
             }
             return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public String getValueWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
+    public String getValueWhere(String pluginName, String database, String table, String whereKey, String whereValue, String column) {
+        // SELECT targetColumn FROM table WHERE uuid = 'UUID'
         String sql = "\"SELECT " + column + " FROM " + table +
                 "WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
-            // SELECT targetColumn FROM table WHERE uuid = 'UUID'
-            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            ResultSet result = getStatement(pluginName, database, sql).executeQuery();
             String value = null;
             while (result.next()) {
                 value = result.getString(column);
             }
             return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public List<String> getValueList(String pluginName, String databaseType, String table, String column) {
+    public List<String> getValueList(String pluginName, String database, String table, String column) {
+        // SELECT targetColumn FROM table
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
-            // SELECT targetColumn FROM table
-            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            ResultSet result = getStatement(pluginName, database, sql).executeQuery();
             List<String> value = new ArrayList<>();
             while (result.next()) {
                 value.add(result.getString(column));
             }
             return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public List<String> getValueListWhere(String pluginName, String databaseType, String table, String whereKey, String whereValue, String column) {
+    public List<String> getValueListWhere(String pluginName, String database, String table, String whereKey, String whereValue, String column) {
         String sql = "\"SELECT " + column + " FROM " + table +
                 "WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
             // SELECT targetColumn FROM table WHERE uuid = 'UUID'
-            ResultSet result = getStatement(pluginName, databaseType, sql).executeQuery();
+            ResultSet result = getStatement(pluginName, database, sql).executeQuery();
             List<String> value = new ArrayList<>();
             while (result.next()) {
                 value.add(result.getString(column));
             }
             return value;
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public ResultSet getResultSet(String pluginName, String databaseType, String sql) {
+    public ResultSet getResultSet(String pluginName, String database, String sql) {
         try {
-            return getStatement(pluginName, databaseType, sql).executeQuery();
+            return getStatement(pluginName, database, sql).executeQuery();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public ResultSet getResultSet(String pluginName, String databaseType, String table, String column) {
+    public ResultSet getResultSet(String pluginName, String database, String table, String column) {
         String sql = "\"SELECT " + column + " FROM " + table + "\"";
         try {
-            return getStatement(pluginName, databaseType, sql).executeQuery();
+            return getStatement(pluginName, database, sql).executeQuery();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
     }
 
-    public ResultSet getResultSetWhere(String pluginName, String databaseType, String table, String column, String whereKey, String whereValue) {
+    public ResultSet getResultSetWhere(String pluginName, String database, String table, String column, String whereKey, String whereValue) {
         String sql = "\"SELECT " + column + " FROM " + table +
                 "WHERE " + whereKey + " = '" + whereValue + "'" +
                 "\"";
         try {
-            return getStatement(pluginName, databaseType, sql).executeQuery();
+            return getStatement(pluginName, database, sql).executeQuery();
         } catch (Exception ex) {
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to get the value from MySQL database: " + databaseType);
-            UtilsHandler.getMsg().sendErrorMsg(pluginName, "sql = " + sql);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            sendGetErrorMsg(pluginName, database, sql, ex);
             return null;
         }
+    }
+
+    private void sendGetErrorMsg(String pluginName, String database, String sql, Exception ex) {
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Failed to execute sql for MySQL: " + database);
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "SQL = " + sql);
+        UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
     }
 }

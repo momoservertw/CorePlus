@@ -49,7 +49,7 @@ public class ItemJoinUtils {
     }
 
     public Set<String> getItemNodes() {
-        ConfigurationSection config = UtilsHandler.getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
+        ConfigurationSection config = UtilsHandler.getFile().getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
         if (config != null) {
             return config.getKeys(false);
         }
@@ -57,6 +57,6 @@ public class ItemJoinUtils {
     }
 
     public ConfigurationSection getItemConfig() {
-        return UtilsHandler.getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
+        return UtilsHandler.getFile().getYaml().getConfig("itemjoin_items").getConfigurationSection("items");
     }
 }

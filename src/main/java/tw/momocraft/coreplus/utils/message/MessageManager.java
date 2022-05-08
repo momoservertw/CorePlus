@@ -25,10 +25,9 @@ import java.util.*;
 public class MessageManager implements MessageInterface {
 
     @Override
-    public void sendBroadcastMsg(String prefix, String input, String... langHolder) {
+    public void sendBroadcastMsg(String prefix, String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         Bukkit.broadcastMessage(input);
     }
@@ -42,10 +41,9 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDiscordMsg(String prefix, String channel, String input, String... langHolder) {
+    public void sendDiscordMsg(String prefix, String channel, String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         UtilsHandler.getDiscord().sendMsg(channel, input);
     }
@@ -59,12 +57,12 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendDiscordMsg(String prefix, String channel, String input, Player player, String... langHolder) {
+    public void sendDiscordMsg(String prefix, String channel, String input, Player player) {
         if (input == null)
             return;
         if (player == null)
             return;
-        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
+        String message = UtilsHandler.getFile().getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         if (message != null)
             message = message.replace("%message%", input);
         else
@@ -74,7 +72,6 @@ public class MessageManager implements MessageInterface {
         message = message.replace("%username%", name);
         message = message.replace("%displayname%", displayName != null ? displayName : name);
         message = message.replace("%channelname%", channel);
-        input = transLang(player, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         UtilsHandler.getDiscord().sendMsg(input, message);
     }
@@ -85,7 +82,7 @@ public class MessageManager implements MessageInterface {
             return;
         if (player == null)
             return;
-        String message = UtilsHandler.getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
+        String message = UtilsHandler.getFile().getYaml().getConfig("discord_messages").getString("MinecraftChatToDiscordMessageFormat");
         if (message != null)
             message = message.replace("%message%", input);
         else
@@ -100,12 +97,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendMsg(String prefix, CommandSender sender, String input, String... langHolder) {
+    public void sendMsg(String prefix, CommandSender sender, String input) {
         if (input == null)
             return;
         if (sender == null)
             return;
-        input = transLang(sender, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         sender.sendMessage(input);
     }
@@ -121,10 +117,9 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendConsoleMsg(String prefix, String input, String... langHolder) {
+    public void sendConsoleMsg(String prefix, String input) {
         if (input == null)
             return;
-        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         CorePlus.getInstance().getServer().getConsoleSender().sendMessage(input);
     }
@@ -138,12 +133,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendPlayerMsg(String prefix, Player player, String input, String... langHolder) {
+    public void sendPlayerMsg(String prefix, Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(input, langHolder);
         input = setPrefixAndColor(prefix, input);
         player.sendMessage(input);
     }
@@ -159,12 +153,11 @@ public class MessageManager implements MessageInterface {
     }
 
     @Override
-    public void sendChatMsg(String prefix, Player player, String input, String... langHolder) {
+    public void sendChatMsg(String prefix, Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(player, input, langHolder);
         input = setPrefixAndColor(prefix, input);
         player.chat(input);
     }
@@ -181,45 +174,41 @@ public class MessageManager implements MessageInterface {
 
 
     @Override
-    public void sendActionBarMsg(Player player, String input, String... langHolder) {
+    public void sendActionBarMsg(Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(player, input, langHolder);
         input = setColor(input);
         player.sendActionBar(TextComponent.fromLegacyText(input));
     }
 
     @Override
-    public void sendTitleMsg(Player player, String input, String... langHolder) {
+    public void sendTitleMsg(Player player, String input) {
         if (input == null)
             return;
         if (player == null)
             return;
-        input = transLang(player, input, langHolder);
         input = setColor(input);
         String[] args = input.split("\\n");
-        sendTitleMsg(player, args[0], args[1], 10, 70, 20, langHolder);
+        sendTitleMsg(player, args[0], args[1], 10, 70, 20);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, String... langHolder) {
+    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle) {
         if (inputTitle == null && inputSubtitle == null)
             return;
         if (player == null)
             return;
         inputTitle = setColor(inputTitle);
         inputSubtitle = setColor(inputSubtitle);
-        sendTitleMsg(player, inputTitle, inputSubtitle, 10, 70, 20, langHolder);
+        sendTitleMsg(player, inputTitle, inputSubtitle, 10, 70, 20);
     }
 
     @Override
-    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut, String... langHolder) {
+    public void sendTitleMsg(Player player, String inputTitle, String inputSubtitle, int fadeIn, int stay, int fadeOut) {
         if (player == null)
             return;
-        inputTitle = transLang(player, inputTitle, langHolder);
-        inputSubtitle = transLang(player, inputSubtitle, langHolder);
         inputTitle = setColor(inputTitle);
         inputSubtitle = setColor(inputSubtitle);
         player.sendTitle(inputTitle, inputSubtitle, fadeIn, stay, fadeOut);
@@ -361,11 +350,11 @@ public class MessageManager implements MessageInterface {
         if (sender == null)
             return;
         if (input.startsWith("Message.")) {
-            String langMessage = ConfigHandler.getConfig("config.yml").getString(input);
+            String langMessage = ConfigHandler.getConfig("message.yml").getString(input);
             if (langMessage != null) {
                 input = langMessage;
             } else {
-                sendErrorMsg(ConfigHandler.getPluginName(), "Can not find message \"" + input + "\".");
+                sendErrorMsg(ConfigHandler.getPluginName(), "Can not find message \"" + input + "\" in message.yml.");
                 return;
             }
         }
@@ -898,7 +887,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_perm%PERMISSION%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // Translate PlaceHolderAPI placeholders.
@@ -1064,7 +1053,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_perm%PERMISSION%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // Translate PlaceHolderAPI's placeholders.
@@ -1326,7 +1315,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_location%LOCATION%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // %TARGET_blocks%BLOCKS%
@@ -1342,7 +1331,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_blocks%BLOCKS%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // %TARGET_nearby%type%name/type%group%radius%
@@ -1363,7 +1352,7 @@ public class MessageManager implements MessageInterface {
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%TARGET_nearby%type%name/type%group%radius%\"");
                     UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                    UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                    UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
                 }
             }
         }
@@ -1415,7 +1404,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%random_number%NUMBER%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // %random_list%String1,String2%
@@ -1438,7 +1427,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%random_list%STRING1,STRING2%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // %random_player%
@@ -1495,7 +1484,7 @@ public class MessageManager implements MessageInterface {
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"%random_player_except%PLAYERS%\"");
                         UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                        UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+                        UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
                     }
                 }
             }
@@ -1707,7 +1696,7 @@ public class MessageManager implements MessageInterface {
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while converting placeholder: \"" + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format: \"\"%condition%CONDITION%\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Placeholders");
-                UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
         // PlaceHolderAPI
@@ -1837,7 +1826,7 @@ public class MessageManager implements MessageInterface {
             }
         }
         if (!message.toString().equals("&fHooked " + type + ": ["))
-            sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
+            sendConsoleMsg(pluginPrefix + message.substring(0, message.length() - 2) + "]");
     }
 
 
@@ -1858,5 +1847,12 @@ public class MessageManager implements MessageInterface {
         if (input == null)
             return null;
         return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    public void sendFileLoadedMsg(String type, List<String> list) {
+        if (list.isEmpty())
+            return;
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
+                "Loaded " + type + " files: " + list);
     }
 }

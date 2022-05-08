@@ -62,11 +62,6 @@ public class ConditionManager implements ConditionInterface {
     }
 
     @Override
-    public void executeAction(String input) {
-
-    }
-
-    @Override
     public boolean checkLocation(String pluginName, Location loc, List<String> locList, boolean def) {
         return locationUtils.checkLocation(pluginName, loc, locList, def);
     }

@@ -13,26 +13,36 @@ import java.util.Map;
 
 public class YamlUtils {
 
-    public Map<String, String> getYMALProp() {
-        return ConfigHandler.getConfigPath().getYMALProp();
-    }
-
     private final Map<String, YamlConfiguration> configMap = new HashMap<>();
     private final Map<String, File> fileMap = new HashMap<>();
-    private final List<String> customList = new ArrayList<>();
+    private final List<String> dataList = new ArrayList<>();
 
-    public YamlUtils() {
-        loadCustom();
-        loadGroup("discord_messages");
-
-        sendLoadedMsg();
+    public boolean isEnable() {
+        return ConfigHandler.getConfigPath().isDataProp();
     }
 
-    public boolean load(String pluginName, String group, String filePath) {
+    public void setup() {
+        loadConfig();
+        load(ConfigHandler.getPluginName(),
+                "discord_messages",
+                Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV//messages.yml");
+
+        UtilsHandler.getMsg().sendFileLoadedMsg("YAML", dataList);
+    }
+
+    private void loadConfig() {
+        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        for (String groupName : prop.keySet()) {
+            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
+        }
+    }
+
+    public boolean load(String pluginName, String groupName, String filePath) {
         try {
             File file = new File(filePath);
-            configMap.put(group, YamlConfiguration.loadConfiguration(file));
-            fileMap.put(group, file);
+            configMap.put(groupName, YamlConfiguration.loadConfiguration(file));
+            fileMap.put(groupName, file);
+            dataList.add(groupName);
             return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
@@ -62,45 +72,14 @@ public class YamlUtils {
             config.save(fileMap.get(groupName));
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName,
-                    "Can not create YAML file: " + groupName);
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+                    "Cannot set the value for YAML file: " + groupName);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName,
+                    "Value = " + value.toString());
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
         }
     }
 
-    public YamlConfiguration getConfig(String group) {
-        YamlConfiguration yamlConfiguration = configMap.get(group);
-        if (yamlConfiguration == null) {
-            loadGroup(group);
-            return configMap.get(group);
-        }
-        return yamlConfiguration;
-    }
-
-    private void loadCustom() {
-        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
-        for (String groupName : prop.keySet()) {
-            load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
-            customList.add(groupName);
-        }
-    }
-
-    private boolean loadGroup(String group) {
-        String filePath;
-        switch (group) {
-            case "discord_messages":
-                filePath = Bukkit.getServer().getWorldContainer().getPath() + "//plugins//DiscordSRV//messages.yml";
-                break;
-            default:
-                UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
-                        "Cannot load the YAML file: " + group);
-                return false;
-        }
-        return load(ConfigHandler.getPluginName(), group, filePath);
-    }
-
-    private void sendLoadedMsg() {
-        if (!customList.isEmpty())
-            UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(),
-                    "Loaded YAML files: " + customList);
+    public YamlConfiguration getConfig(String groupName) {
+        return configMap.get(groupName);
     }
 }

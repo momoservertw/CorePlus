@@ -228,7 +228,7 @@ public class Utils implements UtilsInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + value2 + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
         return false;
     }
@@ -301,7 +301,7 @@ public class Utils implements UtilsInterface {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
         return false;
     }
@@ -340,7 +340,7 @@ public class Utils implements UtilsInterface {
             }
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking condition: \"" + value1 + operator + value2 + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Condtions");
-            UtilsHandler.getMsg().sendDebugTrace(true, pluginName, ex);
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
         return false;
     }

@@ -14,7 +14,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import tw.momocraft.coreplus.api.PlayerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.file.MySQLMap;
+import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -115,6 +115,7 @@ public class PlayerManager implements PlayerInterface {
         return Bukkit.getOfflinePlayer(uuid);
     }
 
+    @Override
     public List<String> getOnlinePlayerNames() {
         Collection<?> playersOnlineNew;
         Player[] playersOnlineOld;
@@ -154,7 +155,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer = getOfflinePlayer(playerName);
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+            lastLogin = Double.parseDouble(UtilsHandler.getFile().getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "UUID", offlinePlayer.getUniqueId().toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -167,7 +168,7 @@ public class PlayerManager implements PlayerInterface {
     public double getLastLogin(UUID uuid) {
         double lastLogin = 0;
         try {
-            lastLogin = Double.parseDouble(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+            lastLogin = Double.parseDouble(UtilsHandler.getFile().getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "UUID", uuid.toString(), "last_login"));
         } catch (Exception ignored) {
         }
@@ -179,7 +180,7 @@ public class PlayerManager implements PlayerInterface {
     public void importPlayerLastLogin() {
         if (!ConfigHandler.getConfigPath().isDataMySQL())
             return;
-        List<String> uuidList = UtilsHandler.getMySQL().getValueList(ConfigHandler.getPluginName(),
+        List<String> uuidList = UtilsHandler.getFile().getMySQL().getValueList(ConfigHandler.getPluginName(),
                 "coreplus", "player", "uuid");
         if (uuidList == null)
             return;
@@ -188,7 +189,7 @@ public class PlayerManager implements PlayerInterface {
         OfflinePlayer offlinePlayer;
         for (String uuid : uuidList) {
             // Getting the CorePlus login time.
-            dataTime = Long.parseLong(UtilsHandler.getMySQL().getValueWhere(ConfigHandler.getPluginName(),
+            dataTime = Long.parseLong(UtilsHandler.getFile().getMySQL().getValueWhere(ConfigHandler.getPluginName(),
                     "coreplus", "players", "uuid", uuid, "last_login"));
             // Checking the Server login time.
             offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
@@ -196,7 +197,7 @@ public class PlayerManager implements PlayerInterface {
                 continue;
             checkTime = offlinePlayer.getLastLogin();
             if (checkTime == 0 && dataTime > checkTime) {
-                UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
+                UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                         "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 dataTime = checkTime;
             }
@@ -204,7 +205,7 @@ public class PlayerManager implements PlayerInterface {
             if (UtilsHandler.getDepend().AuthMeEnabled()) {
                 checkTime = AuthMeApi.getInstance().getLastLoginTime(offlinePlayer.getName()).toEpochMilli();
                 if (checkTime == 0 && dataTime > checkTime) {
-                    UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
+                    UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                             "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
                 }
             }
@@ -217,7 +218,7 @@ public class PlayerManager implements PlayerInterface {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
             MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
             if (mySQLMap != null) {
-                ResultSet resultSet = UtilsHandler.getMySQL().getResultSet(ConfigHandler.getPluginName(),
+                ResultSet resultSet = UtilsHandler.getFile().getMySQL().getResultSet(ConfigHandler.getPluginName(),
                         mySQLMap.getDatabase(), mySQLMap.getTables().get("Players"));
                 try {
                     while (resultSet.next()) {
@@ -235,7 +236,7 @@ public class PlayerManager implements PlayerInterface {
         for (OfflinePlayer offlinePlayer : offlinePlayers) {
             if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
                 continue;
-            UtilsHandler.getMySQL().setValueWhere(ConfigHandler.getPluginName(),
+            UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
                     "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
                     "username", offlinePlayer.getName());
         }
@@ -366,6 +367,7 @@ public class PlayerManager implements PlayerInterface {
         return 0;
     }
 
+    @Override
     public double setCurrency(UUID uuid, String type, double amount) {
         switch (type) {
             case "money":
@@ -411,7 +413,7 @@ public class PlayerManager implements PlayerInterface {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             if (getOnlineStatus(uuid).equals("offline")) {
                 try {
-                    return Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                    return Float.parseFloat(UtilsHandler.getFile().getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
                             ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience"),
                             "player_uuid", uuid.toString(), "total_exp"));
                 } catch (Exception ex) {
@@ -439,9 +441,9 @@ public class PlayerManager implements PlayerInterface {
     public void setExp(String pluginName, UUID uuid, int amount) {
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             if (getOnlineStatus(uuid).equals("offline")) {
-                if (UtilsHandler.getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
+                if (UtilsHandler.getFile().getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
                     String tableName = ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience");
-                    UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                    UtilsHandler.getFile().getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
                             tableName, "player_uuid", uuid.toString(), "total_exp", String.valueOf(amount));
                     return;
                 }
@@ -460,12 +462,12 @@ public class PlayerManager implements PlayerInterface {
     @Override
     public void giveExp(String pluginName, UUID uuid, int amount) {
         if (getOnlineStatus(uuid).equals("offline")) {
-            if (UtilsHandler.getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
+            if (UtilsHandler.getFile().getMySQL().isConnect(pluginName, "MySQLPlayerDataBridge")) {
                 String tableName = ConfigHandler.getConfigPath().getMySQLProp().get("MySQLPlayerDataBridge").getTables().get("Experience");
-                float exp = Float.parseFloat(UtilsHandler.getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
+                float exp = Float.parseFloat(UtilsHandler.getFile().getMySQL().getValueWhere(pluginName, "MySQLPlayerDataBridge",
                         tableName, "player_uuid", uuid.toString(), "total_exp"));
                 exp += amount;
-                UtilsHandler.getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
+                UtilsHandler.getFile().getMySQL().setValueWhere(pluginName, "MySQLPlayerDataBridge",
                         tableName, "player_uuid", uuid.toString(), "total_exp", String.valueOf(exp));
                 return;
             }

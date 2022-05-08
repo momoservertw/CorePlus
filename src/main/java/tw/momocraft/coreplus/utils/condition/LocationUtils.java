@@ -19,7 +19,7 @@ public class LocationUtils {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking location.");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
         }
         return false;
     }
@@ -46,7 +46,7 @@ public class LocationUtils {
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking location.");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "If this error keeps happening, please contact the plugin author.");
-            UtilsHandler.getMsg().sendDebugTrace(true, ConfigHandler.getPluginName(), ex);
+            UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.getPluginName(), ex);
         }
         return false;
     }

@@ -40,8 +40,6 @@ public interface ConditionInterface {
      */
     boolean checkCondition(String pluginName, String input);
 
-    void executeAction(String input);
-
     /**
      * Checking a location.
      *

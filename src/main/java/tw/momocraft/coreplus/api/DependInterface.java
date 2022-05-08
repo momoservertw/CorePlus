@@ -16,8 +16,6 @@ public interface DependInterface {
 
     boolean PlaceHolderAPIEnabled();
 
-    boolean LangUtilsEnabled();
-
     boolean DiscordSRVEnabled();
 
     boolean LuckPermsEnabled();
@@ -35,16 +33,4 @@ public interface DependInterface {
     boolean AuthMeEnabled();
 
     boolean PvPManagerEnabled();
-
-    boolean MultiverseCoreEnabled();
-
-    boolean SurvivalMechanicsEnabled();
-
-    boolean VehiclesEnabled();
-
-    boolean MyPetEnabled();
-
-    boolean MorphToolEnabled();
-
-    boolean NameTagEditEnabled();
 }

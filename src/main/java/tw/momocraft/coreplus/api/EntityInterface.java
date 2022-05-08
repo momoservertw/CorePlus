@@ -38,4 +38,25 @@ public interface EntityInterface {
      * @return the Entity's MythicMob name.
      */
     String getMythicMobDisplayName(Entity entity);
+
+    /**
+     *
+     * @param entity the entity to check.
+     * @return if entity is a MyPet.
+     */
+    boolean isMyPet(Entity entity);
+
+    /**
+     *
+     * @param entity the entity to check.
+     * @return if entity is a NPC.
+     */
+     boolean isNPC(Entity entity);
+
+    /**
+     *
+     * @param entity the entity to check.
+     * @return if entity is a invisible ArmorStand.
+     */
+    boolean isInvisibleArmorStand(Entity entity);
 }

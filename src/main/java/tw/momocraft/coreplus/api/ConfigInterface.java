@@ -1,6 +1,5 @@
 package tw.momocraft.coreplus.api;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import tw.momocraft.coreplus.utils.condition.BlocksMap;
 import tw.momocraft.coreplus.utils.condition.LocationMap;
 
@@ -15,7 +14,6 @@ public interface ConfigInterface {
     boolean isDataMySQL();
 
     /**
-     *
      * @return the conditions settings in condition.yml
      */
     Map<String, List<String>> getConditionProp();
@@ -31,7 +29,6 @@ public interface ConfigInterface {
     Map<String, BlocksMap> getBlocksProp();
 
     /**
-     *
      * @return the group settings in groups.yml.
      */
     Map<String, Map<String, List<String>>> getGroupProp();
