@@ -337,8 +337,15 @@ public class MessageManager implements MessageInterface {
             }
         }
         input = transLang(sender, input, langHolder);
-        String[] langLines = input.split("\\n");
-        for (String langLine : langLines)
+        input = setColor(input);
+        if (!input.contains(" \n ") && !input.contains("{n}")) {
+            sender.sendMessage(input);
+            return;
+        }
+        List<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(input.split(" \\n ")));
+        list.addAll(Arrays.asList(input.split("\\{n}")));
+        for (String langLine : list)
             sender.sendMessage(langLine);
     }
 
@@ -359,14 +366,16 @@ public class MessageManager implements MessageInterface {
         }
         input = transLang(sender, input, langHolder);
         input = setPrefixAndColor(prefix, input);
-        String[] langLines = input.split(" \\n ");
-        for (String langLine : langLines)
-            sender.sendMessage(langLine);
-        langLines = input.split("\\{n}");
-        for (String langLine : langLines)
+        if (!input.contains(" \n ") && !input.contains("{n}")) {
+            sender.sendMessage(input);
+            return;
+        }
+        List<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(input.split(" \\n ")));
+        list.addAll(Arrays.asList(input.split("\\{n}")));
+        for (String langLine : list)
             sender.sendMessage(langLine);
     }
-
 
     @Override
     public String[] newString() {

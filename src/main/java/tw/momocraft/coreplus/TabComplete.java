@@ -149,7 +149,8 @@ public class TabComplete implements TabCompleter {
                             commands.add("chat-op: ");
                             commands.add("chat: ");
                             commands.add("message: ");
-                            commands.add("action-bar: ");
+                            commands.add("actionbar: ");
+                            commands.add("actionbar-group: ");
                             commands.add("title: ");
                             commands.add("sound-group: ");
                             commands.add("particle: ");
