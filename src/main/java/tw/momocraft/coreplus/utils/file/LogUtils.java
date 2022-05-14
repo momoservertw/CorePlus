@@ -18,6 +18,10 @@ public class LogUtils {
     private final Map<String, LogMap> fileMap = new HashMap<>();
     private final List<String> dataList = new ArrayList<>();
 
+    public Map<String, LogMap> getLogProp() {
+        return ConfigHandler.getConfigPath().getLogProp();
+    }
+
     public boolean isEnable() {
         return ConfigHandler.getConfigPath().isDataLog();
     }

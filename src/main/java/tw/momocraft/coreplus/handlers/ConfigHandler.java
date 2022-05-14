@@ -252,7 +252,7 @@ public class ConfigHandler {
     }
 
     public static String getPrefix() {
-        return getConfig("config.yml").getString("Message.prefix");
+        return getConfig("message.yml").getString("Message.prefix");
     }
 
     public static boolean isDebug() {

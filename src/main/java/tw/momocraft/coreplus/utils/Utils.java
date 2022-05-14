@@ -15,20 +15,49 @@ import java.util.*;
 public class Utils implements UtilsInterface {
 
     @Override
+    public String getObjectType(Object object) {
+        if (object instanceof Player) {
+            return "player";
+        } else if (object instanceof OfflinePlayer) {
+            return "offlineplayer";
+        } else if (object instanceof Entity) {
+            return "entity";
+        } else if (object instanceof EntityType) {
+            return "entitytype";
+        } else if (object instanceof Block) {
+            return "block";
+        } else if (object instanceof ItemStack) {
+            return "itemstack";
+        } else if (object instanceof Material) {
+            return "material";
+        } else if (object instanceof Location) {
+            return "location";
+        }
+        return null;
+    }
+
+    @Override
     public boolean containsIgnoreCase(String string1, String string2) {
         return string1 != null && string2 != null && string1.toLowerCase().contains(string2.toLowerCase());
     }
 
     @Override
-    public boolean containsColorCode(List<String> list, String regex) {
-        if (regex != null && list != null) {
-            for (String s : list) {
-                if (s.matches(regex)) {
+    public boolean matchesRegex(List<String> input, String regex) {
+        if (regex != null && input != null)
+            for (String s : input)
+                if (s.matches(regex))
                     return true;
-                }
-            }
-        }
         return false;
+    }
+
+    @Override
+    public boolean equalColorCodeWithoutSymbol(String input) {
+        return (input.matches("[12345678abcdef]"));
+    }
+
+    @Override
+    public boolean equalColorCode(String input) {
+        return (input.matches("[§&][12345678abcdef]"));
     }
 
     @Override
@@ -99,6 +128,8 @@ public class Utils implements UtilsInterface {
 
     @Override
     public String getRandomString(List<String> list) {
+        if (list == null || list.isEmpty())
+            return null;
         return list.get(new Random().nextInt(list.size()));
     }
 
@@ -106,7 +137,6 @@ public class Utils implements UtilsInterface {
     public boolean isRandChance(double value) {
         return value > new Random().nextDouble();
     }
-
 
     @Override
     public List<String> removeIgnoreList(List<String> list, List<String> ignoreList) {
@@ -237,28 +267,10 @@ public class Utils implements UtilsInterface {
     public boolean checkValues(String pluginName, String input) {
         try {
             String[] arr;
-            if (input.contains(">")) {
-                arr = input.split(">");
-                if (arr[0].endsWith("!")) {
-                    if (!checkCompareAndEquals(pluginName, ">", arr[0].substring(0, arr.length - 1), arr[1]))
-                        return true;
-                } else {
-                    if (checkCompareAndEquals(pluginName, ">", arr[0], arr[1]))
-                        return true;
-                }
-            } else if (input.contains("<")) {
-                arr = input.split("<");
-                if (arr[0].endsWith("!")) {
-                    if (!checkCompareAndEquals(pluginName, "<", arr[0].substring(0, arr.length - 1), arr[1]))
-                        return true;
-                } else {
-                    if (checkCompareAndEquals(pluginName, "<", arr[0], arr[1]))
-                        return true;
-                }
-            } else if (input.contains(">=")) {
+            if (input.contains(">=")) {
                 arr = input.split(">=");
                 if (arr[0].endsWith("!")) {
-                    if (!checkCompareAndEquals(pluginName, ">=", arr[0].substring(0, arr.length - 1), arr[1]))
+                    if (!checkCompareAndEquals(pluginName, ">=", arr[0].substring(0, arr[0].length() - 1), arr[1]))
                         return true;
                 } else {
                     if (checkCompareAndEquals(pluginName, ">=", arr[0], arr[1]))
@@ -267,17 +279,35 @@ public class Utils implements UtilsInterface {
             } else if (input.contains("<=")) {
                 arr = input.split("<=");
                 if (arr[0].endsWith("!")) {
-                    if (!checkCompareAndEquals(pluginName, "<=", arr[0].substring(0, arr.length - 1), arr[1]))
+                    if (!checkCompareAndEquals(pluginName, "<=", arr[0].substring(0, arr[0].length() - 1), arr[1]))
                         return true;
                 } else {
                     if (checkCompareAndEquals(pluginName, "<=", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains(">")) {
+                arr = input.split(">");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, ">", arr[0].substring(0, arr[0].length() - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, ">", arr[0], arr[1]))
+                        return true;
+                }
+            } else if (input.contains("<")) {
+                arr = input.split("<");
+                if (arr[0].endsWith("!")) {
+                    if (!checkCompareAndEquals(pluginName, "<", arr[0].substring(0, arr[0].length() - 1), arr[1]))
+                        return true;
+                } else {
+                    if (checkCompareAndEquals(pluginName, "<", arr[0], arr[1]))
                         return true;
                 }
             } else if (input.contains("=")) {
                 arr = input.split("=");
                 if (!arr[1].contains("~")) {
                     if (arr[0].endsWith("!")) {
-                        if (!checkCompareAndEquals(pluginName, "=", arr[0].substring(0, arr.length - 1), arr[1]))
+                        if (!checkCompareAndEquals(pluginName, "=", arr[0].substring(0, arr[0].length() - 1), arr[1]))
                             return true;
                     } else {
                         if (checkCompareAndEquals(pluginName, "=", arr[0], arr[1]))
@@ -286,7 +316,7 @@ public class Utils implements UtilsInterface {
                 } else {
                     String[] split = arr[1].split("~");
                     if (arr[0].endsWith("!")) {
-                        if (!inRange(Double.parseDouble(arr[0].substring(0, arr.length - 1)),
+                        if (!inRange(Double.parseDouble(arr[0].substring(0, arr[0].length() - 1)),
                                 Double.parseDouble(split[0]), Double.parseDouble(split[1]), false))
                             return true;
                     } else {
@@ -489,7 +519,8 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-    public String getNearbyListString(String pluginName, Location loc, String targetType, String returnType, String group, int range) {
+    public String getNearbyListString(String pluginName, Location loc, String targetType, String returnType, String
+            group, int range) {
         switch (targetType) {
             case "players":
                 break;

@@ -145,7 +145,7 @@ public class Commands implements CommandExecutor {
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.cmdgroup")) {
                     // /crp cmdgroup <command>
                     if (length == 2) {
-                        UtilsHandler.getCommandManager().sendGroupCmd(ConfigHandler.getPluginName(), null, null, args[1]);
+                        UtilsHandler.getCommandManager().sendGroupCmd(ConfigHandler.getPluginName(), null, args[1]);
                         return true;
                         // /crp cmdgroup [player] <command>
                     } else if (length == 3) {
@@ -157,7 +157,7 @@ public class Commands implements CommandExecutor {
                                     "Message.targetNotFound", sender, placeHolders);
                             return true;
                         }
-                        UtilsHandler.getCommandManager().sendGroupCmd(ConfigHandler.getPluginName(), player, player, args[2]);
+                        UtilsHandler.getCommandManager().sendGroupCmd(ConfigHandler.getPluginName(), player, args[2]);
                         return true;
                     }
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
@@ -172,7 +172,16 @@ public class Commands implements CommandExecutor {
                     // /crp cmd <command>
                     if (length > 1) {
                         String command = String.join(" ", args).substring(args[0].length() + 1);
-                        UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), null, null, command);
+                        if (sender instanceof Player) {
+                            Player player = (Player) sender;
+                            command = UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(),
+                                    player, command);
+                            UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), player, command);
+                        } else {
+                            command = UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(),
+                                    command);
+                            UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), command);
+                        }
                         return true;
                     }
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
@@ -195,7 +204,7 @@ public class Commands implements CommandExecutor {
                             return true;
                         }
                         String command = String.join(" ", args).substring(args[0].length() + args[1].length() + 2);
-                        UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), player, player, command);
+                        UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), player, command);
                         return true;
                     }
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
@@ -222,10 +231,10 @@ public class Commands implements CommandExecutor {
                                 "Online command start - Player: " + args[1] + ", Expiration: " + args[2] + ", Command: " + command);
                         Player player = UtilsHandler.getPlayer().getPlayer(args[1]);
                         if (player != null) {
-                            UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), player, player, command);
+                            UtilsHandler.getCommandManager().sendCmd(ConfigHandler.getPluginName(), player, command);
                             return true;
                         }
-                        UtilsHandler.getCommandManager().addOnlineCommand(ConfigHandler.getPluginName(), args[1], waitingTime, command);
+                        UtilsHandler.getCommandManager().addOnlineCmd(ConfigHandler.getPluginName(), args[1], waitingTime, command);
                         return true;
                     }
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),

@@ -14,196 +14,61 @@ public interface CommandInterface {
      * @param waitingTime the waiting seconds.
      * @param command     the dispatch command.
      */
-    void addOnlineCommand(String pluginName, String playerName, int waitingTime, String command);
+    void addOnlineCmd(String pluginName, String playerName, int waitingTime, String command);
 
     /**
-     * Executing custom command.
-     * Executing commands from CorePlus config.yml.
+     * Executing custom commands by group name.
      * Format: "custom: Group, Args"
      *
-     * @param sender     the command sender.
-     * @param target     the target for translate placeholder.
+     * @param pluginName the sent plugin name.
+     * @param player     the command sender.
      * @param input      the input command group.
-     * @param langHolder the custom placeholders.
      */
-    void sendGroupCmd(String pluginName, Player sender, Object target, String input, String... langHolder);
+    void sendGroupCmd(String pluginName, Player player, String input);
 
     /**
-     * Executing custom command.
-     * Executing commands from CorePlus config.yml.
-     * Format: "custom: Group, Args"
+     * Executing condition commands.
+     * Format: "condition: <Condition>, {true}succeedCmd{false}failedCmd"
      *
-     * @param sender      the command sender.
-     * @param target      the target for translate placeholder.
-     * @param input       the input command group.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendGroupCmd(String pluginName, Player sender, Object target, String input, boolean placeholder, String... langHolder);
-
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender the command sender.
-     * @param target the target for translate placeholder.
-     * @param input  the input string.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, String input, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender      the command sender.
-     * @param target      the target for translate placeholder.
-     * @param input       the input string.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, String input, boolean placeholder, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender     the command sender.
-     * @param target     the target for translate placeholder.
-     * @param input      the input string.
-     * @param langHolder the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, List<String> input, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender      the command sender.
-     * @param target      the target for translate placeholder.
-     * @param input       the input string.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, List<String> input, boolean placeholder, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender      the command sender.
-     * @param target      the target for translate placeholder.
-     * @param input       the input string.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, Object trigger, List<String> input, boolean placeholder, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender     the command sender.
-     * @param target     the target for translate placeholder.
-     * @param input      the input string.
-     * @param langHolder the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, Object target, Object trigger, List<String> input, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender     the command sender.
-     * @param input      the input string.
-     * @param langHolder the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, List<Object> targets, List<String> input, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender      the command sender.
-     * @param input       the input string.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, List<Object> targets, List<String> input, boolean placeholder, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender     the command sender.
-     * @param input      the input string.
-     * @param langHolder the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, List<Object> targets, List<Object> triggers, List<String> input, String... langHolder);
-
-    /**
-     * Translating the placeholders then executing command(s).
-     *
-     * @param sender      the command sender.
-     * @param input       the input string.
-     * @param placeholder translate placeholders or not.
-     * @param langHolder  the custom placeholders.
-     */
-    void sendCmd(String pluginName, Player sender, List<Object> targets, List<Object> triggers, List<String> input, boolean placeholder, String... langHolder);
-
-    /**
-     * Executing command(s) for multiple targets.
-     *
-     * @param pluginName the executing plugin name.
-     * @param players    the target players.
-     * @param input      the input command list.
-     */
-    void executeCmd(String pluginName, List<Player> players, List<String> input);
-
-    /**
-     * Executing command list.
-     *
-     * @param pluginName the executing plugin name.
-     * @param player     the target player.
-     * @param input      the input command list.
-     */
-    void executeCmd(String pluginName, Player player, List<String> input);
-
-    /**
-     * Executing command(s).
-     *
-     * @param pluginName the executing plugin name.
-     * @param input      the input command list.
-     */
-    void executeCmd(String pluginName, List<String> input);
-
-    /**
-     * Executing command(s) for multiple targets.
-     *
-     * @param pluginName the executing plugin name.
-     * @param players    the target s.
-     * @param input      the input command.
-     */
-    void executeCmd(String pluginName, List<Player> players, String input);
-
-    /**
-     * Executing command(s).
-     *
-     * @param pluginName the executing plugin prefix.
-     * @param player     the target player.
-     * @param input      the input command.
-     */
-    void executeCmd(String pluginName, Player player, String input);
-
-    /**
-     * Executing a command.
-     *
-     * @param pluginName the executing plugin name.
-     * @param input      the input command.
-     */
-    void executeCmd(String pluginName, String input);
-
-    /**
-     * Executing custom command.
-     * Executing commands from CorePlus config.yml.
-     * Format: "custom: Group, Args"
-     *
-     * @param pluginName the executing plugin name.
-     * @param player     the target player.
-     * @param input      the input condition and action.
+     * @param pluginName the sent plugin name.
+     * @param player     the command sender.
+     * @param input      the input command group.
      */
     void dispatchConditionCmd(String pluginName, Player player, String input);
+
+    /**
+     * Executing custom command(s).
+     *
+     * @param pluginName the sent plugin name.
+     * @param player     the target player.
+     * @param input      the value of commands.
+     */
+    void sendCmd(String pluginName, Player player, List<String> input);
+
+    /**
+     * Executing custom command(s).
+     *
+     * @param pluginName the sent plugin name.
+     * @param input      the value of commands.
+     */
+    void sendCmd(String pluginName, List<String> input);
+
+    /**
+     * Executing custom command(s).
+     *
+     * @param pluginName the sent plugin name.
+     * @param input      the value of commands.
+     */
+    void sendCmd(String pluginName, String input);
+
+    /**
+     * Executing custom command(s).
+     *
+     * @param pluginName the sent plugin name.
+     * @param player     the target player.
+     * @param input      the value of commands.
+     */
+    void sendCmd(String pluginName, Player player, String input);
 
     /**
      * Writing message in default log file.

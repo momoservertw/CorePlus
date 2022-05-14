@@ -1,12 +1,12 @@
 package tw.momocraft.coreplus.utils;
 
 import me.NoChance.PvPManager.PvPManager;
-import me.NoChance.PvPManager.PvPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.ConfigInterface;
@@ -58,7 +58,7 @@ public class ConfigPath implements ConfigInterface {
     private boolean dataProp;
     private boolean dataLog;
     private final Map<String, MySQLMap> mySQLProp = new HashMap<>();
-    private final Map<String, String> YMALProp = new HashMap<>();
+    private final Map<String, String> YAMLProp = new HashMap<>();
     private final Map<String, String> jsonProp = new HashMap<>();
     private final Map<String, String> propProp = new HashMap<>();
     private final Map<String, LogMap> logProp = new HashMap<>();
@@ -191,7 +191,7 @@ public class ConfigPath implements ConfigInterface {
                         continue;
                     if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml.groups." + groupName + ".Enable", true))
                         continue;
-                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml.groups." + groupName + ".Path"));
+                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml.groups." + groupName + ".Path"));
                 }
             }
         }
@@ -217,7 +217,7 @@ public class ConfigPath implements ConfigInterface {
                         continue;
                     if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties.groups." + groupName + ".Enable", true))
                         continue;
-                    YMALProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties.groups." + groupName + ".Path"));
+                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties.groups." + groupName + ".Path"));
                 }
             }
         }
@@ -564,10 +564,6 @@ public class ConfigPath implements ConfigInterface {
         return cmdProp;
     }
 
-    public Map<String, LogMap> getLogProp() {
-        return logProp;
-    }
-
     public Map<String, BlocksMap> getBlockProp() {
         return blockProp;
     }
@@ -588,41 +584,6 @@ public class ConfigPath implements ConfigInterface {
         return particleProp;
     }
 
-    public void setDataMySQL(boolean dataMySQL) {
-        this.dataMySQL = dataMySQL;
-    }
-
-    public boolean isDataYMAL() {
-        return dataYMAL;
-    }
-
-    public void setDataYMAL(boolean dataYMAL) {
-        this.dataYMAL = dataYMAL;
-    }
-
-    public boolean isDataJson() {
-        return dataJson;
-    }
-
-    public void setDataJson(boolean dataJson) {
-        this.dataJson = dataJson;
-    }
-
-    public boolean isDataProp() {
-        return dataProp;
-    }
-
-    public void setDataProp(boolean dataProp) {
-        this.dataProp = dataProp;
-    }
-
-    public boolean isDataLog() {
-        return dataLog;
-    }
-
-    public void setDataLog(boolean dataLog) {
-        this.dataLog = dataLog;
-    }
 
     @Override
     public Map<String, List<String>> getConditionProp() {
@@ -653,20 +614,49 @@ public class ConfigPath implements ConfigInterface {
         return dataMySQL;
     }
 
+    @Override
+    public boolean isDataYMAL() {
+        return dataYMAL;
+    }
+
+    @Override
+    public boolean isDataJson() {
+        return dataJson;
+    }
+
+    @Override
+    public boolean isDataProp() {
+        return dataProp;
+    }
+
+    @Override
+    public boolean isDataLog() {
+        return dataLog;
+    }
+
+    @Override
     public Map<String, MySQLMap> getMySQLProp() {
         return mySQLProp;
     }
 
-    public Map<String, String> getYMALProp() {
-        return YMALProp;
+    @Override
+    public Map<String, String> getYAMLProp() {
+        return YAMLProp;
     }
 
+    @Override
     public Map<String, String> getJsonProp() {
         return jsonProp;
     }
 
+    @Override
     public Map<String, String> getPropProp() {
         return propProp;
+    }
+
+    @Override
+    public Map<String, LogMap> getLogProp() {
+        return logProp;
     }
 
     //  ============================================== //
@@ -762,5 +752,10 @@ public class ConfigPath implements ConfigInterface {
             }
         }
         return outputList;
+    }
+
+    @Override
+    public FileConfiguration getConfig(String fileName) {
+        return ConfigHandler.getConfig(fileName);
     }
 }

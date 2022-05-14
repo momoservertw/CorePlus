@@ -14,6 +14,14 @@ import java.util.Set;
 public interface UtilsInterface {
 
     /**
+     * Check the object type like entity, entitytype...
+     *
+     * @param object the checking object.
+     * @return the type of object.
+     */
+    String getObjectType(Object object);
+
+    /**
      * Checking if a string contains another string.
      *
      * @param string1 the main string.
@@ -29,7 +37,7 @@ public interface UtilsInterface {
      * @param string the checking string.
      * @return if the string in the list matches some words.
      */
-    boolean containsColorCode(List<String> list, String string);
+    boolean matchesRegex(List<String> list, String string);
 
     /**
      * Checking if the string in the list contains some words.
@@ -39,6 +47,20 @@ public interface UtilsInterface {
      * @return if the string in the list contains some words.
      */
     boolean containsString(List<String> list, String string);
+
+   /**
+    *
+    * @param input the checking string like "a", "b", "1".
+    * @return if the string equal color code which without "&" and "§".
+    */
+    boolean equalColorCodeWithoutSymbol(String input);
+
+   /**
+    *
+    * @param input the checking string like "a", "b", "1".
+    * @return if the string equal color code.
+    */
+    boolean equalColorCode(String input);
 
     /**
      * Checking if the string contains color code.
@@ -111,8 +133,7 @@ public interface UtilsInterface {
     boolean isRandChance(double value);
 
     /**
-     *
-     * @param list the checking list.
+     * @param list       the checking list.
      * @param ignoreList the ignore list to remove from list.
      * @return new list without ignore list.
      */
@@ -401,8 +422,8 @@ public interface UtilsInterface {
     Set<Class<?>> getAllExtendedOrImplementedClass(Class<?> clazz);
 
     /**
-     * @param input  the input status. Values: true/on, false/off, null, known
-     * @param status the currently status. Values: true, false, null
+     * @param input           the input status. Values: true/on, false/off, null, known
+     * @param status          the currently status. Values: true, false, null
      * @param unknown_default setting the unknown input value to null or not.
      * @return the new status. Values: true, false, none, known
      */

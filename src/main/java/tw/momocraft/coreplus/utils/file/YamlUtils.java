@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,8 +18,13 @@ public class YamlUtils {
     private final Map<String, File> fileMap = new HashMap<>();
     private final List<String> dataList = new ArrayList<>();
 
+
+    public Map<String, String> getYMALProp() {
+        return ConfigHandler.getConfigPath().getYAMLProp();
+    }
+
     public boolean isEnable() {
-        return ConfigHandler.getConfigPath().isDataProp();
+        return ConfigHandler.getConfigPath().isDataYMAL();
     }
 
     public void setup() {
@@ -31,7 +37,7 @@ public class YamlUtils {
     }
 
     private void loadConfig() {
-        Map<String, String> prop = ConfigHandler.getConfigPath().getPropProp();
+        Map<String, String> prop = ConfigHandler.getConfigPath().getYAMLProp();
         for (String groupName : prop.keySet()) {
             load(ConfigHandler.getPluginName(), groupName, prop.get(groupName));
         }

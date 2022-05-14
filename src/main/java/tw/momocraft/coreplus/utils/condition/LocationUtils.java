@@ -13,8 +13,8 @@ public class LocationUtils {
         if (locMaps == null || locMaps.isEmpty())
             return def;
         try {
-            for (String group : locMaps)
-                if (checkLocation(pluginName, loc, group, def))
+            for (String groupName : locMaps)
+                if (checkLocation(pluginName, loc, groupName, def))
                     return true;
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "An error occurred while checking location.");
@@ -24,14 +24,14 @@ public class LocationUtils {
         return false;
     }
 
-    public boolean checkLocation(String pluginName, Location loc, String group, boolean def) {
-        if (group == null)
+    public boolean checkLocation(String pluginName, Location loc, String groupName, boolean def) {
+        if (groupName == null)
             return def;
         try {
             String worldName = loc.getWorld().getName();
-            if (group.equals(worldName))
+            if (groupName.equals(worldName))
                 return true;
-            LocationMap locMap = ConfigHandler.getConfigPath().getLocProp().get(group);
+            LocationMap locMap = ConfigHandler.getConfigPath().getLocProp().get(groupName);
             if (locMap == null)
                 return false;
             if (locMap.getWorlds() == null || locMap.getWorlds().isEmpty() || locMap.getWorlds().contains(worldName)) {

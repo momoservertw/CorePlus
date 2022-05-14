@@ -14,8 +14,8 @@ import tw.momocraft.coreplus.utils.player.PlayerManager;
 public class UtilsHandler {
 
     public static void setupFirst(boolean reload) {
-        messageManager = new MessageManager();
         depend = new DependHandler();
+        messageManager = new MessageManager();
         depend.setup(reload);
     }
 
@@ -23,13 +23,14 @@ public class UtilsHandler {
         fileManager = new FileManager();
         fileManager.setup();
         vanillaUtils = new VanillaUtils();
-        discordUtils = new DiscordUtils();
         utils = new Utils();
         conditionManager = new ConditionManager();
         playerManager = new PlayerManager();
         entityManager = new EntityManager();
         commandManager = new CommandManager();
+        messageManager.setupColorMap();
         updater = new Updater();
+
         syncData();
     }
 
@@ -48,7 +49,6 @@ public class UtilsHandler {
     private static EntityManager entityManager;
     private static FileManager fileManager;
     private static VanillaUtils vanillaUtils;
-    private static DiscordUtils discordUtils;
 
     public static DependHandler getDepend() {
         return depend;
@@ -84,10 +84,6 @@ public class UtilsHandler {
 
     public static VanillaUtils getVanillaUtils() {
         return vanillaUtils;
-    }
-
-    public static DiscordUtils getDiscord() {
-        return discordUtils;
     }
 
     public static FileManager getFile() {

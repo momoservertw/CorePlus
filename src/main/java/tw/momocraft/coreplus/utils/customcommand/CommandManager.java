@@ -3,7 +3,6 @@ package tw.momocraft.coreplus.utils.customcommand;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.bukkit.*;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.coreplus.CorePlus;
@@ -30,272 +29,132 @@ public class CommandManager implements CommandInterface {
     }
 
     @Override
-    public void addOnlineCommand(String pluginName, String playerName, int expiration, String command) {
+    public void addOnlineCmd(String pluginName, String playerName, int expiration, String command) {
         long waitingPair = System.currentTimeMillis() + expiration * 1000L;
         onlineCmdTable.put(playerName, waitingPair, command);
         new BukkitRunnable() {
             @Override
             public void run() {
-                try {
-                    onlineCmdTable.remove(playerName, waitingPair);
-                    UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPrefix(),
-                            "Online command - Player: " + playerName + ", Expiration: " + expiration + ", Command: " + command);
-                } catch (Exception ignored) {
-                }
+                onlineCmdTable.remove(playerName, waitingPair);
+                UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPrefix(),
+                        "Online command - Player: " + playerName + ", Expiration: " + expiration + ", Command: " + command);
             }
         }.runTaskLater(CorePlus.getInstance(), expiration * 20L);
     }
 
-    @Override
-    public void sendGroupCmd(String pluginName, Player sender, Object target, String input, String... langHolder) {
-        sendGroupCmd(pluginName, sender, target, input, true, langHolder);
-    }
-
     // custom: <group>, <arg1>, <arg2>, <arg...>
     @Override
-    public void sendGroupCmd(String pluginName, Player sender, Object target, String input, boolean placeholder, String... langHolder) {
+    public void sendGroupCmd(String pluginName, Player player, String input) {
         if (input == null)
             return;
         String[] split = input.split(", ");
         String groupName = split[0];
-        List<String> commands = ConfigHandler.getConfigPath().getCmdProp().get(groupName);
-        List<String> newCommands = new ArrayList<>();
-        if (commands == null || commands.isEmpty()) {
+        List<String> cmdList = ConfigHandler.getConfigPath().getCmdProp().get(groupName);
+        if (cmdList == null || cmdList.isEmpty()) {
             UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "An error occurred while executing command: \"custom: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
                     "Can not find the group of \"" + groupName + "\" in CorePlus/commands.yml.");
             return;
         }
-        for (String command : commands) {
+        List<String> newCmdList = new ArrayList<>();
+        for (String command : cmdList) {
             for (int i = 1; i < +split.length; i++) {
-                // Replace the args with ItemJoin item name.
                 // Format: "custom: <group>, ij: <node>"
-                if (UtilsHandler.getDepend().ItemJoinEnabled()) {
-                    if (target instanceof Player) {
-                        if (split[i].startsWith("ij: ")) {
-                            try {
-                                split[i] = UtilsHandler.getDepend().getItemJoinApi().
-                                        getItemStack((Player) target, split[i].substring(4)).getItemMeta().getDisplayName();
-                            } catch (Exception ignored) {
-                                split[i] = "";
-                            }
+                if (UtilsHandler.getDepend().ItemJoinEnabled())
+                    if (split[i].startsWith("ij: "))
+                        try {
+                            split[i] = UtilsHandler.getDepend().getItemJoinAPI().
+                                    getItemStack(player, split[i].substring(4)).getItemMeta().getDisplayName();
+                        } catch (Exception ignored) {
+                            split[i] = "";
                         }
-                    }
-                }
                 command = command.replace("%cmd_arg" + i + "%", split[i]);
             }
-            newCommands.add(command);
+            newCmdList.add(command);
         }
-        newCommands = UtilsHandler.getMsg().transLang(sender, newCommands, langHolder);
-        if (placeholder)
-            newCommands = UtilsHandler.getMsg().transHolder(sender, target, newCommands);
-        executeCmd(pluginName, sender, newCommands);
-    }
-
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, Object target, String input, String... langHolder) {
-        sendCmd(pluginName, sender, target, input, true, langHolder);
+        newCmdList = UtilsHandler.getMsg().transLang(player, newCmdList);
+        for (String cmd : newCmdList)
+            dispatchCustomCmd(pluginName, player, cmd);
     }
 
     @Override
-    public void sendCmd(String pluginName, Player sender, Object target, String input, boolean placeholder, String... langHolder) {
+    public void sendCmd(String pluginName, Player player, List<String> input) {
         if (input == null || input.isEmpty())
             return;
-        input = UtilsHandler.getMsg().transLang(sender, input, langHolder);
-        if (placeholder)
-            input = UtilsHandler.getMsg().transHolder(sender, target, input);
-        executeCmd(pluginName, sender, input);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, Object target, List<String> input, String... langHolder) {
-        sendCmd(pluginName, sender, target, input, true, langHolder);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, Object target, List<String> input, boolean placeholder, String... langHolder) {
-        if (input == null || input.isEmpty())
-            return;
-        input = UtilsHandler.getMsg().transLang(sender, input, langHolder);
-        if (placeholder)
-            input = UtilsHandler.getMsg().transHolder(sender, target, input);
-        executeCmd(pluginName, sender, input);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, Object target, Object trigger, List<String> input, String... langHolder) {
-        sendCmd(pluginName, sender, target, trigger, input, true, langHolder);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, Object target, Object trigger, List<String> input, boolean placeholder, String... langHolder) {
-        if (input == null || input.isEmpty())
-            return;
-        input = UtilsHandler.getMsg().transLang(sender, input, langHolder);
-        if (placeholder)
-            input = UtilsHandler.getMsg().transHolder(sender, target, trigger, input);
-        executeCmd(pluginName, sender, input);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, List<Object> target, List<String> input, String... langHolder) {
-        sendCmd(pluginName, sender, target, input, true, langHolder);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, List<Object> target, List<String> input, boolean placeholder, String... langHolder) {
-        if (input == null || input.isEmpty())
-            return;
-        input = UtilsHandler.getMsg().transLang(sender, input, langHolder);
-        if (placeholder)
-            input = UtilsHandler.getMsg().transHolder(sender, target, input);
-        executeCmd(pluginName, sender, input);
-    }
-
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, List<Object> target, List<Object> triggers, List<String> input, String... langHolder) {
-        sendCmd(pluginName, sender, target, triggers, input, true, langHolder);
-    }
-
-    @Override
-    public void sendCmd(String pluginName, Player sender, List<Object> target, List<Object> triggers, List<String> input, boolean placeholder, String... langHolder) {
-        if (input == null || input.isEmpty())
-            return;
-        input = UtilsHandler.getMsg().transLang(sender, input, langHolder);
-        if (placeholder)
-            input = UtilsHandler.getMsg().transHolder(sender, target, triggers, input);
-        executeCmd(pluginName, sender, input);
-    }
-
-    @Override
-    public void executeCmd(String pluginName, List<Player> players, List<String> input) {
-        if (input == null || input.isEmpty())
-            return;
-        for (String cmd : input)
-            for (Player player : players)
-                UtilsHandler.getCommandManager().executeCmd(pluginName, player, cmd);
-    }
-
-    @Override
-    public void executeCmd(String pluginName, Player player, List<String> input) {
-        if (input == null)
-            return;
-        if (player == null || player instanceof ConsoleCommandSender) {
-            executeCmd(pluginName, input);
-            return;
-        }
-        String cmd;
-        for (int i = 0; i < input.size(); i++) {
-            cmd = input.get(i);
-            if (!cmd.startsWith("delay: ")) {
-                executeCmd(pluginName, player, cmd);
+        List<String> newList = new ArrayList<>();
+        for (String value : input) {
+            if (value.contains("{n}")) {
+                String[] split = value.split("\\{n}");
+                newList.addAll(Arrays.asList(split));
                 continue;
             }
-            // Executing delay command.
+            newList.add(value);
+        }
+        for (String value : newList)
+            sendCmd(pluginName, player, value);
+    }
+
+    @Override
+    public void sendCmd(String pluginName, List<String> input) {
+        if (input == null || input.isEmpty())
+            return;
+        List<String> newList = new ArrayList<>();
+        for (String value : input) {
+            if (value.contains("{n}")) {
+                String[] split = value.split("\\{n}");
+                newList.addAll(Arrays.asList(split));
+                continue;
+            }
+            newList.add(value);
+        }
+        for (String value : newList)
+            sendCmd(pluginName, null, value);
+    }
+
+    @Override
+    public void sendCmd(String pluginName, String input) {
+        sendCmd(pluginName, null, input);
+    }
+
+    @Override
+    public void sendCmd(String pluginName, Player player, String input) {
+        if (input == null || input.isEmpty())
+            return;
+        if (input.contains("{n}")) {
+            String[] split = input.split("\\{n}");
+            sendCmd(pluginName, player, new ArrayList<>(Arrays.asList(split)));
+            return;
+        }
+        if (input.startsWith("delay: ")) {
             String delay;
             try {
-                delay = cmd.split(": ")[1];
+                delay = input.split(": ")[1];
                 delay = delay.substring(0, delay.lastIndexOf("{n}"));
             } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command \"delay: " + input + "\"");
                 UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
                 UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
-                continue;
+                return;
             }
-            List<String> newCommandList = new ArrayList<>(input);
-            newCommandList.subList(i + 1, newCommandList.size());
-            if (cmd.contains("{n}")) {
-                cmd = cmd.substring(cmd.indexOf("{n}") + 2);
-                newCommandList.add(0, cmd);
-            }
+            input = input.replace("delay: " + delay, "");
+            String finalInput = input;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    // To restart the method again after delay.
-                    executeCmd(pluginName, player, newCommandList);
+                    dispatchCustomCmd(pluginName, player, finalInput);
                 }
             }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
             return;
         }
+        dispatchCustomCmd(pluginName, player, input);
     }
 
-    @Override
-    public void executeCmd(String pluginName, List<String> input) {
-        if (input == null)
-            return;
-        String cmd;
-        for (int i = 0; i < input.size(); i++) {
-            cmd = input.get(i);
-            if (!cmd.startsWith("delay: ")) {
-                executeCmd(pluginName, cmd);
-                continue;
-            }
-            String delay;
-            try {
-                delay = cmd.split(": ")[1];
-                delay = delay.substring(0, delay.lastIndexOf("{n}"));
-            } catch (Exception ex) {
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"delay: " + cmd + "\"");
-                UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");
-                UtilsHandler.getMsg().sendDebugTrace(ConfigHandler.isDebug(), pluginName, ex);
-                continue;
-            }
-            List<String> newCommandList = new ArrayList<>(input);
-            newCommandList.subList(i + 1, newCommandList.size());
-            if (cmd.contains("{n}")) {
-                cmd = cmd.substring(cmd.indexOf("{n}") + 2);
-                newCommandList.add(0, cmd);
-            }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    // To restart the method again after delay.
-                    executeCmd(pluginName, newCommandList);
-                }
-            }.runTaskLater(CorePlus.getInstance(), Integer.parseInt(delay));
+    private void dispatchCustomCmd(String pluginName, Player player, String input) {
+        if (player == null) {
+            dispatchCustomCmd(pluginName, input);
             return;
         }
-    }
-
-    @Override
-    public void executeCmd(String pluginName, List<Player> players, String input) {
-        if (input == null)
-            return;
-        for (Player player : players) {
-            UtilsHandler.getCommandManager().executeCmd(pluginName, player, input);
-        }
-    }
-
-    @Override
-    public void executeCmd(String pluginName, Player player, String input) {
-        if (input == null)
-            return;
-        if (player == null || player instanceof ConsoleCommandSender) {
-            executeCmd(pluginName, input);
-            return;
-        }
-        if (input.contains("{n}")) {
-            executeCmd(pluginName, player, Arrays.asList(input.split("\\{n}")));
-            return;
-        }
-        selectCmdType(pluginName, player, input);
-    }
-
-    @Override
-    public void executeCmd(String pluginName, String input) {
-        if (input == null)
-            return;
-        if (input.contains("{n}")) {
-            executeCmd(pluginName, Arrays.asList(input.split("\\{n}")));
-            return;
-        }
-        selectCmdType(pluginName, input);
-    }
-
-    private void selectCmdType(String pluginName, Player player, String input) {
         String[] split;
         String subInput = input.substring(input.indexOf(": ") + 2);
         try {
@@ -314,10 +173,24 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendBroadcastMsg(subInput);
                     return;
                 case "discord-chat":
+                    if (!UtilsHandler.getDepend().DiscordSRVEnabled()) {
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Can not send discord message: " + input);
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Reason: DiscordSRV plugin not enabled.");
+                        return;
+                    }
                     split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg("", split[0], split[1], player);
                     return;
                 case "discord":
+                    if (!UtilsHandler.getDepend().DiscordSRVEnabled()) {
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Can not send discord message: " + input);
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Reason: DiscordSRV plugin not enabled.");
+                        return;
+                    }
                     split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg(split[0], split[1]);
                     return;
@@ -368,7 +241,7 @@ public class CommandManager implements CommandInterface {
                     dispatchParticleGroup(pluginName, player.getLocation(), subInput);
                     return;
                 case "custom":
-                    sendGroupCmd(pluginName, player, player, subInput);
+                    sendGroupCmd(pluginName, player, subInput);
                     return;
                 case "condition":
                     dispatchConditionCmd(pluginName, player, subInput);
@@ -388,13 +261,13 @@ public class CommandManager implements CommandInterface {
         }
     }
 
-    private void selectCmdType(String pluginName, String input) {
+    private void dispatchCustomCmd(String pluginName, String input) {
         String[] split;
         String subInput = input.substring(input.indexOf(": ") + 2);
         try {
             switch (input.split(": ")[0]) {
                 case "custom":
-                    sendGroupCmd(pluginName, null, null, subInput);
+                    sendGroupCmd(pluginName, null, subInput);
                     return;
                 case "condition":
                     dispatchConditionCmd(pluginName, null, subInput);
@@ -412,6 +285,13 @@ public class CommandManager implements CommandInterface {
                     UtilsHandler.getMsg().sendBroadcastMsg(subInput);
                     return;
                 case "discord":
+                    if (!UtilsHandler.getDepend().DiscordSRVEnabled()) {
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Can not send discord message: " + input);
+                        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(),
+                                "Reason: DiscordSRV plugin not enabled.");
+                        return;
+                    }
                     split = subInput.split(", ");
                     UtilsHandler.getMsg().sendDiscordMsg(split[0], split[1]);
                     return;
@@ -568,9 +448,9 @@ public class CommandManager implements CommandInterface {
             }
         }
         if (succeed)
-            executeCmd(pluginName, player, trueCmd);
+            dispatchCustomCmd(pluginName, player, trueCmd);
         else
-            executeCmd(pluginName, player, falseCmd);
+            dispatchCustomCmd(pluginName, player, falseCmd);
     }
 
     @Override

@@ -237,12 +237,12 @@ public class ConfigBuilder {
                 }
                 // org.bukkit.block.data.*
                 if (type.equals("inherited") && // org.bukkit.block.data.BlockData
-                        UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        UtilsHandler.getUtil().matchesRegex(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     continue back;
                 }
                 // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
                 if (type.equals("not_inherited") &&
-                        !UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        !UtilsHandler.getUtil().matchesRegex(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     continue back;
                 }
                 // endsWith_logs
@@ -289,13 +289,13 @@ public class ConfigBuilder {
                 }
                 // org.bukkit.block.data.*
                 if (type.equals("inherited") &&
-                        UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        UtilsHandler.getUtil().matchesRegex(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     valueSet.add(value.name());
                     continue back;
                 }
                 // org.bukkit.block.* && !org.bukkit.block.data.* = not "org.bukkit.block.BlockData"
                 if (type.equals("not_inherited") &&
-                        !UtilsHandler.getUtil().containsColorCode(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
+                        !UtilsHandler.getUtil().matchesRegex(classSetStringList, "org.bukkit.block." + "((?!(data.BlockData|BlockState)).)*")) {
                     valueSet.add(value.name());
                     continue back;
                 }
@@ -330,14 +330,14 @@ public class ConfigBuilder {
     private static void createLog(String logGroup, ConfigBuilderMap configBuilderMap, Set<String> valueSet) {
         String title = configBuilderMap.getTitle().replace("%title%", configBuilderMap.getGroupName());
         if (valueSet.isEmpty()) {
+            title = UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(), null, null, title);
             UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
-                    logGroup + ", " +
-                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(), null, title) + " []");
+                    logGroup + ", " + title + " []");
             return;
         }
+        title = UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(), null, null, title);
         UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
-                logGroup + ", " +
-                        UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(), null, title));
+                logGroup + ", " + title);
         StringBuilder output = new StringBuilder();
         String line = configBuilderMap.getValue();
         String split = configBuilderMap.getSplit();
@@ -349,8 +349,7 @@ public class ConfigBuilder {
                 output = new StringBuilder(line.replace("%value%", value));
                 UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                         logGroup + ", " +
-                                UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(),
-                                        null, output.toString()));
+                                UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(), null, null, output.toString()));
             }
         } else {
             for (String value : valueSet) {
@@ -359,55 +358,7 @@ public class ConfigBuilder {
             output.substring(0, output.length() - split.length());
             UtilsHandler.getCommandManager().dispatchLogGroup(ConfigHandler.getPluginName(),
                     logGroup + ", " +
-                            UtilsHandler.getMsg().transByGeneral(ConfigHandler.getPluginName(),
-                                    null, output.toString()));
+                            UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(), null, null, output.toString()));
         }
     }
-
-    /*
-    public static void createOfflinePlayerName() {
-        String format = ConfigHandler.getConfigPath().getConfigBuilderGroupProp().get("OfflinePlayer-Name").getKey();
-        if (format == null)
-            return;
-        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderGroupProp().get("OfflinePlayer-Name").getValue();
-        String input;
-        String uuid;
-        String name;
-        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            try {
-                uuid = offlinePlayer.getUniqueId().toString();
-                name = offlinePlayer.getName();
-                if (ignoreList.contains(uuid) || ignoreList.contains(name))
-                    continue;
-                input = format.replace("%type%", name);
-                UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPlugin(),
-                        "ConfigBuilder, " + input);
-            } catch (Exception ignored) {
-            }
-        }
-    }
-
-    public static void createOfflinePlayerUUID() {
-        String format = ConfigHandler.getConfigPath().getConfigBuilderGroupProp().get("OfflinePlayer-UUID").getKey();
-        if (format == null)
-            return;
-        List<String> ignoreList = ConfigHandler.getConfigPath().getConfigBuilderGroupProp().get("OfflinePlayer-UUID").getValue();
-        String input;
-        String uuid;
-        String name;
-        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            try {
-                uuid = offlinePlayer.getUniqueId().toString();
-                name = offlinePlayer.getName();
-                if (ignoreList.contains(uuid) || ignoreList.contains(name))
-                    continue;
-                input = format.replace("%type%", uuid);
-                UtilsHandler.getCustomCommands().dispatchLogCustomCmd(ConfigHandler.getPlugin(),
-                        "ConfigBuilder, " + input);
-            } catch (Exception ignored) {
-            }
-        }
-    }
-
-     */
 }

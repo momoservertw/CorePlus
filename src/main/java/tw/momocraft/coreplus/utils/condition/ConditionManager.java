@@ -47,14 +47,14 @@ public class ConditionManager implements ConditionInterface {
             return true;
         String[] conditionArray = input.split("<or>");
         back:
-        for (String conditions : conditionArray) {
-            if (conditions.contains("<and>")) {
-                for (String condition : conditions.split("<and>"))
-                    if (!UtilsHandler.getUtil().checkValues(pluginName, condition))
+        for (String condition : conditionArray) {
+            if (condition.contains("<and>")) {
+                for (String subCondition : condition.split("<and>"))
+                    if (!UtilsHandler.getUtil().checkValues(pluginName, subCondition))
                         continue back;
                 return true;
             } else {
-                if (UtilsHandler.getUtil().checkValues(pluginName, conditions))
+                if (UtilsHandler.getUtil().checkValues(pluginName, condition))
                     return true;
             }
         }
@@ -87,49 +87,49 @@ public class ConditionManager implements ConditionInterface {
 
     @Override
     public Set<String> getRegisteredFlags() {
-        return UtilsHandler.getDepend().getResidenceApi().getRegisteredFlags();
+        return UtilsHandler.getDepend().getResidenceAPI().getRegisteredFlags();
     }
 
     @Override
     public boolean isRegisteredFlag(String flag) {
-        return UtilsHandler.getDepend().getResidenceApi().isRegisteredFlag(flag);
+        return UtilsHandler.getDepend().getResidenceAPI().isRegisteredFlag(flag);
     }
 
     @Override
     public void registerFlag(String flag) {
-        UtilsHandler.getDepend().getResidenceApi().registerFlag(flag);
+        UtilsHandler.getDepend().getResidenceAPI().registerFlag(flag);
     }
 
     @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
-        return UtilsHandler.getDepend().getResidenceApi().checkFlag(player, loc, flag, def);
+        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(player, loc, flag, def);
     }
 
     @Override
     public boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check) {
-        return UtilsHandler.getDepend().getResidenceApi().checkFlag(player, loc, flag, def, check);
+        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(player, loc, flag, def, check);
     }
 
     @Override
     public boolean checkFlag(Location loc, String flag, boolean def) {
-        return UtilsHandler.getDepend().getResidenceApi().checkFlag(loc, flag, def);
+        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(loc, flag, def);
     }
 
     @Override
     public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
-        return UtilsHandler.getDepend().getResidenceApi().checkFlag(loc, flag, def, check);
+        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(loc, flag, def, check);
     }
 
     @Override
     public boolean isInResidence(Location loc) {
         if (!UtilsHandler.getDepend().ResidenceEnabled())
             return false;
-        return UtilsHandler.getDepend().getResidenceApi().isInResidence(loc);
+        return UtilsHandler.getDepend().getResidenceAPI().isInResidence(loc);
     }
 
     @Override
     public String getResidenceName(Location loc) {
-        return UtilsHandler.getDepend().getResidenceApi().getResidenceName(loc);
+        return UtilsHandler.getDepend().getResidenceAPI().getResidenceName(loc);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class ConditionManager implements ConditionInterface {
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
             String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
             if (!menuIJ.equals(""))
-                return UtilsHandler.getDepend().getItemJoinApi().isMenu(itemStack);
+                return UtilsHandler.getDepend().getItemJoinAPI().isMenu(itemStack);
         }
         // Holding a menu item.
         String itemType = itemStack.getType().name();
@@ -170,29 +170,29 @@ public class ConditionManager implements ConditionInterface {
     public boolean isCustomItem(ItemStack itemStack) {
         // Holding ItemJoin menu.
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
-            return UtilsHandler.getDepend().getItemJoinApi().isCustom(itemStack);
+            return UtilsHandler.getDepend().getItemJoinAPI().isCustom(itemStack);
         }
         return false;
     }
 
     @Override
     public ItemStack getMenuItemStack(Player player) {
-        return UtilsHandler.getDepend().getItemJoinApi().getItemStack(player, ConfigHandler.getConfigPath().getMenuItemJoin());
+        return UtilsHandler.getDepend().getItemJoinAPI().getItemStack(player, ConfigHandler.getConfigPath().getMenuItemJoin());
     }
 
     @Override
     public ItemStack getItemJoinItemStack(Player player, String node) {
-        return UtilsHandler.getDepend().getItemJoinApi().getItemStack(player, node);
+        return UtilsHandler.getDepend().getItemJoinAPI().getItemStack(player, node);
     }
 
     @Override
     public String getItemNode(ItemStack itemStack) {
-        return UtilsHandler.getDepend().getItemJoinApi().getItemNode(itemStack);
+        return UtilsHandler.getDepend().getItemJoinAPI().getItemNode(itemStack);
     }
 
     @Override
     public Set<String> getItemNodes() {
-        return UtilsHandler.getDepend().getItemJoinApi().getItemNodes();
+        return UtilsHandler.getDepend().getItemJoinAPI().getItemNodes();
     }
 
     @Override

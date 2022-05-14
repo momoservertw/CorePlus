@@ -3,6 +3,7 @@ package tw.momocraft.coreplus.utils.file;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
+import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public class MySQLUtils {
+
+    public Map<String, MySQLMap> getMySQLProp() {
+        return ConfigHandler.getConfigPath().getMySQLProp();
+    }
 
     Map<String, Connection> dataMap = new HashMap<>();
     private final List<String> dataList = new ArrayList<>();

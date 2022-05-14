@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,14 +11,24 @@ import java.util.UUID;
 public interface PlayerInterface {
 
     /**
+     * @param playerName the name of this player
+     * @return if the player is online.
+     */
+    boolean isPlayerOnline(String playerName);
+
+    /**
+     * @param uuid the uuid of this player
+     * @return if the player is online.
+     */
+    boolean isPlayerOnline(UUID uuid);
+
+    /**
      * @param sender the target sender.
      * @return the target player. It will return "null" if sender is not player.
      */
     Player getPlayer(CommandSender sender);
 
     /**
-     * Getting player from a name.
-     *
      * @param playerName the name of this player
      * @return the player from a name or null.
      */
@@ -412,16 +423,27 @@ public interface PlayerInterface {
     void changePermLevel(UUID uuid, String permission, int number, int def);
 
     /**
-     *
-     * @param uuid the id of player in the game.
+     * @param uuid     the id of player in the game.
      * @param nickname the new name of Discord name.
      */
     void setDiscordNick(UUID uuid, String nickname);
+
+    /**
+     * Get the nick name of Discord.
+     *
+     * @param uuid the id of player in the game.
+     */
+    String getDiscordNick(UUID uuid);
 
     /**
      * Get the name of Discord.
      *
      * @param uuid the id of player in the game.
      */
-    void getDiscordNick(UUID uuid);
+    String getDiscordName(UUID uuid);
+
+    /**
+     * @return get the Material name of Residence selection tool.
+     */
+    Material getResSelectionTool();
 }

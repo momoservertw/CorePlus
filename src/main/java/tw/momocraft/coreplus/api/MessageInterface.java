@@ -4,9 +4,9 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.utils.message.TranslateMap;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MessageInterface {
 
@@ -359,107 +359,87 @@ public interface MessageInterface {
     String transLang(String input, String... langHolder);
 
     /**
-     * Translating by target placeholders.
+     * Translating placeholders.
      *
-     * @param sender the sender of this.
-     * @param target the sender's local language.
-     * @param input  the input string.
+     * @param pluginName the sent plugin name.
+     * @param targetMap  the objects and their placeholder's prefix of the event.
+     * @param input      the input string(s).
      * @return a new string which translated language placeholders.
      */
-    String transHolder(Player sender, Object target, String input);
-
-    List<String> transHolder(Player sender, Object target, List<String> input);
-
-    List<String> transHolder(Player sender, Object target, Object trigger, List<String> input);
-
-    List<String> transHolder(Player sender, List<Object> targets, List<String> input);
-
-    List<String> transHolder(Player sender, List<Object> targets, List<Object> triggers, List<String> input);
+    List<String> transHolder(String pluginName, Map<String, Object> targetMap, List<String> input);
 
     /**
-     * Translating the targets placeholders before output.
+     * Translating placeholders.
      *
-     * @param pluginName   the sending plugin name.
-     * @param player       the sender.
-     * @param translateMap the translation targets.
-     * @param input        the input string.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param targets    the target(s) of the event.
+     * @param input      the input string(s).
      * @return a new string which translated language placeholders.
      */
-    String transTranslateMap(String pluginName, Player player, TranslateMap translateMap, String input);
+    List<String> transHolder(String pluginName, Object trigger, List<Object> targets, List<String> input);
 
     /**
-     * Translating the targets placeholders before output.
+     * Translating placeholders.
      *
-     * @param pluginName   the sending plugin name.
-     * @param player       the sender.
-     * @param translateMap the translation targets.
-     * @param input        the input string.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param targets    the target(s) of the event.
+     * @param input      the input string(s).
      * @return a new string which translated language placeholders.
      */
-    List<String> transTranslateMap(String pluginName, Player player, TranslateMap translateMap, List<String> input);
+    String transHolder(String pluginName, Object trigger, List<Object> targets, String input);
 
     /**
-     * Getting the translate placeholder targets map.
+     * Translating placeholders.
      *
-     * @param translateMap the import of translate placeholder targets map.
-     * @param target       the input target object.
-     * @param prefixName   the input placeholder's prefix.
-     * @return the translate placeholder targets map.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param target     the target(s) of the event.
+     * @param input      the input string(s).
+     * @return a new string which translated language placeholders.
      */
-    TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType, String prefixName);
+    List<String> transHolder(String pluginName, Object trigger, Object target, List<String> input);
 
     /**
-     * Getting the translate placeholder targets map.
-     * Automatic adding the prefix to each type.
+     * Translating placeholders.
      *
-     * @param translateMap the import of translate placeholder targets map.
-     * @param target       the input target object.
-     * @return the translate placeholder targets map.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param target     the target(s) of the event.
+     * @param input      the input string(s).
+     * @return a new string which translated language placeholders.
      */
-    TranslateMap getTranslateMap(TranslateMap translateMap, Object target, String targetType);
+    String transHolder(String pluginName, Object trigger, Object target, String input);
 
     /**
-     * Translating the general placeholders.
-     * General -> PlaceHolderAPI -> Custom
+     * Translating placeholders.
      *
-     * @param pluginName the sending plugin name.
-     * @param local      the sender's local language.
-     * @param input      the input string list.
-     * @return a new string with translated placeholders.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param input      the input string(s).
+     * @return a new string which translated language placeholders.
      */
-    List<String> transByGeneral(String pluginName, String local, List<String> input);
+    List<String> transHolder(String pluginName, Object trigger, List<String> input);
 
     /**
-     * Translating the general placeholders.
-     * General -> PlaceHolderAPI -> Custom
+     * Translating placeholders.
      *
-     * @param pluginName the sending plugin name.
-     * @param local      the sender's local language.
-     * @param input      the input string.
-     * @return a new string with translated placeholders.
+     * @param pluginName the sent plugin name.
+     * @param trigger    the trigger of the event.
+     * @param input      the input string(s).
+     * @return a new string which translated language placeholders.
      */
-    String transByGeneral(String pluginName, String local, String input);
+    String transHolder(String pluginName, Object trigger, String input);
 
     /**
-     * Translating the general placeholders.
+     * Translating placeholders.
      *
-     * @param pluginName the sending plugin name.
-     * @param input      the input string list.
-     * @param player     the target player can be null.
-     * @return a new string with translated placeholders.
+     * @param pluginName the sent plugin name.
+     * @param input      the input string(s).
+     * @return a new string which translated language placeholders.
      */
-    List<String> transLayoutPAPI(String pluginName, List<String> input, Player player);
-
-
-    /**
-     * Translating the general placeholders.
-     *
-     * @param pluginName the sending plugin name.
-     * @param input      the input string.
-     * @param player     the target player can be null.
-     * @return a new string with translated placeholders.
-     */
-    String transLayoutPAPI(String pluginName, String input, Player player);
+    String transHolder(String pluginName, String input);
 
     /**
      * Getting the translation of placeholder.
@@ -525,4 +505,15 @@ public interface MessageInterface {
      * @param list         the values of hooks.
      */
     void sendHookMsg(String pluginPrefix, String type, List<String> list);
+
+    /**
+     * @param color         the checking value like "b" and "blue".
+     * @return the color code of the value.
+     */
+    String getColorCode(String color);
+
+    /**
+     * @return the color code and the translations.
+     */
+    Map<String, String> getColorMap();
 }

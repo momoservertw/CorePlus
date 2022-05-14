@@ -2,10 +2,12 @@ package tw.momocraft.coreplus.utils.player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.bekvon.bukkit.residence.Residence;
 import fr.xephi.authme.api.v3.AuthMeApi;
 import me.NoChance.PvPManager.PvPlayer;
 import net.craftersland.data.bridge.PD;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -21,6 +23,16 @@ import java.sql.ResultSet;
 import java.util.*;
 
 public class PlayerManager implements PlayerInterface {
+
+    @Override
+    public boolean isPlayerOnline(UUID uuid) {
+        return Bukkit.getPlayer(uuid) != null;
+    }
+
+    @Override
+    public boolean isPlayerOnline(String playerName) {
+        return Bukkit.getPlayer(playerName) != null;
+    }
 
     @Override
     public Player getPlayer(CommandSender sender) {
@@ -57,12 +69,12 @@ public class PlayerManager implements PlayerInterface {
             return player.getUniqueId();
         UUID uuid;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            uuid = UtilsHandler.getDepend().getLuckPermsApi().getUUID(playerName);
+            uuid = UtilsHandler.getDepend().getLuckPermsAPI().getUUID(playerName);
             if (uuid != null)
                 return uuid;
         }
         if (UtilsHandler.getDepend().CMIEnabled()) {
-            uuid = UtilsHandler.getDepend().getCmiApi().getUUID(playerName);
+            uuid = UtilsHandler.getDepend().getCmiAPI().getUUID(playerName);
             if (uuid != null)
                 return uuid;
         }
@@ -253,7 +265,7 @@ public class PlayerManager implements PlayerInterface {
     @Override
     public boolean isAFK(Player player) {
         if (UtilsHandler.getDepend().CMIEnabled())
-            return UtilsHandler.getDepend().getCmiApi().isAFK(player);
+            return UtilsHandler.getDepend().getCmiAPI().isAFK(player);
         return false;
     }
 
@@ -270,19 +282,19 @@ public class PlayerManager implements PlayerInterface {
                         return user.getBalance();
                     }
                 }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
-                    return UtilsHandler.getDepend().getVaultApi().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+                    return UtilsHandler.getDepend().getVaultAPI().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
                 }
                 break;
             case "points":
                 if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsApi().getBalance(uuid);
+                    return UtilsHandler.getDepend().getPlayerPointsAPI().getBalance(uuid);
                 }
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().getBalance(uuid, type);
+                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoAPI().getBalance(uuid, type);
                     }
                 }
                 break;
@@ -307,20 +319,20 @@ public class PlayerManager implements PlayerInterface {
                     PD.api.setDatabaseMoney(uuid, money);
                     return money;
                 }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
-                    UtilsHandler.getDepend().getVaultApi().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
-                    return UtilsHandler.getDepend().getVaultApi().getBalance(uuid);
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+                    UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                    return UtilsHandler.getDepend().getVaultAPI().getBalance(uuid);
                 }
                 break;
             case "points":
                 if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsApi().takePoints(uuid, amount);
+                    return UtilsHandler.getDepend().getPlayerPointsAPI().takePoints(uuid, amount);
                 }
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().withdraw(uuid, amount, type);
+                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoAPI().withdraw(uuid, amount, type);
                     }
                 }
                 break;
@@ -345,20 +357,20 @@ public class PlayerManager implements PlayerInterface {
                     PD.api.setDatabaseMoney(uuid, money);
                     return money;
                 }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
-                    UtilsHandler.getDepend().getVaultApi().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
-                    return UtilsHandler.getDepend().getVaultApi().getBalance(uuid);
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+                    UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                    return UtilsHandler.getDepend().getVaultAPI().getBalance(uuid);
                 }
                 break;
             case "points":
                 if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsApi().givePoints(uuid, amount);
+                    return UtilsHandler.getDepend().getPlayerPointsAPI().givePoints(uuid, amount);
                 }
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, type);
+                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoAPI().deposit(uuid, amount, type);
                     }
                 }
                 break;
@@ -384,22 +396,22 @@ public class PlayerManager implements PlayerInterface {
                     PD.api.setDatabaseMoney(uuid, amount);
                     return amount;
                 }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultApi().getEconomy() != null) {
+                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
                     double money = getCurrencyBalance(uuid, type);
-                    UtilsHandler.getDepend().getVaultApi().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), money);
-                    UtilsHandler.getDepend().getVaultApi().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                    UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), money);
+                    UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
                     return amount;
                 }
                 break;
             case "points":
                 if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsApi().givePoints(uuid, amount);
+                    return UtilsHandler.getDepend().getPlayerPointsAPI().givePoints(uuid, amount);
                 }
                 break;
             default:
                 if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoApi().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoApi().deposit(uuid, amount, type);
+                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
+                        return UtilsHandler.getDepend().getGemsEcoAPI().deposit(uuid, amount, type);
                     }
                 }
                 break;
@@ -522,10 +534,10 @@ public class PlayerManager implements PlayerInterface {
         if (offlinePlayer.isOp())
             return true;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            return UtilsHandler.getDepend().getLuckPermsApi().hasPermission(uuid, permission) ||
-                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(uuid, permission + ".*");
+            return UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(uuid, permission) ||
+                    UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(uuid, permission + ".*");
         }
-        return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
+        return UtilsHandler.getDepend().getVaultAPI().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
     }
 
     @Override
@@ -535,10 +547,10 @@ public class PlayerManager implements PlayerInterface {
         if (offlinePlayer.isOp())
             return true;
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            return UtilsHandler.getDepend().getLuckPermsApi().hasPermission(offlinePlayer.getUniqueId(), permission) ||
-                    UtilsHandler.getDepend().getLuckPermsApi().hasPermission(offlinePlayer.getUniqueId(), permission + ".*");
+            return UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission) ||
+                    UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission + ".*");
         }
-        return UtilsHandler.getDepend().getVaultApi().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
+        return UtilsHandler.getDepend().getVaultAPI().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
     }
 
     @Override
@@ -672,7 +684,7 @@ public class PlayerManager implements PlayerInterface {
         if (permission == null)
             return def;
         List<Integer> numbers = new ArrayList<>();
-        for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
+        for (String perm : UtilsHandler.getDepend().getLuckPermsAPI().getAllPerms(uuid)) {
             if (!perm.contains(permission))
                 continue;
             try {
@@ -730,7 +742,7 @@ public class PlayerManager implements PlayerInterface {
         if (permission == null)
             return def;
         List<Integer> numbers = new ArrayList<>();
-        for (String perm : UtilsHandler.getDepend().getLuckPermsApi().getAllPerms(uuid)) {
+        for (String perm : UtilsHandler.getDepend().getLuckPermsAPI().getAllPerms(uuid)) {
             if (!perm.contains(permission))
                 continue;
             try {
@@ -748,7 +760,7 @@ public class PlayerManager implements PlayerInterface {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
             return null;
         }
-        return UtilsHandler.getDepend().getLuckPermsApi().getPlayerPrimaryGroup(uuid);
+        return UtilsHandler.getDepend().getLuckPermsAPI().getPlayerPrimaryGroup(uuid);
     }
 
     @Override
@@ -756,7 +768,7 @@ public class PlayerManager implements PlayerInterface {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
             return false;
         }
-        return UtilsHandler.getDepend().getLuckPermsApi().setPlayerPrimaryGroup(uuid, group);
+        return UtilsHandler.getDepend().getLuckPermsAPI().setPlayerPrimaryGroup(uuid, group);
     }
 
     @Override
@@ -764,26 +776,26 @@ public class PlayerManager implements PlayerInterface {
         if (!UtilsHandler.getDepend().LuckPermsEnabled()) {
             return false;
         }
-        return UtilsHandler.getDepend().getLuckPermsApi().isInheritedGroup(uuid, group);
+        return UtilsHandler.getDepend().getLuckPermsAPI().isInheritedGroup(uuid, group);
     }
 
     @Override
     public void addPermission(UUID uuid, String permission) {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getDepend().getLuckPermsApi().addPermission(uuid, permission);
+            UtilsHandler.getDepend().getLuckPermsAPI().addPermission(uuid, permission);
             return;
         }
-        UtilsHandler.getDepend().getVaultApi().getPermissions().playerAdd(Bukkit.getWorlds().get(0).getName(),
+        UtilsHandler.getDepend().getVaultAPI().getPermissions().playerAdd(Bukkit.getWorlds().get(0).getName(),
                 Bukkit.getOfflinePlayer(uuid), permission);
     }
 
     @Override
     public void removePermission(UUID uuid, String permission) {
         if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            UtilsHandler.getDepend().getLuckPermsApi().removePermission(uuid, permission);
+            UtilsHandler.getDepend().getLuckPermsAPI().removePermission(uuid, permission);
             return;
         }
-        UtilsHandler.getDepend().getVaultApi().getPermissions().playerRemove(Bukkit.getWorlds().get(0).getName(),
+        UtilsHandler.getDepend().getVaultAPI().getPermissions().playerRemove(Bukkit.getWorlds().get(0).getName(),
                 Bukkit.getOfflinePlayer(uuid), permission);
     }
 
@@ -800,11 +812,22 @@ public class PlayerManager implements PlayerInterface {
 
     @Override
     public void setDiscordNick(UUID uuid, String nickname) {
-        UtilsHandler.getDiscord().setMemberNick(uuid, nickname);
+        UtilsHandler.getDepend().getDiscordAPI().setMemberNick(uuid, nickname);
     }
 
     @Override
-    public void getDiscordNick(UUID uuid) {
-        UtilsHandler.getDiscord().getMemberNick(uuid);
+    public String getDiscordNick(UUID uuid) {
+        return UtilsHandler.getDepend().getDiscordAPI().getMemberNick(uuid);
     }
+
+    @Override
+    public String getDiscordName(UUID uuid) {
+        return UtilsHandler.getDepend().getDiscordAPI().getName(uuid);
+    }
+
+    @Override
+    public Material getResSelectionTool() {
+        return Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
+    }
+
 }

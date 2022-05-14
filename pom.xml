@@ -67,6 +67,17 @@
         </repository>
     </repositories>
     <dependencies>
+        <!--JavaScript API-->
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>22.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js-scriptengine</artifactId>
+            <version>22.0.0</version>
+        </dependency>
         <!--Google API-->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -148,6 +159,14 @@
             <artifactId>CMI</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMI9.0.0.0API.jar
+            </systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <dependency>
+            <groupId>me.CMILib</groupId>
+            <artifactId>CMILib</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/CMILib1.1.2.5.jar
             </systemPath>
             <version>LEGACY</version>
         </dependency>

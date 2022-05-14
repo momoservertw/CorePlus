@@ -10,6 +10,7 @@ import tw.momocraft.coreplus.listeners.CommandOnline;
 import tw.momocraft.coreplus.listeners.PlaceHolderTest;
 import tw.momocraft.coreplus.utils.condition.ItemJoinUtils;
 import tw.momocraft.coreplus.utils.condition.ResidenceUtils;
+import tw.momocraft.coreplus.utils.message.DiscordUtils;
 import tw.momocraft.coreplus.utils.player.CMIUtils;
 import tw.momocraft.coreplus.utils.player.economy.GemsEcoUtils;
 import tw.momocraft.coreplus.utils.player.economy.PlayerPointsUtils;
@@ -19,13 +20,14 @@ import tw.momocraft.coreplus.utils.player.permission.LuckPermsUtils;
 public class DependHandler implements DependInterface {
 
     private boolean paper;
-    private VaultUtils vaultApi;
-    private PlayerPointsUtils playerPointsApi;
-    private GemsEcoUtils gemsEcoApi;
-    private LuckPermsUtils luckPermsApi;
-    private ItemJoinUtils itemJoinApi;
-    private ResidenceUtils residenceApi;
-    private CMIUtils cmiApi;
+    private VaultUtils vaultAPI;
+    private PlayerPointsUtils playerPointsAPI;
+    private GemsEcoUtils gemsEcoAPI;
+    private LuckPermsUtils luckPermsAPI;
+    private ItemJoinUtils itemJoinAPI;
+    private ResidenceUtils residenceAPI;
+    private CMIUtils cmiAPI;
+    private DiscordUtils discordAPI;
 
     private boolean Vault = false;
     private boolean PlayerPoints = false;
@@ -42,13 +44,11 @@ public class DependHandler implements DependInterface {
     private boolean PvPManager = false;
 
     public void setup(boolean reload) {
-        registerEvents();
+        if (!reload) {
+            registerEvents();
+            //checkUpdate();
+        }
         setupHooks();
-        setupFile();
-        /*
-        if (!reload)
-            checkUpdate();
-         */
     }
 
     public void checkUpdate() {
@@ -126,34 +126,6 @@ public class DependHandler implements DependInterface {
             PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
     }
 
-    private void setupFile() {
-        setupFileMySQL();
-        setupFileLogs();
-        setupFileJson();
-        setupFileYAML();
-        setupFileProp();
-    }
-
-    private void setupFileMySQL() {
-
-    }
-
-    private void setupFileLogs() {
-
-    }
-
-    private void setupFileJson() {
-
-    }
-
-    private void setupFileYAML() {
-
-    }
-
-    private void setupFileProp() {
-
-    }
-
     @Override
     public boolean isPaper() {
         return paper;
@@ -166,12 +138,12 @@ public class DependHandler implements DependInterface {
 
     @Override
     public boolean VaultEconEnabled() {
-        return vaultApi.isEconEnable();
+        return vaultAPI.isEconEnable();
     }
 
     @Override
     public boolean VaultPermEnabled() {
-        return vaultApi.isPermEnable();
+        return vaultAPI.isPermEnable();
     }
 
     @Override
@@ -234,60 +206,68 @@ public class DependHandler implements DependInterface {
         return this.PvPManager;
     }
 
-    public VaultUtils getVaultApi() {
-        return this.vaultApi;
+    public VaultUtils getVaultAPI() {
+        return this.vaultAPI;
     }
 
-    public PlayerPointsUtils getPlayerPointsApi() {
-        return this.playerPointsApi;
+    public PlayerPointsUtils getPlayerPointsAPI() {
+        return this.playerPointsAPI;
     }
 
-    public GemsEcoUtils getGemsEcoApi() {
-        return this.gemsEcoApi;
+    public GemsEcoUtils getGemsEcoAPI() {
+        return this.gemsEcoAPI;
     }
 
-    public LuckPermsUtils getLuckPermsApi() {
-        return this.luckPermsApi;
+    public LuckPermsUtils getLuckPermsAPI() {
+        return this.luckPermsAPI;
     }
 
-    public ItemJoinUtils getItemJoinApi() {
-        return this.itemJoinApi;
+    public ItemJoinUtils getItemJoinAPI() {
+        return this.itemJoinAPI;
     }
 
-    public ResidenceUtils getResidenceApi() {
-        return this.residenceApi;
+    public ResidenceUtils getResidenceAPI() {
+        return this.residenceAPI;
     }
 
-    public CMIUtils getCmiApi() {
-        return cmiApi;
+    public CMIUtils getCmiAPI() {
+        return cmiAPI;
+    }
+
+    public DiscordUtils getDiscordAPI() {
+        return discordAPI;
     }
 
 
     private void setVaultApi() {
-        vaultApi = new VaultUtils();
+        vaultAPI = new VaultUtils();
     }
 
     private void setPlayerPointsApi() {
-        playerPointsApi = new PlayerPointsUtils();
+        playerPointsAPI = new PlayerPointsUtils();
     }
 
     private void setGemsEconomyApi() {
-        gemsEcoApi = new GemsEcoUtils();
+        gemsEcoAPI = new GemsEcoUtils();
     }
 
     private void setLuckPermsApi() {
-        luckPermsApi = new LuckPermsUtils();
+        luckPermsAPI = new LuckPermsUtils();
     }
 
     private void setItemJoinUtils() {
-        itemJoinApi = new ItemJoinUtils();
+        itemJoinAPI = new ItemJoinUtils();
     }
 
     private void setResidenceUtils() {
-        residenceApi = new ResidenceUtils();
+        residenceAPI = new ResidenceUtils();
     }
 
     private void setCMIUtils() {
-        cmiApi = new CMIUtils();
+        cmiAPI = new CMIUtils();
+    }
+
+    private void setDiscordAPI() {
+        discordAPI = new DiscordUtils();
     }
 }

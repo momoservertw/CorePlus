@@ -19,6 +19,10 @@ public class JsonUtils {
     private final List<String> dataList = new ArrayList<>();
     private final List<String> langList = new ArrayList<>();
 
+    public Map<String, String> getJsonProp() {
+        return ConfigHandler.getConfigPath().getJsonProp();
+    }
+
     public boolean isEnable() {
         return ConfigHandler.getConfigPath().isDataJson();
     }

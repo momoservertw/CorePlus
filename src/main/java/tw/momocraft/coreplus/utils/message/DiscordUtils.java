@@ -41,4 +41,9 @@ public class DiscordUtils {
         String memberID = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(uuid);
         return DiscordUtil.getMemberById(memberID).getNickname();
     }
+
+    public String getName(UUID uuid) {
+        String memberID = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(uuid);
+        return DiscordUtil.getMemberById(memberID).getUser().getName();
+    }
 }

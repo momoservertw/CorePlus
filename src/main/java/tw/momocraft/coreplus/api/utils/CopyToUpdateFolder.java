@@ -30,6 +30,8 @@ public class CopyToUpdateFolder {
         targetList.add(new File(userPath + "\\IdeaProjects\\RegionPlus\\target", fileName));
         fileName = "ToolPlus-1.0.0.jar";
         targetList.add(new File(userPath + "\\IdeaProjects\\ToolPlus\\target", fileName));
+        fileName = "PlayerdataPlus-1.2.0.jar";
+        targetList.add(new File(userPath + "\\IdeaProjects\\PlayerdataPlus\\target", fileName));
 
         start(path, targetList);
     }
