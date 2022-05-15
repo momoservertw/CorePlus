@@ -105,16 +105,6 @@ public class ConfigPath implements ConfigInterface {
         List<String> list = new ArrayList<>(CorePlus.getInstance().getDescription().getDepend());
         list.addAll(CorePlus.getInstance().getDescription().getSoftDepend());
         UtilsHandler.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
-
-        /*
-        list = Arrays.asList((
-                "flag" + ","
-                        + "flag" + ","
-                        + "flag"
-        ).split(","));
-        CorePlusAPI.getLangManager().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", list);
-
-         */
     }
 
     //  ============================================== //
