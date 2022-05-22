@@ -696,7 +696,6 @@ public class CommandManager implements CommandInterface {
                     return;
                 }
             }
-            ParticleUtils.spawnParticle(loc, particleMap);
         } catch (Exception ex) {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Not correct format of command: \"particle: " + input + "\"");
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "More information: https://github.com/momoservertw/CorePlus/wiki/Custom-Commands");

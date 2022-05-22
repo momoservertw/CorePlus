@@ -134,9 +134,8 @@ public class ConditionManager implements ConditionInterface {
 
     @Override
     public boolean isMenuNode(String node) {
-        if (node == null) {
+        if (node == null)
             return false;
-        }
         return ConfigHandler.getConfigPath().getMenuItemJoin().equals(node);
     }
 
@@ -144,8 +143,8 @@ public class ConditionManager implements ConditionInterface {
     public boolean isMenu(ItemStack itemStack) {
         // Holding ItemJoin menu.
         if (UtilsHandler.getDepend().ItemJoinEnabled()) {
-            String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
-            if (!menuIJ.equals(""))
+            String itemJoinNode = ConfigHandler.getConfigPath().getMenuItemJoin();
+            if (itemJoinNode != null && !itemJoinNode.isEmpty())
                 return UtilsHandler.getDepend().getItemJoinAPI().isMenu(itemStack);
         }
         // Holding a menu item.
@@ -169,9 +168,8 @@ public class ConditionManager implements ConditionInterface {
     @Override
     public boolean isCustomItem(ItemStack itemStack) {
         // Holding ItemJoin menu.
-        if (UtilsHandler.getDepend().ItemJoinEnabled()) {
+        if (UtilsHandler.getDepend().ItemJoinEnabled())
             return UtilsHandler.getDepend().getItemJoinAPI().isCustom(itemStack);
-        }
         return false;
     }
 

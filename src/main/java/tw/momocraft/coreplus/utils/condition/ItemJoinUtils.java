@@ -32,10 +32,10 @@ public class ItemJoinUtils {
 
     public boolean isMenu(ItemStack itemStack) {
         String menuIJ = ConfigHandler.getConfigPath().getMenuItemJoin();
-        if (!menuIJ.equals("")) {
-            if (ij.getNode(itemStack) != null) {
-                return ij.getNode(itemStack).equals(menuIJ);
-            }
+        if (menuIJ != null && !menuIJ.isEmpty()) {
+            String itemNode = ij.getNode(itemStack);
+            if (itemNode != null)
+                return menuIJ.equals(itemNode);
         }
         return false;
     }

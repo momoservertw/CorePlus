@@ -49,7 +49,9 @@ public class ParticleUtils {
             dustOptions = new Particle.DustOptions(color, 1);
         }
         Particle.DustOptions finalDustOptions = dustOptions;
-
+        // Adjusted the location of half block.
+        loc = loc.clone().add(-0.5, 0, -0.5);
+        Location finalLoc = loc;
         new BukkitRunnable() {
             int i = 1;
 
@@ -60,11 +62,11 @@ public class ParticleUtils {
                 } else {
                     ++i;
                     if (particle.equals(Particle.REDSTONE) || particle.equals(Particle.SPELL_MOB) || particle.equals(Particle.SPELL_MOB_AMBIENT)) {
-                        loc.getWorld().spawnParticle(Particle.REDSTONE, loc, amount, offsetX, offsetY, offsetZ, extra, finalDustOptions);
+                        finalLoc.getWorld().spawnParticle(Particle.REDSTONE, finalLoc, amount, offsetX, offsetY, offsetZ, extra, finalDustOptions);
                     } else if (particle.equals(Particle.BLOCK_CRACK)) {
-                        loc.getWorld().spawnParticle(Particle.BLOCK_CRACK, loc, amount, offsetX, offsetY, offsetZ, extra, material);
+                        finalLoc.getWorld().spawnParticle(Particle.BLOCK_CRACK, finalLoc, amount, offsetX, offsetY, offsetZ, extra, material);
                     } else {
-                        loc.getWorld().spawnParticle(particle, loc, amount, offsetX, offsetY, offsetZ, extra);
+                        finalLoc.getWorld().spawnParticle(particle, finalLoc, amount, offsetX, offsetY, offsetZ, extra);
                     }
                 }
             }
