@@ -21,6 +21,7 @@ public class CopyApiToPlugins {
         String regionplus = userPath + "\\IdeaProjects\\RegionPlus\\src\\main\\java\\tw\\momocraft\\regionplus\\extra";
         String playerdataplus = userPath + "\\IdeaProjects\\PlayerdataPlus\\src\\main\\java\\tw\\momocraft\\playerdataplus\\extra";
         String toolplus = userPath + "\\IdeaProjects\\ToolPlus\\src\\main\\java\\tw\\momocraft\\toolplus\\extra";
+        String renownplus = userPath + "\\IdeaProjects\\RenownPlus\\src\\main\\java\\tw\\momocraft\\renownplus\\extra";
 
 
         File source = new File(userPath + "\\IdeaProjects\\CorePlus\\target", fileName);
@@ -35,6 +36,8 @@ public class CopyApiToPlugins {
         targetList.add(new File(regionplus, fileName));
         targetList.add(new File(playerdataplus, fileName));
         targetList.add(new File(toolplus, fileName));
+        targetList.add(new File(renownplus, fileName));
+
 
         copyFiles(source, targetList);
     }

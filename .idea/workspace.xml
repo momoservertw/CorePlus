@@ -23,12 +23,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MythicMobs-5.1.0-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ConditionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ConditionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ItemJoinUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/condition/ItemJoinUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/CommandManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/effect/ParticleUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/effect/ParticleUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyApiToPlugins.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyToUpdateFolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/utils/CopyToUpdateFolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MythicMobs-5.0.3-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +84,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EntityPlus" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.34272996" />
@@ -114,7 +115,7 @@
       <recent name="tw.momocraft.coreplus.api" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CopyToUpdateFolder">
+  <component name="RunManager" selected="Application.CopyApiToPlugins">
     <configuration name="CopyApiToPlugins" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.utils.CopyApiToPlugins" />
       <module name="CorePlus" />
@@ -156,8 +157,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CopyToUpdateFolder" />
         <item itemvalue="Application.CopyApiToPlugins" />
+        <item itemvalue="Application.CopyToUpdateFolder" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
