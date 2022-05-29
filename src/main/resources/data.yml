@@ -22,7 +22,12 @@ MySQL:
       Enable: false
       Database: "playerdataplus"
       Tables:
-        Players: "`players"
+        Players: "players"
+    RenownPlus:
+      Enable: false
+      Database: "renownplus"
+      Tables:
+        Players: "players"
     LuckPerms:
       Enable: false
       Database: "luckperms"
