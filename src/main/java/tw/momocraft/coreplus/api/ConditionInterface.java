@@ -117,18 +117,6 @@ public interface ConditionInterface {
     boolean checkFlag(Player player, Location loc, String flag, boolean def);
 
     /**
-     * Checking player has the permission of residence or not.
-     *
-     * @param player the target player.
-     * @param loc    the checking location.
-     * @param flag   the permission flag of residence.
-     * @param def    the return value when the residence doesn't have that flag.
-     * @param check  return true if doesn't need to check.
-     * @return if player has residence permission.
-     */
-    boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check);
-
-    /**
      * Checking residence has a flag or not.
      *
      * @param loc  the checking location.
@@ -137,17 +125,6 @@ public interface ConditionInterface {
      * @return if player has residence permission.
      */
     boolean checkFlag(Location loc, String flag, boolean def);
-
-    /**
-     * Checking residence has a flag or not.
-     *
-     * @param loc   the checking location.
-     * @param flag  the permission flag of residence.
-     * @param def   the return value when the residence doesn't have that flag.
-     * @param check return true if doesn't need to check.
-     * @return if player has residence permission.
-     */
-    boolean checkFlag(Location loc, String flag, boolean def, boolean check);
 
     /**
      * Checking the location is in residence or not.

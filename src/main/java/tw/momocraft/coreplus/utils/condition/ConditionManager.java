@@ -101,23 +101,13 @@ public class ConditionManager implements ConditionInterface {
     }
 
     @Override
-    public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
-        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(player, loc, flag, def);
-    }
-
-    @Override
-    public boolean checkFlag(Player player, Location loc, String flag, boolean def, boolean check) {
-        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(player, loc, flag, def, check);
-    }
-
-    @Override
     public boolean checkFlag(Location loc, String flag, boolean def) {
         return UtilsHandler.getDepend().getResidenceAPI().checkFlag(loc, flag, def);
     }
 
     @Override
-    public boolean checkFlag(Location loc, String flag, boolean def, boolean check) {
-        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(loc, flag, def, check);
+    public boolean checkFlag(Player player, Location loc, String flag, boolean def) {
+        return UtilsHandler.getDepend().getResidenceAPI().checkFlag(player, loc, flag, def);
     }
 
     @Override

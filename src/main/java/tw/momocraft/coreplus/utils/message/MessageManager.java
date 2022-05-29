@@ -1452,12 +1452,11 @@ public class MessageManager implements MessageInterface {
             return;
         StringBuilder message = new StringBuilder("&7Hooked " + type + ": [");
         for (String value : list) {
-            if (type.equals("residence_flags")) {
+            if (type.equals("residence_flags"))
                 if (UtilsHandler.getCondition().isRegisteredFlag(value))
                     message.append(value).append(", ");
-            } else {
-                message.append(value).append(", ");
-            }
+                else
+                    message.append(value).append(", ");
         }
         if (!message.toString().contains(","))
             sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
