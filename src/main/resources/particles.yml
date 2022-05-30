@@ -5,28 +5,28 @@
 Config-Version: 1
 
 Particles:
-  Barrier:
-    Type: BARRIER
+  barrier:
+    Type: block_marker
     Amount: 1
-  Crit_Magic:
+  crit_magic:
     Type: CRIT_MAGIC
     Amount: 1
     Run:
       Times: 6
       Interval: 10
-  Slime:
+  slime:
     Type: SLIME
     Amount: 3
     Run:
       Times: 8
       Interval: 20
-  Flame:
+  flame:
     Type: FLAME
     Amount: 3
     Run:
       Times: 8
       Interval: 20
-  Blood:
+  blood:
     Type: BLOCK_CRACK
     Material: REDSTONE_BLOCK
     Amount: 5
@@ -34,7 +34,7 @@ Particles:
       Times: 8
       Interval: 20
   # REDSTONE, SPELL_MOB, SPELL_MOB_AMBIENT
-  Redstone_Red:
+  redstone_red:
     Type: REDSTONE
     Color:
       Enable: true
@@ -46,7 +46,7 @@ Particles:
     Run:
       Times: 8
       Interval: 20
-  Redstone_Dust:
+  redstone_dust:
     Type: BLOCK_CRACK
     Color:
       Enable: true

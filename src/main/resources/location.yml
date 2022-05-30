@@ -24,16 +24,16 @@ Location:
       - world_the_end
     Area:
       "!S": 150
-  BedrockWorld:
+  WorldNoBedrock:
     Worlds:
       - world
     Area:
-      Y: ">= 5"
-  BedrockNether:
+      Y: "> -60"
+  NetherNoBedrock:
     Worlds:
       - world_nether
     Area:
-      Y: "5 ~ 123"
+      Y: "5 ~ 122"
   Border:
     Worlds:
       - world

@@ -73,7 +73,8 @@ public class CommandManager implements CommandInterface {
             }
             newCmdList.add(command);
         }
-        newCmdList = UtilsHandler.getMsg().transLang(player, newCmdList);
+        newCmdList = UtilsHandler.getMsg().transHolder(ConfigHandler.getPluginName(),
+                player, newCmdList);
         for (String cmd : newCmdList)
             dispatchCustomCmd(pluginName, player, cmd);
     }

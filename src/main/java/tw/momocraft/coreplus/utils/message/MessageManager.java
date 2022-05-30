@@ -496,10 +496,11 @@ public class MessageManager implements MessageInterface {
         if (targetMap == null)
             return input;
         TranslateMap translateMap = new TranslateMap();
+        for (Map.Entry<String, Object> entry : targetMap.entrySet())
+            translateMap.putObjectMap(entry.getKey(), entry.getValue());
         String objectType;
         Map<String, Object> objectMap = translateMap.getObjectMap();
         for (Map.Entry<String, Object> entry : targetMap.entrySet()) {
-            translateMap.putObjectMap(entry.getKey(), entry.getValue());
             objectType = UtilsHandler.getUtil().getObjectType(entry.getValue());
             if (objectMap.get(objectType) == null)
                 translateMap.putObjectMap(objectType, entry.getValue());
@@ -517,14 +518,11 @@ public class MessageManager implements MessageInterface {
         if (trigger == null && targets == null)
             return input;
         TranslateMap translateMap = new TranslateMap();
-        String objectType;
+        translateMap.putObjectMap("trigger", trigger);
         Map<String, Object> objectMap = translateMap.getObjectMap();
-        if (trigger != null) {
-            translateMap.putObjectMap("trigger", trigger);
-            objectType = UtilsHandler.getUtil().getObjectType(trigger);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(objectType, trigger);
-        }
+        String objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(objectType, trigger);
         if (targets != null) {
             Object target;
             for (int i = 1; i < targets.size(); i++) {
@@ -550,14 +548,11 @@ public class MessageManager implements MessageInterface {
         if (trigger == null && targets == null)
             return input;
         TranslateMap translateMap = new TranslateMap();
-        String objectType;
+        translateMap.putObjectMap("trigger", trigger);
         Map<String, Object> objectMap = translateMap.getObjectMap();
-        if (trigger != null) {
-            translateMap.putObjectMap("trigger", trigger);
-            objectType = UtilsHandler.getUtil().getObjectType(trigger);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(objectType, trigger);
-        }
+        String objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(objectType, trigger);
         if (targets != null) {
             Object target;
             for (int i = 1; i < targets.size(); i++) {
@@ -582,19 +577,17 @@ public class MessageManager implements MessageInterface {
             return input;
         TranslateMap translateMap = new TranslateMap();
         String objectType;
-        Map<String, Object> objectMap = translateMap.getObjectMap();
-        if (trigger != null) {
+        if (trigger != null)
             translateMap.putObjectMap("trigger", trigger);
-            objectType = UtilsHandler.getUtil().getObjectType(trigger);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(objectType, trigger);
-        }
-        if (target != null) {
+        if (target != null)
             translateMap.putObjectMap("target", target);
-            objectType = UtilsHandler.getUtil().getObjectType(target);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(UtilsHandler.getUtil().getObjectType(target), target);
-        }
+        Map<String, Object> objectMap = translateMap.getObjectMap();
+        objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(objectType, trigger);
+        objectType = UtilsHandler.getUtil().getObjectType(target);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(UtilsHandler.getUtil().getObjectType(target), target);
         List<String> list = new ArrayList<>();
         for (String value : input)
             list.add(getConvertObjects(pluginName, translateMap, value));
@@ -609,19 +602,18 @@ public class MessageManager implements MessageInterface {
             return input;
         TranslateMap translateMap = new TranslateMap();
         String objectType;
-        Map<String, Object> objectMap = translateMap.getObjectMap();
-        if (trigger != null) {
+        if (trigger != null)
             translateMap.putObjectMap("trigger", trigger);
-            objectType = UtilsHandler.getUtil().getObjectType(trigger);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(objectType, trigger);
-        }
-        if (target != null) {
+        if (target != null)
             translateMap.putObjectMap("target", target);
-            objectType = UtilsHandler.getUtil().getObjectType(target);
-            if (objectMap.get(objectType) == null)
-                translateMap.putObjectMap(UtilsHandler.getUtil().getObjectType(target), target);
-        }
+
+        Map<String, Object> objectMap = translateMap.getObjectMap();
+        objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(objectType, trigger);
+        objectType = UtilsHandler.getUtil().getObjectType(target);
+        if (objectMap.get(objectType) == null)
+            translateMap.putObjectMap(UtilsHandler.getUtil().getObjectType(target), target);
         return getConvertObjects(pluginName, translateMap, input);
     }
 
@@ -632,10 +624,9 @@ public class MessageManager implements MessageInterface {
         if (trigger == null)
             return input;
         TranslateMap translateMap = new TranslateMap();
-        String objectType;
-        Map<String, Object> objectMap = translateMap.getObjectMap();
         translateMap.putObjectMap("trigger", trigger);
-        objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        Map<String, Object> objectMap = translateMap.getObjectMap();
+        String objectType = UtilsHandler.getUtil().getObjectType(trigger);
         if (objectMap.get(objectType) == null)
             translateMap.putObjectMap(objectType, trigger);
         List<String> list = new ArrayList<>();
@@ -651,10 +642,9 @@ public class MessageManager implements MessageInterface {
         if (trigger == null)
             return input;
         TranslateMap translateMap = new TranslateMap();
-        String objectType;
-        Map<String, Object> objectMap = translateMap.getObjectMap();
         translateMap.putObjectMap("trigger", trigger);
-        objectType = UtilsHandler.getUtil().getObjectType(trigger);
+        Map<String, Object> objectMap = translateMap.getObjectMap();
+        String objectType = UtilsHandler.getUtil().getObjectType(trigger);
         if (objectMap.get(objectType) == null)
             translateMap.putObjectMap(objectType, trigger);
         return getConvertObjects(pluginName, translateMap, input);
@@ -675,7 +665,6 @@ public class MessageManager implements MessageInterface {
         Object target;
         for (String prefix : map.keySet()) {
             target = map.get(prefix);
-            input = getConvertPAPI(pluginName, input);
             if (target instanceof Player) {
                 Player player = (Player) target;
                 input = getConvertPlayer(pluginName, prefix, player, input);
@@ -709,6 +698,10 @@ public class MessageManager implements MessageInterface {
                 Location location = (Location) target;
                 input = getConvertLocation(pluginName, prefix, location, input);
             }
+            if (target instanceof Player)
+                input = getConvertPAPI(pluginName, (Player) target, input);
+            else
+                input = getConvertPAPI(pluginName, null, input);
             input = getConvertGeneral(pluginName, input);
         }
         return input;

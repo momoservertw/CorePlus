@@ -50,7 +50,7 @@ public class ParticleUtils {
         }
         Particle.DustOptions finalDustOptions = dustOptions;
         // Adjusted the location of half block.
-        loc = loc.clone().add(-0.5, 0, -0.5);
+        loc = loc.clone().add(-0.5, 1, -0.5);
         Location finalLoc = loc;
         new BukkitRunnable() {
             int i = 1;
