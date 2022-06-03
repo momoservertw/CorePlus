@@ -1,7 +1,10 @@
 package tw.momocraft.coreplus.utils;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.player.PlayerDataMap;
@@ -18,19 +21,29 @@ public class PlayerData {
         String playerName = player.getName();
         UUID uuid = player.getUniqueId();
 
-        PlayerDataMap playerDataMap = new PlayerDataMap();
-        playerDataMap.setPlayerName(playerName);
-        playerDataMap.setUuid(uuid);
-        Map<String, String> map = UtilsHandler.getFile().getMySQL().getValueMap(ConfigHandler.getPluginName()
-                , "CorePlus", "PLAYERDATA", "uuid", uuid.toString());
-        if (Boolean.getBoolean(map.get("synced"))) {
-            playerDataMap.setPlayerData(map);
-            playerMap.put(playerName, playerDataMap);
-            return;
-        }
-        if (UtilsHandler.getPlayer().isPlayerOnline(uuid)) {
+        new BukkitRunnable() {
+            int i = 1;
+            PlayerDataMap playerDataMap;
 
-        }
+            @Override
+            public void run() {
+                if (i > 5) {
+
+                } else {
+                    i++;
+                    playerDataMap = new PlayerDataMap();
+                    playerDataMap.setPlayerName(playerName);
+                    playerDataMap.setUuid(uuid);
+                    Map<String, String> map = UtilsHandler.getFile().getMySQL().getValueMap(ConfigHandler.getPluginName()
+                            , "CorePlus", "playerdata", "uuid", uuid.toString());
+                    if (Boolean.getBoolean(map.get("synced"))) {
+                        playerDataMap.setPlayerData(map);
+                        playerMap.put(playerName, playerDataMap);
+                        cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(CorePlus.getInstance(), 0, 20);
     }
 
     private void unloadPlayer(OfflinePlayer offlinePlayer) {
