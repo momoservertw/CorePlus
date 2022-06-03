@@ -38,7 +38,6 @@ public class CopyApiToPlugins {
         targetList.add(new File(toolplus, fileName));
         targetList.add(new File(renownplus, fileName));
 
-
         copyFiles(source, targetList);
     }
 
