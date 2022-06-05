@@ -448,14 +448,6 @@ public class ConfigPath implements ConfigInterface {
     }
 
     //  ============================================== //
-    //         Data.yml Setter                         //
-    //  ============================================== //
-    private void set() {
-    ConfigurationSection particleConfig = ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages");
-
-    }
-
-    //  ============================================== //
     //         ConfigBuilder Setter                    //
     //  ============================================== //
     private void setConfigBuilder() {

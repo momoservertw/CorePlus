@@ -1,7 +1,7 @@
 Config-Version: 1
 
 Message:
-  prefix: "&7[&dCorePlus&7]&r "
+  prefix: "&7[&dCorePlus&7]&r"
   unknownCommand: "%prefix% &fUnknown command."
   noPermission: "%prefix% &cYou do not have permission to use that command!"
   configReload: "%prefix% &aConfiguration(s) Reloaded!"
@@ -22,6 +22,10 @@ Message:
   runcmdOther: "%prefix% &eExecuted command for %targetplayer%: %value%"
   runcmdCustomOther: "%prefix% &eExecuted custom command for %targetplayer%: %group%"
   foundAmount: "%prefix% &eFound %amount% %value%."
+  playerDataSyncStarted: "%prefix% &7Starting to sync the data."
+  playerDataSyncWaiting: "%prefix% &7Please waiting the data synced."
+  playerDataSyncSucceed: "%prefix% &7Succeed to sync the player data."
+  playerDataSyncFailed: "%prefix% &cFailed to sync the player data, please login again.{n}%prefix% &cIf the error still occurred please report to the administer."
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
     help: "&f/coreplus help &8- &7This help menu."

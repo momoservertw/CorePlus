@@ -45,18 +45,6 @@ General:
       MythicMobs: true
       AuthMe: true
       PvPManager: true
-# Sync the custom player data over multiple servers.
-PlayerData:
-  Enable: false
-  Settings:
-    Auto-Save:
-        Enable: true
-        Interval: 180
-        Message: false
-    Message:
-      Starting: true
-      Succeed: true
-      Failed: true
 
 # Regenerate the group.yml or create a custom configurations.
 # More information: https://github.com/momoservertw/CorePlus/wiki/Config-Builder

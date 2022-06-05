@@ -14,15 +14,10 @@ MySQL:
       username: "root"
       password: ""
   Groups:
-    CorePlus:
-      Enable: false
-      Database: "coreplus"
-      Prefix: ""
     PlayerdataPlus:
       Enable: false
       Database: "playerdataplus"
-      Tables:
-        Players: "players"
+      Prefix: ""
     RenownPlus:
       Enable: false
       Database: "renownplus"

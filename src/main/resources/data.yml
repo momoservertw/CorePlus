@@ -14,9 +14,9 @@ MySQL:
       username: "root"
       password: ""
   Groups:
-    CorePlus:
+    PlayerdataPlus:
       Enable: false
-      Database: "coreplus"
+      Database: "playerdataplus"
       Prefix: ""
     RenownPlus:
       Enable: false
