@@ -7,12 +7,6 @@ Check-Updates: true
 Debugging: false
 
 General:
-  MySQL:
-    Enable: false
-    hostname: localhost
-    port: 3306
-    username: "root"
-    password: ""
   # Translating the placeholders of vanilla Items, Entities, Enchantment name to player client language.
   # Need to setup. More information: https://github.com/momoservertw/CorePlus/wiki/Vanilla-Translation
   Local:

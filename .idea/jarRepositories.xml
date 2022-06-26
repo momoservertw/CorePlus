@@ -32,11 +32,6 @@
       <option name="url" value="https://nexus.scarsz.me/content/groups/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="lang-utils-repo" />
-      <option name="name" value="lang-utils-repo" />
-      <option name="url" value="https://raw.github.com/MascusJeoraly/LanguageUtils/mvn-repo/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />
@@ -50,11 +45,6 @@
       <option name="id" value="upstream" />
       <option name="name" value="upstream" />
       <option name="url" value="http://ci.nametagedit.com/plugin/repository/everything/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="spigot-repo" />
-      <option name="name" value="spigot-repo" />
-      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="lumine-repo" />

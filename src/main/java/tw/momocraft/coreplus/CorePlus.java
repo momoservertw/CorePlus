@@ -11,30 +11,29 @@ import tw.momocraft.coreplus.utils.effect.EffectManager;
 import tw.momocraft.coreplus.utils.player.PlayerManager;
 
 public class CorePlus extends JavaPlugin {
+
     private static CorePlus instance;
 
     @Override
     public void onEnable() {
         instance = this;
         ConfigHandler.generateData(false);
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&7has been Enabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Enabled.");
     }
 
     @Override
     public void onDisable() {
-        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&7has been Disabled.");
+        UtilsHandler.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&fhas been Disabled.");
     }
 
     public static CorePlus getInstance() {
         return instance;
     }
 
-
     //  ============================================== //
     //         API                                     //
     //  ============================================== //
     private EffectInterface effectAPI = null;
-
     public EffectInterface getEffectAPI() {
         if (effectAPI == null)
             effectAPI = new EffectManager();
@@ -42,7 +41,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private CommandInterface commandAPI = null;
-
     public CommandInterface getCommandManager() {
         if (commandAPI == null)
             commandAPI = new CommandManager();
@@ -50,7 +48,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private ConfigInterface configAPI = null;
-
     public ConfigInterface getConfigManager() {
         if (configAPI == null)
             configAPI = ConfigHandler.getConfigPath();
@@ -58,7 +55,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private ConditionInterface conditionAPI = null;
-
     public ConditionInterface getConditionManager() {
         if (conditionAPI == null)
             conditionAPI = UtilsHandler.getCondition();
@@ -66,7 +62,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private DependInterface dependAPI = null;
-
     public DependInterface getDependManager() {
         if (dependAPI == null)
             dependAPI = UtilsHandler.getDepend();
@@ -74,7 +69,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private EntityInterface entityAPI = null;
-
     public EntityInterface getEntityManager() {
         if (entityAPI == null)
             entityAPI = UtilsHandler.getEntity();
@@ -82,7 +76,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private FileInterface fileAPI = null;
-
     public FileInterface getFileManager() {
         if (fileAPI == null)
             fileAPI = UtilsHandler.getFile();
@@ -90,7 +83,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private MessageInterface messageAPI = null;
-
     public MessageInterface getMsgManager() {
         if (messageAPI == null)
             messageAPI = UtilsHandler.getMsg();
@@ -98,7 +90,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private PlayerInterface playerAPI = null;
-
     public PlayerInterface getPlayerManager() {
         if (playerAPI == null)
             playerAPI = new PlayerManager();
@@ -106,7 +97,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private UpdateInterface updaterAPI = null;
-
     public UpdateInterface getUpdateManager() {
         if (updaterAPI == null)
             updaterAPI = new Updater();
@@ -114,7 +104,6 @@ public class CorePlus extends JavaPlugin {
     }
 
     private UtilsInterface utilsAPI = null;
-
     public UtilsInterface getUtilsManager() {
         if (utilsAPI == null)
             utilsAPI = new Utils();

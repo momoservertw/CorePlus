@@ -19,7 +19,7 @@ import tw.momocraft.coreplus.utils.effect.SoundMap;
 import tw.momocraft.coreplus.utils.file.maps.ConfigBuilderMap;
 import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 import tw.momocraft.coreplus.utils.message.ActionBarMap;
-import tw.momocraft.coreplus.utils.message.LogMap;
+import tw.momocraft.coreplus.utils.file.maps.LogMap;
 import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 
 import java.io.File;
@@ -129,42 +129,42 @@ public class ConfigPath implements ConfigInterface {
         Map<String, String> map;
         dataMySQL = ConfigHandler.getConfig("data.yml").getBoolean("MySQL.Enable");
         if (dataMySQL) {
-            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("MySQL");
             String hostname = ConfigHandler.getConfig("data.yml").getString(
-                    "MySQL.Settings.Default.hostname");
+                    "MySQL.Settings.Default.Hostname");
             String port = ConfigHandler.getConfig("data.yml").getString(
-                    "MySQL.Settings.Default.port");
+                    "MySQL.Settings.Default.Port");
             String username = ConfigHandler.getConfig("data.yml").getString(
-                    "MySQL.Settings.Default.username");
+                    "MySQL.Settings.Default.Username");
             String password = ConfigHandler.getConfig("data.yml").getString(
-                    "MySQL.Settings.Default.password");
+                    "MySQL.Settings.Default.Password");
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("MySQL.Groups");
             if (dataConfig != null) {
                 MySQLMap mySQLMap;
                 for (String groupName : dataConfig.getKeys(false)) {
                     if (groupName.equals("Enable"))
                         continue;
                     if (!ConfigHandler.getConfig("data.yml").getBoolean(
-                            "MySQL.groups." + groupName + ".Enable", true))
+                            "MySQL.Groups." + groupName + ".Enable", true))
                         continue;
                     mySQLMap = new MySQLMap();
                     mySQLMap.setGroupName(groupName);
                     mySQLMap.setHostName(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL.groups." + groupName + ".hostname", hostname));
+                            "MySQL.Groups." + groupName + ".Hostname", hostname));
                     mySQLMap.setPort(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL.groups." + groupName + ".port", port));
+                            "MySQL.Groups." + groupName + ".Port", port));
                     mySQLMap.setUsername(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL.groups." + groupName + ".username", username));
+                            "MySQL.Groups." + groupName + ".Username", username));
                     mySQLMap.setPassword(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL.groups." + groupName + ".password", password));
+                            "MySQL.Groups." + groupName + ".Password", password));
                     mySQLMap.setDatabase(ConfigHandler.getConfig("data.yml").getString(
-                            "MySQL.groups." + groupName + ".database"));
+                            "MySQL.Groups." + groupName + ".Database"));
                     tableConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection(
-                            "MySQL.groups." + groupName + ".Tables");
+                            "MySQL.Groups." + groupName + ".Tables");
                     if (tableConfig != null) {
                         map = new HashMap<>();
                         for (String subGroupName : tableConfig.getKeys(false)) {
                             map.put(subGroupName, ConfigHandler.getConfig("data.yml").getString(
-                                    "MySQL.groups." + groupName + ".Tables." + subGroupName));
+                                    "MySQL.Groups." + groupName + ".Tables." + subGroupName));
                         }
                         mySQLMap.setTables(map);
                     }
@@ -174,40 +174,40 @@ public class ConfigPath implements ConfigInterface {
         }
         dataYMAL = ConfigHandler.getConfig("data.yml").getBoolean("Yaml.Enable");
         if (dataYMAL) {
-            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Yaml.groups");
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Yaml.Groups");
             if (dataConfig != null) {
                 for (String groupName : dataConfig.getKeys(false)) {
                     if (groupName.equals("Enable"))
                         continue;
-                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml.groups." + groupName + ".Enable", true))
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Yaml.Groups." + groupName + ".Enable", true))
                         continue;
-                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml.groups." + groupName + ".Path"));
+                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Yaml.Groups." + groupName + ".Path"));
                 }
             }
         }
         dataJson = ConfigHandler.getConfig("data.yml").getBoolean("Json.Enable");
         if (dataJson) {
-            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Json.groups");
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Json.Groups");
             if (dataConfig != null) {
                 for (String groupName : dataConfig.getKeys(false)) {
                     if (groupName.equals("Enable"))
                         continue;
-                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Json.groups." + groupName + ".Enable", true))
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Json.Groups." + groupName + ".Enable", true))
                         continue;
-                    jsonProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Json.groups." + groupName + ".Path"));
+                    jsonProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Json.Groups." + groupName + ".Path"));
                 }
             }
         }
         dataProp = ConfigHandler.getConfig("data.yml").getBoolean("Properties.Enable");
         if (dataProp) {
-            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Properties.groups");
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Properties.Groups");
             if (dataConfig != null) {
                 for (String groupName : dataConfig.getKeys(false)) {
                     if (groupName.equals("Enable"))
                         continue;
-                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties.groups." + groupName + ".Enable", true))
+                    if (!ConfigHandler.getConfig("data.yml").getBoolean("Properties.Groups." + groupName + ".Enable", true))
                         continue;
-                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties.groups." + groupName + ".Path"));
+                    YAMLProp.put(groupName, ConfigHandler.getConfig("data.yml").getString("Properties.Groups." + groupName + ".Path"));
                 }
             }
         }
@@ -219,18 +219,18 @@ public class ConfigPath implements ConfigInterface {
                     "Logs.Settings.Default.New-File", false);
             boolean zip = ConfigHandler.getConfig("data.yml").getBoolean(
                     "Logs.Settings.Default.Zip", false);
-            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.groups");
+            dataConfig = ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.Groups");
             if (dataConfig != null) {
                 LogMap logMap;
                 String path;
                 String name;
                 for (String groupName : dataConfig.getKeys(false)) {
-                    if (ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.groups." + groupName) == null)
+                    if (ConfigHandler.getConfig("data.yml").getConfigurationSection("Logs.Groups." + groupName) == null)
                         continue;
                     logMap = new LogMap();
                     logMap.setGroupName(groupName);
-                    path = ConfigHandler.getConfig("data.yml").getString("Logs.groups." + groupName + ".Path");
-                    name = ConfigHandler.getConfig("data.yml").getString("Logs.groups." + groupName + ".Name");
+                    path = ConfigHandler.getConfig("data.yml").getString("Logs.Groups." + groupName + ".Path");
+                    name = ConfigHandler.getConfig("data.yml").getString("Logs.Groups." + groupName + ".Name");
                     if (path == null || name == null)
                         continue;
                     if (path.startsWith("plugins//")) {
@@ -240,9 +240,9 @@ public class ConfigPath implements ConfigInterface {
                         path = Bukkit.getServer().getWorldContainer().getPath() + "//" + path;
                     }
                     logMap.setFile(new File(path, name));
-                    logMap.setTime(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".Time", time));
-                    logMap.setNewFile(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".New-File", newFile));
-                    logMap.setZip(ConfigHandler.getConfig("data.yml").getBoolean("Logs.groups." + groupName + ".Zip", zip));
+                    logMap.setTime(ConfigHandler.getConfig("data.yml").getBoolean("Logs.Groups." + groupName + ".Time", time));
+                    logMap.setNewDateFile(ConfigHandler.getConfig("data.yml").getBoolean("Logs.Groups." + groupName + ".New-File", newFile));
+                    logMap.setZip(ConfigHandler.getConfig("data.yml").getBoolean("Logs.Groups." + groupName + ".Zip", zip));
                     logProp.put(groupName, logMap);
                 }
             }

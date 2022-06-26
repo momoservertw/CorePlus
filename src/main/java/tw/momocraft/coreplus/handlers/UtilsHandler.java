@@ -30,13 +30,6 @@ public class UtilsHandler {
         commandManager = new CommandManager();
         messageManager.setupColorMap();
         updater = new Updater();
-
-        syncData();
-    }
-
-    public static void syncData() {
-        playerManager.importPlayerList();
-        playerManager.importPlayerLastLogin();
     }
 
     private static DependHandler depend;

@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.Commands;
 import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.TabComplete;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.DependInterface;
 import tw.momocraft.coreplus.listeners.CommandOnline;
 import tw.momocraft.coreplus.listeners.PlaceHolderTest;
@@ -54,7 +53,7 @@ public class DependHandler implements DependInterface {
     public void checkUpdate() {
         if (!ConfigHandler.isCheckUpdates())
             return;
-        CorePlusAPI.getUpdate().check(ConfigHandler.getPluginName(),
+        UtilsHandler.getUpdate().check(ConfigHandler.getPluginName(),
                 ConfigHandler.getPluginPrefix(), Bukkit.getConsoleSender(),
                 CorePlus.getInstance().getDescription().getName(),
                 CorePlus.getInstance().getDescription().getVersion(), true);

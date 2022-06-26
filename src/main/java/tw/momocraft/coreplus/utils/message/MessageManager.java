@@ -1443,7 +1443,7 @@ public class MessageManager implements MessageInterface {
     public void sendHookMsg(String pluginPrefix, String type, List<String> list) {
         if (list == null || list.isEmpty())
             return;
-        StringBuilder message = new StringBuilder("&7Hooked " + type + ": [");
+        StringBuilder message = new StringBuilder("&fHooked " + type + ": [");
         for (String value : list) {
             if (type.equals("residence_flags"))
                 if (UtilsHandler.getCondition().isRegisteredFlag(value))
@@ -1451,7 +1451,7 @@ public class MessageManager implements MessageInterface {
                 else
                     message.append(value).append(", ");
         }
-        if (!message.toString().contains(","))
+        if (message.toString().contains(","))
             sendConsoleMsg(pluginPrefix, message.substring(0, message.length() - 2) + "]");
     }
 

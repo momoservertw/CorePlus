@@ -3,8 +3,8 @@ package tw.momocraft.coreplus.utils.entity;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.EntityInterface;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class EntityManager implements EntityInterface {
 
@@ -27,7 +27,7 @@ public class EntityManager implements EntityInterface {
 
     @Override
     public String getMythicMobDisplayName(Entity entity) {
-        String mmName = CorePlusAPI.getEnt().getMythicMobName(entity);
+        String mmName = UtilsHandler.getEntity().getMythicMobName(entity);
         if (mmName == null)
             return null;
         return MythicBukkit.inst().getAPIHelper().getMythicMob(mmName).getDisplayName().get();
@@ -45,9 +45,8 @@ public class EntityManager implements EntityInterface {
 
     @Override
     public boolean isInvisibleArmorStand(Entity entity) {
-        if (!(entity instanceof ArmorStand))
+        if (!(entity instanceof ArmorStand armorStand))
             return false;
-        ArmorStand armorStand = (ArmorStand) entity;
         return armorStand.isVisible();
     }
 }

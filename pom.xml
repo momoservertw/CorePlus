@@ -12,7 +12,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
+                    <release>17</release>
                     <source>17</source>
                     <target>17</target>
                 </configuration>
@@ -20,16 +22,11 @@
         </plugins>
     </build>
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <repositories>
-        <!--Maven Repo-->
-        <repository>
-            <id>sk89q-repo</id>
-            <url>https://maven.sk89q.com/repo/</url>
-        </repository>
         <!--Paper Repo-->
         <repository>
             <id>papermc</id>
@@ -90,6 +87,20 @@
             <artifactId>paper-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!--Spigot NMS-->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <classifier>remapped-mojang</classifier>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.18.2-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
         </dependency>
         <!-- Mojang API -->
         <dependency>
@@ -229,12 +240,12 @@
         </dependency>
         <!--MyPet API-->
         <dependency>
-        <groupId>me.MyPet</groupId>
-        <artifactId>MythicMobs</artifactId>
-        <scope>system</scope>
-        <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.12-SNAPSHOT-B1686.jar
-        </systemPath>
-        <version>LEGACY</version>
+            <groupId>me.MyPet</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.12-SNAPSHOT-B1686.jar
+            </systemPath>
+            <version>LEGACY</version>
         </dependency>
     </dependencies>
 

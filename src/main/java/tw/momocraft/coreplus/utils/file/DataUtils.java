@@ -1,7 +1,7 @@
 package tw.momocraft.coreplus.utils.file;
 
+import net.Zrips.CMILib.Container.CMILocation;
 import org.bukkit.Bukkit;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 
@@ -30,7 +30,7 @@ public class DataUtils {
             File zipFile = new File(backupPath, backupName + ".zip");
             if (zipFile.exists())
                 if (UtilsHandler.getFile().getZip().zipFiles(pluginName, file, null, null))
-                    CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not compress the file: " + file.getPath());
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not compress the file: " + file.getPath());
         }
     }
 
@@ -40,10 +40,10 @@ public class DataUtils {
             try {
                 Files.createDirectories(Paths.get(file.getPath()));
                 if (!file.exists())
-                    CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
+                    UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
             } catch (Exception ex) {
-                CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
-                CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not create the file: " + file.getPath());
+                UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
             }
         }
     }
@@ -53,18 +53,18 @@ public class DataUtils {
             createFolder(pluginName, newFilePath);
             Files.copy(file.toPath(), Paths.get(newFilePath, newFileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception ex) {
-            CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not copy the file: " + file.getPath());
-            CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not copy the file: " + file.getPath());
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 
     public void delete(String pluginName, File file) {
         try {
             if (!file.delete())
-                CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
+                UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
         } catch (Exception ex) {
-            CorePlusAPI.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
-            CorePlusAPI.getMsg().sendDebugTrace(pluginName, ex);
+            UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not remove the file: " + file.getPath());
+            UtilsHandler.getMsg().sendDebugTrace(pluginName, ex);
         }
     }
 

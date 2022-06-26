@@ -26,6 +26,7 @@ Message:
   playerDataSyncWaiting: "%prefix% &7Please waiting the data synced."
   playerDataSyncSucceed: "%prefix% &7Succeed to sync the player data."
   playerDataSyncFailed: "%prefix% &cFailed to sync the player data, please login again.{n}%prefix% &cIf the error still occurred please report to the administer."
+  errorOccurred: "%prefix% &cAn error occurred, please contact the administrator."
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩ &d&lCorePlus &8▩▩▩▩▩▩▩▩▩▩"
     help: "&f/coreplus help &8- &7This help menu."

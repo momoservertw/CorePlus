@@ -16,6 +16,7 @@ public class DiscordUtils {
         DiscordUtil.sendMessage(getTextChannel(channelId), input);
     }
 
+
     public Map<String, String> getChannelMap() {
         return DiscordSRV.getPlugin().getChannels();
     }

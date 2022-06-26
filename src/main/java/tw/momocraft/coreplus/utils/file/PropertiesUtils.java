@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.io.File;
 import java.io.InputStream;

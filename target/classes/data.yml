@@ -9,20 +9,11 @@ MySQL:
   Enable: false
   Settings:
     Default:
-      hostname: localhost
-      port: 3306
-      username: "root"
-      password: ""
+      Hostname: localhost
+      Port: 3306
+      Username: "root"
+      Password: ""
   Groups:
-    PlayerdataPlus:
-      Enable: false
-      Database: "playerdataplus"
-      Prefix: ""
-    RenownPlus:
-      Enable: false
-      Database: "renownplus"
-      Tables:
-        Players: "players"
     LuckPerms:
       Enable: false
       Database: "luckperms"

@@ -3,7 +3,6 @@ package tw.momocraft.coreplus.utils.file;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
-import tw.momocraft.coreplus.utils.message.LogMap;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,6 +50,9 @@ public class MySQLUtils {
             return false;
         }
         try {
+            System.out.println("jdbc:mysql://" +
+                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase() + "," +
+                    mySQLMap.getUsername() + ", " + mySQLMap.getPassword());
             Connection connection = DriverManager.getConnection("jdbc:mysql://" +
                             mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
                     mySQLMap.getUsername(), mySQLMap.getPassword());

@@ -1,11 +1,15 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface PlayerInterface {
@@ -131,46 +135,71 @@ public interface PlayerInterface {
      */
     boolean isAFK(Player player);
 
-
     /**
-     * Getting the amount of currency of player.
+     * Getting the amount of money of player.
      *
-     * @param uuid the uuid of player.
-     * @param type the type of currency. Types: money, points, GemsEconomyAPI
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
      * @return the amount of currency of player.
      */
-    double getCurrencyBalance(UUID uuid, String type);
+    double getMoney(String pluginName, UUID uuid);
 
     /**
-     * Taking the amount of currency from player.
+     * Getting the amount of PlayerPoints of player.
      *
-     * @param uuid   the uuid of player.
-     * @param type   the type of currency. Types: money, points, GemsEconomyAPI
-     * @param amount the amount to take.
-     * @return the name amount of currency of player.
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
+     * @return the amount of currency of player.
      */
-    double takeCurrency(UUID uuid, String type, double amount);
+    double getPlayerPoints(String pluginName, UUID uuid);
 
     /**
-     * Giving the amount of currency from player.
+     * Taking the amount of money of player.
      *
-     * @param uuid   the uuid of player.
-     * @param type   the type of currency. Types: money, points, GemsEconomy Currency
-     * @param amount the amount to take.
-     * @return the name amount of currency of player.
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
      */
-    double giveCurrency(UUID uuid, String type, double amount);
-
+    void takeMoney(String pluginName, UUID uuid, double amount);
 
     /**
-     * Setting the amount of currency for player.
+     * Take the amount of PlayerPoints of player.
      *
-     * @param uuid   the uuid of player.
-     * @param type   the type of currency. Types: money, points, GemsEconomy Currency
-     * @param amount the amount to take.
-     * @return the name amount of currency of player.
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
      */
-    double setCurrency(UUID uuid, String type, double amount);
+    void takePlayerPoints(String pluginName, UUID uuid, double amount);
+
+    /**
+     * Give the amount of money of player.
+     *
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
+     */
+    void giveMoney(String pluginName, UUID uuid, double amount);
+
+    /**
+     * Give the amount of PlayerPoints of player.
+     *
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
+     */
+    void givePlayerPoints(String pluginName, UUID uuid, double amount);
+
+    /**
+     * Set the amount of money of player.
+     *
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
+     */
+    void setMoney(String pluginName, UUID uuid, double amount);
+
+    /**
+     * Set the amount of PlayerPoints of player.
+     *
+     * @param pluginName the sent plugin name.
+     * @param uuid       the uuid of player.
+     */
+    void setPoints(String pluginName, UUID uuid, double amount);
 
     /**
      * Giving the amount of exp from player.
@@ -200,14 +229,35 @@ public interface PlayerInterface {
      */
     void giveExp(String pluginName, UUID uuid, int amount);
 
+
     /**
-     * Checking if the sender has permission.
+     * Checking if the target has permission.
      *
-     * @param sender     the checking player or console.
+     * @param sender     the target player or console.
+     * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if the sender has permission.
+     */
+    boolean hasPerm(CommandSender sender, String permission, boolean allowOp);
+
+    /**
+     * Checking if the target has permission.
+     *
+     * @param sender     the target player or console.
      * @param permission the permission node.
      * @return if the sender has permission.
      */
     boolean hasPerm(CommandSender sender, String permission);
+
+    /**
+     * Checking if the player has permission.
+     *
+     * @param player     the checking player.
+     * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if the player has permission.
+     */
+    boolean hasPerm(Player player, String permission, boolean allowOp);
 
     /**
      * Checking if the player has permission.
@@ -223,9 +273,29 @@ public interface PlayerInterface {
      *
      * @param uuid       the checking uuid.
      * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if the uuid of player has permission.
+     */
+    boolean hasPerm(UUID uuid, String permission, boolean allowOp);
+
+    /**
+     * Checking if the uuid of player has permission.
+     *
+     * @param uuid       the checking uuid.
+     * @param permission the permission node.
      * @return if the uuid of player has permission.
      */
     boolean hasPerm(UUID uuid, String permission);
+
+    /**
+     * Checking if the offline player has permission.
+     *
+     * @param offlinePlayer the checking offlinePlayer.
+     * @param permission    the permission node.
+     * @param allowOp       bypass if target is server OP.
+     * @return if the offline player has permission.
+     */
+    boolean hasPerm(OfflinePlayer offlinePlayer, String permission, boolean allowOp);
 
     /**
      * Checking if the offline player has permission.
@@ -241,9 +311,29 @@ public interface PlayerInterface {
      *
      * @param senders    the checking players or console.
      * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if one of the sender has permission.
+     */
+    boolean havePerm(List<CommandSender> senders, String permission, boolean allowOp);
+
+    /**
+     * Checking if one of the sender has permission.
+     *
+     * @param senders    the checking players or console.
+     * @param permission the permission node.
      * @return if one of the sender has permission.
      */
     boolean havePerm(List<CommandSender> senders, String permission);
+
+    /**
+     * Checking if one of the player has permission.
+     *
+     * @param players    the checking player list.
+     * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if one of the player has permission.
+     */
+    boolean havePermPlayer(List<Player> players, String permission, boolean allowOp);
 
     /**
      * Checking if one of the player has permission.
@@ -259,9 +349,29 @@ public interface PlayerInterface {
      *
      * @param uuids      the checking uuid list.
      * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if one of the uuid of player has permission.
+     */
+    boolean havePermUUID(List<UUID> uuids, String permission, boolean allowOp);
+
+    /**
+     * Checking if one of the uuid has permission.
+     *
+     * @param uuids      the checking uuid list.
+     * @param permission the permission node.
      * @return if one of the uuid of player has permission.
      */
     boolean havePermUUID(List<UUID> uuids, String permission);
+
+    /**
+     * Checking if one of the offlinePlayer has permission.
+     *
+     * @param offlinePlayers the checking offlinePlayer list.
+     * @param permission     the permission node.
+     * @param allowOp        bypass if target is server OP.
+     * @return if one of the offlinePlayer has permission.
+     */
+    boolean havePermOffline(List<OfflinePlayer> offlinePlayers, String permission, boolean allowOp);
 
     /**
      * Checking if one of the offlinePlayer has permission.
@@ -277,9 +387,29 @@ public interface PlayerInterface {
      *
      * @param senders    the checking sender list.
      * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if all of the senders have permission.
+     */
+    boolean allHavePerm(List<CommandSender> senders, String permission, boolean allowOp);
+
+    /**
+     * Checking if all of the senders have permission.
+     *
+     * @param senders    the checking sender list.
+     * @param permission the permission node.
      * @return if all of the senders have permission.
      */
     boolean allHavePerm(List<CommandSender> senders, String permission);
+
+    /**
+     * Checking if all of the players have permission.
+     *
+     * @param players    the checking player list.
+     * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if all of the players have permission.
+     */
+    boolean allHavePermPlayer(List<Player> players, String permission, boolean allowOp);
 
     /**
      * Checking if all of the players have permission.
@@ -295,9 +425,29 @@ public interface PlayerInterface {
      *
      * @param uuids      the checking uuid list.
      * @param permission the permission node.
+     * @param allowOp    bypass if target is server OP.
+     * @return if all of the uuids of players have permission.
+     */
+    boolean allHavePermUUID(List<UUID> uuids, String permission, boolean allowOp);
+
+    /**
+     * Checking if all of the uuids have permission.
+     *
+     * @param uuids      the checking uuid list.
+     * @param permission the permission node.
      * @return if all of the uuids of players have permission.
      */
     boolean allHavePermUUID(List<UUID> uuids, String permission);
+
+    /**
+     * Checking if all of the offlinePlayers have permission.
+     *
+     * @param offlinePlayers the checking offlinePlayer list.
+     * @param permission     the permission node.
+     * @param allowOp        bypass if target is server OP.
+     * @return if all of the offlinePlayers have permission.
+     */
+    boolean allHavePermOffline(List<OfflinePlayer> offlinePlayers, String permission, boolean allowOp);
 
     /**
      * Checking if all of the offlinePlayers have permission.
@@ -337,7 +487,6 @@ public interface PlayerInterface {
      * @return the highest level of permission of sender.
      */
     int getMaxPerm(UUID uuid, String permission, int def);
-
 
     /**
      * Getting the lowest level of permission of sender.
@@ -413,6 +562,18 @@ public interface PlayerInterface {
     void removePermission(UUID uuid, String permission);
 
     /**
+     * @param uuid the uuid of player.
+     * @return all inherited groups of LuckPerms.
+     */
+    Set<String> getLuckPermsInheritedGroups(UUID uuid);
+
+    /**
+     * @param uuid the uuid of player.
+     * @return all permissions of LuckPerms.
+     */
+    List<String> getLuckPermsAllPerms(UUID uuid);
+
+    /**
      * To promote a permission number for a player.
      *
      * @param uuid       the uuid of player.
@@ -446,4 +607,51 @@ public interface PlayerInterface {
      * @return get the Material name of Residence selection tool.
      */
     Material getResSelectionTool();
+
+    /**
+     * @param player the target player.
+     * @param slot   the slot to get item.
+     * @return the item of the slot.
+     */
+    ItemStack getSlotItem(Player player, String slot);
+
+    /**
+     * @param player the target player.
+     * @param slot   the slot to clean all items.
+     */
+    void cleanSlot(Player player, String slot);
+
+    /**
+     * @param player the target player.
+     * @return if inventory has empty slot.
+     */
+    boolean isInventoryFull(Player player);
+
+    /**
+     * Check if a player's inventory can put a itemStack normally.
+     *
+     * @param player     the target player.
+     * @param material   the target item's material.
+     * @param itemNumber the number of items.
+     * @return if a player's inventory can put a itemStack normally.
+     */
+    boolean isInventoryFull(Player player, Material material, int itemNumber);
+
+    /**
+     * @param player the target player.
+     * @return the first empty slot of this player.
+     */
+    int getInventoryEmptySlot(Player player);
+
+    /**
+     * @param playerName the target player name.
+     * @return the map of player homes' name and location.
+     */
+    Map<String, Location> getCMIHomes(String playerName);
+
+    /**
+     * @param uuid the target player uuid.
+     * @return the map of player homes' name and location.
+     */
+    Map<String, Location> getCMIHomes(UUID uuid);
 }

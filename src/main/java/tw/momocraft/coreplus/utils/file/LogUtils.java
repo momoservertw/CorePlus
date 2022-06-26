@@ -3,7 +3,7 @@ package tw.momocraft.coreplus.utils.file;
 import org.bukkit.Bukkit;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.message.LogMap;
+import tw.momocraft.coreplus.utils.file.maps.LogMap;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,7 +29,6 @@ public class LogUtils {
     public void setup() {
         setupConfig();
 
-
         UtilsHandler.getMsg().sendFileLoadedMsg("Logs", dataList);
     }
 
@@ -46,7 +45,7 @@ public class LogUtils {
         logMap.setGroupName(logName);
         logMap.setFile(file);
         logMap.setTime(true);
-        logMap.setNewFile(true);
+        logMap.setNewDateFile(true);
         logMap.setZip(true);
         load(logName, logMap);
 
@@ -58,7 +57,8 @@ public class LogUtils {
         logMap.setGroupName(logName);
         logMap.setFile(file);
         logMap.setTime(false);
-        logMap.setNewFile(false);
+        logMap.setNewDateFile(false);
+        logMap.setNewNumberFile(false);
         logMap.setZip(false);
         load(logName, logMap);
 
@@ -70,7 +70,7 @@ public class LogUtils {
         logMap.setGroupName(logName);
         logMap.setFile(file);
         logMap.setTime(true);
-        logMap.setNewFile(false);
+        logMap.setNewDateFile(false);
         logMap.setZip(true);
         load(logName, logMap);
 
@@ -82,7 +82,7 @@ public class LogUtils {
         logMap.setGroupName(logName);
         logMap.setFile(file);
         logMap.setTime(true);
-        logMap.setNewFile(false);
+        logMap.setNewDateFile(false);
         logMap.setZip(true);
         load(logName, logMap);
 
@@ -94,7 +94,7 @@ public class LogUtils {
         logMap.setGroupName(logName);
         logMap.setFile(file);
         logMap.setTime(true);
-        logMap.setNewFile(false);
+        logMap.setNewDateFile(false);
         logMap.setZip(true);
         load(logName, logMap);
 
@@ -107,7 +107,7 @@ public class LogUtils {
         logMap.setFile(file);
         logMap.setFile(file);
         logMap.setTime(true);
-        logMap.setNewFile(false);
+        logMap.setNewDateFile(false);
         logMap.setZip(true);
         load(logName, logMap);
 
@@ -128,7 +128,7 @@ public class LogUtils {
             UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find the log group: " + groupName);
             return;
         }
-        UtilsHandler.getFile().getData().create(pluginName, logMap.getFile(), logMap.isNewFile(), logMap.isZip());
+        UtilsHandler.getFile().getData().create(pluginName, logMap.getFile(), logMap.isNewDateFile(), logMap.isZip());
         input = input + "\n";
         if (logMap.isTime()) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

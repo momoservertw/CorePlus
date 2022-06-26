@@ -2,25 +2,26 @@ package tw.momocraft.coreplus.utils.player;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.Modules.Homes.CmiHome;
 import com.bekvon.bukkit.residence.Residence;
-import fr.xephi.authme.api.v3.AuthMeApi;
-import io.lumine.mythic.core.skills.mechanics.ChainMissileMechanic;
 import me.NoChance.PvPManager.PvPlayer;
 import net.craftersland.data.bridge.PD;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.api.PlayerInterface;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
-import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.*;
 
 public class PlayerManager implements PlayerInterface {
@@ -190,71 +191,6 @@ public class PlayerManager implements PlayerInterface {
         return Bukkit.getOfflinePlayer(uuid).getLastLogin() * 1000;
     }
 
-    public void importPlayerLastLogin() {
-        if (!ConfigHandler.getConfigPath().isDataMySQL())
-            return;
-        List<String> uuidList = UtilsHandler.getFile().getMySQL().getValueList(ConfigHandler.getPluginName(),
-                "coreplus", "player", "uuid");
-        if (uuidList == null)
-            return;
-        long dataTime;
-        long checkTime;
-        OfflinePlayer offlinePlayer;
-        for (String uuid : uuidList) {
-            // Getting the CorePlus login time.
-            dataTime = Long.parseLong(UtilsHandler.getFile().getMySQL().getValueWhere(ConfigHandler.getPluginName(),
-                    "coreplus", "players", "uuid", uuid, "last_login"));
-            // Checking the Server login time.
-            offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-            if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
-                continue;
-            checkTime = offlinePlayer.getLastLogin();
-            if (checkTime == 0 && dataTime > checkTime) {
-                UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
-                        "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
-                dataTime = checkTime;
-            }
-            // Checking the AuthMe login time.
-            if (UtilsHandler.getDepend().AuthMeEnabled()) {
-                checkTime = AuthMeApi.getInstance().getLastLoginTime(offlinePlayer.getName()).toEpochMilli();
-                if (checkTime == 0 && dataTime > checkTime) {
-                    UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
-                            "coreplus", "players", "uuid", uuid, "last_login", String.valueOf(checkTime));
-                }
-            }
-        }
-    }
-
-    public void importPlayerList() {
-        if (!ConfigHandler.getConfigPath().isDataMySQL())
-            return;
-        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            MySQLMap mySQLMap = ConfigHandler.getConfigPath().getMySQLProp().get("luckperms");
-            if (mySQLMap != null) {
-                ResultSet resultSet = UtilsHandler.getFile().getMySQL().getResultSet(ConfigHandler.getPluginName(),
-                        mySQLMap.getDatabase(), mySQLMap.getTables().get("Players"));
-                try {
-                    while (resultSet.next()) {
-                        resultSet.getString("uuid");
-                        resultSet.getString("username");
-                    }
-                } catch (Exception ex) {
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "An error occurred while importing the player data.");
-                    UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Please check the settings \"MySQL.LuckPerms\" in data.yml.");
-                }
-            }
-        }
-        // Getting the Server player list.
-        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            if (offlinePlayer.getName() == null || offlinePlayer.getName().equals("CMI-Fake-Operator"))
-                continue;
-            UtilsHandler.getFile().getMySQL().setValueWhere(ConfigHandler.getPluginName(),
-                    "playerdataplus", "players", "uuid", offlinePlayer.getUniqueId().toString(),
-                    "username", offlinePlayer.getName());
-        }
-    }
-
     @Override
     public boolean isPvPEnabled(Player player) {
         if (UtilsHandler.getDepend().PvPManagerEnabled()) {
@@ -271,154 +207,153 @@ public class PlayerManager implements PlayerInterface {
     }
 
     @Override
-    public double getCurrencyBalance(UUID uuid, String type) {
-        switch (type) {
-            case "money":
-                if (UtilsHandler.getDepend().MpdbEnabled()) {
-                    return PD.api.getDatabaseMoney(uuid);
-                }
-                if (UtilsHandler.getDepend().CMIEnabled()) {
-                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
-                    if (user != null) {
-                        return user.getBalance();
-                    }
-                }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
-                    return UtilsHandler.getDepend().getVaultAPI().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
-                }
-                break;
-            case "points":
-                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsAPI().getBalance(uuid);
-                }
-                break;
-            default:
-                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoAPI().getBalance(uuid, type);
-                    }
-                }
-                break;
+    public double getMoney(String pluginName, UUID uuid) {
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            return PD.api.getDatabaseMoney(uuid);
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            if (user != null) {
+                return user.getBalance();
+            }
+        }
+        if (UtilsHandler.getDepend().VaultEnabled()) {
+            if (UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+                return UtilsHandler.getDepend().getVaultAPI().getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid));
+            }
+        }
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find Economy plugins.");
         return 0;
     }
 
     @Override
-    public double takeCurrency(UUID uuid, String type, double amount) {
-        switch (type) {
-            case "money":
-                if (UtilsHandler.getDepend().CMIEnabled()) {
-                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
-                    if (user != null) {
-                        return user.withdraw(amount);
-                    }
-                }
-                if (UtilsHandler.getDepend().MpdbEnabled()) {
-                    double money = PD.api.getDatabaseMoney(uuid);
-                    money -= amount;
-                    PD.api.setDatabaseMoney(uuid, money);
-                    return money;
-                }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
-                    UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
-                    return UtilsHandler.getDepend().getVaultAPI().getBalance(uuid);
-                }
-                break;
-            case "points":
-                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsAPI().takePoints(uuid, amount);
-                }
-                break;
-            default:
-                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoAPI().withdraw(uuid, amount, type);
-                    }
-                }
-                break;
+    public double getPlayerPoints(String pluginName, UUID uuid) {
+        if (!UtilsHandler.getDepend().PlayerPointsEnabled()) {
+            String[] placeHolders = UtilsHandler.getMsg().newString();
+            placeHolders[2] = "PlayerPoints"; // %plugin%
+            UtilsHandler.getMsg().sendLangMsg(pluginName,
+                    "dependNotFound", Bukkit.getConsoleSender(), placeHolders);
+            return 0;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
-        return 0;
+        return UtilsHandler.getDepend().getPlayerPointsAPI().getBalance(uuid);
     }
 
     @Override
-    public double giveCurrency(UUID uuid, String type, double amount) {
-        switch (type) {
-            case "money":
-                if (UtilsHandler.getDepend().CMIEnabled()) {
-                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
-                    if (user != null) {
-                        user.deposit(amount);
-                    }
-                }
-                if (UtilsHandler.getDepend().MpdbEnabled()) {
-                    double money = PD.api.getDatabaseMoney(uuid);
-                    money += amount;
-                    PD.api.setDatabaseMoney(uuid, money);
-                    return money;
-                }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
-                    UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
-                    return UtilsHandler.getDepend().getVaultAPI().getBalance(uuid);
-                }
-                break;
-            case "points":
-                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsAPI().givePoints(uuid, amount);
-                }
-                break;
-            default:
-                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoAPI().deposit(uuid, amount, type);
-                    }
-                }
-                break;
+    public void takeMoney(String pluginName, UUID uuid, double amount) {
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            if (user != null) {
+                user.withdraw(amount);
+                return;
+            }
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
-        return 0;
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            double money = PD.api.getDatabaseMoney(uuid);
+            money -= amount;
+            PD.api.setDatabaseMoney(uuid, money);
+            return;
+        }
+        if (UtilsHandler.getDepend().VaultEnabled()) {
+            if (UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+                UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+                return;
+            }
+        }
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find Economy plugins.");
     }
 
     @Override
-    public double setCurrency(UUID uuid, String type, double amount) {
-        switch (type) {
-            case "money":
-                if (UtilsHandler.getDepend().CMIEnabled()) {
-                    double money = getCurrencyBalance(uuid, type);
-                    CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
-                    if (user != null) {
-                        user.withdraw(money);
-                        user.deposit(money);
-                        return amount;
-                    }
-                }
-                if (UtilsHandler.getDepend().MpdbEnabled()) {
-                    PD.api.setDatabaseMoney(uuid, amount);
-                    return amount;
-                }
-                if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
-                    double money = getCurrencyBalance(uuid, type);
-                    UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), money);
-                    UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
-                    return amount;
-                }
-                break;
-            case "points":
-                if (UtilsHandler.getDepend().PlayerPointsEnabled()) {
-                    return UtilsHandler.getDepend().getPlayerPointsAPI().givePoints(uuid, amount);
-                }
-                break;
-            default:
-                if (UtilsHandler.getDepend().GemsEconomyEnabled()) {
-                    if (UtilsHandler.getDepend().getGemsEcoAPI().getCurrency(type) != null) {
-                        return UtilsHandler.getDepend().getGemsEcoAPI().deposit(uuid, amount, type);
-                    }
-                }
-                break;
+    public void takePlayerPoints(String pluginName, UUID uuid, double amount) {
+        if (!UtilsHandler.getDepend().PlayerPointsEnabled()) {
+            String[] placeHolders = UtilsHandler.getMsg().newString();
+            placeHolders[2] = "PlayerPoints"; // %plugin%
+            UtilsHandler.getMsg().sendLangMsg(pluginName,
+                    "dependNotFound", Bukkit.getConsoleSender(), placeHolders);
+            return;
         }
-        UtilsHandler.getMsg().sendErrorMsg(ConfigHandler.getPluginName(), "Can not find price type: " + type);
-        return 0;
+        UtilsHandler.getDepend().getPlayerPointsAPI().takePoints(uuid, amount);
+    }
+
+    @Override
+    public void giveMoney(String pluginName, UUID uuid, double amount) {
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            try {
+                CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+                if (user != null)
+                    user.deposit(amount);
+                else
+                    CorePlusAPI.getMsg().sendErrorMsg(pluginName,
+                            "Can not find the CMI user: " + uuid.toString());
+                return;
+            } catch (Exception ex) {
+                CorePlusAPI.getMsg().sendErrorMsg(pluginName,
+                        "Can not find the CMI user: " + uuid.toString());
+                return;
+            }
+        }
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            double money = PD.api.getDatabaseMoney(uuid);
+            money += amount;
+            PD.api.setDatabaseMoney(uuid, money);
+            return;
+        }
+        if (UtilsHandler.getDepend().VaultEnabled()) {
+            if (CorePlusAPI.getDepend().VaultEconEnabled()) {
+                UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(
+                        Bukkit.getOfflinePlayer(uuid), amount);
+                return;
+            }
+        }
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find Economy plugins.");
+    }
+
+    @Override
+    public void givePlayerPoints(String pluginName, UUID uuid, double amount) {
+        if (!UtilsHandler.getDepend().PlayerPointsEnabled()) {
+            String[] placeHolders = UtilsHandler.getMsg().newString();
+            placeHolders[2] = "PlayerPoints"; // %plugin%
+            UtilsHandler.getMsg().sendLangMsg(pluginName,
+                    "dependNotFound", Bukkit.getConsoleSender(), placeHolders);
+            return;
+        }
+        UtilsHandler.getDepend().getPlayerPointsAPI().givePoints(uuid, amount);
+    }
+
+    @Override
+    public void setMoney(String pluginName, UUID uuid, double amount) {
+        if (UtilsHandler.getDepend().CMIEnabled()) {
+            double money = getMoney(pluginName, uuid);
+            CMIUser user = CMI.getInstance().getPlayerManager().getUser(uuid);
+            if (user != null) {
+                user.withdraw(money);
+                user.deposit(money);
+                return;
+            }
+        }
+        if (UtilsHandler.getDepend().MpdbEnabled()) {
+            PD.api.setDatabaseMoney(uuid, amount);
+            return;
+        }
+        if (UtilsHandler.getDepend().VaultEnabled() && UtilsHandler.getDepend().getVaultAPI().getEconomy() != null) {
+            double money = getMoney(pluginName, uuid);
+            UtilsHandler.getDepend().getVaultAPI().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), money);
+            UtilsHandler.getDepend().getVaultAPI().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+            return;
+        }
+        UtilsHandler.getMsg().sendErrorMsg(pluginName, "Can not find Economy plugins.");
+    }
+
+    @Override
+    public void setPoints(String pluginName, UUID uuid, double amount) {
+        if (!UtilsHandler.getDepend().PlayerPointsEnabled()) {
+            String[] placeHolders = UtilsHandler.getMsg().newString();
+            placeHolders[2] = "PlayerPoints"; // %plugin%
+            UtilsHandler.getMsg().sendLangMsg(pluginName,
+                    "dependNotFound", Bukkit.getConsoleSender(), placeHolders);
+            return;
+
+        }
+        UtilsHandler.getDepend().getPlayerPointsAPI().setPoints(uuid, amount);
     }
 
     @Override
@@ -509,135 +444,183 @@ public class PlayerManager implements PlayerInterface {
         return "server";
     }
 
+
     @Override
-    public boolean hasPerm(CommandSender sender, String permission) {
+    public boolean hasPerm(CommandSender sender, String permission, boolean allowOp) {
         if (permission == null)
+            return true;
+        if (sender.isOp() && allowOp)
             return true;
         if (sender.hasPermission(permission + ".*"))
             return true;
-        return sender.hasPermission(permission) || sender.isOp() || (sender instanceof ConsoleCommandSender);
+        return sender.hasPermission(permission) || sender instanceof ConsoleCommandSender;
+    }
+
+    @Override
+    public boolean hasPerm(CommandSender sender, String permission) {
+        return hasPerm(sender, permission, true);
+    }
+
+    @Override
+    public boolean hasPerm(Player player, String permission, boolean allowOp) {
+        if (permission == null)
+            return true;
+        if (player.isOp() && allowOp)
+            return true;
+        if (player.hasPermission(permission + ".*"))
+            return true;
+        return player.hasPermission(permission) || player instanceof ConsoleCommandSender;
     }
 
     @Override
     public boolean hasPerm(Player player, String permission) {
-        if (permission == null)
-            return true;
-        if (player.hasPermission(permission + ".*"))
-            return true;
-        return player.hasPermission(permission) || player.isOp() || (player instanceof ConsoleCommandSender);
+        return hasPerm(player, permission, true);
+    }
+
+    @Override
+    public boolean hasPerm(UUID uuid, String permission, boolean allowOp) {
+        return hasPerm(Bukkit.getOfflinePlayer(uuid), permission, allowOp);
     }
 
     @Override
     public boolean hasPerm(UUID uuid, String permission) {
+        return hasPerm(uuid, permission, true);
+    }
+
+    @Override
+    public boolean hasPerm(OfflinePlayer offlinePlayer, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-        if (offlinePlayer.isOp())
+        if (offlinePlayer.isOp() && allowOp)
             return true;
-        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            return UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(uuid, permission) ||
-                    UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(uuid, permission + ".*");
-        }
-        return UtilsHandler.getDepend().getVaultAPI().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
+        if (UtilsHandler.getDepend().LuckPermsEnabled())
+            return UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission) ||
+                    UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission + ".*");
+        return UtilsHandler.getDepend().getVaultAPI().getPermissions().playerHas(
+                Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
     }
 
     @Override
     public boolean hasPerm(OfflinePlayer offlinePlayer, String permission) {
+        return hasPerm(offlinePlayer, permission, true);
+    }
+
+    @Override
+    public boolean havePerm(List<CommandSender> senders, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        if (offlinePlayer.isOp())
-            return true;
-        if (UtilsHandler.getDepend().LuckPermsEnabled()) {
-            return UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission) ||
-                    UtilsHandler.getDepend().getLuckPermsAPI().hasPermission(offlinePlayer.getUniqueId(), permission + ".*");
-        }
-        return UtilsHandler.getDepend().getVaultAPI().getPermissions().playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, permission);
+        for (CommandSender sender : senders)
+            if (hasPerm(sender, permission, allowOp))
+                return true;
+        return false;
     }
 
     @Override
     public boolean havePerm(List<CommandSender> senders, String permission) {
+        return havePerm(senders, permission, true);
+    }
+
+    @Override
+    public boolean havePermPlayer(List<Player> players, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (CommandSender sender : senders) {
-            if (hasPerm(sender, permission))
+        for (Player player : players)
+            if (hasPerm(player, permission, allowOp))
                 return true;
-        }
         return false;
     }
 
     @Override
     public boolean havePermPlayer(List<Player> players, String permission) {
+        return havePermPlayer(players, permission, true);
+    }
+
+    @Override
+    public boolean havePermUUID(List<UUID> uuids, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (Player player : players) {
-            if (hasPerm(player, permission))
-                return true;
-        }
+        for (UUID uuid : uuids)
+            return hasPerm(uuid, permission, allowOp);
         return false;
     }
 
     @Override
     public boolean havePermUUID(List<UUID> uuids, String permission) {
+        return havePermUUID(uuids, permission, true);
+    }
+
+    @Override
+    public boolean havePermOffline(List<OfflinePlayer> offlinePlayers, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (UUID uuid : uuids) {
-            return hasPerm(uuid, permission);
-        }
+        for (OfflinePlayer offlinePlayer : offlinePlayers)
+            return hasPerm(offlinePlayer, permission, allowOp);
         return false;
     }
 
     @Override
     public boolean havePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
+        return havePermOffline(offlinePlayers, permission, true);
+    }
+
+    @Override
+    public boolean allHavePerm(List<CommandSender> senders, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            return hasPerm(offlinePlayer, permission);
-        }
-        return false;
+        for (CommandSender sender : senders)
+            if (!hasPerm(sender, permission, allowOp))
+                return false;
+        return true;
     }
 
     @Override
     public boolean allHavePerm(List<CommandSender> senders, String permission) {
+        return allHavePerm(senders, permission);
+    }
+
+    @Override
+    public boolean allHavePermPlayer(List<Player> players, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (CommandSender sender : senders) {
-            if (!hasPerm(sender, permission))
+        for (Player player : players)
+            if (!hasPerm(player, permission, allowOp))
                 return false;
-        }
         return true;
     }
 
     @Override
     public boolean allHavePermPlayer(List<Player> players, String permission) {
+        return allHavePermPlayer(players, permission, true);
+    }
+
+    @Override
+    public boolean allHavePermUUID(List<UUID> uuids, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (Player player : players) {
-            if (!hasPerm(player, permission))
+        for (UUID uuid : uuids)
+            if (!hasPerm(uuid, permission, allowOp))
                 return false;
-        }
         return true;
     }
 
     @Override
     public boolean allHavePermUUID(List<UUID> uuids, String permission) {
+        return allHavePermUUID(uuids, permission, true);
+    }
+
+    @Override
+    public boolean allHavePermOffline(List<OfflinePlayer> offlinePlayers, String permission, boolean allowOp) {
         if (permission == null)
             return true;
-        for (UUID uuid : uuids) {
-            if (!hasPerm(uuid, permission))
+        for (OfflinePlayer offlinePlayer : offlinePlayers)
+            if (!hasPerm(offlinePlayer, permission, allowOp))
                 return false;
-        }
         return true;
     }
 
     @Override
     public boolean allHavePermOffline(List<OfflinePlayer> offlinePlayers, String permission) {
-        if (permission == null)
-            return true;
-        for (OfflinePlayer offlinePlayer : offlinePlayers) {
-            if (!hasPerm(offlinePlayer, permission))
-                return false;
-        }
-        return true;
+        return allHavePermOffline(offlinePlayers, permission, true);
     }
 
     @Override
@@ -812,6 +795,16 @@ public class PlayerManager implements PlayerInterface {
     }
 
     @Override
+    public Set<String> getLuckPermsInheritedGroups(UUID uuid) {
+        return UtilsHandler.getDepend().getLuckPermsAPI().getInheritedGroups(uuid);
+    }
+
+    @Override
+    public List<String> getLuckPermsAllPerms(UUID uuid) {
+        return UtilsHandler.getDepend().getLuckPermsAPI().getAllPerms(uuid);
+    }
+
+    @Override
     public void setDiscordNick(UUID uuid, String nickname) {
         UtilsHandler.getDepend().getDiscordAPI().setMemberNick(uuid, nickname);
     }
@@ -829,5 +822,125 @@ public class PlayerManager implements PlayerInterface {
     @Override
     public Material getResSelectionTool() {
         return Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
+    }
+
+    @Override
+    public ItemStack getSlotItem(Player player, String slot) {
+        // Inventory
+        if (slot.matches("[0-9]+"))
+            return player.getInventory().getItem(Integer.parseInt(slot));
+        return switch (slot) {
+            // Equipment
+            case "head" -> player.getInventory().getHelmet();
+            case "chest" -> player.getInventory().getChestplate();
+            case "legs" -> player.getInventory().getLeggings();
+            case "feet" -> player.getInventory().getBoots();
+            case "hand" -> player.getInventory().getItemInMainHand();
+            case "off_hand" -> player.getInventory().getItemInOffHand();
+            // Crafting
+            case "crafting[1]", "crafting[2]", "crafting[3]", "crafting[4]" -> player.getOpenInventory().getTopInventory().getItem(Integer.parseInt(slot.replace("CRAFTING[", "").replace("]", "")));
+            default -> null;
+        };
+    }
+
+    @Override
+    public void cleanSlot(Player player, String slot) {
+        // Inventory
+        if (slot.matches("[0-9]+"))
+            player.getInventory().setItem(Integer.parseInt(slot), null);
+        switch (slot) {
+            // ALL
+            case "all":
+                player.getInventory().clear();
+                break;
+            // Equipment
+            case "head":
+                player.getInventory().setHelmet(null);
+                break;
+            case "chest":
+                player.getInventory().setChestplate(null);
+                break;
+            case "legs":
+                player.getInventory().setLeggings(null);
+                break;
+            case "feet":
+                player.getInventory().setBoots(null);
+                break;
+            case "hand":
+                player.getInventory().setItemInMainHand(null);
+                break;
+            case "off_hand":
+                player.getInventory().setItemInOffHand(null);
+                break;
+            // Crafting
+            case "crafting[1]":
+            case "crafting[2]":
+            case "crafting[3]":
+            case "crafting[4]":
+                player.getOpenInventory().getTopInventory().setItem(Integer.parseInt(slot.replace("CRAFTING[", "").replace("]", "")), null);
+        }
+    }
+
+    @Override
+    public boolean isInventoryFull(Player player) {
+        PlayerInventory playerInventory = player.getInventory();
+        for (int i = 0; i <= 35; i++)
+            if (playerInventory.getItem(i) == null)
+                return true;
+        return false;
+    }
+
+    @Override
+    public boolean isInventoryFull(Player player, Material material, int itemNumber) {
+        double itemMaxSize = material.getMaxStackSize();
+        int itemStacks = (int) Math.ceil(itemNumber / itemMaxSize);
+        double itemRemain = itemNumber % itemMaxSize;
+
+        PlayerInventory playerInventory = player.getInventory();
+        int slotEmpty = 0;
+        int slotRemain = 0;
+        ItemStack slotItem;
+        for (int i = 0; i <= 35; i++) {
+            slotItem = playerInventory.getItem(i);
+            if (slotItem == null) {
+                slotEmpty++;
+            } else {
+                if (slotItem.getType() == material) {
+                    slotRemain += itemMaxSize - slotItem.getAmount();
+                    if (slotRemain >= itemMaxSize) {
+                        slotRemain -= itemMaxSize;
+                        slotEmpty++;
+                    }
+                }
+            }
+        }
+        if (slotEmpty < itemStacks)
+            return true;
+        return slotRemain < itemRemain;
+    }
+
+    @Override
+    public int getInventoryEmptySlot(Player player) {
+        PlayerInventory playerInventory = player.getInventory();
+        for (int i = 0; i <= 35; i++)
+            if (playerInventory.getItem(i) == null)
+                return i;
+        return -1;
+    }
+
+    @Override
+    public Map<String, Location> getCMIHomes(String playerName) {
+        Map<String, Location> map = new HashMap<>();
+        for (Map.Entry<String, CmiHome> entry : CMI.getInstance().getPlayerManager().getUser(playerName).getHomes().entrySet())
+            map.put(entry.getKey(), entry.getValue().getLoc().getBukkitLoc());
+        return map;
+    }
+
+    @Override
+    public Map<String, Location> getCMIHomes(UUID uuid) {
+        Map<String, Location> map = new HashMap<>();
+        for (Map.Entry<String, CmiHome> entry : CMI.getInstance().getPlayerManager().getUser(uuid).getHomes().entrySet())
+            map.put(entry.getKey(), entry.getValue().getLoc().getBukkitLoc());
+        return map;
     }
 }

@@ -1,4 +1,4 @@
-package tw.momocraft.coreplus.utils.message;
+package tw.momocraft.coreplus.utils.file.maps;
 
 import java.io.File;
 
@@ -7,7 +7,8 @@ public class LogMap {
     private String groupName;
     private File file;
     private boolean time;
-    private boolean newFile;
+    private boolean newDateFile;
+    private boolean newNumberFile;
     private boolean zip;
 
     public String getGroupName() {
@@ -34,12 +35,20 @@ public class LogMap {
         this.time = time;
     }
 
-    public boolean isNewFile() {
-        return newFile;
+    public boolean isNewDateFile() {
+        return newDateFile;
     }
 
-    public void setNewFile(boolean newFile) {
-        this.newFile = newFile;
+    public void setNewDateFile(boolean newDateFile) {
+        this.newDateFile = newDateFile;
+    }
+
+    public boolean isNewNumberFile() {
+        return newNumberFile;
+    }
+
+    public void setNewNumberFile(boolean newNumberFile) {
+        this.newNumberFile = newNumberFile;
     }
 
     public boolean isZip() {

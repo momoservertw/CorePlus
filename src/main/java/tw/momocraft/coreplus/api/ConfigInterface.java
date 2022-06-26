@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import tw.momocraft.coreplus.utils.condition.BlocksMap;
 import tw.momocraft.coreplus.utils.condition.LocationMap;
 import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
-import tw.momocraft.coreplus.utils.message.LogMap;
+import tw.momocraft.coreplus.utils.file.maps.LogMap;
 
 import java.util.List;
 import java.util.Map;

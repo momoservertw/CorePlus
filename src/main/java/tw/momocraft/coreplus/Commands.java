@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.file.ConfigBuilder;
@@ -66,7 +65,7 @@ public class Commands implements CommandExecutor {
             case "reload":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "coreplus.command.reload")) {
                     ConfigHandler.generateData(true);
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.configReload", sender);
+                    UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.configReload", sender);
                 } else {
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);

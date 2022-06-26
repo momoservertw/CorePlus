@@ -3,7 +3,6 @@ package tw.momocraft.coreplus.handlers;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tw.momocraft.coreplus.CorePlus;
-import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.coreplus.utils.ConfigPath;
 import tw.momocraft.coreplus.utils.file.maps.FileMap;
 
@@ -60,7 +59,7 @@ public class ConfigHandler {
     }
 
     private static void logConfigMsg() {
-        CorePlusAPI.getMsg().sendConsoleMsg(
+        UtilsHandler.getMsg().sendConsoleMsg(
                 getPluginPrefix() + "Load configurations: " + configMap.keySet());
     }
 
@@ -195,7 +194,7 @@ public class ConfigHandler {
             try {
                 CorePlus.getInstance().saveResource(resource, false);
             } catch (Exception e) {
-                CorePlusAPI.getMsg().sendErrorMsg(getPluginName(),
+                UtilsHandler.getMsg().sendErrorMsg(getPluginName(),
                         "Cannot save " + resource + " to disk!");
             }
         }
@@ -227,7 +226,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     loadConfig(fileName);
-                    CorePlusAPI.getMsg().sendConsoleMsg(getPrefix(),
+                    UtilsHandler.getMsg().sendConsoleMsg(getPrefix(),
                             "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }

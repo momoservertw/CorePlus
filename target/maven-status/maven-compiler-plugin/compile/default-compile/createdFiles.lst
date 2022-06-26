@@ -23,9 +23,7 @@ tw\momocraft\coreplus\utils\customcommand\BungeeCordUtils.class
 tw\momocraft\coreplus\utils\file\DataUtils.class
 tw\momocraft\coreplus\api\DependInterface.class
 tw\momocraft\coreplus\utils\file\ZipperUtils.class
-tw\momocraft\coreplus\utils\inventory\InventoryManager.class
 tw\momocraft\coreplus\CorePlus.class
-tw\momocraft\coreplus\utils\message\LogMap.class
 tw\momocraft\coreplus\api\CommandInterface.class
 tw\momocraft\coreplus\utils\condition\ItemJoinUtils.class
 tw\momocraft\coreplus\utils\message\TranslateMap.class
@@ -43,8 +41,10 @@ tw\momocraft\coreplus\api\utils\CopyApiToPlugins.class
 tw\momocraft\coreplus\utils\condition\ConditionManager.class
 tw\momocraft\coreplus\utils\effect\ParticleUtils$1.class
 tw\momocraft\coreplus\utils\player\economy\PlayerPointsUtils.class
+tw\momocraft\coreplus\utils\nms\OpenPlayer.class
 tw\momocraft\coreplus\utils\player\PlayerManager.class
 tw\momocraft\coreplus\utils\message\MessageManager.class
+tw\momocraft\coreplus\utils\player\OfflinePlayerManager.class
 tw\momocraft\coreplus\utils\message\TitleMsgMap.class
 tw\momocraft\coreplus\api\MessageInterface.class
 tw\momocraft\coreplus\handlers\UtilsHandler.class
@@ -71,3 +71,4 @@ tw\momocraft\coreplus\utils\effect\ParticleMap.class
 tw\momocraft\coreplus\api\ConfigInterface.class
 tw\momocraft\coreplus\utils\customcommand\CommandManager.class
 tw\momocraft\coreplus\api\CorePlusAPI.class
+tw\momocraft\coreplus\utils\file\maps\LogMap.class
