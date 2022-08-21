@@ -115,12 +115,21 @@ public class MySQLUtils {
         }
     }
 
-    // CREATE TABLE tableName ("EMP_ID int(11) NOT NULL,"
-    //                    + "NAME VARCHAR(255) NOT NULL,"
-    //                    + "DOB DATE NOT NULL,"
-    //                    + "EMAIL VARCHAR(45) NOT NULL,"
-    //                    + "DEPT varchar(45) NOT NULL"
-    //                    + )";
+
+    /**
+     * Create a table with columns.
+     * <p>
+     * CREATE TABLE tableName ("EMP_ID int(11) NOT NULL,"
+     * + "NAME VARCHAR(255) NOT NULL,"
+     * + "DOB DATE NOT NULL,"
+     * + "EMAIL VARCHAR(45) NOT NULL,"
+     * + "DEPT varchar(45) NOT NULL"
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param columns    the target column.
+     */
     public void createTables(String pluginName, String database, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"CREATE TABLE IF NOT EXISTS " + table + " (\"");
         for (String column : columns)
@@ -129,22 +138,22 @@ public class MySQLUtils {
         executeSQL(pluginName, database, sql);
     }
 
-    public void addColumn(String pluginName, String database, String table, String column) {
-        String sql = "\"ALTER TABLE " + table + " ADD " + column + "\"";
-        try {
-            executeSQL(pluginName, database, sql);
-        } catch (Exception ex) {
-            sendGetErrorMsg(pluginName, database, sql, ex);
-        }
-    }
-
-    // ALTER TABLE tableName ADD ("EMP_ID int(11) NOT NULL,"
-    //                    + "NAME VARCHAR(255) NOT NULL,"
-    //                    + "DOB DATE NOT NULL,"
-    //                    + "EMAIL VARCHAR(45) NOT NULL,"
-    //                    + "DEPT varchar(45) NOT NULL"
-    //                    + )";
-    public void addColumns(String pluginName, String database, String table, List<String> columns) {
+    /**
+     * Create a table with columns.
+     * <p>
+     * ALTER TABLE tableName ADD ("EMP_ID int(11) NOT NULL,"
+     * + "NAME VARCHAR(255) NOT NULL,"
+     * + "DOB DATE NOT NULL,"
+     * + "EMAIL VARCHAR(45) NOT NULL,"
+     * + "DEPT varchar(45) NOT NULL"
+     * + )";
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param columns    the target column.
+     */
+    public void setColumns(String pluginName, String database, String table, List<String> columns) {
         StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " ADD (\"");
         for (String column : columns)
             sqlBuilder.append(column).append(",");
@@ -156,6 +165,31 @@ public class MySQLUtils {
         }
     }
 
+    /**
+     * Add a column to a table.
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param column     the target column.
+     */
+    public void addColumn(String pluginName, String database, String table, String column) {
+        String sql = "\"ALTER TABLE " + table + " ADD " + column + "\"";
+        try {
+            executeSQL(pluginName, database, sql);
+        } catch (Exception ex) {
+            sendGetErrorMsg(pluginName, database, sql, ex);
+        }
+    }
+
+    /**
+     * Remove a column from a table.
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param column     the target column.
+     */
     public void removeColumn(String pluginName, String database, String table, String column) {
         String sql = "\"ALTER TABLE " + table + " DROP " + column + "\"";
         try {
@@ -165,18 +199,16 @@ public class MySQLUtils {
         }
     }
 
-    public void removeColumns(String pluginName, String database, String table, List<String> columns) {
-        StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " DROP (\"");
-        for (String column : columns)
-            sqlBuilder.append(column).append(",");
-        String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
-        try {
-            executeSQL(pluginName, database, sql);
-        } catch (Exception ex) {
-            sendGetErrorMsg(pluginName, database, sql, ex);
-        }
-    }
-
+    /**
+     * Get all select rows with custom variables.
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param key        the key of the map.
+     * @param variables  the variables to show.
+     * @return all select rows with custom variables.
+     */
     public Map<String, Map<String, String>> getValues(String pluginName, String database, String table, String key, List<String> variables) {
         StringBuilder sqlBuilder = new StringBuilder("\"SELECT ");
         for (String variable : variables)
@@ -200,15 +232,25 @@ public class MySQLUtils {
         }
     }
 
+    /**
+     * Get the select rows with custom key and value.
+     * E.g. playername, value
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param keyColumn        the key of the map.
+     * @param valueColumn  the variables to show.
+     * @return the select rows with custom key and value.
+     */
     public Map<String, String> getValueMap(String pluginName, String database, String table, String keyColumn, String valueColumn) {
         // SELECT
         String sql = "SELECT " + keyColumn + ", " + valueColumn + " FROM " + table + "\"";
         try {
             Map<String, String> map = new HashMap<>();
             ResultSet result = getStatement(pluginName, database, sql).executeQuery();
-            while (result.next()) {
+            while (result.next())
                 map.put(result.getString(keyColumn), result.getString(valueColumn));
-            }
             return map;
         } catch (Exception ex) {
             sendGetErrorMsg(pluginName, database, sql, ex);
@@ -216,6 +258,16 @@ public class MySQLUtils {
         }
     }
 
+    /**
+     * Get all select rows with custom variables.
+     *
+     * @param pluginName the sent plugin name.
+     * @param database   the database name.
+     * @param table      the name of the database.
+     * @param keyColumn        the key of the map.
+     * @param valueColumn  the variables to show.
+     * @return all select rows with custom variables.
+     */
     public Map<Object, Object> getValueMap(String pluginName, String database, String table, String keyColumn, String valueColumn, String keyType, String valueType) {
         // SELECT column1, column2 FROM table
         String sql = "SELECT " + keyColumn + ", " + valueColumn + " FROM " + table + "\"";

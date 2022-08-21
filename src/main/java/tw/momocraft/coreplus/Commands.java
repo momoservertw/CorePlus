@@ -7,6 +7,10 @@ import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
 import tw.momocraft.coreplus.handlers.UtilsHandler;
 import tw.momocraft.coreplus.utils.file.ConfigBuilder;
+import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Commands implements CommandExecutor {
 
@@ -95,15 +99,59 @@ public class Commands implements CommandExecutor {
                             UtilsHandler.getCondition().getConditionTest().placeholder(sender, null, args[2]);
                             return true;
                         }
-                    } else if (args[1].equalsIgnoreCase("dev")) {
-                        /*
-                        if (UtilsHandler.getPlayer().isAFK((Player) sender)) {
-                            System.out.println("yes");
-                            return true;
-                        }
-                        System.out.println("no");
+                    } else if (args[1].equalsIgnoreCase("mysql")) {
+                        switch (args[2]) {
+                            case "createTables":
+                                List<String> list = new ArrayList<>();
+                                list.add("name");
+                                list.add("uuid");
+                                list.add("variable");
+                                list.add("value");
 
-                         */
+                                UtilsHandler.getFile().getMySQL().createTables("Test",
+                                        "playerdataplus", "playerdata", list);
+                            case "connect":
+                                MySQLMap mySQLMap = new MySQLMap();
+                                mySQLMap.setGroupName("playerdataplus");
+                                mySQLMap.setDatabase("playerdataplus");
+                                mySQLMap.setHostName("127.0.0.1");
+                                mySQLMap.setPort("3306");
+                                mySQLMap.setUsername("edward851208");
+                                mySQLMap.setPassword("aW(a)9Ab7gb-");
+
+                                UtilsHandler.getFile().getMySQL().connect("Test", mySQLMap);
+                                System.out.println("connect");
+                            case "isConnect":
+                                UtilsHandler.getFile().getMySQL().isConnect("Test", "playerdataplus");
+                                System.out.println("isConnect");
+                            case "disabledConnect":
+                                UtilsHandler.getFile().getMySQL().disabledConnect("Test", "playerdataplus");
+                                System.out.println("disabledConnect");
+                            case "addColumn":
+                                UtilsHandler.getFile().getMySQL().addColumn("Test",
+                                        "playerdataplus", "playerdata", "Test_Column");
+                                System.out.println("addColumn");
+                            case "setValue":
+                                UtilsHandler.getFile().getMySQL().setValue("Test",
+                                        "playerdataplus", "playerdata",
+                                        "setValueWhere", "test");
+                                System.out.println("setValue");
+                            case "setValueWhere":
+                                UtilsHandler.getFile().getMySQL().setValueWhere("Test",
+                                        "playerdataplus", "playerdata",
+                                        "uuid", ((Player) sender).getUniqueId().toString(), "setValueWhere", "test");
+                                System.out.println("setValueWhere");
+                            case "getValueWhere":
+                                UtilsHandler.getFile().getMySQL().getValueWhere("Test",
+                                        "playerdataplus", "playerdata",
+                                        "uuid", ((Player) sender).getUniqueId().toString(), "setValueWhere");
+                                System.out.println("getValueWhere");
+                            case "removeValue":
+                                UtilsHandler.getFile().getMySQL().removeValue("Test",
+                                        "playerdataplus", "playerdata",
+                                        "uuid", ((Player) sender).getUniqueId().toString());
+                                System.out.println("removeValue");
+                        }
                         return true;
                     }
                     UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
