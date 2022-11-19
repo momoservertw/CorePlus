@@ -1,7 +1,7 @@
 package tw.momocraft.coreplus.utils.message;
 
 public class TitleMsgMap {
-
+    
     private String groupName;
     private int times;
     private int interval;

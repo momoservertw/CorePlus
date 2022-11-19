@@ -117,7 +117,6 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
-
     public int getRandom(int value1, int value2) {
         Random random = new Random();
         if (value2 > value1) {

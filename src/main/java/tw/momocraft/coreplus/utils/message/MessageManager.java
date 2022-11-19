@@ -1255,6 +1255,7 @@ public class MessageManager implements MessageInterface {
                 }
             }
         }
+
         // JavaScript placeholder.
         /*
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
