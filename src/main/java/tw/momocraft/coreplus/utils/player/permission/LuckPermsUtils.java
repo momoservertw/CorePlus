@@ -68,6 +68,19 @@ public class LuckPermsUtils {
                 .collect(Collectors.toSet());
     }
 
+    public boolean isPlayerBefore(UUID uuid) {
+        User user = getUser(uuid);
+        return user == null;
+    }
+
+    public boolean isPlayerBefore(String playerName) {
+        UUID uuid = getUUID(playerName);
+        if (uuid == null)
+            return false;
+        User user = getUser(uuid);
+        return user == null;
+    }
+
     public String getPrefix(UUID uuid) {
         User user = getUser(uuid);
         if (user == null)

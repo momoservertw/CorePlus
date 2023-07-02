@@ -17,9 +17,9 @@ import tw.momocraft.coreplus.utils.condition.LocationMap;
 import tw.momocraft.coreplus.utils.effect.ParticleMap;
 import tw.momocraft.coreplus.utils.effect.SoundMap;
 import tw.momocraft.coreplus.utils.file.maps.ConfigBuilderMap;
+import tw.momocraft.coreplus.utils.file.maps.LogMap;
 import tw.momocraft.coreplus.utils.file.maps.MySQLMap;
 import tw.momocraft.coreplus.utils.message.ActionBarMap;
-import tw.momocraft.coreplus.utils.file.maps.LogMap;
 import tw.momocraft.coreplus.utils.message.TitleMsgMap;
 
 import java.io.File;
@@ -48,6 +48,7 @@ public class ConfigPath implements ConfigInterface {
     private final Map<String, TitleMsgMap> titleProp = new HashMap<>();
     private final Map<String, ParticleMap> particleProp = new HashMap<>();
     private final Map<String, SoundMap> soundProp = new HashMap<>();
+    private final Map<String, String> colorAliasMap = new HashMap<>();
 
     //  ============================================== //
     //         ConfigBuilder Variables                 //
@@ -77,6 +78,7 @@ public class ConfigPath implements ConfigInterface {
     public void setupFirst() {
         setGeneral();
         setData();
+        setMessages();
         setGroups();
         setCommands();
         setCondition();
@@ -430,19 +432,44 @@ public class ConfigPath implements ConfigInterface {
     }
 
     //  ============================================== //
+    //         message.yml Setter                //
+    //  ============================================== //
+    private void setMessages() {
+        ConfigurationSection message = ConfigHandler.getConfig("message.yml").getConfigurationSection("Message");
+        if (message != null)
+            return;
+        colorAliasMap.put("a", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "green"));
+        colorAliasMap.put("b", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "aqua"));
+        colorAliasMap.put("c", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "red"));
+        colorAliasMap.put("d", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "light_purple"));
+        colorAliasMap.put("e", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "yellow"));
+        colorAliasMap.put("f", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "white"));
+        colorAliasMap.put("0", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "black"));
+        colorAliasMap.put("1", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_blue"));
+        colorAliasMap.put("2", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_green"));
+        colorAliasMap.put("3", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_aqua"));
+        colorAliasMap.put("4", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_red"));
+        colorAliasMap.put("5", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_purple"));
+        colorAliasMap.put("6", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "gold"));
+        colorAliasMap.put("7", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "gray"));
+        colorAliasMap.put("8", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "dark_gray"));
+        colorAliasMap.put("9", ConfigHandler.getConfig("message.yml").getString("Messages.Translation", "blue"));
+    }
+
+    //  ============================================== //
     //         title_message.yml Setter                //
     //  ============================================== //
     private void setTitleMessages() {
-        ConfigurationSection particleConfig = ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages");
-        if (particleConfig != null)
+        ConfigurationSection titleMsgConfig = ConfigHandler.getConfig("title_messages.yml").getConfigurationSection("Title-Messages");
+        if (titleMsgConfig != null)
             return;
         TitleMsgMap titleMessageMap;
-        for (String groupName : particleConfig.getKeys(false)) {
+        for (String groupName : titleMsgConfig.getKeys(false)) {
             titleMessageMap = new TitleMsgMap();
             titleMessageMap.setGroupName(groupName);
-            titleMessageMap.setStay(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".Stay", 70));
-            titleMessageMap.setFadeIn(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".FadeIn", 10));
-            titleMessageMap.setFadeOut(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages" + groupName + ".FadeOut", 20));
+            titleMessageMap.setStay(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages." + groupName + ".Stay", 70));
+            titleMessageMap.setFadeIn(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages." + groupName + ".FadeIn", 10));
+            titleMessageMap.setFadeOut(ConfigHandler.getConfig("title_messages.yml").getInt("Title-Messages." + groupName + ".FadeOut", 20));
             titleProp.put(groupName, titleMessageMap);
         }
     }
@@ -671,6 +698,12 @@ public class ConfigPath implements ConfigInterface {
     //  ============================================== //
     //         Others                                  //
     //  ============================================== //
+
+
+    public Map<String, String> getColorAliasMap() {
+        return colorAliasMap;
+    }
+
     @Override
     public List<String> getTypeList(String pluginName, List<String> inputList, String inputType) {
         if (inputList == null || inputList.isEmpty() || inputType == null)

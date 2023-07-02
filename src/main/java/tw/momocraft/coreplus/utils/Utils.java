@@ -15,6 +15,11 @@ import java.util.*;
 public class Utils implements UtilsInterface {
 
     @Override
+    public Map<String, String> getColorAliasMap() {
+        return ConfigHandler.getConfigPath().getColorAliasMap();
+    }
+
+    @Override
     public String getObjectType(Object object) {
         if (object instanceof Player) {
             return "player";
@@ -51,18 +56,103 @@ public class Utils implements UtilsInterface {
     }
 
     @Override
+    public String getColorCodeWithoutSymbol(String input) {
+        if (input == null)
+            return null;
+        input = input.toLowerCase();
+        if (input.matches("[12345678abcdef]"))
+            return input;
+        for (Map.Entry<String, String> entry : getColorAliasMap().entrySet()) {
+            if (entry.getValue().equals(input))
+                return entry.getKey();
+        }
+        return null;
+    }
+
+    @Override
+    public String getColorCode(String input) {
+        if (input == null)
+            return null;
+        input = input.toLowerCase();
+        if (input.matches("[12345678abcdef]"))
+            return input;
+        if (input.matches("[§&][12345678abcdef]"))
+            return input.substring(1);
+
+        switch (input.toUpperCase()) {
+            case "BLACK":
+                return "0";
+            case "DARK_BLUE":
+                return "1";
+            case "DARK_GREEN":
+                return "2";
+            case "DARK_AQUA":
+                return "3";
+            case "DARK_RED":
+                return "4";
+            case "DARK_PURPLE":
+                return "5";
+            case "GOLD":
+                return "6";
+            case "GRAY":
+                return "7";
+            case "DARK_GRAY":
+                return "8";
+            case "BLUE":
+                return "9";
+            case "GREEN":
+                return "a";
+            case "AQUA":
+                return "b";
+            case "RED":
+                return "c";
+            case "LIGHT_PURPLE":
+                return "d";
+            case "YELLOW":
+                return "e";
+            case "WHITE":
+                return "f";
+        }
+        for (Map.Entry<String, String> entry : getColorAliasMap().entrySet()) {
+            if (entry.getValue().equals(input))
+                return entry.getKey();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean equalColorWithoutSymbol(String input) {
+        if (input.matches("[12345678abcdef]"))
+            return true;
+        return getColorAliasMap().containsValue(input);
+    }
+
+    @Override
     public boolean equalColorCodeWithoutSymbol(String input) {
+        if (input == null)
+            return false;
         return (input.matches("[12345678abcdef]"));
     }
 
     @Override
     public boolean equalColorCode(String input) {
-        return (input.matches("[§&][12345678abcdef]"));
+        if (input == null)
+            return false;
+        return (input.matches("[§&]?[12345678abcdef]"));
     }
 
     @Override
     public boolean containsColorCode(String input) {
-        return (input.matches(".*[§&][12345678abcdef].*$"));
+        if (input == null)
+            return false;
+        return (input.matches(".*[§&]?[12345678abcdef].*$"));
+    }
+
+    @Override
+    public String removeColorCode(String input) {
+        if (input == null)
+            return null;
+        return input.replaceAll("[§&]?[12345678abcdef]", "");
     }
 
     @Override
@@ -675,6 +765,48 @@ public class Utils implements UtilsInterface {
             list.add(ChatColor.translateAlternateColorCodes('&', s));
         }
         return list;
+    }
+
+
+    @Override
+    public ChatColor getChatColor(String input) {
+        input = getColorCode(input);
+        switch (input) {
+            case "0":
+                return ChatColor.BLACK;
+            case "1":
+                return ChatColor.DARK_BLUE;
+            case "2":
+                return ChatColor.DARK_GREEN;
+            case "3":
+                return ChatColor.DARK_AQUA;
+            case "4":
+                return ChatColor.DARK_RED;
+            case "5":
+                return ChatColor.DARK_PURPLE;
+            case "6":
+                return ChatColor.GOLD;
+            case "7":
+                return ChatColor.GRAY;
+            case "8":
+                return ChatColor.DARK_GRAY;
+            case "9":
+                return ChatColor.BLUE;
+            case "a":
+                return ChatColor.GREEN;
+            case "b":
+                return ChatColor.AQUA;
+            case "c":
+                return ChatColor.RED;
+            case "d":
+                return ChatColor.LIGHT_PURPLE;
+            case "e":
+                return ChatColor.YELLOW;
+            case "f":
+                return ChatColor.WHITE;
+            default:
+                return null;
+        }
     }
 
     @Override

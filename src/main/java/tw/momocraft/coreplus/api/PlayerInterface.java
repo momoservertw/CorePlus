@@ -13,18 +13,41 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface PlayerInterface {
+    /**
+     * @param uuid the uuid of this player
+     * @return if the player had player before. Only support
+     */
+    boolean isPlayerPlayerBefore(UUID uuid);
 
     /**
      * @param playerName the name of this player
-     * @return if the player is online.
+     * @return if the player had player before.
+     */
+    boolean isPlayerPlayerBefore(String playerName);
+
+    /**
+     * @param playerName the name of this player
+     * @return if the player is online or in other server.
      */
     boolean isPlayerOnline(String playerName);
 
     /**
      * @param uuid the uuid of this player
-     * @return if the player is online.
+     * @return if the player is online or in other server.
      */
     boolean isPlayerOnline(UUID uuid);
+
+    /**
+     * @param playerName the name of this player
+     * @return if the player is online in the server.
+     */
+    boolean isPlayerOnlineServer(String playerName);
+
+    /**
+     * @param uuid the uuid of this player
+     * @return if the player is online in the server.
+     */
+    boolean isPlayerOnlineServer(UUID uuid);
 
     /**
      * @param sender the target sender.
@@ -37,6 +60,28 @@ public interface PlayerInterface {
      * @return the player from a name or null.
      */
     Player getPlayer(String playerName);
+
+    /**
+     * @param uuid the uuid of this player
+     * @return the player from a name or null.
+     */
+    Player getPlayer(UUID uuid);
+
+    /**
+     * @param playerName the playerName of this player
+     * @return the display name of the player.
+     * <p>
+     * Will return null if player not online and CMI not enabled.
+     */
+    String getPlayerDisplayName(String playerName);
+
+    /**
+     * @param uuid the uuid of this player
+     * @return the display name of the player. Return null if can not found the data of this player.
+     * <p>
+     * Will return null if player not online and CMI not enabled.
+     */
+    String getPlayerDisplayName(UUID uuid);
 
     /**
      * Getting player uuid from a name.

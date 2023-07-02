@@ -50,9 +50,6 @@ public class MySQLUtils {
             return false;
         }
         try {
-            System.out.println("jdbc:mysql://" +
-                    mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase() + "," +
-                    mySQLMap.getUsername() + ", " + mySQLMap.getPassword());
             Connection connection = DriverManager.getConnection("jdbc:mysql://" +
                             mySQLMap.getHostName() + ":" + mySQLMap.getPort() + "/" + mySQLMap.getDatabase(),
                     mySQLMap.getUsername(), mySQLMap.getPassword());
@@ -131,9 +128,13 @@ public class MySQLUtils {
      * @param columns    the target column.
      */
     public void createTables(String pluginName, String database, String table, List<String> columns) {
-        StringBuilder sqlBuilder = new StringBuilder("\"CREATE TABLE IF NOT EXISTS " + table + " (\"");
-        for (String column : columns)
-            sqlBuilder.append(column).append(",");
+        StringBuilder sqlBuilder = new StringBuilder("\"CREATE TABLE IF NOT EXISTS " + table + " (");
+        for (String column : columns) {
+            sqlBuilder.append("'");
+            sqlBuilder.append(column);
+            sqlBuilder.append("'");
+            sqlBuilder.append(",");
+        }
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";
         executeSQL(pluginName, database, sql);
     }
@@ -154,7 +155,7 @@ public class MySQLUtils {
      * @param columns    the target column.
      */
     public void setColumns(String pluginName, String database, String table, List<String> columns) {
-        StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " ADD (\"");
+        StringBuilder sqlBuilder = new StringBuilder("\"ALTER TABLE " + table + " ADD (");
         for (String column : columns)
             sqlBuilder.append(column).append(",");
         String sql = sqlBuilder.substring(0, sqlBuilder.length() - 1) + ")\";";

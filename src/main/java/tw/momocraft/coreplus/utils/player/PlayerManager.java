@@ -27,12 +27,48 @@ import java.util.*;
 public class PlayerManager implements PlayerInterface {
 
     @Override
+    public boolean isPlayerPlayerBefore(UUID uuid) {
+        if (UtilsHandler.getDepend().LuckPermsEnabled())
+            return UtilsHandler.getDepend().getLuckPermsAPI().isPlayerBefore(uuid);
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerPlayerBefore(String playerName) {
+        if (UtilsHandler.getDepend().LuckPermsEnabled())
+            return UtilsHandler.getDepend().getLuckPermsAPI().isPlayerBefore(playerName);
+        return false;
+    }
+
+    @Override
     public boolean isPlayerOnline(UUID uuid) {
-        return Bukkit.getPlayer(uuid) != null;
+        // In sever.
+        if (Bukkit.getPlayer(uuid) != null)
+            return true;
+        // In other server.
+        if (UtilsHandler.getDepend().MpdbEnabled())
+            return PD.api.isPlayerOnline(uuid);
+        return false;
     }
 
     @Override
     public boolean isPlayerOnline(String playerName) {
+        // In sever.
+        if (Bukkit.getPlayer(playerName) != null)
+            return true;
+        // In other server.
+        if (UtilsHandler.getDepend().MpdbEnabled())
+            return PD.api.isPlayerOnline(playerName);
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerOnlineServer(UUID uuid) {
+        return Bukkit.getPlayer(uuid) != null;
+    }
+
+    @Override
+    public boolean isPlayerOnlineServer(String playerName) {
         return Bukkit.getPlayer(playerName) != null;
     }
 
@@ -55,6 +91,34 @@ public class PlayerManager implements PlayerInterface {
         }
         return args;
     }
+
+    @Override
+    public Player getPlayer(UUID uuid) {
+        return Bukkit.getPlayer(uuid);
+    }
+
+    @Override
+    public String getPlayerDisplayName(String playerName) {
+        Player player = getPlayer(playerName);
+        if (player != null)
+            return player.getDisplayName();
+
+        if (UtilsHandler.getDepend().CMIEnabled())
+            return UtilsHandler.getDepend().getCmiAPI().getDisplayName(playerName);
+        return null;
+    }
+
+    @Override
+    public String getPlayerDisplayName(UUID uuid) {
+        Player player = getPlayer(uuid);
+        if (player != null)
+            return player.getDisplayName();
+
+        if (UtilsHandler.getDepend().CMIEnabled())
+            return UtilsHandler.getDepend().getCmiAPI().getDisplayName(uuid);
+        return null;
+    }
+
 
     @Override
     public UUID getPlayerUUID(String playerName) {
@@ -246,6 +310,11 @@ public class PlayerManager implements PlayerInterface {
                 user.withdraw(amount);
                 return;
             }
+            String[] placeHolders = UtilsHandler.getMsg().newString();
+            placeHolders[1] = uuid.toString(); // %targetplayer%
+            UtilsHandler.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
+                    "Message.targetNotFound", Bukkit.getConsoleSender(), placeHolders);
+            return;
         }
         if (UtilsHandler.getDepend().MpdbEnabled()) {
             double money = PD.api.getDatabaseMoney(uuid);
@@ -443,7 +512,6 @@ public class PlayerManager implements PlayerInterface {
         }
         return "server";
     }
-
 
     @Override
     public boolean hasPerm(CommandSender sender, String permission, boolean allowOp) {

@@ -6,7 +6,6 @@ import tw.momocraft.coreplus.utils.condition.ConditionManager;
 import tw.momocraft.coreplus.utils.customcommand.CommandManager;
 import tw.momocraft.coreplus.utils.entity.EntityManager;
 import tw.momocraft.coreplus.utils.file.FileManager;
-import tw.momocraft.coreplus.utils.message.DiscordUtils;
 import tw.momocraft.coreplus.utils.message.MessageManager;
 import tw.momocraft.coreplus.utils.message.VanillaUtils;
 import tw.momocraft.coreplus.utils.player.PlayerManager;

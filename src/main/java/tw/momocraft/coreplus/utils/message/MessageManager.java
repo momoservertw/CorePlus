@@ -259,7 +259,7 @@ public class MessageManager implements MessageInterface {
         if (action != null) {
             switch (action) {
                 case "cancel", "remove", "kill", "damage", "fail", "failed", "warning", "deny", "prevent" -> sb.append("&8, &c").append(action);
-                case "continue", "bypass", "change" -> sb.append("&8, &e").append(action);
+                case "continue", "bypass", "change", "start" -> sb.append("&8, &e").append(action);
                 case "return", "success", "succeed", "accept", "allow" -> sb.append("&8, &a").append(action);
             }
         }

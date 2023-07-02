@@ -23,11 +23,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db9de2ae-2a97-4e0b-968d-c3ef6fdf69c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMIAPI.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMILib.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/ItemJoin.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MobFarmManager.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyCommand.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyPet.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MythicMobs.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PvPManager.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Residence.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/SkinsRestorer.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Vault.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/CorePlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/PlayerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/api/UtilsInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMI9.0.0.0API.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/CMILib1.1.2.5.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/GemsEconomy-4.9.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/ItemJoin-5.2.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MobFarmManager2.0.1.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Multiverse-Core-4.3.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyCommand-5.2.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MyPet-3.12-SNAPSHOT-B1686.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MysqlPlayerDataBridge-v4.2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/MythicMobs-5.1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PlayerPoints.jar" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PlayerPoints.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/PvPManager-3.16.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Residence5.0.1.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/SkinsRestorer-14.1.13.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/extra/Vault-1.7.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/ConfigHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/handlers/UtilsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/ConfigPath.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/BungeeCordUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/customcommand/BungeeCordUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/file/MySQLUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/MessageManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/TitleMsgMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/message/TitleMsgMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/CMIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/CMIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/PlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/permission/LuckPermsUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/coreplus/utils/player/permission/LuckPermsUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/CorePlus-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,22 +120,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
-    <property name="Repository.Attach.Annotations" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="false" />
-    <property name="Repository.Attach.Sources" value="false" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EntityPlus" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.34272996" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.repository.indices" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "C:/Users/yami/IdeaProjects/CorePlus",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\yami\IdeaProjects\CorePlus\src\main\java\tw\momocraft\coreplus\utils\nms" />
@@ -117,7 +153,7 @@
       <recent name="tw.momocraft.coreplus.api" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CopyApiToPlugins">
+  <component name="RunManager" selected="Application.CopyToUpdateFolder">
     <configuration name="CopyApiToPlugins" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="tw.momocraft.coreplus.api.utils.CopyApiToPlugins" />
       <module name="CorePlus" />
@@ -159,8 +195,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.CopyToUpdateFolder" />
+        <item itemvalue="Application.CopyApiToPlugins" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
@@ -189,7 +225,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

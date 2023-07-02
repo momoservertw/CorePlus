@@ -72,109 +72,109 @@ public class ConfigHandler {
         FileMap fileMap;
         String filePath;
         String fileName;
+        filePath = CorePlus.getInstance().getDataFolder().getPath();
 
         // action_bars.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "action_bars.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // blocks.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "blocks.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // commands.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "commands.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // condition.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "condition.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // config.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "config.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // data.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "data.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // groups.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "groups.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // location.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "location.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // message.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "message.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // particles.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "particles.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // sounds.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "sounds.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);
         fileMap.setFileType("yaml");
         fileMap.setVersion(1);
         configInfoMap.put(fileName, fileMap);
+
         // title_messages.yml
         fileMap = new FileMap();
-        filePath = CorePlus.getInstance().getDataFolder().getPath();
         fileName = "title_messages.yml";
         fileMap.setFile(new File(filePath, fileName));
         fileMap.setFileName(fileName);

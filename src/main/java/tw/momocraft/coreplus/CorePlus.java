@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import tw.momocraft.coreplus.api.*;
 import tw.momocraft.coreplus.handlers.ConfigHandler;
@@ -28,6 +29,12 @@ public class CorePlus extends JavaPlugin {
 
     public static CorePlus getInstance() {
         return instance;
+    }
+
+    public static void disablePlugin() {
+        CorePlusAPI.getMsg().sendConsoleMsg(ConfigHandler.getPluginName(),
+                "&fStarting to disable the plugin...");
+        Bukkit.getServer().getPluginManager().disablePlugin(instance);
     }
 
     //  ============================================== //

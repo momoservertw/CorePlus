@@ -15,8 +15,26 @@ public class CMIUtils {
         return null;
     }
 
-    private CMIUser getUser(String playerName) {
+    public CMIUser getUser(String playerName) {
         return CMI.getInstance().getPlayerManager().getUser(playerName);
+    }
+
+    public CMIUser getUser(UUID uuid) {
+        return CMI.getInstance().getPlayerManager().getUser(uuid);
+    }
+
+    public String getDisplayName(String playerName) {
+        CMIUser cmiUser = getUser(playerName);
+        if (cmiUser != null)
+            return cmiUser.getDisplayName();
+        return null;
+    }
+
+    public String getDisplayName(UUID uuid) {
+        CMIUser cmiUser = getUser(uuid);
+        if (cmiUser != null)
+            return cmiUser.getDisplayName();
+        return null;
     }
 
     public boolean isAFK(Player player) {

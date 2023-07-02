@@ -1,5 +1,6 @@
 package tw.momocraft.coreplus.api;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -12,6 +13,11 @@ import java.util.Map;
 import java.util.Set;
 
 public interface UtilsInterface {
+
+    /**
+     * @return the alias of colors.
+     */
+    Map<String, String> getColorAliasMap();
 
     /**
      * Check the object type like entity, entitytype...
@@ -48,18 +54,34 @@ public interface UtilsInterface {
      */
     boolean containsString(List<String> list, String string);
 
-   /**
-    *
-    * @param input the checking string like "a", "b", "1".
-    * @return if the string equal color code which without "&" and "§".
-    */
+    /**
+     * @param input the checking string like "&a", "&b", "1", "green".
+     * @return the color code of a string.
+     */
+    String getColorCodeWithoutSymbol(String input) ;
+
+    /**
+     * @param input the checking string like "a", "b", "1", "green".
+     * @return the color code of a string.
+     */
+    String getColorCode(String input) ;
+
+    /**
+     * @param input the checking string like "a", "b", "1", "green".
+     * @return if the string equal color code which without "&" and "§".
+     */
+    boolean equalColorWithoutSymbol(String input);
+
+    /**
+     * @param input the checking string like "a", "b", "1".
+     * @return if the string equal color code which without "&" and "§".
+     */
     boolean equalColorCodeWithoutSymbol(String input);
 
-   /**
-    *
-    * @param input the checking string like "a", "b", "1".
-    * @return if the string equal color code.
-    */
+    /**
+     * @param input the checking string like "a", "b", "1".
+     * @return if the string equal color code.
+     */
     boolean equalColorCode(String input);
 
     /**
@@ -69,6 +91,14 @@ public interface UtilsInterface {
      * @return if the string contains color code.
      */
     boolean containsColorCode(String input);
+
+
+    /**
+     *
+     * @param input the input string.
+     * @return the string without color code like  "&a", "§b".
+     */
+    String removeColorCode(String input);
 
     /**
      * Checking if a string list contains another string with ignore case.
@@ -404,6 +434,14 @@ public interface UtilsInterface {
      * @return the new translated string.
      */
     List<String> translateColorCode(List<String> input);
+
+    /**
+     * Getting the chat color object.
+     *
+     * @param input the name of color or color code like "a", "&a", "green".
+     * @return the ChatColor object.
+     */
+    ChatColor getChatColor(String input);
 
     /**
      * Getting the color object.

@@ -12,8 +12,6 @@ import tw.momocraft.coreplus.handlers.UtilsHandler;
 
 public class BungeeCordUtils implements PluginMessageListener {
 
-
-
     public static void SwitchServers(String pluginName, Player player, String server) {
         if (player== null)
             return;
